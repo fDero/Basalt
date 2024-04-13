@@ -12,7 +12,7 @@
         return fully_qualified_name;
     }
     std::string match_string = fully_qualified_name + "<";
-    for (int i = 0; i < instanciated_generics.size(); i++){
+    for (size_t i = 0; i < instanciated_generics.size(); i++){
         match_string += "?,";
     }
     match_string.back() = '>';

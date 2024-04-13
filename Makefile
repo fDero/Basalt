@@ -21,7 +21,7 @@ clean:
 	@$(RM) *.out
 
 build:
-	${COMPILER} -std=${STD} src/*/*.cpp src/main.cpp -o ${TARGET} -I./include
+	${COMPILER} -std=${STD} src/*/*.cpp src/main.cpp -Wall -Wno-reorder -o ${TARGET} -I./include
 
 test:
 	${COMPILER} -std=${STD} tests/*/*.cpp src/*/*.cpp -o test_binary ${GTESTFLAGS} -I./include -O0

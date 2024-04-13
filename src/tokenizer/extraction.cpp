@@ -7,7 +7,7 @@
     if (isdigit(current_line[char_pos])) {
         std::string buffer;
         bool floating = false;
-        for (int i = char_pos; i < current_line.size(); i++){
+        for (size_t i = char_pos; i < current_line.size(); i++){
             if (!isdigit(current_line[i]) && current_line[i] != '.') break;
             avoid_multiple_floating_points(floating, current_line[i], *this);
             floating = floating || (current_line[i] == '.');
@@ -22,7 +22,7 @@
 [[nodiscard]] std::optional<Token> Tokenizer::extract_text(){
     if (isalpha(current_line[char_pos])) {
         std::string buffer;
-        for (int i = char_pos; i < current_line.size(); i++){
+        for (size_t i = char_pos; i < current_line.size(); i++){
             if (!isalpha(current_line[i]) && !isdigit(current_line[i]) && current_line[i] != '_') break;
             buffer.push_back(current_line[i]);
         }
@@ -37,7 +37,7 @@
         std::string buffer;
         bool escape = false;
         buffer.push_back(current_line[char_pos]);
-        for(int i = char_pos + 1; i < current_line.size() && !(current_line[char_pos] == current_line[i] && !escape); i++){
+        for(size_t i = char_pos + 1; i < current_line.size() && !(current_line[char_pos] == current_line[i] && !escape); i++){
             escape = (current_line[i] == '\\' && !escape);
             buffer.push_back(current_line[i]);
         }
@@ -50,7 +50,7 @@
 }
 
 [[nodiscard]] std::optional<Token> Tokenizer::extract_symbol(){
-    int i = char_pos, j = char_pos + 1;
+    size_t i = char_pos, j = char_pos + 1;
     Token::Type type = Token::Type::symbol;
     if(i >= current_line.size() || symbols.find(current_line[i]) == symbols.end()) return std::nullopt;
     if(j >= current_line.size() || symbols.find(current_line[j]) == symbols.end()) return make_token({current_line[i]}, type);

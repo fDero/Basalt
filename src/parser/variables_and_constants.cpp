@@ -20,25 +20,21 @@
 
 [[nodiscard]] Statement Parser::parse_variable_definition(){
     assert_token_matches(source_tokens, iterator, "var");
-    const Token& var_token = *(iterator++);
     ensure_token_is_identifier(source_tokens, iterator);
     std::string varname = ( iterator++ )->sourcetext;
     std::optional<TypeSignature> vartype = parse_type_after_object_declaration();
     std::optional<Expression> varvalue = parse_value_after_object_declaration();
     ensure_token_matches(source_tokens, iterator++, ";");
-    //assert_variable_is_well_formed(varname, vartype, varvalue);
     return VariableDeclaration { varname, vartype, varvalue };
 }
 
 [[nodiscard]] Statement Parser::parse_constant_definition(){
     assert_token_matches(source_tokens, iterator, "const");
-    const Token& var_token = *(iterator++);
     ensure_token_is_identifier(source_tokens, iterator);
-    std::string varname = ( iterator++ )->sourcetext;
-    std::optional<TypeSignature> vartype = parse_type_after_object_declaration();
+    std::string constname = ( iterator++ )->sourcetext;
+    std::optional<TypeSignature> consttype = parse_type_after_object_declaration();
     assert_token_matches(source_tokens, iterator++, "=");
-    Expression varvalue = parse_expression();
+    Expression constvalue = parse_expression();
     ensure_token_matches(source_tokens, iterator++, ";");
-    //assert_constant_is_well_formed(varname, vartype, varvalue);
-    return ConstDeclaration { varname, vartype, varvalue };
+    return ConstDeclaration { constname, consttype, constvalue };
 }

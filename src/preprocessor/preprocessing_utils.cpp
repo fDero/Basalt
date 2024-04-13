@@ -54,8 +54,7 @@ void PreProcessor::collect_parsed_outputs(){
             ensure_no_multiple_definition_of_the_same_function(insertion_result);
         }
         for (const auto& func_name_data : parsed_file.func_defs_register.function_names_register){
-            auto insertion_result = funcs_register.function_names_register.insert(func_name_data);
-
+            funcs_register.function_names_register.insert(func_name_data);
         }
         parsed_files_outcome.pop_back();
     }

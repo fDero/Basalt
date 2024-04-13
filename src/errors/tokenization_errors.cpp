@@ -5,7 +5,7 @@
 [[nodiscard]] std::string get_sourcetext_from_tokenizer(const Tokenizer& tokenizer){
     std::string extracted;
     std::string current_line = tokenizer.get_current_line();
-    for (int i = tokenizer.get_char_pos(); i < current_line.size(); i++){
+    for (size_t i = tokenizer.get_char_pos(); i < current_line.size(); i++){
         if (discardable.find(current_line[i]) != discardable.end()) break;
         extracted.push_back(current_line[i]);
     }

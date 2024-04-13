@@ -4,9 +4,9 @@
 #include <exception>
 #include <string>
 
-void display_target_line(int char_pos, const std::string& line){
+void display_target_line(size_t char_pos, const std::string& line){
     std::cout << "\t";
-    for (int i = 0; i < line.size(); i++){
+    for (size_t i = 0; i < line.size(); i++){
         if(i != char_pos) std::cout << yellow(line.substr(i,1)); 
         else std::cout << red(line.substr(i,1));
         char_pos += (isalnum(line[i]) && i == char_pos); 

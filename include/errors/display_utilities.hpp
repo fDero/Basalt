@@ -7,7 +7,7 @@
 #include "misc/console_colors.hpp"
 #include <iostream>
 
-void display_target_line(int char_pos, const std::string& line);
+void display_target_line(size_t char_pos, const std::string& line);
 
 void display_error_context(const std::string& filename, int target_line_number, int char_pos);
 
