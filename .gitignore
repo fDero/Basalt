@@ -1,0 +1,7 @@
+.vscode
+basalt
+*.elf
+*.exe
+*.out
+hidden
+
