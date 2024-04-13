@@ -1,0 +1,89 @@
+
+#include "errors/tokenization_errors.hpp"
+#include "language/syntax.hpp"
+#include "toolchain/tokenizer.hpp"
+#include "errors/tokenization_errors.hpp"
+#include "errors/commandline_errors.hpp"
+#include "errors/internal_errors.hpp"
+#include "toolchain/tokenizer.hpp"
+#include <iostream>
+
+Tokenizer::Tokenizer(const std::istringstream& inline_input)
+    : filename("inline input token stream"), line_number(0) {
+        token_input = std::make_unique<std::istringstream>(inline_input.str());  
+}
+
+Tokenizer::Tokenizer(const std::filesystem::path& file_input) 
+    : filename(file_input.string()), line_number(0) {
+        token_input = std::make_unique<std::fstream>(filename, std::ios::in);  
+}
+
+void Tokenizer::inspect_for_unexpected_tokens(){
+    std::string buffer;
+    while (char_pos < current_line.size() && discardable.find(current_line[char_pos]) != discardable.end()){
+        buffer.push_back(current_line[char_pos++]);
+    }
+    if (!buffer.empty() && char_pos >= current_line.size()){
+        throw_unexpected_token(buffer, *this);
+    }
+}
+
+void Tokenizer::ignore_discardable_characters(){
+    while (char_pos < current_line.size() && discardable.find(current_line[char_pos]) != discardable.end()){
+        char_pos = char_pos + 1;
+    }
+}
+
+[[nodiscard]] Token Tokenizer::make_token(const std::string& sourcetext, const Token::Type token_type) {
+    return Token {
+        sourcetext, filename, line_number, tok_number,
+        static_cast<unsigned int>(char_pos - sourcetext.size() + 1),
+        token_type
+    };
+}
+
+[[nodiscard]] Token::Type Tokenizer::get_textual_token_type(const std::string& sourcetext){
+    if (sourcetext == "true" || sourcetext == "false") return Token::Type::boolean_literal;
+    if (isupper(sourcetext[0])) return Token::Type::type;
+    auto keyword_search_outcome = keywords.find(sourcetext);
+    auto not_found = keywords.end();
+    return (keyword_search_outcome != not_found)?  
+        keyword_search_outcome->second : Token::Type::text;
+}
+
+[[nodiscard]] std::vector<Token> Tokenizer::tokenize(){
+    std::vector<Token> tokens;
+    while (std::getline(*token_input, current_line)) {
+        line_number = line_number + 1;
+        tok_number = char_pos = 0;
+        while (char_pos < current_line.size()){
+            std::optional<Token> token = extract();
+            if (token.has_value()) tokens.push_back(*token);
+            tok_number += (token.has_value() && token->type != Token::Type::multiline_comment);
+            char_pos += ( (token.has_value())? token->sourcetext.size() : 0 );
+            ignore_discardable_characters();
+        }
+    }
+    ensure_multiline_comments_get_closed(multiline_comments_tracker, *this);
+    return tokens;
+}
+
+[[nodiscard]] std::string Tokenizer::get_current_line() const {
+    return current_line;
+}
+
+[[nodiscard]] std::string Tokenizer::get_filename() const {
+    return filename;
+}
+
+[[nodiscard]] unsigned long Tokenizer::get_line_number() const {
+    return line_number;
+}
+
+[[nodiscard]] unsigned int Tokenizer::get_tok_number() const {
+    return tok_number;
+}
+
+[[nodiscard]] unsigned int Tokenizer::get_char_pos() const {
+    return char_pos;
+}
