@@ -5,6 +5,8 @@
 #include <string>
 #include <vector>
 
+struct GenericSubstitutionRuleSet;
+
 struct TypeSignatureBody {
 
     [[nodiscard]] virtual bool is_primitive_type() const = 0;
@@ -18,6 +20,8 @@ struct TypeSignatureBody {
         const std::vector<std::string>& template_generics_names) const = 0;
 
     [[nodiscard]] virtual std::string struct_retrieval_match_string() const = 0;
+
+    virtual void instanciate_generics(const GenericSubstitutionRuleSet&) = 0;
 
     virtual ~TypeSignatureBody() = default;
 };
@@ -44,6 +48,8 @@ struct TypeSignature : public Polymorph<TypeSignatureBody> {
 
     bool is_generic(const std::vector<std::string>& template_generic_names) 
         const { return ptr->is_generic(template_generic_names); }
+
+    void instanciate_generics(const GenericSubstitutionRuleSet& rules);
 };
 
 struct BaseType : public TypeSignatureBody {
@@ -62,6 +68,8 @@ struct BaseType : public TypeSignatureBody {
     bool is_primitive_type() const override;
 
     bool is_generic(const std::vector<std::string>& template_generic_names) const override;
+
+    void instanciate_generics(const GenericSubstitutionRuleSet&) override;
 };
 
 struct PointerType : public TypeSignatureBody {
@@ -79,6 +87,8 @@ struct PointerType : public TypeSignatureBody {
     bool is_primitive_type() const override;
 
     bool is_generic(const std::vector<std::string>& template_generic_names) const override;
+
+    void instanciate_generics(const GenericSubstitutionRuleSet&) override;
 };
 
 struct ArrayType : public TypeSignatureBody {
@@ -97,6 +107,8 @@ struct ArrayType : public TypeSignatureBody {
     bool is_primitive_type() const override;
 
     bool is_generic(const std::vector<std::string>& template_generic_names) const override;
+
+    void instanciate_generics(const GenericSubstitutionRuleSet&) override;
 };
 
 struct SliceType : public TypeSignatureBody {
@@ -114,4 +126,6 @@ struct SliceType : public TypeSignatureBody {
     bool is_primitive_type() const override;
 
     bool is_generic(const std::vector<std::string>& template_generic_names) const override;
+
+    void instanciate_generics(const GenericSubstitutionRuleSet&) override;
 };

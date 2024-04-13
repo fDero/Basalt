@@ -64,7 +64,9 @@ std::optional<GenericSubstitutionRuleSet> apply_generics_to_base_type(
     assert_typesignature_is<BaseType>(template_type);
     if (current_typesignature_is_target_generic(template_type, generic_names)){
         assert_basetype_has_no_generics(template_type);
-        return GenericSubstitutionRuleSet { GenericSubstitutionRule { template_type, concrete_type } };
+        GenericSubstitutionRuleSet result;
+        result.push_back(GenericSubstitutionRule { template_type, concrete_type });
+        return result;
     }
     else if (concrete_type.is<BaseType>()){
         auto template_generic_vec = template_type.get<BaseType>().instanciated_generics;

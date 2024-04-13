@@ -72,6 +72,11 @@ struct StructDefinition {
         tok_num = struct_token.tok_number;
         char_pos = struct_token.char_pos;
         struct_name = struct_token.sourcetext;
+        generate_struct_id();
+        generate_pattern_tag_name();
+    }
+
+    void generate_struct_id(){
         struct_id = filename + "/" + std::to_string(line_number) + "/" +
             std::to_string(char_pos) + "/" + std::to_string(tok_num) + "/" + struct_name;
     }
@@ -87,4 +92,6 @@ struct StructDefinition {
             pattern_tag_name.back() = '>';
         }
     }
+
+    void instanciate_generics(const BaseType& concrete_type);
 };

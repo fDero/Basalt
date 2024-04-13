@@ -1,5 +1,6 @@
 
 #include "toolchain/preprocessor.hpp"
+#include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 
 void PreProcessor::preprocess_structs(){
@@ -43,8 +44,11 @@ void StructDependencyNavigator::visit_struct_field(
             field.field_type.get<SliceType>().stored_type);
     }
     else if (!field.field_type.is_primitive_type()) {
-        const StructDefinition& field_def = structs_register.retrieve(field.field_type);
+        StructDefinition field_def = structs_register.retrieve(field.field_type);
+        assert_typesignature_is<BaseType>(field.field_type);
+        field_def.instanciate_generics(field.field_type.get<BaseType>());
         visit_struct_definition(field_def);
+        structs_register.store(field_def);
     }
 }
 
