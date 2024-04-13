@@ -45,10 +45,12 @@ void StructDependencyNavigator::visit_struct_field(
     }
     else if (!field.field_type.is_primitive_type()) {
         StructDefinition field_def = structs_register.retrieve(field.field_type);
-        assert_typesignature_is<BaseType>(field.field_type);
-        field_def.instanciate_generics(field.field_type.get<BaseType>());
+        if (!field_def.template_generics_names.empty()){
+            assert_typesignature_is<BaseType>(field.field_type);
+            field_def.instanciate_generics(field.field_type.get<BaseType>());
+            structs_register.store(field_def);
+        }
         visit_struct_definition(field_def);
-        structs_register.store(field_def);
     }
 }
 
