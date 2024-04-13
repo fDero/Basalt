@@ -1,6 +1,6 @@
 .PHONY: build clean test
 
-COMPILER=g++
+COMPILER=clang++
 STD=c++20
 LINKER=clang++
 
@@ -21,9 +21,9 @@ clean:
 	@$(RM) *.out
 
 build:
-	${COMPILER} -std=${STD} src/*/*.cpp src/main.cpp -Wall -o ${TARGET} -I./include
+	${COMPILER} -Wall -std=${STD} src/*/*.cpp src/main.cpp -o ${TARGET} -I./include
 
 test:
-	${COMPILER} -std=${STD} tests/*/*.cpp src/*/*.cpp -o test_binary ${GTESTFLAGS} -I./include -O0
+	${COMPILER} -Wall -std=${STD} tests/*/*.cpp src/*/*.cpp -o test_binary ${GTESTFLAGS} -I./include -O0
 	./test_binary
 	${RM} test_binary

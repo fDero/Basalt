@@ -19,7 +19,7 @@
 }
 
 [[nodiscard]] Statement Parser::parse_variable_definition(){
-    assert_token_matches(source_tokens, iterator, "var");
+    assert_token_matches(source_tokens, iterator++, "var");
     ensure_token_is_identifier(source_tokens, iterator);
     std::string varname = ( iterator++ )->sourcetext;
     std::optional<TypeSignature> vartype = parse_type_after_object_declaration();
@@ -29,7 +29,7 @@
 }
 
 [[nodiscard]] Statement Parser::parse_constant_definition(){
-    assert_token_matches(source_tokens, iterator, "const");
+    assert_token_matches(source_tokens, iterator++, "const");
     ensure_token_is_identifier(source_tokens, iterator);
     std::string constname = ( iterator++ )->sourcetext;
     std::optional<TypeSignature> consttype = parse_type_after_object_declaration();

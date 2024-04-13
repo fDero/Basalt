@@ -32,16 +32,13 @@ void StructDependencyNavigator::visit_struct_field(
         return;
     }
     else if (field.field_type.is<PointerType>()) {
-        verify_that_the_type_exists(
-            field.field_type.get<PointerType>().pointed_type);
+        verify_that_the_type_exists(field.field_type.get<PointerType>().pointed_type);
     }
     else if (field.field_type.is<ArrayType>()) {
-        verify_that_the_type_exists(
-            field.field_type.get<ArrayType>().stored_type);
+        verify_that_the_type_exists(field.field_type.get<ArrayType>().stored_type);
     }
     else if (field.field_type.is<SliceType>()) {
-        verify_that_the_type_exists(
-            field.field_type.get<SliceType>().stored_type);
+        verify_that_the_type_exists(field.field_type.get<SliceType>().stored_type);
     }
     else if (!field.field_type.is_primitive_type()) {
         StructDefinition field_def = structs_register.retrieve(field.field_type);
