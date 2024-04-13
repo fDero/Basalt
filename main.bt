@@ -1,0 +1,13 @@
+
+struct A {
+    x : X;
+}
+
+struct B {
+    x : X;
+}
+
+struct X {
+   a : Int;
+   b : Int;
+}
