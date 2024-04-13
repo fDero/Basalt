@@ -95,7 +95,7 @@ struct ArrayType : public TypeSignatureBody {
     int array_length;
     TypeSignature stored_type;
     ArrayType(int length, const TypeSignature& stored)
-        : stored_type(stored), array_length(length) {}
+        : array_length(length), stored_type(stored) {}
 
     std::string to_string() const override;
 

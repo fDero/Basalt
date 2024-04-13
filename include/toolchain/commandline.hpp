@@ -36,9 +36,9 @@ class CommandLineController {
         void display_commandline_help();
 
 
-    private: 
-        char** arg_values;
+    private:
         const int arg_counter;
+        char** arg_values;
         int arg_index;
 
         enum class Flag {

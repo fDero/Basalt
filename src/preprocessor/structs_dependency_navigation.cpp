@@ -55,5 +55,5 @@ void StructDependencyNavigator::visit_struct_field(
 }
 
 void StructDependencyNavigator::verify_that_the_type_exists(const TypeSignature& type_signature){
-    static_cast<void>(structs_register.retrieve(type_signature));
+    std::ignore = structs_register.retrieve(type_signature);
 }
