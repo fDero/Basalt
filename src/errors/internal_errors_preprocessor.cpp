@@ -29,17 +29,3 @@ void assert_no_errors_encountered_during_async_parsing_hence_error_vector_is_emp
     }
     #endif
 }
-
-void assert_package_contains_at_least_one_file(
-    const std::vector<FileRappresentation>& package_files
-){
-    #ifdef DEBUG_BUILD
-    if (package_files.empty()){
-        throw InternalError {
-            "somehow the MultiThreadPreProcessor found out that a package has 0 files in it \n"
-            "(and this should be impossible since a package is only created when \n"
-            "a file that belongs to it is encountered)"
-        };
-    }
-    #endif
-}

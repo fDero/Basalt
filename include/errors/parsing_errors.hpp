@@ -108,29 +108,6 @@ void ensure_no_function_overload_was_found_before_this(
     const std::unordered_map<std::string, FunctionDefinition>& function_definitions_register
 );
 
-//pointers, array and slices cannot be tagged with a namespace
-inline void ensure_type_is_retrievable_from_namespace(
-    const TypeSignature& type_to_bind,
-    const std::string& package_name
-){ }
-
-//primitive types cannot be tagged with a namespace
-inline void throw_scope_specified_for_primitive_type(
-    const TypeSignature& type_to_bind,
-    const std::string& package_name
-){ throw 3; }
-
-//identifier cannot be shared from different packages
-inline void ensure_identifier_is_not_from_another_package(
-    const std::vector<Token>::iterator& iterator,
-    const std::string& package_tag
-){ }
-
-inline void throw_package_keyword_misplaced(
-    const std::vector<Token>& source_tokens,
-    const std::vector<Token>::iterator& iterator
-) { throw 1; }
-
 inline void ensure_no_multiple_definition_of_the_same_function(
     const std::pair<std::unordered_map<std::string, FunctionDefinition>::iterator, bool>& 
         function_definition_insertion_outcome

@@ -15,7 +15,6 @@
     function.arguments = parse_function_def_arguments();
     function.return_type = parse_function_return_type();
     function.code = parse_function_def_body();
-    function.generate_pattern_tag_name();
     return function;
 }
 

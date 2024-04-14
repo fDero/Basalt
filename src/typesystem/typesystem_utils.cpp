@@ -1,5 +1,5 @@
 
-#include "toolchain/generics.hpp"
+#include "language/generics.hpp"
 #include "errors/internal_errors.hpp"
 #include <regex>
 #include <optional>
@@ -11,7 +11,7 @@
 [[nodiscard]] std::string TypeSignature::function_retrieval_match_string(
     const std::vector<std::string>& generics_names
 ) const { 
-    return ptr->function_retrieval_match_string(template_generics_names); 
+    return ptr->function_retrieval_match_string(generics_names); 
 }
 
 [[nodiscard]] std::string TypeSignature::struct_retrieval_match_string() const { 
@@ -23,7 +23,7 @@
 }
 
 [[nodiscard]] bool TypeSignature::is_generic(const std::vector<std::string>& generic_names) const { 
-    return ptr->is_generic(template_generic_names); 
+    return ptr->is_generic(generic_names); 
 }
 
 BaseType::BaseType(

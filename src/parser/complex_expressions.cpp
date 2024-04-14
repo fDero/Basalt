@@ -28,7 +28,6 @@
     switch(iterator->type){
         break; case Token::Type::text: {
             if (std::next(iterator) == source_tokens.end() || std::next(iterator)->sourcetext != "("){ 
-                //ensure_identifier_is_not_from_another_package(iterator, package_tag);
                 return parse_identifier();
             }
             FunctionCall fcall = parse_function_call();

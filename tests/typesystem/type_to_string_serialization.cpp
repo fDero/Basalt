@@ -1,6 +1,6 @@
 
 #include <gtest/gtest.h>
-#include "toolchain/generics.hpp"
+#include "language/generics.hpp"
 #include "errors/internal_errors.hpp"
 
 TEST(TypeSystem, Base_Type_No_Generics_To_String) {

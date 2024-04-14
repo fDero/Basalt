@@ -9,7 +9,6 @@
 TEST(Rappresentation, Trivial_Struct_Store_And_Retrieval_From_Global_Scope) {
     StructDefinitionsRegister struct_register;
     StructDefinition struct_definition = make_struct_definition("MyStruct");
-    struct_definition.generate_pattern_tag_name();
     struct_register.store(struct_definition);
     TypeSignature struct_type = BaseType { "MyStruct" , {} };
     StructDefinition retrieved = struct_register.retrieve(struct_type);
@@ -23,7 +22,6 @@ TEST(Rappresentation, Struct_With_One_Generic_Store_And_Retrieval_From_Global_Sc
     StructDefinitionsRegister struct_register;
     StructDefinition struct_definition = make_struct_definition("MyStruct");
     struct_definition.template_generics_names.push_back("T");
-    struct_definition.generate_pattern_tag_name();
     struct_register.store(struct_definition);
     TypeSignature struct_type = BaseType { "MyStruct" , { BaseType { "Int", {} } } };
     StructDefinition retrieved = struct_register.retrieve(struct_type);
@@ -37,9 +35,7 @@ TEST(Rappresentation, Instanciated_Struct_With_One_Generic_Store_And_Retrieval_F
     StructDefinitionsRegister struct_register;
     StructDefinition generic_struct_definition = make_struct_definition("MyStruct");
     generic_struct_definition.template_generics_names.push_back("T");
-    generic_struct_definition.generate_pattern_tag_name();
     StructDefinition struct_definition = make_struct_definition("MyStruct<Int>");
-    struct_definition.generate_pattern_tag_name();
     struct_register.store(generic_struct_definition);
     struct_register.store(struct_definition);
     TypeSignature struct_type = BaseType { "MyStruct" , { BaseType { "Int", {} } } };

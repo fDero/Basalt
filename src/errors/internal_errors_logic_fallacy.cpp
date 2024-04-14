@@ -42,9 +42,6 @@ void assert_type_is_non_primitive(const TypeSignature& type){
             throw_attempt_to_retrieve_struct_definition_from_primitive_type(type);
         }
     }
-    else if (!type.is<NestedType>()){
-        throw_attempt_to_retrieve_struct_definition_from_primitive_type(type);
-    }
     #endif
 }
 

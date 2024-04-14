@@ -1,5 +1,5 @@
 
-#include "toolchain/generics.hpp"
+#include "language/generics.hpp"
 #include "errors/internal_errors.hpp"
 #include <regex>
 #include <optional>
@@ -17,8 +17,6 @@ void StructDefinition::instanciate_generics(const BaseType& concrete_type) {
     for (StructDefinition::Field& concrete_field : fields){
         concrete_field.field_type.instanciate_generics(generic_substitution_rules);
     }
-    generate_pattern_tag_name();
-    generate_struct_id();
 }
 
 void TypeSignature::instanciate_generics(const GenericSubstitutionRuleSet& generic_substitution_rules) {

@@ -17,8 +17,9 @@ StructDependencyNavigator::StructDependencyNavigator(
 }
 
 void StructDependencyNavigator::visit_struct_definition(const StructDefinition& struct_definition){
-    ensure_struct_not_already_visited_hence_no_cyclic_dependency(struct_definition.struct_id, visited_structs);
-    visited_structs.insert(struct_definition.struct_id);
+    std::string struct_id = struct_definition.generate_struct_id();
+    ensure_struct_not_already_visited_hence_no_cyclic_dependency(struct_id, visited_structs);
+    visited_structs.insert(struct_id);
     for (const StructDefinition::Field& field : struct_definition.fields){
         visit_struct_field( field, struct_definition.template_generics_names );
     }

@@ -28,6 +28,5 @@
         struct_def.fields.push_back(field);
     }
     ensure_token_matches(source_tokens, iterator++, "}");
-    struct_def.generate_pattern_tag_name();
     return struct_def;
 }
