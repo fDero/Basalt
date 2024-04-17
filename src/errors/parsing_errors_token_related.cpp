@@ -136,7 +136,7 @@ void ensure_token_is_fixed_array_length(
     }
 }
 
-void ensure_type_is_properly_formatted(
+void ensure_token_is_typesignature(
     const std::vector<Token>& source_tokens,
     const std::vector<Token>::iterator& iterator
 ){
@@ -146,7 +146,7 @@ void ensure_type_is_properly_formatted(
             source_tokens.back()
         };
     }
-    if (iterator->type != Token::Type::type && iterator->sourcetext != "#"){
+    if (iterator->type != Token::Type::type){
         throw ParsingError {
             "a type was expected, instead " + iterator->sourcetext + " was given",
             *iterator

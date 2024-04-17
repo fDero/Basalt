@@ -6,10 +6,8 @@
 
 TEST(Parsing, Simple_Slice) {
     std::vector<Token> slicetokens = {
-        { "Slice", "test.basalt", 1, 1, 1,  Token::Type::type     },
-        { "<", "test.basalt",     1, 2, 6,  Token::Type::symbol   },
-        { "Int", "test.basalt",   1, 3, 10, Token::Type::type     },
-        { ">", "test.basalt",     1, 6, 11, Token::Type::symbol   },
+        { "$", "test.basalt",     1, 1, 1,  Token::Type::type     },
+        { "Int", "test.basalt",   1, 2, 2, Token::Type::type     },
     };
     Parser parser = Parser(slicetokens);
     TypeSignature type = parser.parse_typesignature();
@@ -19,13 +17,9 @@ TEST(Parsing, Simple_Slice) {
 
 TEST(Parsing, Nested_Slice_Types) {
     std::vector<Token> slicetokens = {
-        { "Slice", "test.basalt", 1, 1, 1,  Token::Type::type     },
-        { "<", "test.basalt",     1, 2, 6,  Token::Type::symbol   },
-        { "Slice", "test.basalt", 1, 1, 7,  Token::Type::type     },
-        { "<", "test.basalt",     1, 2, 8,  Token::Type::symbol   },
-        { "Int", "test.basalt",   1, 3, 9, Token::Type::type     },
-        { ">", "test.basalt",     1, 4, 13, Token::Type::symbol   },
-        { ">", "test.basalt",     1, 5, 14, Token::Type::symbol   },
+        { "$",   "test.basalt",     1, 1, 1,  Token::Type::type      },
+        { "$",   "test.basalt",     1, 2, 2,  Token::Type::symbol    },
+        { "Int", "test.basalt",     1, 3, 3,  Token::Type::type      },
     };
     Parser parser = Parser(slicetokens);
     TypeSignature type = parser.parse_typesignature();

@@ -6,12 +6,10 @@
 
 TEST(Parsing, Simple_Array) {
     std::vector<Token> arraytokens = {
-        { "Array", "test.basalt", 1, 1, 1,  Token::Type::type     },
-        { "<", "test.basalt",     1, 2, 6,  Token::Type::symbol   },
-        { "10", "test.basalt",    1, 4, 11, Token::Type::integer_literal },
-        { ",", "test.basalt",     1, 4, 11, Token::Type::symbol   },
-        { "Int", "test.basalt",   1, 3, 10, Token::Type::type     },
-        { ">", "test.basalt",     1, 6, 14, Token::Type::symbol   },
+        { "[",   "test.basalt",  1, 1, 1,  Token::Type::type              },
+        { "10",  "test.basalt",  1, 2, 2, Token::Type::integer_literal    },
+        { "]",   "test.basalt",  1, 3, 4, Token::Type::symbol             },
+        { "Int", "test.basalt",  1, 4, 5, Token::Type::type               },
     };
     Parser parser = Parser(arraytokens);
     TypeSignature type = parser.parse_typesignature();
@@ -23,17 +21,13 @@ TEST(Parsing, Simple_Array) {
 
 TEST(Parsing, Nested_Array_Types) {
     std::vector<Token> arraytokens = {
-        { "Array", "test.basalt", 1,  1,  1, Token::Type::type     },
-        { "<", "test.basalt",     1,  2,  6, Token::Type::symbol   },
-        { "10", "test.basalt",    1,  3,  8, Token::Type::integer_literal },
-        { ",", "test.basalt",     1,  4,  9, Token::Type::symbol   },
-        { "Array", "test.basalt", 1,  5, 15, Token::Type::type     },
-        { "<", "test.basalt",     1,  6, 16, Token::Type::symbol   },
-        { "10", "test.basalt",    1,  7, 18, Token::Type::integer_literal },
-        { ",", "test.basalt",     1,  8, 19, Token::Type::symbol   },
-        { "Int", "test.basalt",   1,  9, 22, Token::Type::type     },
-        { ">", "test.basalt",     1, 10, 23, Token::Type::symbol   },
-        { ">", "test.basalt",     1, 11, 24, Token::Type::symbol   },
+        { "[",   "test.basalt",     1, 1, 1, Token::Type::type            },
+        { "10",  "test.basalt",     1, 2, 2, Token::Type::integer_literal },
+        { "]",   "test.basalt",     1, 3, 4, Token::Type::symbol          },
+        { "[",   "test.basalt",     1, 4, 5, Token::Type::type            },
+        { "10",  "test.basalt",     1, 5, 7, Token::Type::integer_literal },
+        { "]",   "test.basalt",     1, 6, 8, Token::Type::symbol          },
+        { "Int", "test.basalt",     1, 7, 9, Token::Type::type            },
     };
     Parser parser = Parser(arraytokens);
     TypeSignature type = parser.parse_typesignature();

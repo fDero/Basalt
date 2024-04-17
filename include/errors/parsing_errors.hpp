@@ -57,7 +57,7 @@ void ensure_token_is_fixed_array_length(
     const std::vector<Token>::iterator& iterator
 );
 
-void ensure_type_is_properly_formatted(
+void ensure_token_is_typesignature(
     const std::vector<Token>& source_tokens,
     const std::vector<Token>::iterator& iterator
 );
