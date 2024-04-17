@@ -136,16 +136,12 @@ formal_type_parameters_section
 
 // EXPRESSIONS
             
-prefix_operator
-    : ('#' | NOT | PLUS | MINUS | INC | DEC) expression
+expression
+    : terminal_expression
+    | infix_operator
+    | dot_member_access
     ;
-    
-infix_operator
-    : terminal_expression (PLUS | MINUS | MUL | DIV | POW | MOD) expression
-    | terminal_expression (AND | OR | EQUAL | NOTEQUAL) expression
-    | terminal_expression (GT | LT | LE | GE | EQUAL | NOTEQUAL) expression
-    ;
-    
+
 terminal_expression
     : array_square_brackets_access 
     | array_literal
@@ -160,8 +156,18 @@ terminal_expression
     | ID
     ;
 
-parenthesys_delimited_expression
-    : '(' expression ')'
+infix_operator
+    : terminal_expression (PLUS | MINUS | MUL | DIV | POW | MOD) expression
+    | terminal_expression (AND | OR | EQUAL | NOTEQUAL) expression
+    | terminal_expression (GT | LT | LE | GE | EQUAL | NOTEQUAL) expression
+    ;
+
+dot_member_access
+    : terminal_expression ('.' ID)+
+    ;
+
+prefix_operator
+    : ('#' | NOT | PLUS | MINUS | INC | DEC) expression
     ;
 
 array_square_brackets_access
@@ -170,10 +176,9 @@ array_square_brackets_access
 
 array_literal
     : '[' typesignature ']' '{' expression (',' expression)* '}' ;
-    
-expression
-    : terminal_expression
-    | infix_operator
+
+parenthesys_delimited_expression
+    : '(' expression ')'
     ;
 
 
