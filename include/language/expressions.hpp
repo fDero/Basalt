@@ -26,6 +26,19 @@ class Expression : public Polymorph<ExpressionBody> {
         bool compiletime_avialable = false;
 };
 
+struct ArrayLiteral : public ExpressionBody {
+    int array_length;
+    TypeSignature stored_type;
+    std::vector<Expression> elements;
+    
+    ArrayLiteral(
+        int length,
+        const TypeSignature& type,
+        const std::vector<Expression>& elements
+    )
+        : array_length(length), stored_type(type), elements(elements) {}
+};
+
 struct BinaryOperator : public ExpressionBody {
     std::string operator_text;
     Expression left_operand;

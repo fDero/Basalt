@@ -6,7 +6,7 @@
 
 TEST(Parsing, Simple_Array) {
     std::vector<Token> arraytokens = {
-        { "[",   "test.basalt",  1, 1, 1,  Token::Type::type              },
+        { "[",   "test.basalt",  1, 1, 1, Token::Type::type               },
         { "10",  "test.basalt",  1, 2, 2, Token::Type::integer_literal    },
         { "]",   "test.basalt",  1, 3, 4, Token::Type::symbol             },
         { "Int", "test.basalt",  1, 4, 5, Token::Type::type               },

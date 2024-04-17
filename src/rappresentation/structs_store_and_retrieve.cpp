@@ -8,7 +8,6 @@
 
 void StructDefinitionsRegister::store(const StructDefinition& struct_def){
     const std::string struct_tag_name = struct_def.generate_match_pattern();
-    std::cerr << "storing this tag name: " << struct_tag_name << "\n";
     ensure_struct_doesnt_already_exists(struct_tag_name, struct_def, struct_definitions);
     struct_definitions.insert(std::make_pair(struct_tag_name, struct_def));
 }

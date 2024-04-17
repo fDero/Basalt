@@ -20,6 +20,7 @@ class Parser {
         Parser(const std::vector<Token>& tokens);
         [[nodiscard]] FileRappresentation parse_everything();
 
+        [[nodiscard]] Expression parse_array_literal();
         [[nodiscard]] Expression parse_expression();
         [[nodiscard]] Expression parse_terminal_expression();
         [[nodiscard]] Expression parse_expression_wrapped_in_parenthesis();
