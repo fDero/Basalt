@@ -21,17 +21,12 @@
     assert_token_matches(source_tokens, iterator++, "{");
     ensure_there_are_still_tokens(source_tokens, iterator);
     std::vector<Expression> elements;
-    std::cerr << "yy\n";
     if (iterator->sourcetext != "}") {
         elements.push_back(parse_expression());
     }
-    std::cerr << "zz\n";
     while (iterator->sourcetext == ","){
-        std::cerr << "KK0\n";
         ++iterator;
-        std::cerr << "KK1\n";
         elements.push_back(parse_expression());
-        std::cerr << "KK2\n";
     }
     assert_token_matches(source_tokens, iterator++, "}");
     return ArrayLiteral { array_length, stored_type, elements };
