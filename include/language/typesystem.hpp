@@ -9,7 +9,7 @@ struct GenericSubstitutionRuleSet;
 
 struct TypeSignatureBody {
 
-    [[nodiscard]] virtual bool is_primitive_type() const = 0;
+    [[nodiscard]] virtual bool is_core_language_type() const = 0;
     [[nodiscard]] virtual bool is_generic(const std::vector<std::string>& generic_names) const = 0;
     [[nodiscard]] virtual std::string to_string() const = 0;
     [[nodiscard]] virtual std::string function_retrieval_match_string(const std::vector<std::string>& generics_names) const = 0;
@@ -28,7 +28,7 @@ struct TypeSignature : public Polymorph<TypeSignatureBody> {
     [[nodiscard]] std::string to_string() const;
     [[nodiscard]] std::string function_retrieval_match_string(const std::vector<std::string>& generics_names) const;
     [[nodiscard]] std::string struct_retrieval_match_string() const;
-    [[nodiscard]] bool is_primitive_type() const;
+    [[nodiscard]] bool is_core_language_type() const;
     [[nodiscard]] bool is_generic(const std::vector<std::string>& generic_names) const;
 
     void instanciate_generics(const GenericSubstitutionRuleSet& rules);
@@ -39,7 +39,7 @@ struct PrimitiveType : public TypeSignatureBody {
     [[nodiscard]] std::string to_string() const override;
     [[nodiscard]] std::string function_retrieval_match_string(const std::vector<std::string>& generics_names) const override;
     [[nodiscard]] std::string struct_retrieval_match_string() const override;
-    [[nodiscard]] bool is_primitive_type() const override;
+    [[nodiscard]] bool is_core_language_type() const override;
     [[nodiscard]] bool is_generic(const std::vector<std::string>& generic_names) const override;
     void instanciate_generics(const GenericSubstitutionRuleSet&) override;
 
@@ -51,7 +51,7 @@ struct CustomType : public TypeSignatureBody {
     [[nodiscard]] std::string to_string() const override;
     [[nodiscard]] std::string function_retrieval_match_string(const std::vector<std::string>& generics_names) const override;
     [[nodiscard]] std::string struct_retrieval_match_string() const override;
-    [[nodiscard]] bool is_primitive_type() const override;
+    [[nodiscard]] bool is_core_language_type() const override;
     [[nodiscard]] bool is_generic(const std::vector<std::string>& generic_names) const override;
     void instanciate_generics(const GenericSubstitutionRuleSet&) override;
 
@@ -64,7 +64,7 @@ struct PointerType : public TypeSignatureBody {
     [[nodiscard]] std::string to_string() const override;
     [[nodiscard]] std::string function_retrieval_match_string(const std::vector<std::string>& generics_names) const override;
     [[nodiscard]] std::string struct_retrieval_match_string() const override;
-    [[nodiscard]] bool is_primitive_type() const override;
+    [[nodiscard]] bool is_core_language_type() const override;
     [[nodiscard]] bool is_generic(const std::vector<std::string>& template_generic_names) const override;
     void instanciate_generics(const GenericSubstitutionRuleSet&) override;
 
@@ -76,7 +76,7 @@ struct ArrayType : public TypeSignatureBody {
     [[nodiscard]] std::string to_string() const override;
     [[nodiscard]] std::string function_retrieval_match_string(const std::vector<std::string>& generics_names) const override;
     [[nodiscard]] std::string struct_retrieval_match_string() const override;
-    [[nodiscard]] bool is_primitive_type() const override;
+    [[nodiscard]] bool is_core_language_type() const override;
     [[nodiscard]] bool is_generic(const std::vector<std::string>& generics_names) const override;
     void instanciate_generics(const GenericSubstitutionRuleSet&) override;
 
@@ -89,7 +89,7 @@ struct SliceType : public TypeSignatureBody {
     [[nodiscard]] std::string to_string() const override;
     [[nodiscard]] std::string function_retrieval_match_string(const std::vector<std::string>& generics_names) const override;
     [[nodiscard]] std::string struct_retrieval_match_string() const override;
-    [[nodiscard]] bool is_primitive_type() const override;
+    [[nodiscard]] bool is_core_language_type() const override;
     [[nodiscard]] bool is_generic(const std::vector<std::string>& template_generic_names) const override;
     void instanciate_generics(const GenericSubstitutionRuleSet&) override;
 

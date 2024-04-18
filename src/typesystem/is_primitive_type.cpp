@@ -6,22 +6,22 @@
 #include <iostream>
 #include "language/syntax.hpp"
 
-[[nodiscard]] bool CustomType::is_primitive_type() const {
+[[nodiscard]] bool CustomType::is_core_language_type() const {
     return false;
 }
 
-[[nodiscard]] bool PointerType::is_primitive_type() const {
+[[nodiscard]] bool PointerType::is_core_language_type() const {
     return true;
 }
 
-[[nodiscard]] bool ArrayType::is_primitive_type() const {
+[[nodiscard]] bool ArrayType::is_core_language_type() const {
     return true;
 }
 
-[[nodiscard]] bool SliceType::is_primitive_type() const {
+[[nodiscard]] bool SliceType::is_core_language_type() const {
     return true;
 }
 
-[[nodiscard]] bool PrimitiveType::is_primitive_type() const {
+[[nodiscard]] bool PrimitiveType::is_core_language_type() const {
     return true;
 }

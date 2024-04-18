@@ -18,8 +18,8 @@
     return ptr->struct_retrieval_match_string(); 
 }
 
-[[nodiscard]] bool TypeSignature::is_primitive_type() const { 
-    return ptr->is_primitive_type(); 
+[[nodiscard]] bool TypeSignature::is_core_language_type() const { 
+    return ptr->is_core_language_type(); 
 }
 
 [[nodiscard]] bool TypeSignature::is_generic(const std::vector<std::string>& generic_names) const { 

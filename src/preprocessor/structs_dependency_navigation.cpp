@@ -32,7 +32,7 @@ void StructDependencyNavigator::visit_struct_field(
     if (field.field_type.is_generic(struct_def_generics)) {
         return;
     }
-    else if (field.field_type.is_primitive_type()) {
+    else if (field.field_type.is_core_language_type()) {
         verify_that_the_type_exists(field.field_type);
     }
     else {
