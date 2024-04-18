@@ -11,7 +11,7 @@
     for (size_t i = 0; i < instanciated_generics.size(); i++){
         const TypeSignature& instanciated_generic = instanciated_generics[i];
         const std::string& template_generic_name = template_generics[i];
-        TypeSignature template_generic = BaseType{ template_generic_name, {} };
+        TypeSignature template_generic = CustomType{ template_generic_name, {} };
         GenericSubstitutionRule rule = { template_generic, instanciated_generic};
         result.push_back(rule);
     }

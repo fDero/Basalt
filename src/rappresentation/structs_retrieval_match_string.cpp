@@ -23,7 +23,7 @@
     return pattern_tag_name;
 }
 
-[[nodiscard]] std::string BaseType::struct_retrieval_match_string() const {
+[[nodiscard]] std::string CustomType::struct_retrieval_match_string() const {
     assert_type_is_non_primitive(*this);
     if (instanciated_generics.empty()) {
         return type_name;
@@ -46,4 +46,9 @@
 
 [[nodiscard]] std::string SliceType::struct_retrieval_match_string() const {
     throw_attempt_to_retrieve_struct_definition_from_primitive_type(*this);
+}
+
+[[nodiscard]] std::string PrimitiveType::struct_retrieval_match_string() const {
+    assert_type_is_non_primitive(*this);
+    return type_name;
 }

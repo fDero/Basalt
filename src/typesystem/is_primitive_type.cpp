@@ -6,8 +6,8 @@
 #include <iostream>
 #include "language/syntax.hpp"
 
-[[nodiscard]] bool BaseType::is_primitive_type() const {
-    return (primitive_types.find(type_name) != primitive_types.end());
+[[nodiscard]] bool CustomType::is_primitive_type() const {
+    return false;
 }
 
 [[nodiscard]] bool PointerType::is_primitive_type() const {
@@ -19,5 +19,9 @@
 }
 
 [[nodiscard]] bool SliceType::is_primitive_type() const {
+    return true;
+}
+
+[[nodiscard]] bool PrimitiveType::is_primitive_type() const {
     return true;
 }

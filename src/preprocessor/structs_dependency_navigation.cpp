@@ -32,20 +32,14 @@ void StructDependencyNavigator::visit_struct_field(
     if (field.field_type.is_generic(struct_def_generics)) {
         return;
     }
-    else if (field.field_type.is<PointerType>()) {
-        verify_that_the_type_exists(field.field_type.get<PointerType>().pointed_type);
+    else if (field.field_type.is_primitive_type()) {
+        verify_that_the_type_exists(field.field_type);
     }
-    else if (field.field_type.is<ArrayType>()) {
-        verify_that_the_type_exists(field.field_type.get<ArrayType>().stored_type);
-    }
-    else if (field.field_type.is<SliceType>()) {
-        verify_that_the_type_exists(field.field_type.get<SliceType>().stored_type);
-    }
-    else if (!field.field_type.is_primitive_type()) {
+    else {
         StructDefinition field_def = structs_register.retrieve(field.field_type);
         if (!field_def.template_generics_names.empty()){
-            assert_typesignature_is<BaseType>(field.field_type);
-            field_def.instanciate_generics(field.field_type.get<BaseType>());
+            assert_typesignature_is<CustomType>(field.field_type);
+            field_def.instanciate_generics(field.field_type.get<CustomType>());
             structs_register.store(field_def);
         }
         visit_struct_definition(field_def);
@@ -53,5 +47,16 @@ void StructDependencyNavigator::visit_struct_field(
 }
 
 void StructDependencyNavigator::verify_that_the_type_exists(const TypeSignature& type_signature){
-    std::ignore = structs_register.retrieve(type_signature);
+    if (type_signature.is<PointerType>()) {
+        verify_that_the_type_exists(type_signature.get<PointerType>().pointed_type);
+    }
+    else if (type_signature.is<ArrayType>()) {
+        verify_that_the_type_exists(type_signature.get<ArrayType>().stored_type);
+    }
+    else if (type_signature.is<SliceType>()) {
+        verify_that_the_type_exists(type_signature.get<SliceType>().stored_type);
+    }
+    else if (!type_signature.is<PrimitiveType>()) {
+        std::ignore = structs_register.retrieve(type_signature);
+    }
 }

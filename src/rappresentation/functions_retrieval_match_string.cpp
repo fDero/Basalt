@@ -5,7 +5,7 @@
 #include <optional>
 #include <iostream>
 
-[[nodiscard]] std::string BaseType::function_retrieval_match_string(
+[[nodiscard]] std::string CustomType::function_retrieval_match_string(
     const std::vector<std::string>& template_generics_names
 ) const {
     std::string transformed_typename = type_name;
@@ -38,4 +38,10 @@
 [[nodiscard]] std::string SliceType::function_retrieval_match_string(
     const std::vector<std::string>& template_generics_names) const {
         return "Slice<" + stored_type.function_retrieval_match_string(template_generics_names) + ">";
+}
+
+[[nodiscard]] std::string PrimitiveType::function_retrieval_match_string(
+    const std::vector<std::string>& template_generics_names
+) const {
+    return type_name;
 }

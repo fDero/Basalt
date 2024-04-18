@@ -26,7 +26,7 @@
     return ptr->is_generic(generic_names); 
 }
 
-BaseType::BaseType(
+CustomType::CustomType(
     const std::string& name, 
     const std::vector<TypeSignature>& generics
 ) : type_name(name), instanciated_generics(generics) {}
@@ -44,3 +44,7 @@ ArrayType::ArrayType(
 SliceType::SliceType(
     const TypeSignature& stored
 ) : stored_type(stored) {}
+
+PrimitiveType::PrimitiveType(
+    const std::string& name
+) : type_name(name) {}

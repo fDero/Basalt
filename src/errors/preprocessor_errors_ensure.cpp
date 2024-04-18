@@ -12,3 +12,25 @@ void ensure_struct_not_already_visited_hence_no_cyclic_dependency(
         throw std::runtime_error ("Cyclic dependency!!");
     }
 }
+
+void ensure_no_multiple_definition_of_the_same_function(
+    const std::pair<std::unordered_map<std::string, FunctionDefinition>::iterator, bool>& 
+        function_definition_insertion_outcome
+){
+    if (!(function_definition_insertion_outcome.second)){
+        throw ParsingError {
+            "Multiple definition of the same function in different files\n", Token {}
+        };
+    }
+}
+
+void ensure_no_multiple_definition_of_the_same_struct(
+    const std::pair<std::map<std::string, StructDefinition>::iterator, bool>& 
+        struct_definition_insertion_outcome
+){
+    if (!(struct_definition_insertion_outcome.second)){
+        throw ParsingError {
+            "Multiple definition of the same struct in different files\n", Token {}
+        };
+    }
+}

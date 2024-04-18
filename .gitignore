@@ -4,4 +4,5 @@ basalt
 *.exe
 *.out
 hidden
+grammar/.antlr
 

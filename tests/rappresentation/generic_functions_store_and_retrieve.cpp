@@ -9,8 +9,8 @@
 TEST(Rappresentation, Generic_Function_Store_And_Retrieval_One_Generic_Arg) {
     FunctionDefinitionsRegister func_register;  
     FunctionDefinition func_definition = make_function_definition("myfunc");
-    BaseType generic { "T", {} };
-    BaseType Int { "Int", {} };
+    CustomType generic { "T", {} };
+    CustomType Int { "Int", {} };
     func_definition.template_generics_names.push_back(generic.type_name);
     func_definition.arguments.push_back(FunctionDefinition::Argument{ "x", generic });
     func_register.store(func_definition);  
@@ -23,10 +23,10 @@ TEST(Rappresentation, Generic_Function_Store_And_Retrieval_One_Generic_Arg) {
 TEST(Rappresentation, Generic_Function_Store_And_Retrieval_One_Complex_Generic_Arg) {
     FunctionDefinitionsRegister func_register;  
     FunctionDefinition func_definition = make_function_definition("myfunc");
-    BaseType generic { "T", {} };
-    BaseType Int { "Int", {} };
-    BaseType ListOfInt { "List", { Int } };
-    BaseType ListOfT { "List", { generic } };
+    CustomType generic { "T", {} };
+    CustomType Int { "Int", {} };
+    CustomType ListOfInt { "List", { Int } };
+    CustomType ListOfT { "List", { generic } };
     func_definition.template_generics_names.push_back(generic.type_name);
     func_definition.arguments.push_back(FunctionDefinition::Argument{ "x", ListOfT });
     func_register.store(func_definition);  

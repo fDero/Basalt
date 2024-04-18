@@ -19,7 +19,7 @@ TEST(Rappresentation, Trivial_Function_Store_And_Retrieval_No_Args_No_Generics) 
 TEST(Rappresentation, Trivial_Function_Store_And_Retrieval_One_Arg_No_Generics) {
     FunctionDefinitionsRegister func_register;
     FunctionDefinition func_definition = make_function_definition("myfunc");
-    BaseType Int { "Int", {} };
+    CustomType Int { "Int", {} };
     func_definition.arguments.push_back(FunctionDefinition::Argument{ "x", Int });
     func_register.store(func_definition);  
     FunctionDefinition retrieved_func = func_register.retrieve("myfunc", { Int });
@@ -31,8 +31,8 @@ TEST(Rappresentation, Trivial_Function_Store_And_Retrieval_One_Arg_No_Generics) 
 TEST(Rappresentation, Trivial_Function_Store_And_Retrieval_Two_Args_No_Generics) {
     FunctionDefinitionsRegister func_register;
     FunctionDefinition func_definition = make_function_definition("myfunc");
-    BaseType Int { "Int", {} };
-    BaseType Float { "Float", {} };
+    CustomType Int { "Int", {} };
+    CustomType Float { "Float", {} };
     func_definition.arguments.push_back(FunctionDefinition::Argument{ "x", Int });
     func_definition.arguments.push_back(FunctionDefinition::Argument{ "y", Float });
     func_register.store(func_definition);  
@@ -45,8 +45,8 @@ TEST(Rappresentation, Trivial_Function_Store_And_Retrieval_Two_Args_No_Generics)
 TEST(Rappresentation, Trivial_Function_Store_And_Retrieval_Complex_Args_No_Generics) {
     FunctionDefinitionsRegister func_register;
     FunctionDefinition func_definition = make_function_definition("myfunc");
-    BaseType Node { BaseType { "ListNode", { BaseType { "Int", {} } } } };
-    PointerType StringPtr { BaseType { "String", {} } };
+    CustomType Node { CustomType { "ListNode", { CustomType { "Int", {} } } } };
+    PointerType StringPtr { CustomType { "String", {} } };
     func_definition.arguments.push_back(FunctionDefinition::Argument{ "node", Node });
     func_definition.arguments.push_back(FunctionDefinition::Argument{ "strptr", StringPtr });
     func_register.store(func_definition);  

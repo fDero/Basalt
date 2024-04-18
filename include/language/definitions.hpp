@@ -63,5 +63,5 @@ struct StructDefinition {
 
     [[nodiscard]] std::string generate_struct_id() const;
     [[nodiscard]] std::string generate_match_pattern() const;
-    void instanciate_generics(const BaseType& concrete_type);
+    void instanciate_generics(const CustomType& concrete_type);
 };

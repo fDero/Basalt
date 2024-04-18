@@ -108,29 +108,22 @@ void ensure_no_function_overload_was_found_before_this(
     const std::unordered_map<std::string, FunctionDefinition>& function_definitions_register
 );
 
-inline void ensure_no_multiple_definition_of_the_same_function(
+void ensure_no_multiple_definition_of_the_same_function(
     const std::pair<std::unordered_map<std::string, FunctionDefinition>::iterator, bool>& 
         function_definition_insertion_outcome
-){
-    if (!(function_definition_insertion_outcome.second)){
-        throw ParsingError {
-            "Multiple definition of the same function in different files\n", Token {}
-        };
-    }
-}
+);
 
-inline void ensure_no_multiple_definition_of_the_same_struct(
+void ensure_no_multiple_definition_of_the_same_struct(
     const std::pair<std::map<std::string, StructDefinition>::iterator, bool>& 
         struct_definition_insertion_outcome
-){
-    if (!(struct_definition_insertion_outcome.second)){
-        throw ParsingError {
-            "Multiple definition of the same struct in different files\n", Token {}
-        };
-    }
-}
+);
 
 void ensure_struct_not_already_visited_hence_no_cyclic_dependency(
     const std::string& target_tag_name, 
     const std::unordered_set<std::string>& visited_structs
+);
+
+void ensure_primitive_type_is_not_generic(
+    const Token& typesignature_token,
+    const std::vector<TypeSignature>& template_generics
 );

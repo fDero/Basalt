@@ -106,9 +106,10 @@ template<typename T>
 inline void assert_typesignature_is(const TypeSignature& typesignature){
     #ifdef DEBUG_BUILD
     if (!typesignature.is<T>()){
+        std::string T_type_converted_to_string = typeid(T).name();
         throw InternalError {
-            "somehow a typesignature was expected to be a " /*+ typeid(T).name() +*/ 
-            //"instead it wasn't"
+            "somehow a typesignature was expected to be a " + 
+            T_type_converted_to_string + " instead it wasn't"    
         };
     }
     #endif

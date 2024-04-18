@@ -6,7 +6,7 @@
 #include <iostream>
 
 
-void StructDefinition::instanciate_generics(const BaseType& concrete_type) {
+void StructDefinition::instanciate_generics(const CustomType& concrete_type) {
     const std::vector<TypeSignature>& instanciated_generics = concrete_type.instanciated_generics;
     const std::vector<std::string>& template_generics = template_generics_names;
     struct_name = concrete_type.to_string();
@@ -28,7 +28,7 @@ void TypeSignature::instanciate_generics(const GenericSubstitutionRuleSet& gener
     }
 }
 
-void BaseType::instanciate_generics(const GenericSubstitutionRuleSet& generic_substitution_rules) {
+void CustomType::instanciate_generics(const GenericSubstitutionRuleSet& generic_substitution_rules) {
     for (TypeSignature& generic : instanciated_generics){
         generic.instanciate_generics(generic_substitution_rules);
     }
@@ -44,5 +44,9 @@ void SliceType::instanciate_generics(const GenericSubstitutionRuleSet& generic_s
 
 void ArrayType::instanciate_generics(const GenericSubstitutionRuleSet& generic_substitution_rules) {
     stored_type.instanciate_generics(generic_substitution_rules);
+}
+
+void PrimitiveType::instanciate_generics(const GenericSubstitutionRuleSet& generic_substitution_rules) {
+    // Do nothing, primitive types cannot be generic
 }
 

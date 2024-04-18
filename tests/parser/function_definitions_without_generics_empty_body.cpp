@@ -40,8 +40,8 @@ TEST(Parsing, Function_Definition_WithOut_generics_And_Only_One_Argument_And_Emp
     EXPECT_EQ(funcdef.filename, "test.basalt");
     ASSERT_EQ(funcdef.arguments.size(), 1);    
     EXPECT_EQ(funcdef.arguments[0].arg_name, "x");
-    ASSERT_TRUE(funcdef.arguments[0].arg_type.is<BaseType>());
-    EXPECT_EQ(funcdef.arguments[0].arg_type.get<BaseType>().type_name, "Int");
+    ASSERT_TRUE(funcdef.arguments[0].arg_type.is<PrimitiveType>());
+    EXPECT_EQ(funcdef.arguments[0].arg_type.get<PrimitiveType>().type_name, "Int");
 }
 
 TEST(Parsing, Function_Definition_WithOut_generics_And_Two_Arguments_And_Empty_Body) {
@@ -67,9 +67,9 @@ TEST(Parsing, Function_Definition_WithOut_generics_And_Two_Arguments_And_Empty_B
     EXPECT_EQ(funcdef.filename, "test.basalt");
     ASSERT_EQ(funcdef.arguments.size(), 2);    
     EXPECT_EQ(funcdef.arguments[0].arg_name, "x");
-    ASSERT_TRUE(funcdef.arguments[0].arg_type.is<BaseType>());
-    EXPECT_EQ(funcdef.arguments[0].arg_type.get<BaseType>().type_name, "Int");
+    ASSERT_TRUE(funcdef.arguments[0].arg_type.is<PrimitiveType>());
+    EXPECT_EQ(funcdef.arguments[0].arg_type.get<PrimitiveType>().type_name, "Int");
     EXPECT_EQ(funcdef.arguments[1].arg_name, "y");
-    ASSERT_TRUE(funcdef.arguments[1].arg_type.is<BaseType>());
-    EXPECT_EQ(funcdef.arguments[1].arg_type.get<BaseType>().type_name, "Int");
+    ASSERT_TRUE(funcdef.arguments[1].arg_type.is<PrimitiveType>());
+    EXPECT_EQ(funcdef.arguments[1].arg_type.get<PrimitiveType>().type_name, "Int");
 }

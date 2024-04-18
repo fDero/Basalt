@@ -5,8 +5,6 @@
 #include "toolchain/parser.hpp"
 #include "language/expressions.hpp"
 
-#include <iostream>
-
 [[nodiscard]] Expression Parser::parse_array_literal(){
     assert_token_matches(source_tokens, iterator++, "[");
     ensure_there_are_still_tokens(source_tokens, iterator);

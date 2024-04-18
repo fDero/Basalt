@@ -41,8 +41,14 @@
     const Token& typesignature_token = *(iterator++);
     std::string type_name = typesignature_token.sourcetext;
     const std::vector<TypeSignature> template_generics = parse_concrete_generics();
-    BaseType base_type { type_name, template_generics };
-    return base_type;
+    if (primitive_types.find(type_name) != primitive_types.end()) {
+        ensure_primitive_type_is_not_generic(typesignature_token, template_generics);
+        return PrimitiveType { type_name };
+    }
+    else {
+        CustomType base_type { type_name, template_generics };
+        return base_type;
+    }
 }
 
 [[nodiscard]] std::vector<std::string> Parser::parse_template_generics(){
