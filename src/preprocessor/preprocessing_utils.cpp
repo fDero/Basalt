@@ -45,8 +45,8 @@ void PreProcessor::inspect_for_errors(){
 void PreProcessor::collect_parsed_outputs(){
     while (!parsed_files_outcome.empty()){
         const FileRappresentation& parsed_file = parsed_files_outcome.back();
-        for (const auto& struct_data : parsed_file.struct_defs_register.struct_definitions){
-            auto insertion_result = structs_register.struct_definitions.insert(struct_data);
+        for (const auto& struct_data : parsed_file.type_defs_register.struct_definitions){
+            auto insertion_result = types_register.struct_definitions.insert(struct_data);
             ensure_no_multiple_definition_of_the_same_struct(insertion_result);
         }
         for (const auto& func_def_data : parsed_file.func_defs_register.function_definitions_register){
@@ -62,7 +62,7 @@ void PreProcessor::collect_parsed_outputs(){
 
 void PreProcessor::dump_internal_state(){
     std::cerr << "DUMPING\n";
-    for (const auto& struct_data : structs_register.struct_definitions){
+    for (const auto& struct_data : types_register.struct_definitions){
         std::cerr << struct_data.first << " <- S tag name \n";
     }
     for (const auto& func_def_data : funcs_register.function_definitions_register){

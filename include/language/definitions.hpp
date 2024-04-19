@@ -8,6 +8,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <variant>
 
 struct FunctionDefinition {
     
@@ -64,4 +65,47 @@ struct StructDefinition {
     [[nodiscard]] std::string generate_struct_id() const;
     [[nodiscard]] std::string generate_match_pattern() const;
     void instanciate_generics(const CustomType& concrete_type);
+};
+
+struct UnionDefinition {
+
+    std::string filename;
+    unsigned long line_number;
+    unsigned int tok_num;
+    unsigned int char_pos;
+
+
+    std::string union_name;
+    std::vector<TypeSignature> types;
+    std::vector<std::string> template_generics_names;
+
+    UnionDefinition(const Token& union_token){
+        filename = union_token.filename;
+        line_number = union_token.line_number;
+        tok_num = union_token.tok_number;
+        char_pos = union_token.char_pos;
+        union_name = union_token.sourcetext;
+    }
+
+    [[nodiscard]] std::string generate_union_id() const;
+    [[nodiscard]] std::string generate_match_pattern() const;
+    void instanciate_generics(const CustomType& concrete_type);
+};
+
+struct TypeDefinition : public std::variant<StructDefinition, UnionDefinition> {
+    using std::variant<StructDefinition, UnionDefinition>::variant;
+    using std::variant<StructDefinition, UnionDefinition>::operator=;
+    using std::variant<StructDefinition, UnionDefinition>::index;
+    
+    template <typename T> [[nodiscard]] bool is() const {
+        return std::holds_alternative<T>(*this);
+    }
+
+    template <typename T> [[nodiscard]] const T& get() const {
+        return std::get<T>(*this);
+    }
+
+    template <typename T> [[nodiscard]] T& get() {
+        return std::get<T>(*this);
+    }
 };

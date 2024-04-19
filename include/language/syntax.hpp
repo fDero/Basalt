@@ -51,6 +51,7 @@ inline const std::map<std::string, short> prefix_operators_priority {
 
 inline const std::map<std::string, Token::Type> keywords {
     {"func",     Token::Type::func_keyword},     {"struct",   Token::Type::struct_keyword},
+    {"union",    Token::Type::union_keyword},    {"enum",     Token::Type::enum_keyword},
     {"return",   Token::Type::return_keyword},   {"break",    Token::Type::break_keyword},
     {"continue", Token::Type::continue_keyword}, {"defer",    Token::Type::defer_keyword},
     {"throw",    Token::Type::throw_keyword},    {"try",      Token::Type::try_keyword},

@@ -79,7 +79,13 @@ void ensure_square_bracket_gets_closed_in_expression_wrapping(
 void ensure_struct_doesnt_already_exists(
     const std::string& struct_tag_name,
     const StructDefinition& struct_def,
-    const std::map<std::string, StructDefinition>& struct_definitions_register
+    const std::map<std::string, TypeDefinition>& type_definitions_register
+);
+
+void ensure_union_doesnt_already_exists(
+    const std::string& union_tag_name,
+    const UnionDefinition& union_def,
+    const std::map<std::string, TypeDefinition>& type_definitions_register
 );
 
 void ensure_there_is_still_a_scope_in_wich_keep_searching_struct_definitions(
@@ -114,7 +120,7 @@ void ensure_no_multiple_definition_of_the_same_function(
 );
 
 void ensure_no_multiple_definition_of_the_same_struct(
-    const std::pair<std::map<std::string, StructDefinition>::iterator, bool>& 
+    const std::pair<std::map<std::string, TypeDefinition>::iterator, bool>& 
         struct_definition_insertion_outcome
 );
 

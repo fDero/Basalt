@@ -14,8 +14,8 @@
     return ptr->function_retrieval_match_string(generics_names); 
 }
 
-[[nodiscard]] std::string TypeSignature::struct_retrieval_match_string() const { 
-    return ptr->struct_retrieval_match_string(); 
+[[nodiscard]] std::string TypeSignature::to_match_string() const { 
+    return ptr->to_match_string(); 
 }
 
 [[nodiscard]] bool TypeSignature::is_core_language_type() const { 

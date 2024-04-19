@@ -56,7 +56,8 @@ class Parser {
         [[nodiscard]] FunctionDefinition parse_function_definition();
         [[nodiscard]] FunctionCall parse_function_call();
         [[nodiscard]] std::vector<Expression> parse_function_call_arguments();
-       
+
+        [[nodiscard]] UnionDefinition parse_union_definition();
         [[nodiscard]] StructDefinition parse_struct_definition();
         [[nodiscard]] std::vector<FunctionDefinition::Argument> parse_function_def_arguments();
         [[nodiscard]] std::optional<TypeSignature> parse_function_return_type();
@@ -76,7 +77,7 @@ class Parser {
         [[nodiscard]] bool is_square_bracket();
         [[nodiscard]] bool expression_ended();
 
-        [[nodiscard]] TypeSignature compose_nested_type(const TypeSignature&);
+        //[[nodiscard]] TypeSignature compose_nested_type(const TypeSignature&);
         [[nodiscard]] Expression compose_binary_operator(const Expression&);
         [[nodiscard]] Expression compose_square_bracket_access(const Expression&);
         

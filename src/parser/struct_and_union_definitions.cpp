@@ -30,3 +30,18 @@
     ensure_token_matches(source_tokens, iterator++, "}");
     return struct_def;
 }
+
+[[nodiscard]] UnionDefinition Parser::parse_union_definition(){
+    assert_token_matches(source_tokens, iterator++, "union");
+    ensure_token_is_struct_name(source_tokens, iterator);
+    UnionDefinition union_def(*iterator);
+    std::advance(iterator, 1);
+    union_def.template_generics_names = parse_template_generics();
+    ensure_token_matches(source_tokens, iterator++, "{");
+    while (iterator != source_tokens.end() && iterator->sourcetext != "}"){
+        union_def.types.push_back(parse_typesignature());
+        ensure_token_matches(source_tokens, iterator++, ";");
+    }
+    ensure_token_matches(source_tokens, iterator++, "}");
+    return union_def;
+}

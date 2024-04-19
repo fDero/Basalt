@@ -5,13 +5,14 @@
 #include <unordered_map>
 #include <map>
 
-struct StructDefinitionsRegister {
+struct TypeDefinitionsRegister {
     
     void store(const StructDefinition& struct_def);
+    void store(const UnionDefinition& union_def);
 
-    [[nodiscard]] const StructDefinition& retrieve(const TypeSignature& type_signature) const;
+    [[nodiscard]] const TypeDefinition& retrieve(const TypeSignature& type_signature) const;
 
-    std::map<std::string, StructDefinition> struct_definitions;
+    std::map<std::string, TypeDefinition> struct_definitions;
 };
 
 
@@ -39,6 +40,6 @@ struct FileMetaData {
 
 struct FileRappresentation {
     FileMetaData file_metadata;
-    StructDefinitionsRegister struct_defs_register;
+    TypeDefinitionsRegister type_defs_register;
     FunctionDefinitionsRegister func_defs_register;
 };

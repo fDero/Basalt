@@ -25,7 +25,7 @@ void ensure_no_multiple_definition_of_the_same_function(
 }
 
 void ensure_no_multiple_definition_of_the_same_struct(
-    const std::pair<std::map<std::string, StructDefinition>::iterator, bool>& 
+    const std::pair<std::map<std::string, TypeDefinition>::iterator, bool>& 
         struct_definition_insertion_outcome
 ){
     if (!(struct_definition_insertion_outcome.second)){

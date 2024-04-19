@@ -46,7 +46,7 @@ void CommandLineController::instanciate_and_run_interpreter(){
     preprocessor.parse_every_file();
     
     preprocessor.dump_internal_state();
-    preprocessor.preprocess_structs();
+    preprocessor.preprocess_type_defintions();
 }
 
 void CommandLineController::instanciate_and_run_debugger(){

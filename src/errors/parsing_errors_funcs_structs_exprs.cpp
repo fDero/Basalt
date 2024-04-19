@@ -32,9 +32,22 @@ void ensure_square_bracket_gets_closed_in_expression_wrapping(
 void ensure_struct_doesnt_already_exists(
     const std::string& struct_tag_name,
     const StructDefinition& struct_def,
-    const std::map<std::string, StructDefinition>& struct_definitions_register
+    const std::map<std::string, TypeDefinition>& type_definitions_register
 ){
-    if (struct_definitions_register.find(struct_tag_name) != struct_definitions_register.end()){
+    if (type_definitions_register.find(struct_tag_name) != type_definitions_register.end()){
+        throw ParsingError {
+            "such struct already exists in the given scope",
+            Token {}
+        };
+    }
+}
+
+void ensure_union_doesnt_already_exists(
+    const std::string& union_tag_name,
+    const UnionDefinition& union_def,
+    const std::map<std::string, TypeDefinition>& type_definitions_register
+){
+    if (type_definitions_register.find(union_tag_name) != type_definitions_register.end()){
         throw ParsingError {
             "such struct already exists in the given scope",
             Token {}

@@ -1,7 +1,5 @@
 
-
-struct S {
-	ptr : ##Z;
+union Z {
 }
 
 
