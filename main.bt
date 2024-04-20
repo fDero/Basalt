@@ -1,5 +1,15 @@
 
 union Z {
+	Y;
+	Z;
 }
+
+struct X {
+	u : U;
+}
+
+struct Y {}
+
+struct Z {}
 
 

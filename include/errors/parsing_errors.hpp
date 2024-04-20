@@ -124,9 +124,9 @@ void ensure_no_multiple_definition_of_the_same_struct(
         struct_definition_insertion_outcome
 );
 
-void ensure_struct_not_already_visited_hence_no_cyclic_dependency(
+void ensure_type_not_already_visited_hence_no_cyclic_dependency(
     const std::string& target_tag_name, 
-    const std::unordered_set<std::string>& visited_structs
+    const std::unordered_set<std::string>& visited_definitions
 );
 
 void ensure_primitive_type_is_not_generic(

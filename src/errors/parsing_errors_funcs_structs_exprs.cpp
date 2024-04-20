@@ -36,7 +36,7 @@ void ensure_struct_doesnt_already_exists(
 ){
     if (type_definitions_register.find(struct_tag_name) != type_definitions_register.end()){
         throw ParsingError {
-            "such struct already exists in the given scope",
+            "such user defined type already exists in the given scope",
             Token {}
         };
     }
@@ -49,7 +49,7 @@ void ensure_union_doesnt_already_exists(
 ){
     if (type_definitions_register.find(union_tag_name) != type_definitions_register.end()){
         throw ParsingError {
-            "such struct already exists in the given scope",
+            "such user defined type already exists in the given scope",
             Token {}
         };
     }
