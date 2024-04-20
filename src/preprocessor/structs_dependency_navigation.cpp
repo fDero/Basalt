@@ -35,11 +35,17 @@ void TypeDependencyNavigator::visit_struct_field(
     }
 }
 
-void TypeDependencyNavigator::instanciate_and_visit_struct(StructDefinition struct_definition, const TypeSignature& concrete_type){
-    if (!struct_definition.template_generics_names.empty()){
-        assert_typesignature_is<CustomType>(concrete_type);
-        struct_definition.instanciate_generics(concrete_type.get<CustomType>());
-        types_register.store(struct_definition);
+void TypeDependencyNavigator::instanciate_and_visit_struct(
+    const StructDefinition& struct_definition, 
+    const TypeSignature& concrete_type
+){
+    assert_typesignature_is<CustomType>(concrete_type);
+    if (struct_definition.template_generics_names.empty()){
+        visit_struct_definition(struct_definition);
+        return;
     }
-    visit_struct_definition(struct_definition);
+    StructDefinition instanciated_struct = struct_definition;
+    instanciated_struct.instanciate_generics(concrete_type.get<CustomType>());
+    types_register.store(instanciated_struct);
+    visit_struct_definition(instanciated_struct);
 }

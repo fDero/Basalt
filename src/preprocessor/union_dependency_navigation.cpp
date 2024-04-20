@@ -35,11 +35,17 @@ void TypeDependencyNavigator::visit_union_alternative(
     }
 }
 
-void TypeDependencyNavigator::instanciate_and_visit_union(UnionDefinition union_definition, const TypeSignature& concrete_type){
-    if (!union_definition.template_generics_names.empty()){
-        assert_typesignature_is<CustomType>(concrete_type);
-        union_definition.instanciate_generics(concrete_type.get<CustomType>());
-        types_register.store(union_definition);
+void TypeDependencyNavigator::instanciate_and_visit_union(
+    const UnionDefinition& union_definition, 
+    const TypeSignature& concrete_type
+){
+    assert_typesignature_is<CustomType>(concrete_type);
+    if (union_definition.template_generics_names.empty()){
+        visit_union_definition(union_definition);
+        return;
     }
-    visit_union_definition(union_definition);
+    UnionDefinition instanciated_union = union_definition;   
+    instanciated_union.instanciate_generics(concrete_type.get<CustomType>());
+    types_register.store(instanciated_union);
+    visit_union_definition(instanciated_union);
 }
