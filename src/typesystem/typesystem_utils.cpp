@@ -47,4 +47,6 @@ SliceType::SliceType(
 
 PrimitiveType::PrimitiveType(
     const std::string& name
-) : type_name(name) {}
+) : type_name(name) {
+    // ASSERT TYPE IS INDEED PRIMITIVE
+}

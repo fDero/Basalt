@@ -18,4 +18,11 @@ struct FunctionCall
 		: function_name(name)
 		, instaciated_generics(instaciated_generics)
 		, arguments(args) {}
+
+	[[nodiscard]] virtual TypeSignature get_type(
+        const ProgramRappresentation& program, const ScopedData& data) const override;
+
+	[[nodiscard]] std::vector<TypeSignature> get_arguments_types(
+		const ProgramRappresentation& program, const ScopedData& data
+	) const;
 };

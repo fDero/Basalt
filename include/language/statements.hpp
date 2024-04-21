@@ -19,22 +19,22 @@ struct Statement : public Polymorph<StatementBody> {
 
 struct VariableDeclaration : public StatementBody {
     std::string identifier_name;
-    std::optional<TypeSignature> typesignature;
+    TypeSignature typesignature;
     std::optional<Expression> initial_value = std::nullopt;
     VariableDeclaration(
         const std::string& name, 
-        const std::optional<TypeSignature>& type,
+        TypeSignature& type,
         const std::optional<Expression>& value
     ) : identifier_name(name), typesignature(type), initial_value(value) {}
 };
 
 struct ConstDeclaration : public StatementBody {
     std::string identifier_name;
-    std::optional<TypeSignature> typesignature;
+    TypeSignature typesignature;
     Expression value;
     ConstDeclaration(
         const std::string& name, 
-        const std::optional<TypeSignature>& type,
+        const TypeSignature& type,
         const Expression& value
     ) : identifier_name(name), typesignature(type), value(value) {}
 };

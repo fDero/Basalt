@@ -71,7 +71,7 @@ class Parser {
         [[nodiscard]] std::vector<Statement> parse_code_block();
         [[nodiscard]] std::vector<Statement> parse_multiline_code_block();
         [[nodiscard]] std::optional<Expression> parse_value_after_object_declaration();
-        [[nodiscard]] std::optional<TypeSignature> parse_type_after_object_declaration();
+        [[nodiscard]] TypeSignature parse_type_after_object_declaration();
 
         [[nodiscard]] bool is_binary_operator();
         [[nodiscard]] bool is_square_bracket();

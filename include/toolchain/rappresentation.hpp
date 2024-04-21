@@ -43,3 +43,22 @@ struct FileRappresentation {
     TypeDefinitionsRegister type_defs_register;
     FunctionDefinitionsRegister func_defs_register;
 };
+
+
+struct ProgramRappresentation {
+    std::vector<FileMetaData> file_metadata;
+    TypeDefinitionsRegister type_defs_register;
+    FunctionDefinitionsRegister func_defs_register;
+};
+
+
+struct ScopedData {
+    std::vector<VariableDeclaration> variables;
+    std::vector<ConstDeclaration> constants;
+
+    using MaybeTypeSignature = std::optional<const TypeSignature&>;
+    using MaybeVariableDeclaration = std::optional<const VariableDeclaration&>;
+    using MaybeConstDeclaration = std::optional<const ConstDeclaration&>;
+
+    [[nodiscard]] const TypeSignature& get_object_type_by_name(const std::string& name) const;
+};

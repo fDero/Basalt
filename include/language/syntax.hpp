@@ -13,10 +13,12 @@ inline const std::string multiline_comment_closing = "*/";
 inline const std::string namespace_concatenation = "::";
 inline const std::string pointer_dereference_operator = "#";
 inline const std::string pointer_declaration_symbol = "#";
+inline const std::string square_brackets_access = "[square-brackets-access]";
+
 
 inline const std::set<char> symbols{
     '+','-','*','/','=','.',':','<','>','!','(',')',
-    '[',']','{','}',',',';','&','|','^','#','%'
+    '[',']','{','}',',',';','&','|','^','#','%','$','@'
 };
 
 inline const std::set<std::string> combinations{
@@ -32,17 +34,19 @@ inline const std::set<char> discardable{
 };
 
 inline const std::set<std::string> prefixes{
-    "!","-","+","#","."
+    "!","-","+","#",".","&"
 };
 
 inline const std::set<std::string> infixies{
-    "+","-","*","/","%","<",">","<=",">=","==","&&","||","^^","!=","^"
+    "+","-","*","/","%","^",
+    "<",">","<=",">=","==","!=",
+    "&&","||","^^"
 };
 
 inline const std::map<std::string, short> infix_operators_priority {
     { "||", 1 }, { "&&", 1 }, { "^^", 1 }, { "<", 2 }, { ">", 2 }, { "<=", 2 }, { ">=", 2 }, 
     { "!=", 2 }, { "==", 2 }, { "+", 3 }, { "-", 3 }, { "*", 4 }, { "/", 4 }, { "%", 4 }, 
-    { "^", 6 }, { "[square-brackets-access]", 8}, { ".", 9 } 
+    { "^", 6 }, { square_brackets_access, 8}, { ".", 9 } 
 };
 
 inline const std::map<std::string, short> prefix_operators_priority {

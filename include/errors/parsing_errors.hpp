@@ -119,9 +119,9 @@ void ensure_no_multiple_definition_of_the_same_function(
         function_definition_insertion_outcome
 );
 
-void ensure_no_multiple_definition_of_the_same_struct(
+void ensure_no_multiple_definition_of_the_same_type(
     const std::pair<std::map<std::string, TypeDefinition>::iterator, bool>& 
-        struct_definition_insertion_outcome
+        type_definition_insertion_outcome
 );
 
 void ensure_type_not_already_visited_hence_no_cyclic_dependency(
