@@ -11,10 +11,13 @@ inline const std::string single_line_comment = "//";
 inline const std::string multiline_comment_opening = "/*";
 inline const std::string multiline_comment_closing = "*/";
 inline const std::string namespace_concatenation = "::";
+inline const std::string address_operator = "&";
 inline const std::string pointer_dereference_operator = "#";
 inline const std::string pointer_declaration_symbol = "#";
+inline const std::string slice_declaration_symbol = "$";
 inline const std::string square_brackets_access = "[square-brackets-access]";
-
+inline const std::string array_literal_example = "[SIZE] Type {values...}";
+inline const std::string array_literal_first_symbol = array_literal_example.substr(0, 1);
 
 inline const std::set<char> symbols{
     '+','-','*','/','=','.',':','<','>','!','(',')',
@@ -50,7 +53,7 @@ inline const std::map<std::string, short> infix_operators_priority {
 };
 
 inline const std::map<std::string, short> prefix_operators_priority {
-    { "!", 5 }, { "-", 5 }, { "+", 5 }, { pointer_dereference_operator, 7 }
+    { "!", 5 }, { "-", 5 }, { "+", 5 }, { pointer_dereference_operator, 7 }, { address_operator, 7 }
 };
 
 inline const std::map<std::string, Token::Type> keywords {

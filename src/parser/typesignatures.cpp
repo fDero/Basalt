@@ -4,23 +4,25 @@
 #include "language/syntax.hpp"
 #include "toolchain/parser.hpp"
 #include "language/expressions.hpp"
+#include <assert.h>
 
 [[nodiscard]] TypeSignature Parser::parse_typesignature(){
-    if (iterator->sourcetext == "#") return parse_pointer_type();
-    if (iterator->sourcetext == "[") return parse_array_type();
-    if (iterator->sourcetext == "$") return parse_slice_type();
+    if (iterator->sourcetext == pointer_declaration_symbol) return parse_pointer_type();
+    if (iterator->sourcetext == array_literal_first_symbol) return parse_array_type();
+    if (iterator->sourcetext == slice_declaration_symbol) return parse_slice_type();
     ensure_token_is_typesignature(source_tokens, iterator);
     TypeSignature typesignature = parse_base_type();
     return typesignature;
 }
 
 [[nodiscard]] TypeSignature Parser::parse_pointer_type(){
-    assert_token_matches(source_tokens, iterator++, "#");
+    assert_token_matches(source_tokens, iterator++, pointer_declaration_symbol);
     return PointerType { parse_typesignature() };
 }
 
 [[nodiscard]] TypeSignature Parser::parse_array_type(){
-    assert_token_matches(source_tokens, iterator++, "[");
+    assert (array_literal_first_symbol == "[");
+    assert_token_matches(source_tokens, iterator++, array_literal_first_symbol);
     ensure_token_is_fixed_array_length(source_tokens, iterator);
     const Token& array_length_token = *(iterator++);
     assert_token_matches(source_tokens, iterator++, "]");
@@ -30,7 +32,7 @@
 }
 
 [[nodiscard]] TypeSignature Parser::parse_slice_type(){
-    assert_token_matches(source_tokens, iterator++, "$");
+    assert_token_matches(source_tokens, iterator++, slice_declaration_symbol);
     const TypeSignature slice_stored_type = parse_typesignature();
     return SliceType { slice_stored_type };
 }
