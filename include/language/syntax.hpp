@@ -13,11 +13,13 @@ inline const std::string multiline_comment_closing = "*/";
 inline const std::string namespace_concatenation = "::";
 inline const std::string address_operator = "&";
 inline const std::string pointer_dereference_operator = "#";
-inline const std::string pointer_declaration_symbol = "#";
-inline const std::string slice_declaration_symbol = "$";
+inline const std::string pointer_type_symbol = "#";
+inline const std::string slice_type_symbol = "$";
 inline const std::string square_brackets_access = "[square-brackets-access]";
 inline const std::string array_literal_example = "[SIZE] Type {values...}";
+inline const std::string array_type_example = "[SIZE] Type";
 inline const std::string array_literal_first_symbol = array_literal_example.substr(0, 1);
+inline const std::string array_type_first_symbol = array_type_example.substr(0, 1);
 
 inline const std::set<char> symbols{
     '+','-','*','/','=','.',':','<','>','!','(',')',
