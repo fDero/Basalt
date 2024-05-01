@@ -7,7 +7,7 @@
 
 
 void StructDefinition::instanciate_generics(const CustomType& concrete_type) {
-    // ASSERT CONCRETE-TYPE-NAME IS SOMEWHAT COMPATIBLE WITH STRUCT-NAME
+    assert_instanciated_struct_is_compatible_with_template_struct(concrete_type, *this);
     const std::vector<TypeSignature>& instanciated_generics = concrete_type.instanciated_generics;
     const std::vector<std::string>& template_generics = template_generics_names;
     struct_name = concrete_type.to_string();
@@ -21,7 +21,7 @@ void StructDefinition::instanciate_generics(const CustomType& concrete_type) {
 }
 
 void UnionDefinition::instanciate_generics(const CustomType& concrete_type) {
-    // ASSERT CONCRETE-TYPE-NAME IS SOMEWHAT COMPATIBLE WITH UNION-NAME
+    assert_instanciated_union_is_compatible_with_template_union(concrete_type, *this);
     const std::vector<TypeSignature>& instanciated_generics = concrete_type.instanciated_generics;
     const std::vector<std::string>& template_generics = template_generics_names;
     union_name = concrete_type.to_string();

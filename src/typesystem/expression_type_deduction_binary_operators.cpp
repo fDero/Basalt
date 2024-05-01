@@ -94,6 +94,6 @@
     const BinaryOperator& op, const ProgramRappresentation& program,
     const TypeSignature& left, const TypeSignature& right
 ) const {
-    // ensure_binary_operator_operands_are_of_compatible_type(*this, left, right, program);
+    ensure_types_are_equality_comparable(op, left, right);
     return !(right.is<PrimitiveType>() && left.get<PrimitiveType>().type_name == "Bool");
 }

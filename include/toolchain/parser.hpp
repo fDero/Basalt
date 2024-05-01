@@ -77,7 +77,6 @@ class Parser {
         [[nodiscard]] bool is_square_bracket();
         [[nodiscard]] bool expression_ended();
 
-        //[[nodiscard]] TypeSignature compose_nested_type(const TypeSignature&);
         [[nodiscard]] Expression compose_binary_operator(const Expression&);
         [[nodiscard]] Expression compose_square_bracket_access(const Expression&);
         

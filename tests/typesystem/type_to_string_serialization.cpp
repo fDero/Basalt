@@ -25,16 +25,16 @@ TEST(TypeSystem, PointerType_To_PointerType_To_String) {
 }
 
 TEST(TypeSystem, Array_Of_Floats_To_String) {
-    TypeSignature Array = ArrayType { 10, CustomType { "Float", {} } };
-    ASSERT_EQ(Array.to_string(), "Array<10,Float>");
+    TypeSignature Array = ArrayType { 10, PrimitiveType { "Float" } };
+    ASSERT_EQ(Array.to_string(), "[10]Float");
 }
 
 TEST(TypeSystem, Slice_Of_Floats_To_String) {
-    TypeSignature Slice = SliceType { CustomType { "Float", {} } };
-    ASSERT_EQ(Slice.to_string(), "Slice<Float>");
+    TypeSignature Slice = SliceType { PrimitiveType { "Float" } };
+    ASSERT_EQ(Slice.to_string(), "$Float");
 }
 
 TEST(TypeSystem, Slice_Of_Pointer_To_Array_Of_Floats_To_String) {
-    TypeSignature Slice = SliceType { PointerType { ArrayType { 10, CustomType { "Float", {} }}}};
-    ASSERT_EQ(Slice.to_string(), "Slice<#Array<10,Float>>");
+    TypeSignature Slice = SliceType { PointerType { ArrayType { 10, PrimitiveType { "Float" }}}};
+    ASSERT_EQ(Slice.to_string(), "$#[10]Float");
 }

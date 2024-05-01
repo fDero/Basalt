@@ -121,3 +121,15 @@ void enrue_right_operand_is_array_index_type_when_deducing_expression_type(
         };
     }
 }
+
+void ensure_types_are_equality_comparable(
+    const BinaryOperator& binary_operator, 
+    const TypeSignature& left_type, 
+    const TypeSignature& right_type
+){
+    if (left_type.to_string() != right_type.to_string()){
+        throw std::runtime_error {
+            "Invalid use of equality operator with non-equality-comparable types: " + left_type.to_string() + " and " + right_type.to_string() + "\n"
+        };
+    }
+}
