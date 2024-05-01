@@ -17,16 +17,15 @@
 }
 
 [[nodiscard]] std::string PointerType::to_string() const {
-    return "#" + pointed_type.to_string();
+    return pointer_type_symbol + pointed_type.to_string();
 }
 
 [[nodiscard]] std::string ArrayType::to_string() const {
-    return "Array<" + std::to_string(array_length) + 
-        "," + stored_type.to_string() + ">";
+    return "[" + std::to_string(array_length) + "]" + stored_type.to_string();
 }
 
 [[nodiscard]] std::string SliceType::to_string() const {
-    return "Slice<" + stored_type.to_string() + ">";
+    return slice_type_symbol + stored_type.to_string();
 }
 
 [[nodiscard]] std::string PrimitiveType::to_string() const {

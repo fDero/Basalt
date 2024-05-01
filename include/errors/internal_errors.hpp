@@ -123,3 +123,5 @@ void assert_vectors_have_same_size_hence_they_can_be_zipped(
     const std::vector<std::string>& template_generics,
     const std::vector<TypeSignature>& instanciated_generics
 );
+
+void assert_type_is_indeed_primitive_type(const std::string& type_name);

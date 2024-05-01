@@ -21,6 +21,36 @@ inline const std::string array_type_example = "[SIZE] Type";
 inline const std::string array_literal_first_symbol = array_literal_example.substr(0, 1);
 inline const std::string array_type_first_symbol = array_type_example.substr(0, 1);
 
+inline const std::string boolean_not_operator = "!";
+inline const std::string minus_sign_prefix = "-";
+inline const std::string plus_sign_prefix = "+";
+inline const std::string math_decrement_operator = "--";
+inline const std::string math_increment_operator = "++";
+
+inline const std::string boolean_and_operator = "&&";
+inline const std::string boolean_or_operator = "||";
+inline const std::string boolean_xor_operator = "^^";
+
+inline const std::string string_soft_concatenation_operator = "+";
+inline const std::string string_hard_concatenation_operator = "*";
+
+inline const std::string math_add_operator = "+";
+inline const std::string math_sub_operator = "-";
+inline const std::string math_mul_operator = "*";
+inline const std::string math_div_operator = "/";
+inline const std::string math_mod_operator = "%";
+inline const std::string math_pow_operator = "^";
+
+inline const std::string boolean_less_than_operator = "<";
+inline const std::string boolean_greater_than_operator = ">";
+inline const std::string boolean_less_than_or_equal_operator = "<=";
+inline const std::string boolean_greater_than_or_equal_operator = ">=";
+inline const std::string boolean_equal_operator = "==";
+inline const std::string boolean_not_equal_operator = "!=";
+
+inline const std::string boolean_true_literal = "true";
+inline const std::string boolean_false_literal = "false";
+
 inline const std::set<char> symbols{
     '+','-','*','/','=','.',':','<','>','!','(',')',
     '[',']','{','}',',',';','&','|','^','#','%','$','@'

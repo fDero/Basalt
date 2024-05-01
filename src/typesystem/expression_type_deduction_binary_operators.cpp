@@ -37,21 +37,29 @@
 }
 
 [[nodiscard]] bool BinaryOperator::is_numerical_operator() const {
-    return operator_text == "+" || operator_text == "-" || operator_text == "*" 
-        || operator_text == "/" || operator_text == "%" || operator_text == "^";
+    return operator_text == math_add_operator || operator_text == math_sub_operator 
+        || operator_text == math_mul_operator || operator_text == math_div_operator
+        || operator_text == math_mod_operator || operator_text == math_pow_operator;
 }
 
 [[nodiscard]] bool BinaryOperator::is_comparison_operator() const {
-    return operator_text == "<=" || operator_text == ">=" || operator_text == "==" 
-        || operator_text == "<"  || operator_text == ">"  || operator_text == "!=";
+    return operator_text == boolean_less_than_operator 
+        || operator_text == boolean_less_than_or_equal_operator
+        || operator_text == boolean_greater_than_operator
+        || operator_text == boolean_greater_than_or_equal_operator
+        || operator_text == boolean_equal_operator
+        || operator_text == boolean_not_equal_operator;
 }
 
 [[nodiscard]] bool BinaryOperator::is_logical_operator() const {
-    return operator_text == "&&" || operator_text == "||" || operator_text == "^^";
+    return operator_text == boolean_and_operator 
+        || operator_text == boolean_or_operator 
+        || operator_text == boolean_xor_operator;
 }
 
 [[nodiscard]] bool BinaryOperator::is_string_operator() const {
-    return operator_text == "+" || operator_text == "*";
+    return operator_text == string_soft_concatenation_operator
+        || operator_text == string_hard_concatenation_operator;
 }
 
 [[nodiscard]] bool BinaryOperator::has_int_operands(const TypeSignature& left, const TypeSignature& right) const {

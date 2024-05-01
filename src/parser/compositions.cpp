@@ -16,6 +16,6 @@
 [[nodiscard]] Expression Parser::compose_square_bracket_access(const Expression& left_operand){
     assert_token_matches(source_tokens, iterator, "[");
     Expression index_expression = parse_expression_wrapped_in_square_brackets();
-    BinaryOperator binary_operator{ "[square-brackets-access]", left_operand, index_expression };
+    BinaryOperator binary_operator{ square_brackets_access, left_operand, index_expression };
     return rotate_binary_operator_to_match_operators_priority(binary_operator);
 }

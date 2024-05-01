@@ -17,7 +17,7 @@
     assert_token_is_boolean_literal(source_tokens, iterator);
     assert_boolean_literal_properly_formatted(iterator);
     std::string boolean_literal_text = ( iterator++ )->sourcetext;
-    bool boolean_literal_value = (boolean_literal_text == "true");
+    bool boolean_literal_value = (boolean_literal_text == boolean_true_literal);
     return BoolLiteral { boolean_literal_value };
 }
 
