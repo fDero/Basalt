@@ -5,7 +5,7 @@
 #include <optional>
 #include <iostream>
 
-[[nodiscard]] bool CustomType::is_generic(const std::vector<std::string>& generics_names) const {
+[[nodiscard]] bool BaseType::is_generic(const std::vector<std::string>& generics_names) const {
     if (generics_names.empty()) {
         return false;
     }
@@ -31,8 +31,4 @@
 
 [[nodiscard]] bool SliceType::is_generic(const std::vector<std::string>& generics_names) const {
     return !generics_names.empty() && stored_type.is_generic(generics_names);
-}
-
-[[nodiscard]] bool PrimitiveType::is_generic(const std::vector<std::string>& generics_names) const {
-    return false;
 }

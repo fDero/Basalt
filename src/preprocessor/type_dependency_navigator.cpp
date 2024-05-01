@@ -31,10 +31,7 @@ void TypeDependencyNavigator::verify_that_the_type_exists(const TypeSignature& t
     else if (type_signature.is<SliceType>()) {
         verify_that_the_type_exists(type_signature.get<SliceType>().stored_type);
     }
-    else if (type_signature.is<CustomType>()) {
+    else if (primitive_types.find(type_signature.get<BaseType>().type_name) == primitive_types.end()) {
         std::ignore = types_register.retrieve(type_signature);
-    }
-    else {
-        assert_typesignature_is<PrimitiveType>(type_signature);
     }
 }

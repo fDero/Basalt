@@ -5,7 +5,7 @@
 #include <optional>
 #include <iostream>
 
-[[nodiscard]] std::string CustomType::to_string() const {
+[[nodiscard]] std::string BaseType::to_string() const {
     std::string fully_qualified_name = type_name;
     if (instanciated_generics.empty()) return fully_qualified_name;
     std::string serialized_base_type = fully_qualified_name + "<";
@@ -26,8 +26,4 @@
 
 [[nodiscard]] std::string SliceType::to_string() const {
     return slice_type_symbol + stored_type.to_string();
-}
-
-[[nodiscard]] std::string PrimitiveType::to_string() const {
-    return type_name;
 }

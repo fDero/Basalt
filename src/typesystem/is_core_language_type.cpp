@@ -6,8 +6,8 @@
 #include <iostream>
 #include "language/syntax.hpp"
 
-[[nodiscard]] bool CustomType::is_core_language_type() const {
-    return false;
+[[nodiscard]] bool BaseType::is_core_language_type() const {
+    return primitive_types.find(type_name) != primitive_types.end();
 }
 
 [[nodiscard]] bool PointerType::is_core_language_type() const {
@@ -19,9 +19,5 @@
 }
 
 [[nodiscard]] bool SliceType::is_core_language_type() const {
-    return true;
-}
-
-[[nodiscard]] bool PrimitiveType::is_core_language_type() const {
     return true;
 }

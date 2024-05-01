@@ -5,7 +5,7 @@
 #include <optional>
 #include <iostream>
 
-[[nodiscard]] std::string CustomType::to_match_string() const {
+[[nodiscard]] std::string BaseType::to_match_string() const {
     assert_type_is_non_primitive(*this);
     if (instanciated_generics.empty()) {
         return type_name;
@@ -28,9 +28,4 @@
 
 [[nodiscard]] std::string SliceType::to_match_string() const {
     throw_attempt_to_retrieve_struct_definition_from_primitive_type(*this);
-}
-
-[[nodiscard]] std::string PrimitiveType::to_match_string() const {
-    assert_type_is_non_primitive(*this);
-    return type_name;
 }

@@ -6,7 +6,7 @@
 #include <iostream>
 
 
-void StructDefinition::instanciate_generics(const CustomType& concrete_type) {
+void StructDefinition::instanciate_generics(const BaseType& concrete_type) {
     assert_instanciated_struct_is_compatible_with_template_struct(concrete_type, *this);
     const std::vector<TypeSignature>& instanciated_generics = concrete_type.instanciated_generics;
     const std::vector<std::string>& template_generics = template_generics_names;
@@ -20,7 +20,7 @@ void StructDefinition::instanciate_generics(const CustomType& concrete_type) {
     }
 }
 
-void UnionDefinition::instanciate_generics(const CustomType& concrete_type) {
+void UnionDefinition::instanciate_generics(const BaseType& concrete_type) {
     assert_instanciated_union_is_compatible_with_template_union(concrete_type, *this);
     const std::vector<TypeSignature>& instanciated_generics = concrete_type.instanciated_generics;
     const std::vector<std::string>& template_generics = template_generics_names;
@@ -43,7 +43,7 @@ void UnionDefinition::instanciate_generics(const CustomType& concrete_type) {
     for (size_t i = 0; i < instanciated_generics.size(); i++){
         const TypeSignature& instanciated_generic = instanciated_generics[i];
         const std::string& template_generic_name = template_generics[i];
-        TypeSignature template_generic = CustomType{ template_generic_name, {} };
+        TypeSignature template_generic = BaseType{ template_generic_name, {} };
         GenericSubstitutionRule rule = { template_generic, instanciated_generic};
         result.push_back(rule);
     }
@@ -59,7 +59,7 @@ void TypeSignature::instanciate_generics(const GenericSubstitutionRuleSet& gener
     }
 }
 
-void CustomType::instanciate_generics(const GenericSubstitutionRuleSet& generic_substitution_rules) {
+void BaseType::instanciate_generics(const GenericSubstitutionRuleSet& generic_substitution_rules) {
     for (TypeSignature& generic : instanciated_generics){
         generic.instanciate_generics(generic_substitution_rules);
     }
@@ -75,9 +75,5 @@ void SliceType::instanciate_generics(const GenericSubstitutionRuleSet& generic_s
 
 void ArrayType::instanciate_generics(const GenericSubstitutionRuleSet& generic_substitution_rules) {
     stored_type.instanciate_generics(generic_substitution_rules);
-}
-
-void PrimitiveType::instanciate_generics(const GenericSubstitutionRuleSet& generic_substitution_rules) {
-    // Do nothing, primitive types cannot be generic
 }
 

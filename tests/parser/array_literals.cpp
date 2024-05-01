@@ -17,9 +17,9 @@ TEST(Parsing, Array_Literal_Without_Explicit_Size) {
     ASSERT_TRUE(expr.is<ArrayLiteral>());
     EXPECT_EQ(expr.get<ArrayLiteral>().array_length, -1);
     EXPECT_TRUE(expr.get<ArrayLiteral>().elements.empty());
-    ASSERT_TRUE(expr.get<ArrayLiteral>().stored_type.is<CustomType>());
-    EXPECT_EQ(expr.get<ArrayLiteral>().stored_type.get<CustomType>().type_name, "Ent");
-    EXPECT_TRUE(expr.get<ArrayLiteral>().stored_type.get<CustomType>().instanciated_generics.empty());
+    ASSERT_TRUE(expr.get<ArrayLiteral>().stored_type.is<BaseType>());
+    EXPECT_EQ(expr.get<ArrayLiteral>().stored_type.get<BaseType>().type_name, "Ent");
+    EXPECT_TRUE(expr.get<ArrayLiteral>().stored_type.get<BaseType>().instanciated_generics.empty());
 }
 
 TEST(Parsing, Array_Literal_Of_Generic_StoredType_Without_Explicit_Size) {
@@ -40,9 +40,9 @@ TEST(Parsing, Array_Literal_Of_Generic_StoredType_Without_Explicit_Size) {
     ASSERT_TRUE(expr.is<ArrayLiteral>());
     EXPECT_EQ(expr.get<ArrayLiteral>().array_length, -1);
     EXPECT_TRUE(expr.get<ArrayLiteral>().elements.empty());
-    ASSERT_TRUE(expr.get<ArrayLiteral>().stored_type.is<CustomType>());
-    EXPECT_EQ(expr.get<ArrayLiteral>().stored_type.get<CustomType>().type_name, "Pair");
-    EXPECT_EQ(expr.get<ArrayLiteral>().stored_type.get<CustomType>().instanciated_generics.size(), 2);
+    ASSERT_TRUE(expr.get<ArrayLiteral>().stored_type.is<BaseType>());
+    EXPECT_EQ(expr.get<ArrayLiteral>().stored_type.get<BaseType>().type_name, "Pair");
+    EXPECT_EQ(expr.get<ArrayLiteral>().stored_type.get<BaseType>().instanciated_generics.size(), 2);
 }
 
 TEST(Parsing, Nested_Array_Literals_Without_Explicit_Size_And_Incorrect_Type) {
@@ -72,15 +72,15 @@ TEST(Parsing, Nested_Array_Literals_Without_Explicit_Size_And_Incorrect_Type) {
     ASSERT_TRUE(expr.is<ArrayLiteral>());
     EXPECT_EQ(expr.get<ArrayLiteral>().array_length, -1);
     EXPECT_EQ(expr.get<ArrayLiteral>().elements.size(), 2);
-    ASSERT_TRUE(expr.get<ArrayLiteral>().stored_type.is<PrimitiveType>());
-    EXPECT_EQ(expr.get<ArrayLiteral>().stored_type.get<PrimitiveType>().type_name, "Int");
+    ASSERT_TRUE(expr.get<ArrayLiteral>().stored_type.is<BaseType>());
+    EXPECT_EQ(expr.get<ArrayLiteral>().stored_type.get<BaseType>().type_name, "Int");
 
     for (Expression inner_array : expr.get<ArrayLiteral>().elements){
         ASSERT_TRUE(inner_array.is<ArrayLiteral>());
         EXPECT_EQ(inner_array.get<ArrayLiteral>().array_length, -1);
         EXPECT_TRUE(inner_array.get<ArrayLiteral>().elements.empty());
-        ASSERT_TRUE(inner_array.get<ArrayLiteral>().stored_type.is<PrimitiveType>());
-        EXPECT_EQ(inner_array.get<ArrayLiteral>().stored_type.get<PrimitiveType>().type_name, "Int");
+        ASSERT_TRUE(inner_array.get<ArrayLiteral>().stored_type.is<BaseType>());
+        EXPECT_EQ(inner_array.get<ArrayLiteral>().stored_type.get<BaseType>().type_name, "Int");
     }
 }
 
@@ -118,8 +118,8 @@ TEST(Parsing, Nested_Array_Literals_With_Explicit_Size_And_Correct_Type) {
         ASSERT_TRUE(inner_array.is<ArrayLiteral>());
         EXPECT_EQ(inner_array.get<ArrayLiteral>().array_length, -1);
         EXPECT_TRUE(inner_array.get<ArrayLiteral>().elements.empty());
-        ASSERT_TRUE(inner_array.get<ArrayLiteral>().stored_type.is<PrimitiveType>());
-        EXPECT_EQ(inner_array.get<ArrayLiteral>().stored_type.get<PrimitiveType>().type_name, "Int");
+        ASSERT_TRUE(inner_array.get<ArrayLiteral>().stored_type.is<BaseType>());
+        EXPECT_EQ(inner_array.get<ArrayLiteral>().stored_type.get<BaseType>().type_name, "Int");
     }
 }
 
@@ -144,8 +144,8 @@ TEST(Parsing, Square_Bracket_Access_On_Array_Literal) {
     ASSERT_TRUE(array_literal.is<ArrayLiteral>());
     EXPECT_EQ(array_literal.get<ArrayLiteral>().array_length, -1);
     EXPECT_TRUE(array_literal.get<ArrayLiteral>().elements.empty());
-    ASSERT_TRUE(array_literal.get<ArrayLiteral>().stored_type.is<PrimitiveType>());
-    EXPECT_EQ(array_literal.get<ArrayLiteral>().stored_type.get<PrimitiveType>().type_name, "Int");
+    ASSERT_TRUE(array_literal.get<ArrayLiteral>().stored_type.is<BaseType>());
+    EXPECT_EQ(array_literal.get<ArrayLiteral>().stored_type.get<BaseType>().type_name, "Int");
 
     ASSERT_TRUE(index.is<IntLiteral>());
     EXPECT_EQ(index.get<IntLiteral>().value, 2);

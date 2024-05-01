@@ -13,8 +13,8 @@ TEST(Parsing, Simple_Slice) {
     TypeSignature type = parser.parse_typesignature();
     ASSERT_TRUE(type.is<SliceType>());
     SliceType inner_slice = type.get<SliceType>();
-    ASSERT_TRUE(inner_slice.stored_type.is<PrimitiveType>());
-    EXPECT_EQ(type.get<SliceType>().stored_type.get<PrimitiveType>().type_name, "Int");
+    ASSERT_TRUE(inner_slice.stored_type.is<BaseType>());
+    EXPECT_EQ(type.get<SliceType>().stored_type.get<BaseType>().type_name, "Int");
 }
 
 TEST(Parsing, Nested_Slice_Types) {
@@ -28,6 +28,6 @@ TEST(Parsing, Nested_Slice_Types) {
     ASSERT_TRUE(type.is<SliceType>());
     ASSERT_TRUE(type.get<SliceType>().stored_type.is<SliceType>());
     SliceType inner_slice = type.get<SliceType>().stored_type.get<SliceType>();
-    ASSERT_TRUE(inner_slice.stored_type.is<PrimitiveType>());
-    EXPECT_EQ(inner_slice.stored_type.get<PrimitiveType>().type_name, "Int");
+    ASSERT_TRUE(inner_slice.stored_type.is<BaseType>());
+    EXPECT_EQ(inner_slice.stored_type.get<BaseType>().type_name, "Int");
 }

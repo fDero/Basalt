@@ -11,19 +11,19 @@
     const TypeSignature& left_type = left_operand.get_type(program, scoped_data);
     const TypeSignature& right_type = right_operand.get_type(program, scoped_data);
     if (this->is_string_operator() && has_string_operands(left_type, right_type)) {
-        return PrimitiveType{ "String" };
+        return BaseType{ "String", {} };
     }
     else if (this->is_numerical_operator() && this->has_int_operands(left_type, right_type)) {
-        return PrimitiveType{ "Int" };
+        return BaseType{ "Int", {} };
     }
     else if (this->is_numerical_operator() && this->has_numerical_operands(left_type, right_type)) {
-        return PrimitiveType{ "Float" };
+        return BaseType{ "Float", {} };
     }
     else if (this->is_comparison_operator() && this->is_valid_comparison(*this, program, left_type, right_type)) {
-        return PrimitiveType{ "Bool" };
+        return BaseType{ "Bool", {} };
     }
     else if (this->is_logical_operator() && this->has_boolean_operands(left_type, right_type)) {
-        return PrimitiveType{ "Bool" };
+        return BaseType{ "Bool", {} };
     }
     else if (this->operator_text == square_brackets_access){
         enure_left_operand_is_array_type_when_deducing_expression_type(*this, left_type);
@@ -63,30 +63,30 @@
 }
 
 [[nodiscard]] bool BinaryOperator::has_int_operands(const TypeSignature& left, const TypeSignature& right) const {
-    if (!left.is<PrimitiveType>()  || left.get<PrimitiveType>().type_name != "Int")  return false;
-    if (!right.is<PrimitiveType>() || right.get<PrimitiveType>().type_name != "Int") return false;
+    if (!left.is<BaseType>()  || left.get<BaseType>().type_name != "Int")  return false;
+    if (!right.is<BaseType>() || right.get<BaseType>().type_name != "Int") return false;
     return true;
 }
 
 [[nodiscard]] bool BinaryOperator::has_boolean_operands(const TypeSignature& left, const TypeSignature& right) const {
-    if (!left.is<PrimitiveType>()  || left.get<PrimitiveType>().type_name != "Bool")  return false;
-    if (!right.is<PrimitiveType>() || right.get<PrimitiveType>().type_name != "Bool") return false;
+    if (!left.is<BaseType>()  || left.get<BaseType>().type_name != "Bool")  return false;
+    if (!right.is<BaseType>() || right.get<BaseType>().type_name != "Bool") return false;
     return true;
 }
 
 [[nodiscard]] bool BinaryOperator::has_numerical_operands(const TypeSignature& left, const TypeSignature& right) const {
-    if (!left.is<PrimitiveType>()  || left.get<PrimitiveType>().type_name != "Int")  {
-        if (!left.is<PrimitiveType>()  || left.get<PrimitiveType>().type_name != "Float") return false;
+    if (!left.is<BaseType>()  || left.get<BaseType>().type_name != "Int")  {
+        if (!left.is<BaseType>()  || left.get<BaseType>().type_name != "Float") return false;
     }
-    if (!right.is<PrimitiveType>() || right.get<PrimitiveType>().type_name != "Int") {
-        if (!right.is<PrimitiveType>() || right.get<PrimitiveType>().type_name != "Float") return false;
+    if (!right.is<BaseType>() || right.get<BaseType>().type_name != "Int") {
+        if (!right.is<BaseType>() || right.get<BaseType>().type_name != "Float") return false;
     }
     return true;
 }
 
 [[nodiscard]] bool BinaryOperator::has_string_operands(const TypeSignature& left, const TypeSignature& right) const {
-    if (!left.is<PrimitiveType>()  || left.get<PrimitiveType>().type_name != "String")  return false;
-    if (!right.is<PrimitiveType>() || right.get<PrimitiveType>().type_name != "String") return false;
+    if (!left.is<BaseType>()  || left.get<BaseType>().type_name != "String")  return false;
+    if (!right.is<BaseType>() || right.get<BaseType>().type_name != "String") return false;
     return true;
 }
 
@@ -95,5 +95,5 @@
     const TypeSignature& left, const TypeSignature& right
 ) const {
     ensure_types_are_equality_comparable(op, left, right);
-    return !(right.is<PrimitiveType>() && left.get<PrimitiveType>().type_name == "Bool");
+    return !(right.is<BaseType>() && left.get<BaseType>().type_name == "Bool");
 }

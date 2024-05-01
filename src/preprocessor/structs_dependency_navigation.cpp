@@ -39,13 +39,13 @@ void TypeDependencyNavigator::instanciate_and_visit_struct(
     const StructDefinition& struct_definition, 
     const TypeSignature& concrete_type
 ){
-    assert_typesignature_is<CustomType>(concrete_type);
+    assert_typesignature_is<BaseType>(concrete_type);
     if (struct_definition.template_generics_names.empty()){
         visit_struct_definition(struct_definition);
         return;
     }
     StructDefinition instanciated_struct = struct_definition;
-    instanciated_struct.instanciate_generics(concrete_type.get<CustomType>());
+    instanciated_struct.instanciate_generics(concrete_type.get<BaseType>());
     types_register.store(instanciated_struct);
     visit_struct_definition(instanciated_struct);
 }

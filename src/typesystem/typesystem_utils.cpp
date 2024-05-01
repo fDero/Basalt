@@ -9,9 +9,8 @@
 }
 
 [[nodiscard]] std::string TypeSignature::function_retrieval_match_string(
-    const std::vector<std::string>& generics_names
-) const { 
-    return ptr->function_retrieval_match_string(generics_names); 
+    const std::vector<std::string>& generics_names) const { 
+        return ptr->function_retrieval_match_string(generics_names); 
 }
 
 [[nodiscard]] std::string TypeSignature::to_match_string() const { 
@@ -26,10 +25,14 @@
     return ptr->is_generic(generic_names); 
 }
 
-CustomType::CustomType(
+BaseType::BaseType(
     const std::string& name, 
     const std::vector<TypeSignature>& generics
 ) : type_name(name), instanciated_generics(generics) {}
+
+BaseType::BaseType(
+    const std::string& name
+) : type_name(name) {};
 
 PointerType::PointerType(
     const TypeSignature& pointed
@@ -40,13 +43,6 @@ ArrayType::ArrayType(
     const TypeSignature& stored
 ) : array_length(length), stored_type(stored) {}
 
-
 SliceType::SliceType(
     const TypeSignature& stored
 ) : stored_type(stored) {}
-
-PrimitiveType::PrimitiveType(
-    const std::string& name
-) : type_name(name) {
-    assert_type_is_indeed_primitive_type(name);
-}

@@ -11,7 +11,7 @@
 ) const {
     if (operator_text == boolean_not_operator){
         ensure_not_operator_unique_operand_is_of_type_bool(*this, operand.get_type(program, scoped_data));
-        return PrimitiveType{ "Bool" };
+        return BaseType { "Bool", {} };
     }
     else if (
         operator_text == minus_sign_prefix || operator_text == plus_sign_prefix || 

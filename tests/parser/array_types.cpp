@@ -15,8 +15,8 @@ TEST(Parsing, Simple_Array) {
     TypeSignature type = parser.parse_typesignature();
     ASSERT_TRUE(type.is<ArrayType>());
     EXPECT_EQ(type.get<ArrayType>().array_length, 10);
-    ASSERT_TRUE(type.get<ArrayType>().stored_type.is<PrimitiveType>());
-    EXPECT_EQ(type.get<ArrayType>().stored_type.get<PrimitiveType>().type_name, "Int");
+    ASSERT_TRUE(type.get<ArrayType>().stored_type.is<BaseType>());
+    EXPECT_EQ(type.get<ArrayType>().stored_type.get<BaseType>().type_name, "Int");
 }
 
 TEST(Parsing, Nested_Array_Types) {
@@ -37,6 +37,6 @@ TEST(Parsing, Nested_Array_Types) {
     ArrayType inner_array = type.get<ArrayType>().stored_type.get<ArrayType>();
     EXPECT_EQ(outer_array.array_length, 10);
     EXPECT_EQ(inner_array.array_length, 10);
-    ASSERT_TRUE(inner_array.stored_type.is<PrimitiveType>());
-    EXPECT_EQ(inner_array.stored_type.get<PrimitiveType>().type_name, "Int");
+    ASSERT_TRUE(inner_array.stored_type.is<BaseType>());
+    EXPECT_EQ(inner_array.stored_type.get<BaseType>().type_name, "Int");
 }

@@ -14,35 +14,35 @@
     const ProgramRappresentation& program, 
     const ScopedData& data
 ) const {
-    return PrimitiveType{ "String" };
+    return BaseType { "String", {} };
 }
 
 [[nodiscard]] TypeSignature IntLiteral::get_type(
     const ProgramRappresentation& program, 
     const ScopedData& data
 ) const {
-    return PrimitiveType{ "Int" };
+    return BaseType { "Int", {} };
 }
 
 [[nodiscard]] TypeSignature FloatLiteral::get_type(
     const ProgramRappresentation& program, 
     const ScopedData& data
 ) const {
-    return PrimitiveType{ "Float" };
+    return BaseType { "Float", {} };
 }
 
 [[nodiscard]] TypeSignature BoolLiteral::get_type(
     const ProgramRappresentation& program, 
     const ScopedData& data
 ) const {
-    return PrimitiveType{ "Bool" };
+    return BaseType { "Bool", {} };
 }
 
 [[nodiscard]] TypeSignature CharLiteral::get_type(
     const ProgramRappresentation& program, 
     const ScopedData& data
 ) const {
-    return PrimitiveType{ "Char" };
+    return BaseType { "Char", {} };
 }
 
 [[nodiscard]] TypeSignature Identifier::get_type(

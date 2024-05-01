@@ -34,20 +34,12 @@ struct TypeSignature : public Polymorph<TypeSignatureBody> {
     void instanciate_generics(const GenericSubstitutionRuleSet& rules);
 };
 
-struct PrimitiveType : public TypeSignatureBody {
-    PrimitiveType(const std::string& name);
-    [[nodiscard]] std::string to_string() const override;
-    [[nodiscard]] std::string function_retrieval_match_string(const std::vector<std::string>& generics_names) const override;
-    [[nodiscard]] std::string to_match_string() const override;
-    [[nodiscard]] bool is_core_language_type() const override;
-    [[nodiscard]] bool is_generic(const std::vector<std::string>& generic_names) const override;
-    void instanciate_generics(const GenericSubstitutionRuleSet&) override;
+struct BaseType : public TypeSignatureBody {
+ 
+    BaseType(const std::string& name, const std::vector<TypeSignature>& generics);
+    BaseType(const std::string& name);
+    
 
-    std::string type_name;
-};
-
-struct CustomType : public TypeSignatureBody {
-    CustomType(const std::string& name, const std::vector<TypeSignature>& generics);
     [[nodiscard]] std::string to_string() const override;
     [[nodiscard]] std::string function_retrieval_match_string(const std::vector<std::string>& generics_names) const override;
     [[nodiscard]] std::string to_match_string() const override;

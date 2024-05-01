@@ -50,8 +50,8 @@ TEST(Parsing, Function_Definition_With_generics_And_Only_One_Argument_And_Empty_
     EXPECT_EQ(funcdef.filename, "test.basalt");
     ASSERT_EQ(funcdef.arguments.size(), 1);    
     EXPECT_EQ(funcdef.arguments[0].arg_name, "x");
-    ASSERT_TRUE(funcdef.arguments[0].arg_type.is<PrimitiveType>());
-    EXPECT_EQ(funcdef.arguments[0].arg_type.get<PrimitiveType>().type_name, "Int");
+    ASSERT_TRUE(funcdef.arguments[0].arg_type.is<BaseType>());
+    EXPECT_EQ(funcdef.arguments[0].arg_type.get<BaseType>().type_name, "Int");
     ASSERT_EQ(funcdef.template_generics_names.size(), 2);
     EXPECT_EQ(funcdef.template_generics_names.back(), "U");
     EXPECT_EQ(funcdef.template_generics_names.front(), "T");

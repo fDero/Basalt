@@ -64,7 +64,7 @@ struct StructDefinition {
 
     [[nodiscard]] std::string generate_struct_id() const;
     [[nodiscard]] std::string generate_match_pattern() const;
-    void instanciate_generics(const CustomType& concrete_type);
+    void instanciate_generics(const BaseType& concrete_type);
 };
 
 struct UnionDefinition {
@@ -89,7 +89,7 @@ struct UnionDefinition {
 
     [[nodiscard]] std::string generate_union_id() const;
     [[nodiscard]] std::string generate_match_pattern() const;
-    void instanciate_generics(const CustomType& concrete_type);
+    void instanciate_generics(const BaseType& concrete_type);
 };
 
 struct TypeDefinition : public std::variant<StructDefinition, UnionDefinition> {

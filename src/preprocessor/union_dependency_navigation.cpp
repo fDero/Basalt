@@ -39,13 +39,13 @@ void TypeDependencyNavigator::instanciate_and_visit_union(
     const UnionDefinition& union_definition, 
     const TypeSignature& concrete_type
 ){
-    assert_typesignature_is<CustomType>(concrete_type);
+    assert_typesignature_is<BaseType>(concrete_type);
     if (union_definition.template_generics_names.empty()){
         visit_union_definition(union_definition);
         return;
     }
     UnionDefinition instanciated_union = union_definition;   
-    instanciated_union.instanciate_generics(concrete_type.get<CustomType>());
+    instanciated_union.instanciate_generics(concrete_type.get<BaseType>());
     types_register.store(instanciated_union);
     visit_union_definition(instanciated_union);
 }

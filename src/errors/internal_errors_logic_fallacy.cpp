@@ -21,12 +21,12 @@
 
 void assert_basetype_has_no_generics(const TypeSignature& typesignature){
     #ifdef DEBUG_BUILD
-    if (!typesignature.is<CustomType>()){
+    if (!typesignature.is<BaseType>()){
         throw InternalError {
             "typesignature was expected to be a base type (non generic), but this wasn't the case"
         };
     }
-    if (!(typesignature.get<CustomType>().instanciated_generics.empty())){
+    if (!(typesignature.get<BaseType>().instanciated_generics.empty())){
         throw InternalError {
             "base-type was expected to be non generic, but this wasn't the case"
         };
@@ -36,8 +36,8 @@ void assert_basetype_has_no_generics(const TypeSignature& typesignature){
 
 void assert_type_is_non_primitive(const TypeSignature& type){
     #ifdef DEBUG_BUILD
-    if (type.is<CustomType>()) {
-        std::string type_name = type.get<CustomType>().type_name;
+    if (type.is<BaseType>()) {
+        std::string type_name = type.get<BaseType>().type_name;
         if (primitive_types.find(type_name) != primitive_types.end()) {
             throw_attempt_to_retrieve_struct_definition_from_primitive_type(type);
         }
