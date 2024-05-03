@@ -8,8 +8,9 @@
 #include <optional>
 #include <stack>
 #include <regex>
+#include "misc/debug_informations_aware_entity.h"
 
-struct Token {
+struct Token : public DebugInformationsAwareEntity {
 
     enum class Type {
         symbol, text, type, integer_literal, floating_literal, 
@@ -20,12 +21,21 @@ struct Token {
         func_keyword, struct_keyword, union_keyword, enum_keyword,
     };
 
+    using DebugInformationsAwareEntity::line_number;
+    using DebugInformationsAwareEntity::tok_number;
+    using DebugInformationsAwareEntity::char_pos;
+    
     std::string sourcetext;
-    std::string filename;
-    unsigned long line_number;
-    unsigned int tok_number;
-    unsigned int char_pos;
     Type type;
+
+    Token(
+        const std::string& sourcetext,
+        const std::string& filename,
+        unsigned long in_line_number,
+        unsigned int in_tok_number,
+        unsigned int in_char_pos,
+        Type type
+    );
 };
 
 class Tokenizer {

@@ -8,6 +8,22 @@
 #include "toolchain/tokenizer.hpp"
 #include <iostream>
 
+Token::Token (
+    const std::string& sourcetext,
+    const std::string& filename,
+    unsigned long in_line_number,
+    unsigned int in_tok_number,
+    unsigned int in_char_pos,
+    Type type
+)
+    :  DebugInformationsAwareEntity(
+        filename, in_line_number,
+        in_tok_number, in_char_pos
+    )
+    , sourcetext(sourcetext)
+    , type(type) 
+{}
+
 Tokenizer::Tokenizer(const std::istringstream& inline_input)
     : filename("inline input token stream"), line_number(0) {
         token_input = std::make_unique<std::istringstream>(inline_input.str());  

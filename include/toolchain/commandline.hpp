@@ -29,9 +29,9 @@ class CommandLineController {
         void version_flag();
         void help_flag();
 
-        void instanciate_and_run_compiler();
-        void instanciate_and_run_interpreter();
-        void instanciate_and_run_debugger();
+        void instantiation_and_run_compiler();
+        void instantiation_and_run_interpreter();
+        void instantiation_and_run_debugger();
         void display_commandline_version();
         void display_commandline_help();
 

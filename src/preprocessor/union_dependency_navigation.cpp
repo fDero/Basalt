@@ -26,16 +26,16 @@ void TypeDependencyNavigator::visit_union_alternative(
         TypeDefinition type_def = types_register.retrieve(alternative);
         if (type_def.is<StructDefinition>()){
             StructDefinition& struct_def = type_def.get<StructDefinition>();
-            instanciate_and_visit_struct(struct_def, alternative);
+            instantiation_and_visit_struct(struct_def, alternative);
         }
         else if (type_def.is<UnionDefinition>()) {
             UnionDefinition& alternative_def = type_def.get<UnionDefinition>();
-            instanciate_and_visit_union(alternative_def, alternative);
+            instantiation_and_visit_union(alternative_def, alternative);
         }
     }
 }
 
-void TypeDependencyNavigator::instanciate_and_visit_union(
+void TypeDependencyNavigator::instantiation_and_visit_union(
     const UnionDefinition& union_definition, 
     const TypeSignature& concrete_type
 ){
@@ -44,8 +44,8 @@ void TypeDependencyNavigator::instanciate_and_visit_union(
         visit_union_definition(union_definition);
         return;
     }
-    UnionDefinition instanciated_union = union_definition;   
-    instanciated_union.instanciate_generics(concrete_type.get<BaseType>());
-    types_register.store(instanciated_union);
-    visit_union_definition(instanciated_union);
+    UnionDefinition instantiationd_union = union_definition;   
+    instantiationd_union.instantiate_generics(concrete_type.get<BaseType>());
+    types_register.store(instantiationd_union);
+    visit_union_definition(instantiationd_union);
 }

@@ -23,7 +23,7 @@
 BaseType::BaseType(
     const std::string& name, 
     const std::vector<TypeSignature>& generics
-) : type_name(name), instanciated_generics(generics) {}
+) : type_name(name), instantiationd_generics(generics) {}
 
 BaseType::BaseType(
     const std::string& name

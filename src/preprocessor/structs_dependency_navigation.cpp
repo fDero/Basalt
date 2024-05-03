@@ -26,16 +26,16 @@ void TypeDependencyNavigator::visit_struct_field(
         TypeDefinition type_def = types_register.retrieve(field.field_type);
         if (type_def.is<StructDefinition>()){
             StructDefinition& struct_def = type_def.get<StructDefinition>();
-            instanciate_and_visit_struct(struct_def, field.field_type);
+            instantiation_and_visit_struct(struct_def, field.field_type);
         }
         else if (type_def.is<UnionDefinition>()) {
             UnionDefinition& alternative_def = type_def.get<UnionDefinition>();
-            instanciate_and_visit_union(alternative_def, field.field_type);
+            instantiation_and_visit_union(alternative_def, field.field_type);
         }
     }
 }
 
-void TypeDependencyNavigator::instanciate_and_visit_struct(
+void TypeDependencyNavigator::instantiation_and_visit_struct(
     const StructDefinition& struct_definition, 
     const TypeSignature& concrete_type
 ){
@@ -44,8 +44,8 @@ void TypeDependencyNavigator::instanciate_and_visit_struct(
         visit_struct_definition(struct_definition);
         return;
     }
-    StructDefinition instanciated_struct = struct_definition;
-    instanciated_struct.instanciate_generics(concrete_type.get<BaseType>());
-    types_register.store(instanciated_struct);
-    visit_struct_definition(instanciated_struct);
+    StructDefinition instantiationd_struct = struct_definition;
+    instantiationd_struct.instantiate_generics(concrete_type.get<BaseType>());
+    types_register.store(instantiationd_struct);
+    visit_struct_definition(instantiationd_struct);
 }

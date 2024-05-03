@@ -3,7 +3,8 @@
 #include <map>
 #include <string>
 #include <vector>
-#include "toolchain/parser.hpp"
+#include "language/typesystem.hpp"
+
 
 struct GenericSubstitutionRule {
     TypeSignature to_be_substituded;
@@ -19,6 +20,6 @@ struct GenericSubstitutionRuleSet : public std::vector<GenericSubstitutionRule> 
     
     [[nodiscard]] static GenericSubstitutionRuleSet zip_components_vectors (
         const std::vector<std::string>& template_generics,
-        const std::vector<TypeSignature>& instanciated_generics
+        const std::vector<TypeSignature>& instantiationd_generics
     );
 };

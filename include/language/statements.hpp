@@ -7,7 +7,8 @@
 #include <vector>
 
 struct StatementBody {
-    /* WORK IN PROGRESS */
+    
+    virtual ~StatementBody() = default;
 };
 
 struct Statement : public Polymorph<StatementBody> {

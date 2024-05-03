@@ -11,11 +11,12 @@ struct FunctionCall
 	std::vector<TypeSignature> instaciated_generics;
 	std::vector<Expression> arguments;
 	FunctionCall(
-	    const std::string& name, 
+	    const Token& function_call_token, 
 	    const std::vector<Expression>& args, 
 	    const std::vector<TypeSignature>& instaciated_generics
 	) 
-		: function_name(name)
+		: ExpressionBody(function_call_token)
+		, function_name(function_call_token.sourcetext)
 		, instaciated_generics(instaciated_generics)
 		, arguments(args) {}
 };

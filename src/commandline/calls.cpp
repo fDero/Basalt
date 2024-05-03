@@ -10,16 +10,16 @@
 void CommandLineController::dispatch_based_on_user_input(){
     using Mode = CommandLineController::Mode; 
     switch(mode){
-        break; case Mode::compiler:    instanciate_and_run_compiler();
-        break; case Mode::interpreter: instanciate_and_run_interpreter();
-        break; case Mode::debugger:    instanciate_and_run_debugger();
+        break; case Mode::compiler:    instantiation_and_run_compiler();
+        break; case Mode::interpreter: instantiation_and_run_interpreter();
+        break; case Mode::debugger:    instantiation_and_run_debugger();
         break; case Mode::help:        display_commandline_help();
         break; case Mode::version:     display_commandline_version();
         break; case Mode::unspecified: throw_unspecified_commandline_mode();
     }
 }
 
-void CommandLineController::instanciate_and_run_compiler(){
+void CommandLineController::instantiation_and_run_compiler(){
     avoid_lack_of_input_files(inputs);
     avoid_lack_of_output_files(outputs);
     avoid_duplicate_input_files(inputs);
@@ -37,13 +37,13 @@ void CommandLineController::instanciate_and_run_compiler(){
     }
 }
 
-void CommandLineController::instanciate_and_run_interpreter(){
+void CommandLineController::instantiation_and_run_interpreter(){
     avoid_lack_of_input_files(inputs);
     ensure_lack_of_output_files(outputs);
     avoid_duplicate_input_files(inputs);
 }
 
-void CommandLineController::instanciate_and_run_debugger(){
+void CommandLineController::instantiation_and_run_debugger(){
     std::cout << "the basalt debugger is not yet implemented\n";
     std::cout << "check for updates at https://www.github.com/fDero/Basalt\n\n";
 }

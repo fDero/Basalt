@@ -40,12 +40,12 @@ void TypeDefinitionsRegister::store(const TypeDefinition& type_def){
 
 [[nodiscard]] std::string StructDefinition::generate_struct_id() const {
     return filename + "/" + std::to_string(line_number) + "/" +
-        std::to_string(char_pos) + "/" + std::to_string(tok_num) + "/" + struct_name;
+        std::to_string(char_pos) + "/" + std::to_string(tok_number) + "/" + struct_name;
 }
 
 [[nodiscard]] std::string UnionDefinition::generate_union_id() const {
     return filename + "/" + std::to_string(line_number) + "/" +
-        std::to_string(char_pos) + "/" + std::to_string(tok_num) + "/" + union_name;
+        std::to_string(char_pos) + "/" + std::to_string(tok_number) + "/" + union_name;
 }
 
 

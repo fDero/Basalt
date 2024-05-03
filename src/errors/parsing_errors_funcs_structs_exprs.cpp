@@ -35,9 +35,8 @@ void ensure_struct_doesnt_already_exists(
     const std::map<std::string, TypeDefinition>& type_definitions_register
 ){
     if (type_definitions_register.find(struct_tag_name) != type_definitions_register.end()){
-        throw ParsingError {
-            "such user defined type already exists in the given scope",
-            Token {}
+        throw std::runtime_error {
+            "such user defined type already exists in the given scope"
         };
     }
 }
@@ -48,9 +47,8 @@ void ensure_union_doesnt_already_exists(
     const std::map<std::string, TypeDefinition>& type_definitions_register
 ){
     if (type_definitions_register.find(union_tag_name) != type_definitions_register.end()){
-        throw ParsingError {
-            "such user defined type already exists in the given scope",
-            Token {}
+        throw std::runtime_error {
+            "such user defined type already exists in the given scope"
         };
     }
 }
@@ -60,9 +58,8 @@ void ensure_there_is_still_a_scope_in_wich_keep_searching_struct_definitions(
     const std::map<std::string, std::string>& struct_parents
 ){
         if (parent_scope_search_outcome == struct_parents.end()){
-            throw ParsingError {
-                "struct doesnt exists in this file or in the files imported by it",
-                Token {}
+            throw std::runtime_error {
+                "struct doesnt exists in this file or in the files imported by it"
             };
     }
 }
@@ -73,9 +70,8 @@ void ensure_function_doesnt_already_exists(
     const std::unordered_map<std::string, FunctionDefinition>& function_definitions_register
 ){
     if (function_definitions_register.find(func_tag_name) != function_definitions_register.end()){
-        throw ParsingError {
-            "such function already exists in the given scope",
-            Token {}
+        throw std::runtime_error {
+            "such function already exists in the given scope"
         };
     }
 }
@@ -85,18 +81,16 @@ void ensure_overload_set_does_exist(
     const std::string& func_name, const std::unordered_map<std::string, std::vector<std::string>> func_names_register
 ){
     if (overload_set == func_names_register.end()){
-        throw ParsingError {
-            "overload set doesn't exist",
-            Token {}
+        throw std::runtime_error {
+            "overload set doesn't exist"
         };
     }
 }
 
 void ensure_a_valid_function_overload_was_actually_found(const std::string& target_func_tag_name){
     if (target_func_tag_name.empty()){
-        throw ParsingError {
-            "overload set exists but no function in that overload set matches the function call",
-            Token {}
+        throw std::runtime_error {
+            "overload set exists but no function in that overload set matches the function call"
         };
     }
 }
@@ -106,9 +100,8 @@ void ensure_no_function_overload_was_found_before_this(
     const std::unordered_map<std::string, FunctionDefinition>& function_definitions_register
 ){
     if (!previous_func_tag_name.empty()){
-        throw ParsingError {
-            "two ambiguous function definitions to choose from in the same overload set",
-            Token {}
+        throw std::runtime_error {
+            "two ambiguous function definitions to choose from in the same overload set"
         };
     }
 }

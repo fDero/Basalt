@@ -26,8 +26,8 @@
     short left_priority = infix_operators_priority.find(left.operator_text)->second;
     if (parent_priority <= left_priority) return parent;
     return BinaryOperator {
-        left.operator_text, left.left_operand, rotate_binary_operator_to_match_operators_priority(
-            BinaryOperator { parent.operator_text, left.right_operand, parent.right_operand }
+        left.as_token(), left.left_operand, rotate_binary_operator_to_match_operators_priority(
+            BinaryOperator { parent.as_token(), left.right_operand, parent.right_operand }
         )
     };
 }
@@ -37,8 +37,8 @@
     short left_priority = prefix_operators_priority.find(left.operator_text)->second;
     if (parent_priority <= left_priority) return parent;
     return UnaryOperator {
-        left.operator_text, rotate_binary_operator_to_match_operators_priority(
-            BinaryOperator { parent.operator_text, left.operand, parent.right_operand }
+        left.as_token(), rotate_binary_operator_to_match_operators_priority(
+            BinaryOperator { parent.as_token(), left.operand, parent.right_operand }
         )
     };
 }

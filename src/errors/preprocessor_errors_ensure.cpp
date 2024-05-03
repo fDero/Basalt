@@ -19,8 +19,8 @@ void ensure_no_multiple_definition_of_the_same_function(
         function_definition_insertion_outcome
 ){
     if (!(function_definition_insertion_outcome.second)){
-        throw ParsingError {
-            "Multiple definition of the same function in different files\n", Token {}
+        throw std::runtime_error {
+            "Multiple definition of the same function in different files\n"
         };
     }
 }
@@ -30,8 +30,8 @@ void ensure_no_multiple_definition_of_the_same_type(
         type_definition_insertion_outcome
 ){
     if (!(type_definition_insertion_outcome.second)){
-        throw ParsingError {
-            "Multiple definition of the same struct in different files\n", Token {}
+        throw std::runtime_error {
+            "Multiple definition of the same struct in different files\n"
         };
     }
 }

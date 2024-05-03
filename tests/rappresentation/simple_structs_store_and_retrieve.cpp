@@ -35,7 +35,7 @@ TEST(Rappresentation, Struct_With_One_Generic_Store_And_Retrieval_From_Global_Sc
     EXPECT_EQ(retrieved_struct.template_generics_names, struct_definition.template_generics_names);
 }
 
-TEST(Rappresentation, Instanciated_Struct_With_One_Generic_Store_And_Retrieval_From_Global_Scope) {
+TEST(Rappresentation, instantiationd_Struct_With_One_Generic_Store_And_Retrieval_From_Global_Scope) {
     TypeDefinitionsRegister struct_register;
     StructDefinition generic_struct_definition = make_struct_definition("MyStruct");
     generic_struct_definition.template_generics_names.push_back("T");

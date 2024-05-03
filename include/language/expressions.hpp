@@ -4,7 +4,10 @@
 #include <vector>
 #include <string>
 
-struct ExpressionBody {
+struct ExpressionBody : public DebugInformationsAwareEntity {
+
+    ExpressionBody(const DebugInformationsAwareEntity& debug_info)
+        : DebugInformationsAwareEntity(debug_info) { }
 
     virtual ~ExpressionBody() = default;
 };
@@ -28,86 +31,152 @@ class Expression : public Polymorph<ExpressionBody> {
 };
 
 struct ArrayLiteral : public ExpressionBody {
+    
     int array_length;
     TypeSignature stored_type;
     std::vector<Expression> elements;
-    
+
     virtual ~ArrayLiteral() = default;
 
     ArrayLiteral(
         int length,
         const TypeSignature& type,
-        const std::vector<Expression>& elements
+        const std::vector<Expression>& elements,
+        const DebugInformationsAwareEntity& debug_info
     )
-        : array_length(length), stored_type(type), elements(elements) {}
+        : ExpressionBody(debug_info)
+        , array_length(length)
+        , stored_type(type)
+        , elements(elements)
+    {}
 };
 
 struct BinaryOperator : public ExpressionBody {
+    
     std::string operator_text;
     Expression left_operand;
     Expression right_operand;
-    BinaryOperator(const std::string& opertext, const Expression& lx, const Expression& rx)
-        : operator_text(opertext), left_operand(lx), right_operand(rx) {}
 
     virtual ~BinaryOperator() = default;
+
+    BinaryOperator(
+        const Token& operator_token, 
+        const Expression& lx, 
+        const Expression& rx
+    )
+        : ExpressionBody(operator_token)
+        , operator_text(operator_token.sourcetext)
+        , left_operand(lx)
+        , right_operand(rx) 
+    {}
+
+    Token as_token() const {
+        return Token { 
+            operator_text, 
+            DebugInformationsAwareEntity::filename,
+            DebugInformationsAwareEntity::line_number,
+            DebugInformationsAwareEntity::tok_number,
+            DebugInformationsAwareEntity::char_pos,
+            Token::Type::symbol
+        };
+    }
 };
 
 struct UnaryOperator : public ExpressionBody {
+    
     std::string operator_text;
     Expression operand;
-    UnaryOperator(
-        const std::string& opertext, 
-        const Expression& expr
-    )
-        : operator_text(opertext), operand(expr) {}
 
     virtual ~UnaryOperator() = default;
+
+    UnaryOperator(
+        const Token& operator_token, 
+        const Expression& expr
+    )
+        : ExpressionBody(operator_token)
+        , operator_text(operator_token.sourcetext)
+        , operand(expr) 
+    {}
+
+    Token as_token() const {
+        return Token { 
+            operator_text, 
+            DebugInformationsAwareEntity::filename,
+            DebugInformationsAwareEntity::line_number,
+            DebugInformationsAwareEntity::tok_number,
+            DebugInformationsAwareEntity::char_pos,
+            Token::Type::symbol
+        };
+    }
 };
 
 struct Identifier : public ExpressionBody {
+
     std::string name;
-    Identifier(const std::string& str)
-        : name(str) {}
 
     virtual ~Identifier() = default;
+
+    Identifier(const Token& identifier_token)
+        : ExpressionBody(identifier_token) 
+        , name(identifier_token.sourcetext) 
+    {}
 };
 
 struct StringLiteral : public ExpressionBody {
+
     std::string value;
-    StringLiteral(const std::string& str)
-        : value(str) { }
 
     virtual ~StringLiteral() = default;
+
+    StringLiteral(const Token& string_literal_token)
+        : ExpressionBody(string_literal_token)
+        , value(string_literal_token.sourcetext) 
+    { }
 };
 
 struct IntLiteral : public ExpressionBody {
+    
     int value;
-    IntLiteral(int number)
-        : value(number) { }
 
     virtual ~IntLiteral() = default;
+
+    IntLiteral(const Token& int_literal_token)
+        : ExpressionBody(int_literal_token)
+        , value(std::stoi(int_literal_token.sourcetext)) 
+    { }
 };
 
 struct FloatLiteral : public ExpressionBody {
-    double value;
-    FloatLiteral(const double number)
-        : value(number) { }
     
+    double value;
+
     virtual ~FloatLiteral() = default;
+
+    FloatLiteral(const Token& float_literal_token)
+        : ExpressionBody(float_literal_token)
+        , value(std::stod(float_literal_token.sourcetext)) 
+    { }
 };
 
 struct BoolLiteral : public ExpressionBody {
     bool value;
-    BoolLiteral(const bool boolean)
-        : value(boolean) { }
 
     virtual ~BoolLiteral() = default;
+
+    BoolLiteral(const Token& bool_literal_token)
+        : ExpressionBody(bool_literal_token)
+        , value(bool_literal_token.sourcetext == "true") 
+    { }
 };
 
 struct CharLiteral : public ExpressionBody {
+    
     char value;
-    CharLiteral(const char character)
-        : value(character) { }
 
     virtual ~CharLiteral() = default;
+
+    CharLiteral(const Token& char_literal_token)
+        : ExpressionBody(char_literal_token)
+        , value(char_literal_token.sourcetext[1]) 
+    { }
 };

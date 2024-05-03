@@ -9,7 +9,7 @@
     if (generics_names.empty()) {
         return false;
     }
-    for (const TypeSignature& generic : instanciated_generics){
+    for (const TypeSignature& generic : instantiationd_generics){
         if (generic.is_generic(generics_names)) {
             return true;
         }

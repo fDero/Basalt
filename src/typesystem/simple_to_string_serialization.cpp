@@ -7,9 +7,9 @@
 
 [[nodiscard]] std::string BaseType::to_string() const {
     std::string fully_qualified_name = type_name;
-    if (instanciated_generics.empty()) return fully_qualified_name;
+    if (instantiationd_generics.empty()) return fully_qualified_name;
     std::string serialized_base_type = fully_qualified_name + "<";
-    for (const TypeSignature& generic : instanciated_generics){
+    for (const TypeSignature& generic : instantiationd_generics){
         serialized_base_type += generic.to_string() + ",";
     }
     serialized_base_type.back() = '>';

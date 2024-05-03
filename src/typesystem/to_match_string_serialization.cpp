@@ -7,11 +7,11 @@
 
 [[nodiscard]] std::string BaseType::to_match_string() const {
     assert_type_is_non_primitive(*this);
-    if (instanciated_generics.empty()) {
+    if (instantiationd_generics.empty()) {
         return type_name;
     }
     std::string match_string = type_name + "<";
-    for (size_t i = 0; i < instanciated_generics.size(); i++){
+    for (size_t i = 0; i < instantiationd_generics.size(); i++){
         match_string += "?,";
     }
     match_string.back() = '>';

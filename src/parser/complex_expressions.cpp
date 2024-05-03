@@ -6,6 +6,7 @@
 #include "language/expressions.hpp"
 
 [[nodiscard]] Expression Parser::parse_array_literal(){
+    const Token& array_token = *iterator;
     assert_token_matches(source_tokens, iterator++, "[");
     ensure_there_are_still_tokens(source_tokens, iterator);
     int array_length = -1;
@@ -27,7 +28,7 @@
         elements.push_back(parse_expression());
     }
     assert_token_matches(source_tokens, iterator++, "}");
-    return ArrayLiteral { array_length, stored_type, elements };
+    return ArrayLiteral { array_length, stored_type, elements, array_token };
 }
 
 [[nodiscard]] Expression Parser::parse_expression_wrapped_in_square_brackets(){
@@ -74,9 +75,10 @@
 
 [[nodiscard]] Expression Parser::parse_prefix_operator(){
     assert_token_is_prefix_operator(iterator);
-    std::string operator_text = ( iterator++ )->sourcetext;
+    const Token& operator_token = *iterator;
+    std::advance(iterator, 1);
     Expression operand = parse_terminal_expression();
-    return UnaryOperator { operator_text, operand };
+    return UnaryOperator { operator_token, operand };
 }
 
 [[nodiscard]] Expression Parser::parse_expression(){
