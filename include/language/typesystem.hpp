@@ -37,7 +37,6 @@ struct BaseType : public TypeSignatureBody {
  
     BaseType(const std::string& name, const std::vector<TypeSignature>& generics);
     BaseType(const std::string& name);
-    
 
     [[nodiscard]] std::string to_string() const override;
     [[nodiscard]] std::string to_match_string() const override;

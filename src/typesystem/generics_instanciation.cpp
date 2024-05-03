@@ -57,6 +57,7 @@ void TypeSignature::instanciate_generics(const GenericSubstitutionRuleSet& gener
             return;
         }
     }
+    ptr->instanciate_generics(generic_substitution_rules);
 }
 
 void BaseType::instanciate_generics(const GenericSubstitutionRuleSet& generic_substitution_rules) {
