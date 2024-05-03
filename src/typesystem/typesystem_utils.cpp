@@ -8,11 +8,6 @@
     return ptr->to_string();
 }
 
-[[nodiscard]] std::string TypeSignature::function_retrieval_match_string(
-    const std::vector<std::string>& generics_names) const { 
-        return ptr->function_retrieval_match_string(generics_names); 
-}
-
 [[nodiscard]] std::string TypeSignature::to_match_string() const { 
     return ptr->to_match_string(); 
 }

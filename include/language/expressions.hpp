@@ -4,12 +4,7 @@
 #include <vector>
 #include <string>
 
-struct ScopedData;
-struct ProgramRappresentation;
-
 struct ExpressionBody {
-    [[nodiscard]] virtual TypeSignature get_type(
-        const ProgramRappresentation& program, const ScopedData& data) const = 0;
 
     virtual ~ExpressionBody() = default;
 };
@@ -26,11 +21,6 @@ class Expression : public Polymorph<ExpressionBody> {
         bool is_wrapped_in_in_parenthesis() const { return wrapped_in_parenthesis; }
         void wrap_in_parenthesis() { wrapped_in_parenthesis = true; }
         void mark_as_compiletime_avialable() { compiletime_avialable = true; }
-
-        [[nodiscard]] TypeSignature get_type(
-            const ProgramRappresentation& program, const ScopedData& data) const {
-                return ptr->get_type(program, data);
-            };
 
     private:
         bool wrapped_in_parenthesis = false;
@@ -50,9 +40,6 @@ struct ArrayLiteral : public ExpressionBody {
         const std::vector<Expression>& elements
     )
         : array_length(length), stored_type(type), elements(elements) {}
-
-    [[nodiscard]] virtual TypeSignature get_type(
-        const ProgramRappresentation& program, const ScopedData& data) const override;
 };
 
 struct BinaryOperator : public ExpressionBody {
@@ -63,23 +50,6 @@ struct BinaryOperator : public ExpressionBody {
         : operator_text(opertext), left_operand(lx), right_operand(rx) {}
 
     virtual ~BinaryOperator() = default;
-
-    [[nodiscard]] virtual TypeSignature get_type(
-        const ProgramRappresentation& program, const ScopedData& data) const override;
-
-    [[nodiscard]] bool is_valid_comparison(
-        const BinaryOperator& op,  const ProgramRappresentation& program,
-        const TypeSignature& left, const TypeSignature& right) const;
-
-    [[nodiscard]] bool is_numerical_operator() const;
-    [[nodiscard]] bool is_comparison_operator() const;
-    [[nodiscard]] bool is_logical_operator() const;
-
-    [[nodiscard]] bool has_int_operands(const TypeSignature& left, const TypeSignature& right) const;
-    [[nodiscard]] bool has_numerical_operands(const TypeSignature& left, const TypeSignature& right) const;
-    [[nodiscard]] bool has_string_operands(const TypeSignature& left, const TypeSignature& right) const;
-    [[nodiscard]] bool has_boolean_operands(const TypeSignature& left, const TypeSignature& right) const;
-    [[nodiscard]] bool is_string_operator() const;
 };
 
 struct UnaryOperator : public ExpressionBody {
@@ -92,9 +62,6 @@ struct UnaryOperator : public ExpressionBody {
         : operator_text(opertext), operand(expr) {}
 
     virtual ~UnaryOperator() = default;
-
-    [[nodiscard]] virtual TypeSignature get_type(
-        const ProgramRappresentation& program, const ScopedData& data) const override;
 };
 
 struct Identifier : public ExpressionBody {
@@ -103,9 +70,6 @@ struct Identifier : public ExpressionBody {
         : name(str) {}
 
     virtual ~Identifier() = default;
-
-    [[nodiscard]] virtual TypeSignature get_type(
-        const ProgramRappresentation& program, const ScopedData& data) const override;
 };
 
 struct StringLiteral : public ExpressionBody {
@@ -114,9 +78,6 @@ struct StringLiteral : public ExpressionBody {
         : value(str) { }
 
     virtual ~StringLiteral() = default;
-
-    [[nodiscard]] virtual TypeSignature get_type(
-        const ProgramRappresentation& program, const ScopedData& data) const override;
 };
 
 struct IntLiteral : public ExpressionBody {
@@ -125,9 +86,6 @@ struct IntLiteral : public ExpressionBody {
         : value(number) { }
 
     virtual ~IntLiteral() = default;
-
-    [[nodiscard]] virtual TypeSignature get_type(
-        const ProgramRappresentation& program, const ScopedData& data) const override;
 };
 
 struct FloatLiteral : public ExpressionBody {
@@ -136,9 +94,6 @@ struct FloatLiteral : public ExpressionBody {
         : value(number) { }
     
     virtual ~FloatLiteral() = default;
-
-    [[nodiscard]] virtual TypeSignature get_type(
-        const ProgramRappresentation& program, const ScopedData& data) const override;
 };
 
 struct BoolLiteral : public ExpressionBody {
@@ -147,9 +102,6 @@ struct BoolLiteral : public ExpressionBody {
         : value(boolean) { }
 
     virtual ~BoolLiteral() = default;
-
-    [[nodiscard]] virtual TypeSignature get_type(
-        const ProgramRappresentation& program, const ScopedData& data) const override;
 };
 
 struct CharLiteral : public ExpressionBody {
@@ -158,7 +110,4 @@ struct CharLiteral : public ExpressionBody {
         : value(character) { }
 
     virtual ~CharLiteral() = default;
-    
-    [[nodiscard]] virtual TypeSignature get_type(
-        const ProgramRappresentation& program, const ScopedData& data) const override;
 };

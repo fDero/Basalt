@@ -12,7 +12,6 @@ struct TypeSignatureBody {
     [[nodiscard]] virtual bool is_core_language_type() const = 0;
     [[nodiscard]] virtual bool is_generic(const std::vector<std::string>& generic_names) const = 0;
     [[nodiscard]] virtual std::string to_string() const = 0;
-    [[nodiscard]] virtual std::string function_retrieval_match_string(const std::vector<std::string>& generics_names) const = 0;
     [[nodiscard]] virtual std::string to_match_string() const = 0;
 
     virtual void instanciate_generics(const GenericSubstitutionRuleSet&) = 0;
@@ -41,7 +40,6 @@ struct BaseType : public TypeSignatureBody {
     
 
     [[nodiscard]] std::string to_string() const override;
-    [[nodiscard]] std::string function_retrieval_match_string(const std::vector<std::string>& generics_names) const override;
     [[nodiscard]] std::string to_match_string() const override;
     [[nodiscard]] bool is_core_language_type() const override;
     [[nodiscard]] bool is_generic(const std::vector<std::string>& generic_names) const override;
@@ -54,7 +52,6 @@ struct BaseType : public TypeSignatureBody {
 struct PointerType : public TypeSignatureBody {
     PointerType(const TypeSignature& pointed);
     [[nodiscard]] std::string to_string() const override;
-    [[nodiscard]] std::string function_retrieval_match_string(const std::vector<std::string>& generics_names) const override;
     [[nodiscard]] std::string to_match_string() const override;
     [[nodiscard]] bool is_core_language_type() const override;
     [[nodiscard]] bool is_generic(const std::vector<std::string>& template_generic_names) const override;
@@ -66,7 +63,6 @@ struct PointerType : public TypeSignatureBody {
 struct ArrayType : public TypeSignatureBody {
     ArrayType(int length, const TypeSignature& stored);
     [[nodiscard]] std::string to_string() const override;
-    [[nodiscard]] std::string function_retrieval_match_string(const std::vector<std::string>& generics_names) const override;
     [[nodiscard]] std::string to_match_string() const override;
     [[nodiscard]] bool is_core_language_type() const override;
     [[nodiscard]] bool is_generic(const std::vector<std::string>& generics_names) const override;
@@ -79,7 +75,6 @@ struct ArrayType : public TypeSignatureBody {
 struct SliceType : public TypeSignatureBody {
     SliceType(const TypeSignature& stored);
     [[nodiscard]] std::string to_string() const override;
-    [[nodiscard]] std::string function_retrieval_match_string(const std::vector<std::string>& generics_names) const override;
     [[nodiscard]] std::string to_match_string() const override;
     [[nodiscard]] bool is_core_language_type() const override;
     [[nodiscard]] bool is_generic(const std::vector<std::string>& template_generic_names) const override;

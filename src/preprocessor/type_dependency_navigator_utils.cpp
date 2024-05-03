@@ -3,18 +3,6 @@
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 
-void PreProcessor::preprocess_type_defintions(){
-    for (const auto& struct_def_data : types_register.struct_definitions){
-        TypeDependencyNavigator navigator(types_register);
-        if (struct_def_data.second.is<StructDefinition>()){
-            navigator.visit_struct_definition(struct_def_data.second.get<StructDefinition>());
-        }
-        else if (struct_def_data.second.is<UnionDefinition>()) {
-            navigator.visit_union_definition(struct_def_data.second.get<UnionDefinition>());
-        }
-    }
-}
-
 TypeDependencyNavigator::TypeDependencyNavigator(
     TypeDefinitionsRegister& types_register
 ) : types_register(types_register) {

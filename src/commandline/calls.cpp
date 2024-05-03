@@ -41,12 +41,6 @@ void CommandLineController::instanciate_and_run_interpreter(){
     avoid_lack_of_input_files(inputs);
     ensure_lack_of_output_files(outputs);
     avoid_duplicate_input_files(inputs);
-
-    PreProcessor preprocessor(inputs);
-    preprocessor.parse_every_file();
-    
-    preprocessor.dump_internal_state();
-    preprocessor.preprocess_type_defintions();
 }
 
 void CommandLineController::instanciate_and_run_debugger(){
