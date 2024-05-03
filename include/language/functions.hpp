@@ -16,6 +16,7 @@ struct FunctionCall
 	    const std::vector<TypeSignature>& instaciated_generics
 	) 
 		: ExpressionBody(function_call_token)
+		, StatementBody(function_call_token)
 		, function_name(function_call_token.sourcetext)
 		, instaciated_generics(instaciated_generics)
 		, arguments(args) {}

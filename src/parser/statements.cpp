@@ -15,10 +15,11 @@
         return fcall;
     }
     ensure_there_are_still_tokens(source_tokens, iterator);
+    const Token& assignment_token = *iterator;
     ensure_token_matches(source_tokens, iterator++, "=");
     Expression right_hand_side = parse_expression();
     ensure_token_matches(source_tokens, iterator++, ";");
-    return Assignment { expression, right_hand_side };
+    return Assignment { expression, right_hand_side, assignment_token };
 }
 
 [[nodiscard]] Statement Parser::parse_statement(){

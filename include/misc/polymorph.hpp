@@ -36,7 +36,7 @@ class Polymorph {
                 );
                 
                 assert_get_operation_is_possible(cpp_type_info_str, typeid(ConcreteInnerStruct)); 
-                return *((ConcreteInnerStruct*)(ptr.get()));
+                return *static_cast<ConcreteInnerStruct*>(ptr.get());
         }
 
         template<typename ConcreteInnerStruct> 
