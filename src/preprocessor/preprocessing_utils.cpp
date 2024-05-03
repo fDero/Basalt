@@ -45,16 +45,11 @@ void PreProcessor::inspect_for_errors(){
 void PreProcessor::collect_parsed_outputs(){
     while (!parsed_files_outcome.empty()){
         const FileRappresentation& parsed_file = parsed_files_outcome.back();
-        for (const auto& struct_data : parsed_file.type_defs_register.struct_definitions){
-            auto insertion_result = types_register.struct_definitions.insert(struct_data);
-            ensure_no_multiple_definition_of_the_same_type(insertion_result);
+        for (const TypeDefinition& type_definition : parsed_file.type_defs){
+            types_register.store(type_definition);
         }
-        for (const auto& func_def_data : parsed_file.func_defs_register.function_definitions_register){
-            auto insertion_result = funcs_register.function_definitions_register.insert(func_def_data);
-            ensure_no_multiple_definition_of_the_same_function(insertion_result);
-        }
-        for (const auto& func_name_data : parsed_file.func_defs_register.function_names_register){
-            funcs_register.function_names_register.insert(func_name_data);
+        for (const FunctionDefinition& func_definition : parsed_file.func_defs){
+            funcs_register.store(func_definition);
         }
         parsed_files_outcome.pop_back();
     }

@@ -7,6 +7,7 @@
 
 struct TypeDefinitionsRegister {
     
+    void store(const TypeDefinition& type_def);
     void store(const StructDefinition& struct_def);
     void store(const UnionDefinition& union_def);
 
@@ -40,8 +41,8 @@ struct FileMetaData {
 
 struct FileRappresentation {
     FileMetaData file_metadata;
-    TypeDefinitionsRegister type_defs_register;
-    FunctionDefinitionsRegister func_defs_register;
+    std::vector<TypeDefinition> type_defs;
+    std::vector<FunctionDefinition> func_defs;
 };
 
 

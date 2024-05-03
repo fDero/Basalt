@@ -18,6 +18,14 @@ void TypeDefinitionsRegister::store(const UnionDefinition& union_def){
     struct_definitions.insert(std::make_pair(struct_tag_name, union_def));
 }
 
+void TypeDefinitionsRegister::store(const TypeDefinition& type_def){
+    if (type_def.is<StructDefinition>()) {
+       store(type_def.get<StructDefinition>());
+    } else {
+       store(type_def.get<StructDefinition>());
+    }
+}
+
 [[nodiscard]] const TypeDefinition& TypeDefinitionsRegister::retrieve(const TypeSignature& type_signature) const {
     auto search_outcome = struct_definitions.find(type_signature.to_string());
     if (search_outcome != struct_definitions.end()) {
