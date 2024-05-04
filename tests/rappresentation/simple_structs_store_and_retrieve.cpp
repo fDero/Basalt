@@ -4,12 +4,16 @@
 #include "language/syntax.hpp"
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
-#include "../tests_utilities/rappresentation_inline_procs.hpp"
+#include "../tests_utilities/struct_definition_factory.hpp"
 #include "../tests_utilities/typesignature_factory.hpp"
 
 TEST(Rappresentation, Trivial_Struct_Store_And_Retrieval_From_Global_Scope) {
+    StructDefinition struct_definition = StructDefinitionFactory::make_struct_definition(
+        "MyStruct", 
+        StructDefinitionFactory::no_generics, 
+        StructDefinitionFactory::no_fields
+    );
     TypeDefinitionsRegister struct_register;
-    StructDefinition struct_definition = make_struct_definition("MyStruct");
     struct_register.store(struct_definition);
     TypeSignature struct_type = TypeSignatureFactory::make_base_type("MyStruct", {});
     TypeDefinition retrieved = struct_register.retrieve(struct_type);
@@ -22,9 +26,12 @@ TEST(Rappresentation, Trivial_Struct_Store_And_Retrieval_From_Global_Scope) {
 }
 
 TEST(Rappresentation, Struct_With_One_Generic_Store_And_Retrieval_From_Global_Scope) {
+    StructDefinition struct_definition = StructDefinitionFactory::make_struct_definition(
+        "MyStruct", 
+        { "T" }, 
+        StructDefinitionFactory::no_fields
+    );
     TypeDefinitionsRegister struct_register;
-    StructDefinition struct_definition = make_struct_definition("MyStruct");
-    struct_definition.template_generics_names.push_back("T");
     struct_register.store(struct_definition);
     TypeSignature struct_type = TypeSignatureFactory::make_base_type("MyStruct", { TypeSignatureFactory::Int });
     TypeDefinition retrieved = struct_register.retrieve(struct_type);
@@ -37,10 +44,17 @@ TEST(Rappresentation, Struct_With_One_Generic_Store_And_Retrieval_From_Global_Sc
 }
 
 TEST(Rappresentation, instantiationd_Struct_With_One_Generic_Store_And_Retrieval_From_Global_Scope) {
+    StructDefinition generic_struct_definition = StructDefinitionFactory::make_struct_definition(
+        "MyStruct<T>", 
+        { "T" }, 
+        StructDefinitionFactory::no_fields
+    );
+    StructDefinition struct_definition = StructDefinitionFactory::make_struct_definition(
+        "MyStruct<Int>", 
+        StructDefinitionFactory::no_generics, 
+        StructDefinitionFactory::no_fields
+    );
     TypeDefinitionsRegister struct_register;
-    StructDefinition generic_struct_definition = make_struct_definition("MyStruct");
-    generic_struct_definition.template_generics_names.push_back("T");
-    StructDefinition struct_definition = make_struct_definition("MyStruct<Int>");
     struct_register.store(generic_struct_definition);
     struct_register.store(struct_definition);
     TypeSignature struct_type = TypeSignatureFactory::make_base_type("MyStruct", { TypeSignatureFactory::Int });
