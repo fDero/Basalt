@@ -7,7 +7,7 @@
 
 
 struct GenericSubstitutionRule {
-    TypeSignature to_be_substituded;
+    std::string to_be_substituded;
     TypeSignature replacement;
 };
 

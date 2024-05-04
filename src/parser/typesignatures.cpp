@@ -16,11 +16,13 @@
 }
 
 [[nodiscard]] TypeSignature Parser::parse_pointer_type(){
+    const Token& pointer_type_symbol_token = *iterator;
     assert_token_matches(source_tokens, iterator++, pointer_type_symbol);
-    return PointerType { parse_typesignature() };
+    return PointerType { pointer_type_symbol_token, parse_typesignature() };
 }
 
 [[nodiscard]] TypeSignature Parser::parse_array_type(){
+    const Token& array_square_bracket_token = *iterator;
     assert (array_type_first_symbol == "[");
     assert_token_matches(source_tokens, iterator++, array_type_first_symbol);
     ensure_token_is_fixed_array_length(source_tokens, iterator);
@@ -28,22 +30,22 @@
     assert_token_matches(source_tokens, iterator++, "]");
     const TypeSignature array_stored_type = parse_typesignature();
     int array_length = std::stoi(array_length_token.sourcetext);
-    return ArrayType { array_length, array_stored_type };
+    return ArrayType { array_square_bracket_token, array_length, array_stored_type };
 }
 
 [[nodiscard]] TypeSignature Parser::parse_slice_type(){
+    const Token& slice_type_symbol_token = *iterator;
     assert_token_matches(source_tokens, iterator++, slice_type_symbol);
     const TypeSignature slice_stored_type = parse_typesignature();
-    return SliceType { slice_stored_type };
+    return SliceType { slice_type_symbol_token, slice_stored_type };
 }
 
 [[nodiscard]] TypeSignature Parser::parse_base_type(){
     assert_token_is_simple_type(source_tokens, iterator);
     assert_type_is_properly_formatted(iterator);
     const Token& typesignature_token = *(iterator++);
-    std::string type_name = typesignature_token.sourcetext;
     const std::vector<TypeSignature> template_generics = parse_concrete_generics();
-    BaseType base_type { type_name, template_generics };
+    BaseType base_type { typesignature_token, template_generics };
     return base_type;
 }
 

@@ -21,23 +21,35 @@
 }
 
 BaseType::BaseType(
-    const std::string& name, 
+    const Token& typename_token, 
     const std::vector<TypeSignature>& generics
-) : type_name(name), instantiationd_generics(generics) {}
-
-BaseType::BaseType(
-    const std::string& name
-) : type_name(name) {};
+) 
+    : TypeSignatureBody(typename_token) 
+    , type_name(typename_token.sourcetext)
+    , instantiationd_generics(generics) 
+{}
 
 PointerType::PointerType(
+    const Token& pointer_symbol_token,
     const TypeSignature& pointed
-) : pointed_type(pointed) {}
+) 
+    : TypeSignatureBody(pointer_symbol_token) 
+    , pointed_type(pointed) {}
 
 ArrayType::ArrayType(
+    const Token& array_open_square_bracket_token,
     int length, 
     const TypeSignature& stored
-) : array_length(length), stored_type(stored) {}
+) 
+    : TypeSignatureBody(array_open_square_bracket_token) 
+    , array_length(length)
+    , stored_type(stored) 
+{}
 
 SliceType::SliceType(
+    const Token& slice_type_symbol_token,
     const TypeSignature& stored
-) : stored_type(stored) {}
+) 
+    : TypeSignatureBody(slice_type_symbol_token) 
+    , stored_type(stored) 
+{}

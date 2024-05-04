@@ -43,8 +43,7 @@ void UnionDefinition::instantiate_generics(const BaseType& concrete_type) {
     for (size_t i = 0; i < instantiationd_generics.size(); i++){
         const TypeSignature& instantiationd_generic = instantiationd_generics[i];
         const std::string& template_generic_name = template_generics[i];
-        TypeSignature template_generic = BaseType{ template_generic_name, {} };
-        GenericSubstitutionRule rule = { template_generic, instantiationd_generic};
+        GenericSubstitutionRule rule = { template_generic_name, instantiationd_generic};
         result.push_back(rule);
     }
     return result;
@@ -52,7 +51,7 @@ void UnionDefinition::instantiate_generics(const BaseType& concrete_type) {
 
 void TypeSignature::instantiate_generics(const GenericSubstitutionRuleSet& generic_substitution_rules) {
     for (GenericSubstitutionRule rule : generic_substitution_rules){
-        if (this->to_string() == rule.to_be_substituded.to_string()){
+        if (this->to_string() == rule.to_be_substituded){
             *this = rule.replacement;
             return;
         }

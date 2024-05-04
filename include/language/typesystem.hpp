@@ -1,13 +1,17 @@
 
 #pragma once
 #include "misc/polymorph.hpp"
+#include "misc/debug_informations_aware_entity.h"
 #include "language/syntax.hpp"
 #include <string>
 #include <vector>
 
 struct GenericSubstitutionRuleSet;
 
-struct TypeSignatureBody {
+struct TypeSignatureBody : public DebugInformationsAwareEntity {
+
+    TypeSignatureBody(const Token& token) 
+        : DebugInformationsAwareEntity(token) {}
 
     [[nodiscard]] virtual bool is_core_language_type() const = 0;
     [[nodiscard]] virtual bool is_generic(const std::vector<std::string>& generic_names) const = 0;
@@ -34,8 +38,7 @@ struct TypeSignature : public Polymorph<TypeSignatureBody> {
 
 struct BaseType : public TypeSignatureBody {
  
-    BaseType(const std::string& name, const std::vector<TypeSignature>& generics);
-    BaseType(const std::string& name);
+    BaseType(const Token& typename_token, const std::vector<TypeSignature>& generics);
 
     [[nodiscard]] std::string to_string() const override;
     [[nodiscard]] std::string to_match_string() const override;
@@ -48,7 +51,7 @@ struct BaseType : public TypeSignatureBody {
 };
 
 struct PointerType : public TypeSignatureBody {
-    PointerType(const TypeSignature& pointed);
+    PointerType(const Token& pointer_symbol_token, const TypeSignature& pointed);
     [[nodiscard]] std::string to_string() const override;
     [[nodiscard]] std::string to_match_string() const override;
     [[nodiscard]] bool is_core_language_type() const override;
@@ -59,7 +62,7 @@ struct PointerType : public TypeSignatureBody {
 };
 
 struct ArrayType : public TypeSignatureBody {
-    ArrayType(int length, const TypeSignature& stored);
+    ArrayType(const Token& array_open_square_bracket_token, int length, const TypeSignature& stored);
     [[nodiscard]] std::string to_string() const override;
     [[nodiscard]] std::string to_match_string() const override;
     [[nodiscard]] bool is_core_language_type() const override;
@@ -71,7 +74,7 @@ struct ArrayType : public TypeSignatureBody {
 };
 
 struct SliceType : public TypeSignatureBody {
-    SliceType(const TypeSignature& stored);
+    SliceType(const Token& slice_symbol_token, const TypeSignature& stored);
     [[nodiscard]] std::string to_string() const override;
     [[nodiscard]] std::string to_match_string() const override;
     [[nodiscard]] bool is_core_language_type() const override;
