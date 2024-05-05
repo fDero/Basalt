@@ -4,10 +4,10 @@
 #include "errors/internal_errors.hpp"
 #include "../tests_utilities/typesignature_factory.hpp"
 
-GenericSubstitutionRule ts_are_ints = { "T", TypeSignatureFactory::Int };
-GenericSubstitutionRule us_are_list_of_strings = { "U", TypeSignatureFactory::ListOfStrings };
-GenericSubstitutionRule vs_are_floats = { "V", TypeSignatureFactory::Float };
-GenericSubstitutionRuleSet rules = { ts_are_ints, us_are_list_of_strings, vs_are_floats };
+inline GenericSubstitutionRule ts_are_ints = { "T", TypeSignatureFactory::Int };
+inline GenericSubstitutionRule us_are_list_of_strings = { "U", TypeSignatureFactory::ListOfStrings };
+inline GenericSubstitutionRule vs_are_floats = { "V", TypeSignatureFactory::Float };
+inline GenericSubstitutionRuleSet rules = { ts_are_ints, us_are_list_of_strings, vs_are_floats };
 
 
 

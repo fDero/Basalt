@@ -7,14 +7,18 @@
 
 
 void StructDefinition::instantiate_generics(const BaseType& concrete_type) {
+    
+    std::cerr << concrete_type.instantiationd_generics.size() << " <-- " << std::endl;
+    std::cerr << template_generics_names.size() << " <-- " << std::endl;
+
     assert_instantiationd_struct_is_compatible_with_template_struct(concrete_type, *this);
     const std::vector<TypeSignature>& instantiationd_generics = concrete_type.instantiationd_generics;
     const std::vector<std::string>& template_generics = template_generics_names;
     struct_name = concrete_type.to_string();
-    template_generics_names.clear();
     auto generic_substitution_rules = GenericSubstitutionRuleSet::zip_components_vectors(
         template_generics, instantiationd_generics
     );
+    template_generics_names.clear();
     for (StructDefinition::Field& concrete_field : fields){
         concrete_field.field_type.instantiate_generics(generic_substitution_rules);
     }
