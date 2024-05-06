@@ -3,12 +3,8 @@
 #include "errors/internal_errors.hpp"
 #include <regex>
 #include <optional>
-#include <iostream>
 
 [[nodiscard]] bool BaseType::is_generic(const std::vector<std::string>& generics_names) const {
-    if (generics_names.empty()) {
-        return false;
-    }
     for (const TypeSignature& generic : instantiationd_generics){
         if (generic.is_generic(generics_names)) {
             return true;

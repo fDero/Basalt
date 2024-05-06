@@ -15,7 +15,7 @@
 
 [[noreturn]] void throw_attempt_to_retrieve_struct_definition_from_primitive_type(const TypeSignature& type){
     throw InternalError {
-        "the type was expected to be a primitive type but it wasn't"
+        "the type was expected to be a non-primitive-type type but it was primitive"
     };
 }
 

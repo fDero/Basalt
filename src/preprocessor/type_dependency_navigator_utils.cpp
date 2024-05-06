@@ -23,3 +23,26 @@ void TypeDependencyNavigator::verify_that_the_type_exists(const TypeSignature& t
         std::ignore = types_register.retrieve(type_signature);
     }
 }
+
+void TypeDependencyNavigator::visit_typesignature(const TypeSignature& typesignature){
+    if (typesignature.is<PointerType>()) {
+        verify_that_the_type_exists(typesignature.get<PointerType>().pointed_type);
+    }
+    else if (typesignature.is<ArrayType>()) {
+        visit_typesignature(typesignature.get<ArrayType>().stored_type);
+    }
+    else if (typesignature.is<SliceType>()) {
+        verify_that_the_type_exists(typesignature.get<SliceType>().stored_type);
+    }
+    else if (!typesignature.is_primitive_type()) {
+        TypeDefinition type_definition = types_register.retrieve(typesignature);
+        if (type_definition.is<StructDefinition>()) {
+            const StructDefinition& struct_def = type_definition.get<StructDefinition>();
+            instantiation_and_visit_struct(struct_def, typesignature);
+        }
+        else {
+            const UnionDefinition& union_def = type_definition.get<UnionDefinition>();
+            instantiation_and_visit_union(union_def, typesignature);
+        }
+    }
+}

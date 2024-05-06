@@ -12,13 +12,14 @@
     return ptr->to_match_string(); 
 }
 
-[[nodiscard]] bool TypeSignature::is_core_language_type() const { 
-    return ptr->is_core_language_type(); 
-}
-
 [[nodiscard]] bool TypeSignature::is_generic(const std::vector<std::string>& generic_names) const { 
     return ptr->is_generic(generic_names); 
 }
+
+[[nodiscard]] bool TypeSignature::is_primitive_type() const { 
+    return primitive_types.find(ptr->to_string()) != primitive_types.end();
+}
+
 
 BaseType::BaseType(
     const Token& typename_token, 

@@ -19,19 +19,15 @@ void TypeDependencyNavigator::visit_union_alternative(
     if (alternative.is_generic(struct_def_generics)) {
         return;
     }
-    else if (alternative.is_core_language_type()) {
+    else if (alternative.is<PointerType>() || alternative.is<SliceType>()) {
         verify_that_the_type_exists(alternative);
     }
-    else {
-        TypeDefinition type_def = types_register.retrieve(alternative);
-        if (type_def.is<StructDefinition>()){
-            StructDefinition& struct_def = type_def.get<StructDefinition>();
-            instantiation_and_visit_struct(struct_def, alternative);
-        }
-        else if (type_def.is<UnionDefinition>()) {
-            UnionDefinition& alternative_def = type_def.get<UnionDefinition>();
-            instantiation_and_visit_union(alternative_def, alternative);
-        }
+    else if (alternative.is<ArrayType>()) {
+        const TypeSignature& stored_type = alternative.get<ArrayType>().stored_type;
+        visit_typesignature(stored_type);
+    }
+    else if (!alternative.is_primitive_type()) {
+        visit_typesignature(alternative);
     }
 }
 

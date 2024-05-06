@@ -4,7 +4,6 @@
 #include "language/functions.hpp"
 #include "errors/parsing_errors.hpp"
 #include "language/syntax.hpp"
-#include <iostream>
 
 void TypeDefinitionsRegister::store(const StructDefinition& struct_def){
     const std::string struct_tag_name = struct_def.generate_match_pattern();

@@ -8,7 +8,6 @@
 #include "misc/debug_informations_aware_entity.h"
 #include <vector>
 #include <string>
-#include <iostream>
 #include <variant>
 
 struct FunctionDefinition : public DebugInformationsAwareEntity {

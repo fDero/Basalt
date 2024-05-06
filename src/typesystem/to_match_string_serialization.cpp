@@ -3,7 +3,6 @@
 #include "errors/internal_errors.hpp"
 #include <regex>
 #include <optional>
-#include <iostream>
 
 [[nodiscard]] std::string BaseType::to_match_string() const {
     assert_type_is_non_primitive(*this);

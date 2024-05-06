@@ -3,7 +3,6 @@
 #include "errors/internal_errors.hpp"
 #include <regex>
 #include <optional>
-#include <iostream>
 
 [[nodiscard]] std::string BaseType::to_string() const {
     std::string fully_qualified_name = type_name;

@@ -2,7 +2,6 @@
 #include "errors/commandline_errors.hpp"
 #include "toolchain/tokenizer.hpp"
 #include "toolchain/commandline.hpp"
-#include <iostream>
 
 void CommandLineController::compiler_flag(){
     while (++arg_index < arg_counter && arg_values[arg_index][0] != '-')

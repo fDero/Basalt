@@ -19,19 +19,15 @@ void TypeDependencyNavigator::visit_struct_field(
     if (field.field_type.is_generic(struct_def_generics)) {
         return;
     }
-    else if (field.field_type.is_core_language_type()) {
+    else if (field.field_type.is<PointerType>() || field.field_type.is<SliceType>()) {
         verify_that_the_type_exists(field.field_type);
     }
-    else {
-        TypeDefinition type_def = types_register.retrieve(field.field_type);
-        if (type_def.is<StructDefinition>()){
-            StructDefinition& struct_def = type_def.get<StructDefinition>();
-            instantiation_and_visit_struct(struct_def, field.field_type);
-        }
-        else if (type_def.is<UnionDefinition>()) {
-            UnionDefinition& alternative_def = type_def.get<UnionDefinition>();
-            instantiation_and_visit_union(alternative_def, field.field_type);
-        }
+    else if (field.field_type.is<ArrayType>()) {
+        const TypeSignature& stored_type = field.field_type.get<ArrayType>().stored_type;
+        visit_typesignature(stored_type);
+    }
+    else if (!field.field_type.is_primitive_type()) {
+        visit_typesignature(field.field_type);
     }
 }
 

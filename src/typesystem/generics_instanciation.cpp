@@ -3,14 +3,8 @@
 #include "errors/internal_errors.hpp"
 #include <regex>
 #include <optional>
-#include <iostream>
-
 
 void StructDefinition::instantiate_generics(const BaseType& concrete_type) {
-    
-    std::cerr << concrete_type.instantiationd_generics.size() << " <-- " << std::endl;
-    std::cerr << template_generics_names.size() << " <-- " << std::endl;
-
     assert_instantiationd_struct_is_compatible_with_template_struct(concrete_type, *this);
     const std::vector<TypeSignature>& instantiationd_generics = concrete_type.instantiationd_generics;
     const std::vector<std::string>& template_generics = template_generics_names;

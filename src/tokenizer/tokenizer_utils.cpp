@@ -6,7 +6,6 @@
 #include "errors/commandline_errors.hpp"
 #include "errors/internal_errors.hpp"
 #include "toolchain/tokenizer.hpp"
-#include <iostream>
 
 Token::Token (
     const std::string& sourcetext,
