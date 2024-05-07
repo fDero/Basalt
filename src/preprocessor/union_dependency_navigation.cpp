@@ -8,26 +8,7 @@ void TypeDependencyNavigator::visit_union_definition(const UnionDefinition& unio
     ensure_type_not_already_visited_hence_no_cyclic_dependency(enum_id, visited_definitions);
     visited_definitions.insert(enum_id);
     for (const TypeSignature& alternative : union_definition.types){
-        visit_union_alternative( alternative, union_definition.template_generics_names );
-    }
-}
-
-void TypeDependencyNavigator::visit_union_alternative(
-    const TypeSignature& alternative, 
-    const std::vector<std::string>& struct_def_generics
-){
-    if (alternative.is_generic(struct_def_generics)) {
-        return;
-    }
-    else if (alternative.is<PointerType>() || alternative.is<SliceType>()) {
-        verify_that_the_type_exists(alternative);
-    }
-    else if (alternative.is<ArrayType>()) {
-        const TypeSignature& stored_type = alternative.get<ArrayType>().stored_type;
-        visit_typesignature(stored_type);
-    }
-    else if (!alternative.is_primitive_type()) {
-        visit_typesignature(alternative);
+        visit_typesignature( alternative, union_definition.template_generics_names );
     }
 }
 

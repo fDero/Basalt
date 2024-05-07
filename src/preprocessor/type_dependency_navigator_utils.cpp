@@ -24,12 +24,15 @@ void TypeDependencyNavigator::verify_that_the_type_exists(const TypeSignature& t
     }
 }
 
-void TypeDependencyNavigator::visit_typesignature(const TypeSignature& typesignature){
-    if (typesignature.is<PointerType>()) {
+void TypeDependencyNavigator::visit_typesignature(const TypeSignature& typesignature, const std::vector<std::string>& generics){
+    if (typesignature.is_generic(generics)){
+        return;
+    }
+    else if (typesignature.is<PointerType>()) {
         verify_that_the_type_exists(typesignature.get<PointerType>().pointed_type);
     }
     else if (typesignature.is<ArrayType>()) {
-        visit_typesignature(typesignature.get<ArrayType>().stored_type);
+        visit_typesignature(typesignature.get<ArrayType>().stored_type, generics);
     }
     else if (typesignature.is<SliceType>()) {
         verify_that_the_type_exists(typesignature.get<SliceType>().stored_type);

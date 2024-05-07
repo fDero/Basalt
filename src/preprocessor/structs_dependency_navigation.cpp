@@ -8,26 +8,7 @@ void TypeDependencyNavigator::visit_struct_definition(const StructDefinition& st
     ensure_type_not_already_visited_hence_no_cyclic_dependency(struct_id, visited_definitions);
     visited_definitions.insert(struct_id);
     for (const StructDefinition::Field& field : struct_definition.fields){
-        visit_struct_field( field, struct_definition.template_generics_names );
-    }
-}
-
-void TypeDependencyNavigator::visit_struct_field(
-    const StructDefinition::Field& field, 
-    const std::vector<std::string>& struct_def_generics
-){
-    if (field.field_type.is_generic(struct_def_generics)) {
-        return;
-    }
-    else if (field.field_type.is<PointerType>() || field.field_type.is<SliceType>()) {
-        verify_that_the_type_exists(field.field_type);
-    }
-    else if (field.field_type.is<ArrayType>()) {
-        const TypeSignature& stored_type = field.field_type.get<ArrayType>().stored_type;
-        visit_typesignature(stored_type);
-    }
-    else if (!field.field_type.is_primitive_type()) {
-        visit_typesignature(field.field_type);
+        visit_typesignature( field.field_type, struct_definition.template_generics_names );
     }
 }
 
