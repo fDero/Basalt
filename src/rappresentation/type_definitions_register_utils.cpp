@@ -22,7 +22,9 @@ void TypeDefinitionsRegister::store(const TypeDefinition& type_def){
     assert_unreachable();
 }
 
-[[nodiscard]] const TypeDefinition& TypeDefinitionsRegister::direct_retrieve(const TypeSignature& type_signature) {
+[[nodiscard]] const TypeDefinition& TypeDefinitionsRegister::retrieve(const TypeSignature& type_signature) {
+    assert_typesignature_is<BaseType>(type_signature);
+    std::string base_type_name = type_signature.get<BaseType>().type_name;
     auto search_outcome = type_definitions.find(type_signature.to_string());
     if (search_outcome != type_definitions.end()) {
         return search_outcome->second;
@@ -36,11 +38,4 @@ void TypeDefinitionsRegister::store(const TypeDefinition& type_def){
         return type_definitions.at(match_pattern);
     }
     throw std::runtime_error("NO TYPE FOUND: " + type_signature.to_string() + " " + type_signature.to_match_string());
-}
-
-[[nodiscard]] const TypeDefinition& TypeDefinitionsRegister::retrieve(const TypeSignature& type_signature) {
-    const TypeDefinition& retrieved_type_definition = direct_retrieve(type_signature);
-    return (retrieved_type_definition.is<TypeAlias>()) 
-        ? retrieve(retrieved_type_definition.get<TypeAlias>().aliased_type) 
-        : retrieved_type_definition;
 }

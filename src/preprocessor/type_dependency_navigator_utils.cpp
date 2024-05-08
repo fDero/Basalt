@@ -38,14 +38,26 @@ void TypeDependencyNavigator::visit_typesignature(const TypeSignature& typesigna
         verify_that_the_type_exists(typesignature.get<SliceType>().stored_type);
     }
     else if (!typesignature.is_primitive_type()) {
-        TypeDefinition type_definition = types_register.retrieve(typesignature);
-        if (type_definition.is<StructDefinition>()) {
-            const StructDefinition& struct_def = type_definition.get<StructDefinition>();
-            visit_struct_definition(struct_def);
-        }
-        else {
-            const UnionDefinition& union_def = type_definition.get<UnionDefinition>();
-            visit_union_definition(union_def);
-        }
+        TypeDefinition typedefinition = types_register.retrieve(typesignature);
+        visit_type_definition(typesignature, typedefinition, generics);
+    }
+}
+
+void TypeDependencyNavigator::visit_type_definition(
+    const TypeSignature& typesignature,
+    const TypeDefinition& type_definition,
+    const std::vector<std::string>& generics
+){
+    if (type_definition.is<StructDefinition>()) {
+        const StructDefinition& struct_def = type_definition.get<StructDefinition>();
+        visit_struct_definition(struct_def);
+    }
+    else if (type_definition.is<UnionDefinition>()){
+        const UnionDefinition& union_def = type_definition.get<UnionDefinition>();
+        visit_union_definition(union_def);
+    }
+    else if (type_definition.is<TypeAlias>()) {
+        const TypeAlias& alias_def = type_definition.get<TypeAlias>();
+        visit_typesignature(alias_def.aliased_type, generics);
     }
 }

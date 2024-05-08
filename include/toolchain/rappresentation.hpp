@@ -13,7 +13,6 @@ struct TypeDefinitionsRegister {
     void store(const TypeAlias& alias_def);
 
     [[nodiscard]] const TypeDefinition& retrieve(const TypeSignature& type_signature);
-    [[nodiscard]] const TypeDefinition& direct_retrieve(const TypeSignature& type_signature);
 
     std::map<std::string, TypeDefinition> type_definitions;
 };

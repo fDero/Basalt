@@ -90,10 +90,11 @@ struct TypeAlias : public DebugInformationsAwareEntity {
 };
 
 struct TypeDefinition 
-    : public  std::variant<StructDefinition, UnionDefinition, TypeAlias> 
+    : public std::variant<StructDefinition,UnionDefinition,TypeAlias> 
 {
-    using std::variant<StructDefinition, UnionDefinition, TypeAlias>::variant;
-    using std::variant<StructDefinition, UnionDefinition, TypeAlias>::operator=;
+    using std::variant<StructDefinition,UnionDefinition,TypeAlias>::variant;
+    using std::variant<StructDefinition,UnionDefinition,TypeAlias>::operator=;
+    using std::variant<StructDefinition,UnionDefinition,TypeAlias>::index;
     
     template <typename T> [[nodiscard]] bool is() const {
         return std::holds_alternative<T>(*this);

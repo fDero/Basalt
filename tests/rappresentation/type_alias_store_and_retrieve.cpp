@@ -27,12 +27,16 @@ TEST(Rappresentation, Simple_Type_Alias_Store_And_Retrieve) {
 
     TypeSignature alias_type = TypeSignatureFactory::make_base_type("MyAlias", {});
     TypeDefinition retrieved = type_register.retrieve(alias_type);
+    ASSERT_TRUE(retrieved.is<TypeAlias>());
+    EXPECT_EQ(retrieved.get<TypeAlias>().alias_name, type_alias.alias_name);
+    EXPECT_EQ(retrieved.get<TypeAlias>().aliased_type.to_string(), type_alias.aliased_type.to_string());
+    EXPECT_EQ(retrieved.get<TypeAlias>().template_generics_names, type_alias.template_generics_names);
+    retrieved = type_register.retrieve(retrieved.get<TypeAlias>().aliased_type);
     ASSERT_TRUE(retrieved.is<StructDefinition>());
-    StructDefinition retrieved_struct = retrieved.get<StructDefinition>();
-    EXPECT_EQ(retrieved_struct.struct_name, struct_definition.struct_name);
-    EXPECT_EQ(retrieved_struct.fields.size(), struct_definition.fields.size());
-    EXPECT_EQ(retrieved_struct.filename, struct_definition.filename);
-    EXPECT_EQ(retrieved_struct.template_generics_names, struct_definition.template_generics_names);
+    EXPECT_EQ(retrieved.get<StructDefinition>().struct_name, struct_definition.struct_name);
+    EXPECT_EQ(retrieved.get<StructDefinition>().fields.size(), struct_definition.fields.size());
+    EXPECT_EQ(retrieved.get<StructDefinition>().filename, struct_definition.filename);
+    EXPECT_EQ(retrieved.get<StructDefinition>().template_generics_names, struct_definition.template_generics_names);
 }
 
 TEST(Rappresentation, Type_Alias_Of_Instantiated_Generic_Struct_Store_And_Retrieve) {
@@ -54,12 +58,15 @@ TEST(Rappresentation, Type_Alias_Of_Instantiated_Generic_Struct_Store_And_Retrie
 
     TypeSignature alias_type = TypeSignatureFactory::make_base_type("MyAlias", {});
     TypeDefinition retrieved = type_register.retrieve(alias_type);
+    ASSERT_TRUE(retrieved.is<TypeAlias>());
+    EXPECT_EQ(retrieved.get<TypeAlias>().alias_name, type_alias.alias_name);
+    EXPECT_EQ(retrieved.get<TypeAlias>().aliased_type.to_string(), type_alias.aliased_type.to_string());
+    EXPECT_EQ(retrieved.get<TypeAlias>().template_generics_names, type_alias.template_generics_names);
+    retrieved = type_register.retrieve(retrieved.get<TypeAlias>().aliased_type);
     ASSERT_TRUE(retrieved.is<StructDefinition>());
-    StructDefinition retrieved_struct = retrieved.get<StructDefinition>();
-    EXPECT_EQ(retrieved_struct.struct_name, "MyStruct<Int>");
-    EXPECT_TRUE(retrieved_struct.fields.empty());
-    EXPECT_EQ(retrieved_struct.filename, struct_definition.filename);
-    EXPECT_TRUE(retrieved_struct.template_generics_names.empty());
+    EXPECT_EQ(retrieved.get<StructDefinition>().struct_name, "MyStruct<Int>");
+    EXPECT_TRUE(retrieved.get<StructDefinition>().fields.empty());
+    EXPECT_TRUE(retrieved.get<StructDefinition>().template_generics_names.empty());
 }
 
 TEST(Rappresentation, Type_Alias_Of_Instantiated_Generic_Struct_With_Fields_Store_And_Retrieve) {
@@ -81,13 +88,17 @@ TEST(Rappresentation, Type_Alias_Of_Instantiated_Generic_Struct_With_Fields_Stor
 
     TypeSignature alias_type = TypeSignatureFactory::make_base_type("IntWrapper", {});
     TypeDefinition retrieved = type_register.retrieve(alias_type);
+    ASSERT_TRUE(retrieved.is<TypeAlias>());
+    EXPECT_EQ(retrieved.get<TypeAlias>().alias_name, type_alias.alias_name);
+    EXPECT_EQ(retrieved.get<TypeAlias>().aliased_type.to_string(), type_alias.aliased_type.to_string());
+    EXPECT_TRUE(retrieved.get<TypeAlias>().template_generics_names.empty());
+    retrieved = type_register.retrieve(retrieved.get<TypeAlias>().aliased_type);
     ASSERT_TRUE(retrieved.is<StructDefinition>());
-    StructDefinition retrieved_struct = retrieved.get<StructDefinition>();
-    EXPECT_EQ(retrieved_struct.struct_name, "Wrapper<Int>");
-    EXPECT_EQ(retrieved_struct.filename, struct_definition.filename);
-    EXPECT_TRUE(retrieved_struct.template_generics_names.empty());
-    ASSERT_EQ(retrieved_struct.fields.size(), 1);
-    EXPECT_TRUE(retrieved_struct.fields.back().field_type.to_string() == "Int");
+    EXPECT_EQ(retrieved.get<StructDefinition>().struct_name, "Wrapper<Int>");
+    EXPECT_TRUE(retrieved.get<StructDefinition>().template_generics_names.empty());
+    ASSERT_EQ(retrieved.get<StructDefinition>().fields.size(), 1);
+    EXPECT_EQ(retrieved.get<StructDefinition>().fields[0].field_name, "wrapped");
+    EXPECT_EQ(retrieved.get<StructDefinition>().fields[0].field_type.to_string(), "Int");
 }
 
 TEST(Rappresentation, Generic_Type_Alias_Of_Template_Generic_Struct_With_Fields_Store_And_Retrieve) {
@@ -109,11 +120,15 @@ TEST(Rappresentation, Generic_Type_Alias_Of_Template_Generic_Struct_With_Fields_
 
     TypeSignature alias_type = TypeSignatureFactory::make_base_type("MetaWrapper", { TypeSignatureFactory::Int });
     TypeDefinition retrieved = type_register.retrieve(alias_type);
+    ASSERT_TRUE(retrieved.is<TypeAlias>());
+    EXPECT_EQ(retrieved.get<TypeAlias>().alias_name, "MetaWrapper<Int>");
+    EXPECT_EQ(retrieved.get<TypeAlias>().aliased_type.to_string(), type_alias.aliased_type.to_string());
+    EXPECT_TRUE(retrieved.get<TypeAlias>().template_generics_names.empty());
+    retrieved = type_register.retrieve(retrieved.get<TypeAlias>().aliased_type);
     ASSERT_TRUE(retrieved.is<StructDefinition>());
-    StructDefinition retrieved_struct = retrieved.get<StructDefinition>();
-    EXPECT_EQ(retrieved_struct.struct_name, "Wrapper<Int>");
-    EXPECT_EQ(retrieved_struct.filename, struct_definition.filename);
-    EXPECT_TRUE(retrieved_struct.template_generics_names.empty());
-    ASSERT_EQ(retrieved_struct.fields.size(), 1);
-    EXPECT_TRUE(retrieved_struct.fields.back().field_type.to_string() == "Int");
+    EXPECT_EQ(retrieved.get<StructDefinition>().struct_name, "Wrapper<Int>");
+    EXPECT_TRUE(retrieved.get<StructDefinition>().template_generics_names.empty());
+    ASSERT_EQ(retrieved.get<StructDefinition>().fields.size(), 1);
+    EXPECT_EQ(retrieved.get<StructDefinition>().fields[0].field_name, "wrapped");
+    EXPECT_EQ(retrieved.get<StructDefinition>().fields[0].field_type.to_string(), "Int");
 }
