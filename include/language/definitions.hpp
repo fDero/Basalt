@@ -83,6 +83,10 @@ struct TypeAlias : public DebugInformationsAwareEntity {
         , template_generics_names(template_generics_names)
         , aliased_type(aliased_type)
     {}
+
+    [[nodiscard]] std::string generate_alias_id() const;
+    [[nodiscard]] std::string generate_match_pattern() const;
+    void instantiate_generics(const BaseType& concrete_type);
 };
 
 struct TypeDefinition 

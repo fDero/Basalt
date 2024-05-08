@@ -88,6 +88,12 @@ void ensure_union_doesnt_already_exists(
     const std::map<std::string, TypeDefinition>& type_definitions_register
 );
 
+void ensure_alias_doesnt_already_exists(
+    const std::string& alias_tag_name,
+    const TypeAlias& alias_def,
+    const std::map<std::string, TypeDefinition>& type_definitions_register
+);
+
 void ensure_there_is_still_a_scope_in_wich_keep_searching_struct_definitions(
     const std::map<std::string, std::string>::const_iterator& parent_scope_search_outcome,
     const std::map<std::string, std::string>& struct_parents

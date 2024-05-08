@@ -42,3 +42,17 @@ void assert_instantiationd_union_is_compatible_with_template_union(
     }
     #endif
 }
+
+void assert_instantiationd_union_is_compatible_with_template_alias(
+    const BaseType& concrete_type,
+    const TypeAlias& template_alias
+){
+    #ifdef DEBUG_BUILD
+    if (concrete_type.instantiationd_generics.size() != template_alias.template_generics_names.size()){
+        throw InternalError{ "concrete type and template union have different number of generics" };
+    }
+    if (concrete_type.to_match_string() != template_alias.generate_match_pattern()){
+        throw InternalError{ "concrete type and template union have a different match pattern" };
+    }
+    #endif
+}

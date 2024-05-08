@@ -32,6 +32,18 @@ void UnionDefinition::instantiate_generics(const BaseType& concrete_type) {
     }
 }
 
+void TypeAlias::instantiate_generics(const BaseType& concrete_type) {
+    assert_instantiationd_union_is_compatible_with_template_alias(concrete_type, *this);
+    const std::vector<TypeSignature>& instantiationd_generics = concrete_type.instantiationd_generics;
+    const std::vector<std::string>& template_generics = template_generics_names;
+    alias_name = concrete_type.to_string();
+    auto generic_substitution_rules = GenericSubstitutionRuleSet::zip_components_vectors(
+        template_generics, instantiationd_generics
+    );
+    template_generics_names.clear();
+    aliased_type.instantiate_generics(generic_substitution_rules);
+}
+
 [[nodiscard]] GenericSubstitutionRuleSet GenericSubstitutionRuleSet::zip_components_vectors (
     const std::vector<std::string>& template_generics,
     const std::vector<TypeSignature>& instantiationd_generics

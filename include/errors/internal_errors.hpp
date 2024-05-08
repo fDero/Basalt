@@ -134,3 +134,8 @@ void assert_instantiationd_union_is_compatible_with_template_union(
     const BaseType& concrete_type,
     const UnionDefinition& template_union
 );
+
+void assert_instantiationd_union_is_compatible_with_template_alias(
+    const BaseType& concrete_type,
+    const TypeAlias& template_alias
+);

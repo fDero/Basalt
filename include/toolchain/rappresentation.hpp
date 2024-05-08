@@ -10,6 +10,7 @@ struct TypeDefinitionsRegister {
     void store(const TypeDefinition& type_def);
     void store(const StructDefinition& struct_def);
     void store(const UnionDefinition& union_def);
+    void store(const TypeAlias& alias_def);
 
     [[nodiscard]] const TypeDefinition& retrieve(const TypeSignature& type_signature) const;
 
