@@ -37,10 +37,10 @@ TEST(Rappresentation, Struct_With_One_Generic_Store_And_Retrieval_From_Global_Sc
     TypeDefinition retrieved = struct_register.retrieve(struct_type);
     ASSERT_TRUE(retrieved.is<StructDefinition>());
     StructDefinition retrieved_struct = retrieved.get<StructDefinition>();
-    EXPECT_EQ(retrieved_struct.struct_name, struct_definition.struct_name);
-    EXPECT_EQ(retrieved_struct.fields.size(), struct_definition.fields.size());
+    EXPECT_EQ(retrieved_struct.struct_name, "MyStruct<Int>");
+    EXPECT_EQ(retrieved_struct.fields.size(), 0);
     EXPECT_EQ(retrieved_struct.filename, struct_definition.filename);
-    EXPECT_EQ(retrieved_struct.template_generics_names, struct_definition.template_generics_names);
+    EXPECT_TRUE(retrieved_struct.template_generics_names.empty());
 }
 
 TEST(Rappresentation, instantiationd_Struct_With_One_Generic_Store_And_Retrieval_From_Global_Scope) {

@@ -41,11 +41,11 @@ void TypeDependencyNavigator::visit_typesignature(const TypeSignature& typesigna
         TypeDefinition type_definition = types_register.retrieve(typesignature);
         if (type_definition.is<StructDefinition>()) {
             const StructDefinition& struct_def = type_definition.get<StructDefinition>();
-            instantiation_and_visit_struct(struct_def, typesignature);
+            visit_struct_definition(struct_def);
         }
         else {
             const UnionDefinition& union_def = type_definition.get<UnionDefinition>();
-            instantiation_and_visit_union(union_def, typesignature);
+            visit_union_definition(union_def);
         }
     }
 }
