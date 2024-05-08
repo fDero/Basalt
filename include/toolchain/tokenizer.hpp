@@ -19,7 +19,7 @@ struct Token : public DebugInformationsAwareEntity {
         catch_keyword, attempt_keyword, multiline_comment, if_keyword, else_keyword,
         while_keyword, until_keyword, var_keyword, const_keyword, 
         func_keyword, struct_keyword, union_keyword, enum_keyword,
-        package_keyword, import_keyword,
+        package_keyword, import_keyword, alias_keyword,
     };
 
     using DebugInformationsAwareEntity::line_number;

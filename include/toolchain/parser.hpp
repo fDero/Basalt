@@ -66,6 +66,10 @@ class Parser {
 
         [[nodiscard]] std::string parse_package_name();
         [[nodiscard]] std::string parse_package_import();
+        [[nodiscard]] TypeAlias parse_type_alias();
+        void parse_source_code(FileRappresentation& output);
+        void parse_alias_section(FileRappresentation& output);
+        void parse_import_section(FileRappresentation& output);
 
     private:
         std::vector<Token> source_tokens;

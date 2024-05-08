@@ -90,3 +90,26 @@
     }
     return expression;
 }
+
+[[nodiscard]] bool Parser::is_binary_operator(){
+    if (iterator == source_tokens.end()) return false;
+    auto binary_operator_search_outcome =  infix_operators_priority.find(iterator->sourcetext);
+    auto not_found = infix_operators_priority.end();
+    return (binary_operator_search_outcome != not_found);
+}
+
+[[nodiscard]] bool Parser::is_square_bracket(){
+    if (iterator == source_tokens.end()) return false;
+    return (iterator->sourcetext == "[");
+}
+
+[[nodiscard]] bool Parser::expression_ended(){
+    if (iterator == source_tokens.end()) return true;
+    if (iterator->sourcetext == ")")     return true;
+    if (iterator->sourcetext == "]")     return true;
+    if (iterator->sourcetext == "}")     return true;
+    if (iterator->sourcetext == ";")     return true;
+    if (iterator->sourcetext == ",")     return true;
+    if (iterator->sourcetext == "=")     return true;
+    return false;
+}

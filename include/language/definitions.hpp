@@ -67,11 +67,29 @@ struct UnionDefinition : public DebugInformationsAwareEntity  {
     void instantiate_generics(const BaseType& concrete_type);
 };
 
-struct TypeDefinition : public std::variant<StructDefinition, UnionDefinition> {
+struct TypeAlias : public DebugInformationsAwareEntity {
 
-    using std::variant<StructDefinition, UnionDefinition>::variant;
-    using std::variant<StructDefinition, UnionDefinition>::operator=;
-    using std::variant<StructDefinition, UnionDefinition>::index;
+    std::string alias_name;
+    std::vector<std::string> template_generics_names;
+    TypeSignature aliased_type;
+
+    TypeAlias(
+        const Token& alias_token, 
+        const std::vector<std::string>& template_generics_names, 
+        const TypeSignature& aliased_type
+    )
+        : DebugInformationsAwareEntity(alias_token)
+        , alias_name(alias_token.sourcetext)
+        , template_generics_names(template_generics_names)
+        , aliased_type(aliased_type)
+    {}
+};
+
+struct TypeDefinition 
+    : public  std::variant<StructDefinition, UnionDefinition, TypeAlias> 
+{
+    using std::variant<StructDefinition, UnionDefinition, TypeAlias>::variant;
+    using std::variant<StructDefinition, UnionDefinition, TypeAlias>::operator=;
     
     template <typename T> [[nodiscard]] bool is() const {
         return std::holds_alternative<T>(*this);

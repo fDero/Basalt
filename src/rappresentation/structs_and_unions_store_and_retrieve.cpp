@@ -6,22 +6,29 @@
 #include "language/syntax.hpp"
 
 void TypeDefinitionsRegister::store(const StructDefinition& struct_def){
-    const std::string struct_tag_name = struct_def.generate_match_pattern();
-    ensure_struct_doesnt_already_exists(struct_tag_name, struct_def, struct_definitions);
-    struct_definitions.insert(std::make_pair(struct_tag_name, struct_def));
+    const std::string match_pattern = struct_def.generate_match_pattern();
+    ensure_struct_doesnt_already_exists(match_pattern, struct_def, struct_definitions);
+    struct_definitions.insert(std::make_pair(match_pattern, struct_def));
 }
 
 void TypeDefinitionsRegister::store(const UnionDefinition& union_def){
-    const std::string struct_tag_name = union_def.generate_match_pattern();
-    ensure_union_doesnt_already_exists(struct_tag_name, union_def, struct_definitions);
-    struct_definitions.insert(std::make_pair(struct_tag_name, union_def));
+    const std::string match_pattern = union_def.generate_match_pattern();
+    ensure_union_doesnt_already_exists(match_pattern, union_def, struct_definitions);
+    struct_definitions.insert(std::make_pair(match_pattern, union_def));
 }
 
 void TypeDefinitionsRegister::store(const TypeDefinition& type_def){
     if (type_def.is<StructDefinition>()) {
        store(type_def.get<StructDefinition>());
-    } else {
-       store(type_def.get<StructDefinition>());
+    } 
+    else if (type_def.is<UnionDefinition>()) {
+       store(type_def.get<UnionDefinition>());
+    }
+    else if (type_def.is<TypeAlias>()) {
+        throw std::runtime_error("Alias not yet supported");
+    }
+    else {
+        throw std::runtime_error("Unknown type definition type");
     }
 }
 
@@ -34,7 +41,7 @@ void TypeDefinitionsRegister::store(const TypeDefinition& type_def){
     if (search_outcome != struct_definitions.end()) {
         return search_outcome->second;
     }
-    throw std::runtime_error("NO STRUCT FOUND: " + type_signature.to_string() + " " + type_signature.to_match_string());
+    throw std::runtime_error("NO TYPE FOUND: " + type_signature.to_string() + " " + type_signature.to_match_string());
 }
 
 [[nodiscard]] std::string StructDefinition::generate_struct_id() const {

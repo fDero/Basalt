@@ -12,12 +12,14 @@ Parser::Parser(const std::vector<Token>& tokens) {
 
 [[nodiscard]] FileRappresentation Parser::parse_everything(){
     FileRappresentation output;
-    if (iterator != source_tokens.end() && iterator->type == Token::Type::package_keyword){
-        output.file_metadata.packagename = parse_package_name();
-    }
-    while (iterator != source_tokens.end() && iterator->type == Token::Type::import_keyword){
-        output.file_metadata.imports.push_back(parse_package_import());
-    }
+    output.file_metadata.packagename = parse_package_name();
+    parse_import_section(output);
+    parse_alias_section(output);
+    parse_source_code(output);
+    return output;
+}
+
+void Parser::parse_source_code(FileRappresentation& output){
     while (iterator != source_tokens.end()){
         switch (iterator->type){
             break; case Token::Type::func_keyword:    output.func_defs.push_back(parse_function_definition());
@@ -26,28 +28,20 @@ Parser::Parser(const std::vector<Token>& tokens) {
             break; default: throw_invalid_use_of_token_within_global_scope(iterator);
         }
     }
-    return output;
 }
 
-[[nodiscard]] bool Parser::is_binary_operator(){
-    if (iterator == source_tokens.end()) return false;
-    auto binary_operator_search_outcome =  infix_operators_priority.find(iterator->sourcetext);
-    auto not_found = infix_operators_priority.end();
-    return (binary_operator_search_outcome != not_found);
+void Parser::parse_alias_section(FileRappresentation& output){
+    while (iterator != source_tokens.end() && iterator->type == Token::Type::alias_keyword){
+        ensure_there_are_still_tokens(source_tokens, std::next(iterator));
+        switch(std::next(iterator)->type){
+            break; case Token::Type::type: output.type_defs.push_back(parse_type_alias()); 
+            break; default: throw_invalid_use_of_token_within_global_scope(iterator);
+        }
+    }
 }
 
-[[nodiscard]] bool Parser::is_square_bracket(){
-    if (iterator == source_tokens.end()) return false;
-    return (iterator->sourcetext == "[");
-}
-
-[[nodiscard]] bool Parser::expression_ended(){
-    if (iterator == source_tokens.end()) return true;
-    if (iterator->sourcetext == ")")     return true;
-    if (iterator->sourcetext == "]")     return true;
-    if (iterator->sourcetext == "}")     return true;
-    if (iterator->sourcetext == ";")     return true;
-    if (iterator->sourcetext == ",")     return true;
-    if (iterator->sourcetext == "=")     return true;
-    return false;
+void Parser::parse_import_section(FileRappresentation& output){
+    while (iterator != source_tokens.end() && iterator->type == Token::Type::import_keyword){
+        output.file_metadata.imports.push_back(parse_package_import());
+    }
 }

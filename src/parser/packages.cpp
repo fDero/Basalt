@@ -22,3 +22,14 @@
     ensure_token_matches(source_tokens, iterator++, ";");
     return package_name;
 }
+
+[[nodiscard]] TypeAlias Parser::parse_type_alias(){
+    assert_token_matches(source_tokens, iterator++, "alias");
+    const Token& alias_token = *iterator;
+    ensure_token_is_typesignature(source_tokens, iterator++);
+    std::vector<std::string> template_generics = parse_template_generics();
+    ensure_token_matches(source_tokens, iterator++, "=");
+    TypeSignature alias_type = parse_typesignature();
+    ensure_token_matches(source_tokens, iterator++, ";");
+    return TypeAlias(alias_token, template_generics, alias_type);
+}
