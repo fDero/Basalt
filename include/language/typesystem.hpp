@@ -37,7 +37,7 @@ struct TypeSignature : public Polymorph<TypeSignatureBody> {
 
 struct BaseType : public TypeSignatureBody {
  
-    BaseType(const Token& typename_token, const std::vector<TypeSignature>& generics);
+    BaseType(const std::string& package_prefix, const Token& typename_token, const std::vector<TypeSignature>& generics);
 
     [[nodiscard]] std::string to_string() const override;
     [[nodiscard]] std::string to_match_string() const override;
@@ -46,6 +46,7 @@ struct BaseType : public TypeSignatureBody {
 
     std::string type_name;
     std::vector<TypeSignature> instantiationd_generics;
+    std::string package_prefix;
 };
 
 struct PointerType : public TypeSignatureBody {

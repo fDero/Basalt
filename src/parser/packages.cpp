@@ -33,3 +33,16 @@
     ensure_token_matches(source_tokens, iterator++, ";");
     return TypeAlias(alias_token, template_generics, alias_type);
 }
+
+[[nodiscard]] std::string Parser::parse_package_prefix(){
+    std::string package_prefix = "";
+    while(iterator != source_tokens.end() && std::next(iterator) != source_tokens.end()){
+        if (std::next(iterator)->sourcetext == namespace_concatenation){
+            package_prefix += iterator->sourcetext + namespace_concatenation;
+            std::advance(iterator, 2);
+            continue;
+        }
+        break;
+    }
+    return package_prefix;
+}

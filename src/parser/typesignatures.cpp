@@ -41,11 +41,12 @@
 }
 
 [[nodiscard]] TypeSignature Parser::parse_base_type(){
+    std::string package_prefix = parse_package_prefix();
     assert_token_is_simple_type(source_tokens, iterator);
     assert_type_is_properly_formatted(iterator);
     const Token& typesignature_token = *(iterator++);
     const std::vector<TypeSignature> template_generics = parse_concrete_generics();
-    BaseType base_type { typesignature_token, template_generics };
+    BaseType base_type { package_prefix, typesignature_token, template_generics };
     return base_type;
 }
 

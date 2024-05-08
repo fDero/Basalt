@@ -4,22 +4,22 @@
 
 struct TypeSignatureFactory {
 
-    inline static const TypeSignature Int = BaseType{ Token { "Int", "test.basalt", 1, 1, 3, Token::Type::type}, {} };
-    inline static const TypeSignature Float = BaseType{ Token { "Float", "test.basalt", 1, 1, 5, Token::Type::type}, {} };
-    inline static const TypeSignature String = BaseType{ Token { "String", "test.basalt", 1, 1, 6, Token::Type::type}, {} };
-    inline static const TypeSignature Bool = BaseType{ Token { "Bool", "test.basalt", 1, 1, 4, Token::Type::type}, {} };
-    inline static const TypeSignature Char = BaseType{ Token { "Char", "test.basalt", 1, 1, 4, Token::Type::type}, {} };
+    inline static const TypeSignature Int    = BaseType{ "", Token { "Int", "test.basalt", 1, 1, 3, Token::Type::type}, {} };
+    inline static const TypeSignature Float  = BaseType{ "", Token { "Float", "test.basalt", 1, 1, 5, Token::Type::type}, {} };
+    inline static const TypeSignature String = BaseType{ "", Token { "String", "test.basalt", 1, 1, 6, Token::Type::type}, {} };
+    inline static const TypeSignature Bool   = BaseType{ "", Token { "Bool", "test.basalt", 1, 1, 4, Token::Type::type}, {} };
+    inline static const TypeSignature Char   = BaseType{ "", Token { "Char", "test.basalt", 1, 1, 4, Token::Type::type}, {} };
 
-    inline static const TypeSignature T = BaseType{ Token { "T", "test.basalt", 1, 1, 1, Token::Type::type}, {} };
-    inline static const TypeSignature U = BaseType{ Token { "U", "test.basalt", 1, 1, 1, Token::Type::type}, {} };
-    inline static const TypeSignature V = BaseType{ Token { "V", "test.basalt", 1, 1, 1, Token::Type::type}, {} };
-    inline static const TypeSignature K = BaseType{ Token { "K", "test.basalt", 1, 1, 1, Token::Type::type}, {} };
-    inline static const TypeSignature S = BaseType{ Token { "S", "test.basalt", 1, 1, 1, Token::Type::type}, {} };
+    inline static const TypeSignature T = BaseType{ "", Token { "T", "test.basalt", 1, 1, 1, Token::Type::type}, {} };
+    inline static const TypeSignature U = BaseType{ "", Token { "U", "test.basalt", 1, 1, 1, Token::Type::type}, {} };
+    inline static const TypeSignature V = BaseType{ "", Token { "V", "test.basalt", 1, 1, 1, Token::Type::type}, {} };
+    inline static const TypeSignature K = BaseType{ "", Token { "K", "test.basalt", 1, 1, 1, Token::Type::type}, {} };
+    inline static const TypeSignature S = BaseType{ "", Token { "S", "test.basalt", 1, 1, 1, Token::Type::type}, {} };
 
-    inline static const TypeSignature ListOfStrings = BaseType{ Token { "List", "test.basalt", 1, 1, 4, Token::Type::type}, { String } };
-    inline static const TypeSignature ListOfInts = BaseType{ Token { "List", "test.basalt", 1, 1, 4, Token::Type::type}, { Int } };
-    inline static const TypeSignature PairOfStringAndInt = BaseType{ Token { "Pair", "test.basalt", 1, 1, 4, Token::Type::type}, { String, Int } };
-    inline static const TypeSignature PairOfStringAndChar = BaseType{ Token { "Pair", "test.basalt", 1, 1, 4, Token::Type::type}, { String, Char } };
+    inline static const TypeSignature ListOfStrings       = BaseType{ "", Token { "List", "test.basalt", 1, 1, 4, Token::Type::type}, { String } };
+    inline static const TypeSignature ListOfInts          = BaseType{ "", Token { "List", "test.basalt", 1, 1, 4, Token::Type::type}, { Int } };
+    inline static const TypeSignature PairOfStringAndInt  = BaseType{ "", Token { "Pair", "test.basalt", 1, 1, 4, Token::Type::type}, { String, Int } };
+    inline static const TypeSignature PairOfStringAndChar = BaseType{ "", Token { "Pair", "test.basalt", 1, 1, 4, Token::Type::type}, { String, Char } };
 
     inline static const TypeSignature PointerToInt = PointerType{ Token { "#", "test.basalt", 1, 1, 4, Token::Type::type}, Int };
     inline static const TypeSignature PointerToFloat = PointerType{ Token { "#", "test.basalt", 1, 1, 4, Token::Type::type}, Float };
@@ -41,7 +41,9 @@ struct TypeSignatureFactory {
 
 
     static TypeSignature make_base_type(const std::string& type_name, const std::vector<TypeSignature>& generics){
+        std::string empty_package_prefix = "";
         return BaseType{ 
+            empty_package_prefix,
             Token { 
                 type_name, "test.basalt", 1, 1, 
                 static_cast<unsigned int>(type_name.size()), 
