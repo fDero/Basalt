@@ -18,6 +18,8 @@ struct TypeDefinitionsRegister {
 
 struct FileMetaData {
     std::string filename;
+    std::string packagename;
+    std::vector<std::string> imports;
 };
 
 struct FileRappresentation {

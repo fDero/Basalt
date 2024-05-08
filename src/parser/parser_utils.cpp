@@ -12,6 +12,12 @@ Parser::Parser(const std::vector<Token>& tokens) {
 
 [[nodiscard]] FileRappresentation Parser::parse_everything(){
     FileRappresentation output;
+    if (iterator != source_tokens.end() && iterator->type == Token::Type::package_keyword){
+        output.file_metadata.packagename = parse_package_name();
+    }
+    while (iterator != source_tokens.end() && iterator->type == Token::Type::import_keyword){
+        output.file_metadata.imports.push_back(parse_package_import());
+    }
     while (iterator != source_tokens.end()){
         switch (iterator->type){
             break; case Token::Type::func_keyword:    output.func_defs.push_back(parse_function_definition());
@@ -37,11 +43,11 @@ Parser::Parser(const std::vector<Token>& tokens) {
 
 [[nodiscard]] bool Parser::expression_ended(){
     if (iterator == source_tokens.end()) return true;
-    if (iterator->sourcetext == ")") return true;
-    if (iterator->sourcetext == "]") return true;
-    if (iterator->sourcetext == "}") return true;
-    if (iterator->sourcetext == ";") return true;
-    if (iterator->sourcetext == ",") return true;
-    if (iterator->sourcetext == "=") return true;
+    if (iterator->sourcetext == ")")     return true;
+    if (iterator->sourcetext == "]")     return true;
+    if (iterator->sourcetext == "}")     return true;
+    if (iterator->sourcetext == ";")     return true;
+    if (iterator->sourcetext == ",")     return true;
+    if (iterator->sourcetext == "=")     return true;
     return false;
 }

@@ -97,7 +97,8 @@ inline const std::map<std::string, Token::Type> keywords {
     {"catch",    Token::Type::catch_keyword},    {"attempt",  Token::Type::attempt_keyword},
     {"if",       Token::Type::if_keyword},       {"else",     Token::Type::else_keyword},
     {"while",    Token::Type::while_keyword},    {"until",    Token::Type::until_keyword},
-    {"var",      Token::Type::var_keyword},      {"const",    Token::Type::const_keyword}
+    {"var",      Token::Type::var_keyword},      {"const",    Token::Type::const_keyword},
+    {"package",  Token::Type::package_keyword},  {"import",   Token::Type::import_keyword}
 };
 
 inline const std::set<std::string> primitive_types {

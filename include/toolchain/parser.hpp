@@ -64,6 +64,9 @@ class Parser {
         [[nodiscard]] std::vector<Statement> parse_function_def_body();
         [[nodiscard]] StructDefinition::Field parse_struct_field();
 
+        [[nodiscard]] std::string parse_package_name();
+        [[nodiscard]] std::string parse_package_import();
+
     private:
         std::vector<Token> source_tokens;
         std::vector<Token>::iterator iterator;
