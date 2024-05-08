@@ -7,8 +7,8 @@
 
 void TypeDefinitionsRegister::store(const TypeAlias& alias_def){
     const std::string match_pattern = alias_def.generate_match_pattern();
-    ensure_alias_doesnt_already_exists(match_pattern, alias_def, struct_definitions);
-    struct_definitions.insert(std::make_pair(match_pattern, alias_def));
+    ensure_alias_doesnt_already_exists(match_pattern, alias_def, type_definitions);
+    type_definitions.insert(std::make_pair(match_pattern, alias_def));
 }
 
 [[nodiscard]] std::string TypeAlias::generate_match_pattern() const {

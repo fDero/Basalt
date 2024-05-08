@@ -6,7 +6,7 @@
 TypeDependencyNavigator::TypeDependencyNavigator(
     TypeDefinitionsRegister& types_register
 ) : types_register(types_register) {
-    visited_definitions.reserve(types_register.struct_definitions.size());
+    visited_definitions.reserve(types_register.type_definitions.size());
 }
 
 void TypeDependencyNavigator::verify_that_the_type_exists(const TypeSignature& type_signature){

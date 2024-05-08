@@ -21,12 +21,12 @@ void TypeDefinitionsRegister::store(const TypeDefinition& type_def){
 }
 
 [[nodiscard]] const TypeDefinition& TypeDefinitionsRegister::retrieve(const TypeSignature& type_signature) const {
-    auto search_outcome = struct_definitions.find(type_signature.to_string());
-    if (search_outcome != struct_definitions.end()) {
+    auto search_outcome = type_definitions.find(type_signature.to_string());
+    if (search_outcome != type_definitions.end()) {
         return search_outcome->second;
     }
-    search_outcome = struct_definitions.find(type_signature.to_match_string());
-    if (search_outcome != struct_definitions.end()) {
+    search_outcome = type_definitions.find(type_signature.to_match_string());
+    if (search_outcome != type_definitions.end()) {
         return search_outcome->second;
     }
     throw std::runtime_error("NO TYPE FOUND: " + type_signature.to_string() + " " + type_signature.to_match_string());

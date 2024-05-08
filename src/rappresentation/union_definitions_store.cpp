@@ -7,8 +7,8 @@
 
 void TypeDefinitionsRegister::store(const UnionDefinition& union_def){
     const std::string match_pattern = union_def.generate_match_pattern();
-    ensure_union_doesnt_already_exists(match_pattern, union_def, struct_definitions);
-    struct_definitions.insert(std::make_pair(match_pattern, union_def));
+    ensure_union_doesnt_already_exists(match_pattern, union_def, type_definitions);
+    type_definitions.insert(std::make_pair(match_pattern, union_def));
 }
 
 [[nodiscard]] std::string UnionDefinition::generate_match_pattern() const {

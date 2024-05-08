@@ -14,7 +14,7 @@ struct TypeDefinitionsRegister {
 
     [[nodiscard]] const TypeDefinition& retrieve(const TypeSignature& type_signature) const;
 
-    std::map<std::string, TypeDefinition> struct_definitions;
+    std::map<std::string, TypeDefinition> type_definitions;
 };
 
 struct FileMetaData {

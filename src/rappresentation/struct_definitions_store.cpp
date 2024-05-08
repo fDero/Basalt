@@ -20,8 +20,8 @@
 
 void TypeDefinitionsRegister::store(const StructDefinition& struct_def){
     const std::string match_pattern = struct_def.generate_match_pattern();
-    ensure_struct_doesnt_already_exists(match_pattern, struct_def, struct_definitions);
-    struct_definitions.insert(std::make_pair(match_pattern, struct_def));
+    ensure_struct_doesnt_already_exists(match_pattern, struct_def, type_definitions);
+    type_definitions.insert(std::make_pair(match_pattern, struct_def));
 }
 
 [[nodiscard]] std::string StructDefinition::generate_struct_id() const {
