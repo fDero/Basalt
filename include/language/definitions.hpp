@@ -6,6 +6,7 @@
 #include "language/expressions.hpp"
 #include "language/syntax.hpp"
 #include "misc/debug_informations_aware_entity.h"
+#include "misc/smart_variant.hpp"
 #include <vector>
 #include <string>
 #include <variant>
@@ -90,60 +91,16 @@ struct TypeAlias : public DebugInformationsAwareEntity {
 };
 
 struct TypeDefinition 
-    : public std::variant<StructDefinition,UnionDefinition,TypeAlias> 
+    : public SmartVariant<StructDefinition,UnionDefinition,TypeAlias> 
 {
-    using std::variant<StructDefinition,UnionDefinition,TypeAlias>::variant;
-    using std::variant<StructDefinition,UnionDefinition,TypeAlias>::operator=;
-    using std::variant<StructDefinition,UnionDefinition,TypeAlias>::index;
+    using SmartVariant::SmartVariant;
+    using SmartVariant::operator=;
+    using SmartVariant::index;
     
-    template <typename T> [[nodiscard]] bool is() const {
-        return std::holds_alternative<T>(*this);
-    }
+    using SmartVariant::get;
+    using SmartVariant::is;
 
-    template <typename T> [[nodiscard]] const T& get() const {
-        return std::get<T>(*this);
-    }
-
-    template <typename T> [[nodiscard]] T& get() {
-        return std::get<T>(*this);
-    }
-
-    [[nodiscard]] std::string generate_id() const {
-        if (std::holds_alternative<StructDefinition>(*this)){
-            return std::get<StructDefinition>(*this).generate_struct_id();
-        }
-        if (std::holds_alternative<UnionDefinition>(*this)){
-            return std::get<UnionDefinition>(*this).generate_union_id();
-        }
-        if (std::holds_alternative<TypeAlias>(*this)){
-            return std::get<TypeAlias>(*this).generate_alias_id();
-        }
-       throw;
-    }
-    
-    [[nodiscard]] std::string generate_match_pattern() const {
-        if (std::holds_alternative<StructDefinition>(*this)){
-            return std::get<StructDefinition>(*this).generate_match_pattern();
-        }
-        if (std::holds_alternative<UnionDefinition>(*this)){
-            return std::get<UnionDefinition>(*this).generate_match_pattern();
-        }
-        if (std::holds_alternative<TypeAlias>(*this)){
-            return std::get<TypeAlias>(*this).generate_match_pattern();
-        }
-        throw;
-    }
-    
-    void instantiate_generics(const BaseType& concrete_type){
-        if (std::holds_alternative<StructDefinition>(*this)){
-            return std::get<StructDefinition>(*this).instantiate_generics(concrete_type);
-        }
-        if (std::holds_alternative<UnionDefinition>(*this)){
-            return std::get<UnionDefinition>(*this).instantiate_generics(concrete_type);
-        }
-        if (std::holds_alternative<TypeAlias>(*this)){
-            return std::get<TypeAlias>(*this).instantiate_generics(concrete_type);
-        }
-       throw;
-    }
+    [[nodiscard]] std::string generate_id() const;
+    [[nodiscard]] std::string generate_match_pattern() const;
+    void instantiate_generics(const BaseType& concrete_type);
 };
