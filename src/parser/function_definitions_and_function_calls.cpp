@@ -12,11 +12,9 @@
     FunctionDefinition function(*iterator);
     std::advance(iterator, 1);
     function.template_generics_names = parse_template_generics();
-    template_types = &function.template_generics_names;
     function.arguments = parse_function_def_arguments();
     function.return_type = parse_function_return_type();
     function.code = parse_function_def_body();
-    template_types = nullptr;
     return function;
 }
 

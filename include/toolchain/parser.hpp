@@ -75,7 +75,7 @@ class Parser {
         void parse_import_section(FileRappresentation& output);
 
     private:
-        std::vector<std::string>* template_types;
+        std::vector<std::string> template_generics;
         std::vector<Token> source_tokens;
         std::vector<Token>::iterator iterator;
 

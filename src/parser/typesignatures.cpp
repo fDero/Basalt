@@ -24,9 +24,9 @@
 }
 
 [[nodiscard]] bool Parser::is_template_type(const std::string& type_name){
-    if (template_types == nullptr) return false;
-    auto template_type_search_outcome = std::find(template_types->begin(), template_types->end(), type_name);
-    return template_type_search_outcome != template_types->end();
+    if (template_generics.empty()) return false;
+    auto template_type_search_outcome = std::find(template_generics.begin(), template_generics.end(), type_name);
+    return template_type_search_outcome != template_generics.end();
 }
 
 [[nodiscard]] TypeSignature Parser::parse_template_type(){
@@ -72,10 +72,10 @@
 }
 
 [[nodiscard]] std::vector<std::string> Parser::parse_template_generics(){
+    template_generics.clear();
     if (iterator == source_tokens.end() || iterator->sourcetext != "<") return {};
     assert_token_matches(source_tokens, iterator, "<");
     const Token& angular_brackets_opening = *(iterator++);
-    std::vector<std::string> template_generics;
     while (iterator != source_tokens.end() && iterator->sourcetext != ">"){
         ensure_token_is_simple_type_for_template_generics(iterator);
         template_generics.push_back(( iterator++ )->sourcetext);
