@@ -4,8 +4,8 @@
 #include "errors/parsing_errors.hpp"
 
 TypeDependencyNavigator::TypeDependencyNavigator(
-    TypeDefinitionsRegister& types_register
-) : types_register(types_register) {}
+    ProgramRappresentation& program_rappresentation
+) : program_rappresentation(program_rappresentation) {}
 
 void TypeDependencyNavigator::verify_that_the_type_exists(const TypeSignature& type_signature){
     if (type_signature.is<PointerType>()) {
@@ -17,8 +17,9 @@ void TypeDependencyNavigator::verify_that_the_type_exists(const TypeSignature& t
     else if (type_signature.is<SliceType>()) {
         verify_that_the_type_exists(type_signature.get<SliceType>().stored_type);
     }
-    else if (primitive_types.find(type_signature.get<BaseType>().type_name) == primitive_types.end()) {
-        std::ignore = types_register.retrieve(type_signature);
+    else if (type_signature.is<BaseType>()) {
+        const BaseType& base_type = type_signature.get<BaseType>();
+        std::ignore = program_rappresentation.retrieve_type_definition(base_type);
     }
 }
 
@@ -35,8 +36,9 @@ void TypeDependencyNavigator::visit_typesignature(const TypeSignature& typesigna
     else if (typesignature.is<SliceType>()) {
         verify_that_the_type_exists(typesignature.get<SliceType>().stored_type);
     }
-    else if (!typesignature.is<PrimitiveType>()) {
-        TypeDefinition typedefinition = types_register.retrieve(typesignature);
+    else if (typesignature.is<BaseType>()) {
+        const BaseType& base_type = typesignature.get<BaseType>();
+        TypeDefinition typedefinition = program_rappresentation.retrieve_type_definition(base_type);
         visit_type_definition(typesignature, typedefinition, generics);
     }
 }
@@ -57,5 +59,23 @@ void TypeDependencyNavigator::visit_type_definition(
     else if (type_definition.is<TypeAlias>()) {
         const TypeAlias& alias_def = type_definition.get<TypeAlias>();
         visit_typesignature(alias_def.aliased_type, generics);
+    }
+}
+
+void TypeDependencyNavigator::visit_union_definition(const UnionDefinition& union_definition){
+    std::string enum_id = union_definition.generate_union_id();
+    ensure_type_not_already_visited_hence_no_cyclic_dependency(enum_id, visited_definitions);
+    visited_definitions.insert(enum_id);
+    for (const TypeSignature& alternative : union_definition.types){
+        visit_typesignature( alternative, union_definition.template_generics_names );
+    }
+}
+
+void TypeDependencyNavigator::visit_struct_definition(const StructDefinition& struct_definition){
+    std::string struct_id = struct_definition.generate_struct_id();
+    ensure_type_not_already_visited_hence_no_cyclic_dependency(struct_id, visited_definitions);
+    visited_definitions.insert(struct_id);
+    for (const StructDefinition::Field& field : struct_definition.fields){
+        visit_typesignature( field.field_type, struct_definition.template_generics_names );
     }
 }

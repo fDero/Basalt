@@ -11,7 +11,7 @@
 class TypeDependencyNavigator {
 
     public:
-        TypeDependencyNavigator(TypeDefinitionsRegister& types_register);
+        TypeDependencyNavigator(ProgramRappresentation& program_rappresentation);
         void visit_struct_definition(const StructDefinition& struct_definition);
         void visit_union_definition(const UnionDefinition& union_definition);
         
@@ -25,9 +25,7 @@ class TypeDependencyNavigator {
 
         void visit_typesignature(const TypeSignature& typesignature, const std::vector<std::string>& union_def_generics);
         void verify_that_the_type_exists(const TypeSignature& type_signature);
-        void instantiation_and_visit_union(const UnionDefinition& union_definition, const TypeSignature& concrete_type);
-        void instantiation_and_visit_struct(const StructDefinition& struct_definition, const TypeSignature& concrete_type);
 
-        TypeDefinitionsRegister& types_register;
+        ProgramRappresentation& program_rappresentation;
         std::unordered_set<std::string> visited_definitions;
 };
