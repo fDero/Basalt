@@ -5,7 +5,6 @@
 #include <vector>
 #include "language/typesystem.hpp"
 
-
 struct GenericSubstitutionRule {
     std::string to_be_substituded;
     TypeSignature replacement;
