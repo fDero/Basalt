@@ -26,3 +26,11 @@
 [[nodiscard]] std::string SliceType::to_string() const {
     return slice_type_symbol + stored_type.to_string();
 }
+
+[[nodiscard]] std::string TemplateType::to_string() const {
+    return type_name;
+}
+
+[[nodiscard]] std::string PrimitiveType::to_string() const {
+    return type_name;
+}

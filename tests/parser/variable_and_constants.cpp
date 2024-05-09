@@ -19,7 +19,7 @@ TEST(Parsing, Variable_With_Type_And_Value){
     ASSERT_TRUE(statement.is<VariableDeclaration>());
     VariableDeclaration var = statement.get<VariableDeclaration>();
     EXPECT_EQ(var.identifier_name, "x");
-    ASSERT_TRUE(var.typesignature.is<BaseType>());
+    ASSERT_TRUE(var.typesignature.is<PrimitiveType>());
     ASSERT_TRUE(var.initial_value.has_value());
 }
 
@@ -36,7 +36,7 @@ TEST(Parsing, Variable_With_No_Value){
     ASSERT_TRUE(statement.is<VariableDeclaration>());
     VariableDeclaration var = statement.get<VariableDeclaration>();
     EXPECT_EQ(var.identifier_name, "x");
-    ASSERT_TRUE(var.typesignature.is<BaseType>());
+    ASSERT_TRUE(var.typesignature.is<PrimitiveType>());
     ASSERT_FALSE(var.initial_value.has_value());
 }
 
@@ -55,5 +55,5 @@ TEST(Parsing, Constant_With_Type_And_Value){
     ASSERT_TRUE(statement.is<ConstDeclaration>());
     ConstDeclaration con = statement.get<ConstDeclaration>();
     EXPECT_EQ(con.identifier_name, "x");
-    ASSERT_TRUE(con.typesignature.is<BaseType>());
+    ASSERT_TRUE(con.typesignature.is<PrimitiveType>());
 }

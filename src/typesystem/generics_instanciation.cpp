@@ -3,6 +3,7 @@
 #include "errors/internal_errors.hpp"
 #include <regex>
 #include <optional>
+#include <iostream>
 
 void StructDefinition::instantiate_generics(const BaseType& concrete_type) {
     assert_instantiationd_struct_is_compatible_with_template_struct(concrete_type, *this);
@@ -61,7 +62,7 @@ void TypeAlias::instantiate_generics(const BaseType& concrete_type) {
 
 void TypeSignature::instantiate_generics(const GenericSubstitutionRuleSet& generic_substitution_rules) {
     for (GenericSubstitutionRule rule : generic_substitution_rules){
-        if (this->to_string() == rule.to_be_substituded){
+        if (this->is<TemplateType>() && this->get<TemplateType>().type_name == rule.to_be_substituded){
             *this = rule.replacement;
             return;
         }
@@ -86,4 +87,8 @@ void SliceType::instantiate_generics(const GenericSubstitutionRuleSet& generic_s
 void ArrayType::instantiate_generics(const GenericSubstitutionRuleSet& generic_substitution_rules) {
     stored_type.instantiate_generics(generic_substitution_rules);
 }
+
+void TemplateType::instantiate_generics(const GenericSubstitutionRuleSet& generic_substitution_rules) {}
+
+void PrimitiveType::instantiate_generics(const GenericSubstitutionRuleSet& generic_substitution_rules) {}
 

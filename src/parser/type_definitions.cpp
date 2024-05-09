@@ -21,6 +21,7 @@
     StructDefinition struct_def(*iterator);
     std::advance(iterator, 1);
     struct_def.template_generics_names = parse_template_generics();
+    template_types = &struct_def.template_generics_names;
     ensure_token_matches(source_tokens, iterator++, "{");
     while (iterator != source_tokens.end() && iterator->sourcetext != "}"){
         ensure_token_is_identifier(source_tokens, iterator);
@@ -28,6 +29,7 @@
         struct_def.fields.push_back(field);
     }
     ensure_token_matches(source_tokens, iterator++, "}");
+    template_types = nullptr;
     return struct_def;
 }
 
@@ -37,11 +39,27 @@
     UnionDefinition union_def(*iterator);
     std::advance(iterator, 1);
     union_def.template_generics_names = parse_template_generics();
+    template_types = &union_def.template_generics_names;
     ensure_token_matches(source_tokens, iterator++, "{");
     while (iterator != source_tokens.end() && iterator->sourcetext != "}"){
         union_def.types.push_back(parse_typesignature());
         ensure_token_matches(source_tokens, iterator++, ";");
     }
     ensure_token_matches(source_tokens, iterator++, "}");
+    template_types = nullptr;
     return union_def;
+}
+
+[[nodiscard]] TypeAlias Parser::parse_type_alias(){
+    assert_token_matches(source_tokens, iterator++, "alias");
+    const Token& alias_token = *iterator;
+    ensure_token_is_typesignature(source_tokens, iterator++);
+    std::vector<std::string> template_generics = parse_template_generics();
+    template_types = &template_generics;
+    ensure_token_matches(source_tokens, iterator++, "=");
+    TypeSignature alias_type = parse_typesignature();
+    ensure_token_matches(source_tokens, iterator++, ";");
+    TypeAlias type_alias(alias_token, template_generics, alias_type);
+    template_types = nullptr;
+    return type_alias;
 }

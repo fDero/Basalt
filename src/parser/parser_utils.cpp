@@ -8,6 +8,7 @@
 Parser::Parser(const std::vector<Token>& tokens) {
     source_tokens = tokens; 
     iterator = source_tokens.begin(); 
+    template_types = nullptr;
 }
 
 [[nodiscard]] FileRappresentation Parser::parse_everything(){

@@ -7,12 +7,34 @@
 #include <assert.h>
 
 [[nodiscard]] TypeSignature Parser::parse_typesignature(){
+    std::string package_prefix = parse_package_prefix();
     if (iterator->sourcetext == pointer_type_symbol) return parse_pointer_type();
     if (iterator->sourcetext == array_type_first_symbol) return parse_array_type();
     if (iterator->sourcetext == slice_type_symbol) return parse_slice_type();
     ensure_token_is_typesignature(source_tokens, iterator);
-    TypeSignature typesignature = parse_base_type();
-    return typesignature;
+    if (primitive_types.find(iterator->sourcetext) != primitive_types.end()) {
+        return parse_primitive_type();
+    }
+    if (is_template_type(iterator->sourcetext)) {
+        return parse_template_type();
+    }
+    else {
+        return parse_base_type();
+    }
+}
+
+[[nodiscard]] bool Parser::is_template_type(const std::string& type_name){
+    if (template_types == nullptr) return false;
+    auto template_type_search_outcome = std::find(template_types->begin(), template_types->end(), type_name);
+    return template_type_search_outcome != template_types->end();
+}
+
+[[nodiscard]] TypeSignature Parser::parse_template_type(){
+    return TemplateType { *(iterator++) };
+}
+
+[[nodiscard]] TypeSignature Parser::parse_primitive_type(){
+    return PrimitiveType { *(iterator++) };
 }
 
 [[nodiscard]] TypeSignature Parser::parse_pointer_type(){
@@ -41,12 +63,11 @@
 }
 
 [[nodiscard]] TypeSignature Parser::parse_base_type(){
-    std::string package_prefix = parse_package_prefix();
     assert_token_is_simple_type(source_tokens, iterator);
     assert_type_is_properly_formatted(iterator);
     const Token& typesignature_token = *(iterator++);
     const std::vector<TypeSignature> template_generics = parse_concrete_generics();
-    BaseType base_type { package_prefix, typesignature_token, template_generics };
+    BaseType base_type { typesignature_token, template_generics };
     return base_type;
 }
 

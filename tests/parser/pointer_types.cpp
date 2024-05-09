@@ -12,8 +12,8 @@ TEST(Parsing, Simple_Pointer) {
     Parser parser = Parser(pointertokens);
     TypeSignature type = parser.parse_typesignature();
     ASSERT_TRUE(type.is<PointerType>());
-    ASSERT_TRUE(type.get<PointerType>().pointed_type.is<BaseType>());
-    EXPECT_EQ(type.get<PointerType>().pointed_type.get<BaseType>().type_name, "Int");
+    ASSERT_TRUE(type.get<PointerType>().pointed_type.is<PrimitiveType>());
+    EXPECT_EQ(type.get<PointerType>().pointed_type.get<PrimitiveType>().type_name, "Int");
 }
 
 TEST(Parsing, Pointer_To_Pointer) {
@@ -27,6 +27,6 @@ TEST(Parsing, Pointer_To_Pointer) {
     ASSERT_TRUE(type.is<PointerType>());
     ASSERT_TRUE(type.get<PointerType>().pointed_type.is<PointerType>());
     PointerType inner_pointer = type.get<PointerType>().pointed_type.get<PointerType>();
-    ASSERT_TRUE(inner_pointer.pointed_type.is<BaseType>());
-    EXPECT_EQ(inner_pointer.pointed_type.get<BaseType>().type_name, "Int");
+    ASSERT_TRUE(inner_pointer.pointed_type.is<PrimitiveType>());
+    EXPECT_EQ(inner_pointer.pointed_type.get<PrimitiveType>().type_name, "Int");
 }

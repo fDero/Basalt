@@ -10,11 +10,7 @@
             return true;
         }
     }
-    return generics_names.end() != std::find(
-        generics_names.begin(), 
-        generics_names.end(), 
-        type_name
-    );
+    return false;
 }
 
 [[nodiscard]] bool PointerType::is_generic(const std::vector<std::string>& generics_names) const {
@@ -27,4 +23,12 @@
 
 [[nodiscard]] bool SliceType::is_generic(const std::vector<std::string>& generics_names) const {
     return !generics_names.empty() && stored_type.is_generic(generics_names);
+}
+
+[[nodiscard]] bool TemplateType::is_generic(const std::vector<std::string>& generics_names) const {
+    return true;
+}
+
+[[nodiscard]] bool PrimitiveType::is_generic(const std::vector<std::string>& generics_names) const {
+    return false;
 }

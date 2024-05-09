@@ -22,14 +22,26 @@
 
 
 BaseType::BaseType(
-    const std::string& package_prefix,
     const Token& typename_token, 
     const std::vector<TypeSignature>& generics
 ) 
     : TypeSignatureBody(typename_token) 
     , type_name(typename_token.sourcetext)
     , instantiationd_generics(generics)
-    , package_prefix(package_prefix) 
+{}
+
+TemplateType::TemplateType(
+    const Token& typename_token
+) 
+    : TypeSignatureBody(typename_token) 
+    , type_name(typename_token.sourcetext) 
+{}
+
+PrimitiveType::PrimitiveType(
+    const Token& typename_token
+) 
+    : TypeSignatureBody(typename_token) 
+    , type_name(typename_token.sourcetext) 
 {}
 
 PointerType::PointerType(

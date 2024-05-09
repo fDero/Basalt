@@ -49,6 +49,8 @@ class Parser {
         [[nodiscard]] TypeSignature parse_array_type();
         [[nodiscard]] TypeSignature parse_slice_type();
         [[nodiscard]] TypeSignature parse_base_type();
+        [[nodiscard]] TypeSignature parse_primitive_type();
+        [[nodiscard]] TypeSignature parse_template_type();
       
         [[nodiscard]] std::vector<std::string> parse_template_generics();
         [[nodiscard]] std::vector<TypeSignature> parse_concrete_generics();
@@ -73,6 +75,7 @@ class Parser {
         void parse_import_section(FileRappresentation& output);
 
     private:
+        std::vector<std::string>* template_types;
         std::vector<Token> source_tokens;
         std::vector<Token>::iterator iterator;
 
@@ -91,4 +94,6 @@ class Parser {
         [[nodiscard]] Expression rotate_binary_operator_to_match_operators_priority(const BinaryOperator&);
         [[nodiscard]] Expression rotate_binary_operator_on_binary_operator_if_needed(const BinaryOperator&, const BinaryOperator&);
         [[nodiscard]] Expression rotate_binary_operator_on_unary_operator_if_needed(const BinaryOperator&, const UnaryOperator&);
+
+        [[nodiscard]] bool is_template_type(const std::string& type_name);
 };
