@@ -7,8 +7,8 @@
 
 void StructDefinition::instantiate_generics(const BaseType& concrete_type) {
     assert_instantiationd_struct_is_compatible_with_template_struct(concrete_type, *this);
-    const std::vector<TypeSignature>& instantiationd_generics = concrete_type.instantiationd_generics;
-    const std::vector<std::string>& template_generics = template_generics_names;
+    const ConcreteGenerics& instantiationd_generics = concrete_type.instantiationd_generics;
+    const TemplateGenerics& template_generics = template_generics_names;
     struct_name = concrete_type.to_string();
     auto generic_substitution_rules = GenericSubstitutionRuleSet::zip_components_vectors(
         template_generics, instantiationd_generics
@@ -21,8 +21,8 @@ void StructDefinition::instantiate_generics(const BaseType& concrete_type) {
 
 void UnionDefinition::instantiate_generics(const BaseType& concrete_type) {
     assert_instantiationd_union_is_compatible_with_template_union(concrete_type, *this);
-    const std::vector<TypeSignature>& instantiationd_generics = concrete_type.instantiationd_generics;
-    const std::vector<std::string>& template_generics = template_generics_names;
+    const ConcreteGenerics& instantiationd_generics = concrete_type.instantiationd_generics;
+    const TemplateGenerics& template_generics = template_generics_names;
     union_name = concrete_type.to_string();
     auto generic_substitution_rules = GenericSubstitutionRuleSet::zip_components_vectors(
         template_generics, instantiationd_generics
@@ -46,8 +46,8 @@ void TypeAlias::instantiate_generics(const BaseType& concrete_type) {
 }
 
 [[nodiscard]] GenericSubstitutionRuleSet GenericSubstitutionRuleSet::zip_components_vectors (
-    const std::vector<std::string>& template_generics,
-    const std::vector<TypeSignature>& instantiationd_generics
+    const TemplateGenerics& template_generics,
+    const ConcreteGenerics& instantiationd_generics
 ){
     assert_vectors_have_same_size_hence_they_can_be_zipped(template_generics, instantiationd_generics);
     GenericSubstitutionRuleSet result;

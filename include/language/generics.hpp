@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include "language/typesystem.hpp"
+#include "misc/aliases.hpp"
 
 struct GenericSubstitutionRule {
     std::string to_be_substituded;
@@ -18,7 +19,7 @@ struct GenericSubstitutionRuleSet : public std::vector<GenericSubstitutionRule> 
     using vector<GenericSubstitutionRule>::push_back;
     
     [[nodiscard]] static GenericSubstitutionRuleSet zip_components_vectors (
-        const std::vector<std::string>& template_generics,
-        const std::vector<TypeSignature>& instantiationd_generics
+        const TemplateGenerics& template_generics,
+        const ConcreteGenerics& instantiationd_generics
     );
 };

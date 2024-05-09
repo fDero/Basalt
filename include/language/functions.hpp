@@ -15,6 +15,6 @@ struct FunctionCall
 	);
 
 	std::string function_name;
-	std::vector<TypeSignature> instaciated_generics;
+	ConcreteGenerics instaciated_generics;
 	std::vector<Expression> arguments;
 };

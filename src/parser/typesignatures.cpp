@@ -66,8 +66,8 @@
     assert_token_is_simple_type(source_tokens, iterator);
     assert_type_is_properly_formatted(iterator);
     const Token& typesignature_token = *(iterator++);
-    const std::vector<TypeSignature> template_generics = parse_concrete_generics();
-    BaseType base_type { typesignature_token, template_generics };
+    const ConcreteGenerics generics = parse_concrete_generics();
+    BaseType base_type { typesignature_token, generics };
     return base_type;
 }
 
@@ -90,7 +90,7 @@
     if (iterator == source_tokens.end() || iterator->sourcetext != "<") return {};
     assert_token_matches(source_tokens, iterator, "<");
     const Token& angular_brackets_opening = *(iterator++);
-    std::vector<TypeSignature> concrete_generics;
+    ConcreteGenerics concrete_generics;
     while (iterator != source_tokens.end() && iterator->sourcetext != ">"){
         concrete_generics.push_back(parse_typesignature());
         ensure_either_comma_or_closed_angular_for_generics(source_tokens, angular_brackets_opening, iterator);

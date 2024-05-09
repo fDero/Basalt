@@ -40,7 +40,7 @@ struct TypeSignatureFactory {
     inline static const TypeSignature SliceOfChars = SliceType{ Token { "[]", "test.basalt", 1, 1, 4, Token::Type::type}, Char };
 
 
-    static TypeSignature make_base_type(const std::string& type_name, const std::vector<TypeSignature>& generics){
+    static TypeSignature make_base_type(const std::string& type_name, const ConcreteGenerics& generics){
         return BaseType{ 
             Token { 
                 type_name, "test.basalt", 1, 1, 
