@@ -1,5 +1,6 @@
 
 #include "language/expressions.hpp"
+#include "language/functions.hpp"
 
 ArrayLiteral::ArrayLiteral(
     int length,
@@ -33,7 +34,6 @@ UnaryOperator::UnaryOperator(
     , operand(expr) 
 {}
 
-
 Identifier::Identifier(const Token& identifier_token)
     : ExpressionBody(identifier_token) 
     , name(identifier_token.sourcetext) 
@@ -64,3 +64,14 @@ CharLiteral::CharLiteral(const Token& char_literal_token)
     : ExpressionBody(char_literal_token)
     , value(char_literal_token.sourcetext[1]) 
 { }
+
+FunctionCall::FunctionCall(
+    const Token& function_call_token, 
+    const std::vector<Expression>& args, 
+    const std::vector<TypeSignature>& instaciated_generics
+) 
+    : ExpressionBody(function_call_token)
+    , StatementBody(function_call_token)
+    , function_name(function_call_token.sourcetext)
+    , instaciated_generics(instaciated_generics)
+    , arguments(args) {}
