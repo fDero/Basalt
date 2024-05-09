@@ -4,6 +4,10 @@
 #include <regex>
 #include <optional>
 
+[[nodiscard]] std::string TypeSignature::to_match_string() const { 
+    return ptr->to_match_string(); 
+}
+
 [[nodiscard]] std::string BaseType::to_match_string() const {
     assert_type_is_non_primitive(*this);
     if (instantiationd_generics.empty()) {

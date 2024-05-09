@@ -4,6 +4,10 @@
 #include <regex>
 #include <optional>
 
+[[nodiscard]] std::string TypeSignature::to_string() const {
+    return ptr->to_string();
+}
+
 [[nodiscard]] std::string BaseType::to_string() const {
     std::string fully_qualified_name = type_name;
     if (instantiationd_generics.empty()) return fully_qualified_name;

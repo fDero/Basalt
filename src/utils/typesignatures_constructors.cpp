@@ -4,23 +4,6 @@
 #include <regex>
 #include <optional>
 
-[[nodiscard]] std::string TypeSignature::to_string() const {
-    return ptr->to_string();
-}
-
-[[nodiscard]] std::string TypeSignature::to_match_string() const { 
-    return ptr->to_match_string(); 
-}
-
-[[nodiscard]] bool TypeSignature::is_generic(const TemplateGenerics& generic_names) const { 
-    return ptr->is_generic(generic_names); 
-}
-
-[[nodiscard]] bool TypeSignature::is_primitive_type() const { 
-    return primitive_types.find(ptr->to_string()) != primitive_types.end();
-}
-
-
 BaseType::BaseType(
     const Token& typename_token, 
     const ConcreteGenerics& generics

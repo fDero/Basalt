@@ -28,7 +28,6 @@ struct TypeSignature : public Polymorph<TypeSignatureBody> {
     [[nodiscard]] std::string to_string() const;
     [[nodiscard]] std::string to_match_string() const;
     [[nodiscard]] bool is_generic(const TemplateGenerics& generic_names) const;
-    [[nodiscard]] bool is_primitive_type() const;
 
     void instantiate_generics(const GenericSubstitutionRuleSet& rules);
 };

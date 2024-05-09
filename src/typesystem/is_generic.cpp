@@ -4,6 +4,10 @@
 #include <regex>
 #include <optional>
 
+[[nodiscard]] bool TypeSignature::is_generic(const TemplateGenerics& generic_names) const { 
+    return ptr->is_generic(generic_names); 
+}
+
 [[nodiscard]] bool BaseType::is_generic(const TemplateGenerics& generics_names) const {
     for (const TypeSignature& generic : instantiationd_generics){
         if (generic.is_generic(generics_names)) {

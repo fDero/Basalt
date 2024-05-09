@@ -35,7 +35,7 @@ void TypeDependencyNavigator::visit_typesignature(const TypeSignature& typesigna
     else if (typesignature.is<SliceType>()) {
         verify_that_the_type_exists(typesignature.get<SliceType>().stored_type);
     }
-    else if (!typesignature.is_primitive_type()) {
+    else if (!typesignature.is<PrimitiveType>()) {
         TypeDefinition typedefinition = types_register.retrieve(typesignature);
         visit_type_definition(typesignature, typedefinition, generics);
     }
