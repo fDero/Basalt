@@ -3,17 +3,15 @@
 #include "misc/polymorph.hpp"
 #include "misc/debug_informations_aware_entity.h"
 #include "language/syntax.hpp"
-#include <string>
-#include <vector>
+#include "misc/aliases.hpp"
 
-struct GenericSubstitutionRuleSet;
 
 struct TypeSignatureBody : public DebugInformationsAwareEntity {
 
     TypeSignatureBody(const Token& token) 
         : DebugInformationsAwareEntity(token) {}
 
-    [[nodiscard]] virtual bool is_generic(const std::vector<std::string>& generic_names) const = 0;
+    [[nodiscard]] virtual bool is_generic(const TemplateGenerics& generic_names) const = 0;
     [[nodiscard]] virtual std::string to_string() const = 0;
     [[nodiscard]] virtual std::string to_match_string() const = 0;
 
@@ -29,7 +27,7 @@ struct TypeSignature : public Polymorph<TypeSignatureBody> {
 
     [[nodiscard]] std::string to_string() const;
     [[nodiscard]] std::string to_match_string() const;
-    [[nodiscard]] bool is_generic(const std::vector<std::string>& generic_names) const;
+    [[nodiscard]] bool is_generic(const TemplateGenerics& generic_names) const;
     [[nodiscard]] bool is_primitive_type() const;
 
     void instantiate_generics(const GenericSubstitutionRuleSet& rules);
@@ -37,11 +35,11 @@ struct TypeSignature : public Polymorph<TypeSignatureBody> {
 
 struct BaseType : public TypeSignatureBody {
  
-    BaseType(const Token& typename_token, const std::vector<TypeSignature>& generics);
+    BaseType(const Token& typename_token, const ConcreteGenerics& generics);
 
     [[nodiscard]] std::string to_string() const override;
     [[nodiscard]] std::string to_match_string() const override;
-    [[nodiscard]] bool is_generic(const std::vector<std::string>& generic_names) const override;
+    [[nodiscard]] bool is_generic(const TemplateGenerics& generic_names) const override;
     void instantiate_generics(const GenericSubstitutionRuleSet&) override;
 
     std::string type_name;
@@ -56,7 +54,7 @@ struct TemplateType : public TypeSignatureBody {
     TemplateType(const Token& typename_token);
     [[nodiscard]] std::string to_string() const override;
     [[nodiscard]] std::string to_match_string() const override;
-    [[nodiscard]] bool is_generic(const std::vector<std::string>& generic_names) const override;
+    [[nodiscard]] bool is_generic(const TemplateGenerics& generic_names) const override;
     void instantiate_generics(const GenericSubstitutionRuleSet&) override;
 };
 
@@ -67,7 +65,7 @@ struct PrimitiveType : public TypeSignatureBody {
     PrimitiveType(const Token& typename_token);
     [[nodiscard]] std::string to_string() const override;
     [[nodiscard]] std::string to_match_string() const override;
-    [[nodiscard]] bool is_generic(const std::vector<std::string>& generic_names) const override;
+    [[nodiscard]] bool is_generic(const TemplateGenerics& generic_names) const override;
     void instantiate_generics(const GenericSubstitutionRuleSet&) override;
 };
 
@@ -75,7 +73,7 @@ struct PointerType : public TypeSignatureBody {
     PointerType(const Token& pointer_symbol_token, const TypeSignature& pointed);
     [[nodiscard]] std::string to_string() const override;
     [[nodiscard]] std::string to_match_string() const override;
-    [[nodiscard]] bool is_generic(const std::vector<std::string>& template_generic_names) const override;
+    [[nodiscard]] bool is_generic(const TemplateGenerics& template_generic_names) const override;
     void instantiate_generics(const GenericSubstitutionRuleSet&) override;
 
     TypeSignature pointed_type;
@@ -85,7 +83,7 @@ struct ArrayType : public TypeSignatureBody {
     ArrayType(const Token& array_open_square_bracket_token, int length, const TypeSignature& stored);
     [[nodiscard]] std::string to_string() const override;
     [[nodiscard]] std::string to_match_string() const override;
-    [[nodiscard]] bool is_generic(const std::vector<std::string>& generics_names) const override;
+    [[nodiscard]] bool is_generic(const TemplateGenerics& generics_names) const override;
     void instantiate_generics(const GenericSubstitutionRuleSet&) override;
 
     int array_length;
@@ -96,7 +94,7 @@ struct SliceType : public TypeSignatureBody {
     SliceType(const Token& slice_symbol_token, const TypeSignature& stored);
     [[nodiscard]] std::string to_string() const override;
     [[nodiscard]] std::string to_match_string() const override;
-    [[nodiscard]] bool is_generic(const std::vector<std::string>& template_generic_names) const override;
+    [[nodiscard]] bool is_generic(const TemplateGenerics& template_generic_names) const override;
     void instantiate_generics(const GenericSubstitutionRuleSet&) override;
 
     TypeSignature stored_type;

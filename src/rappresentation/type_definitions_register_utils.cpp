@@ -8,15 +8,15 @@
 
 void TypeDefinitionsRegister::store(const TypeDefinition& type_def){
     if (type_def.is<StructDefinition>()) {
-       store(type_def.get<StructDefinition>());
+        store_struct_defintion(type_def.get<StructDefinition>());
         return;
     } 
     if (type_def.is<UnionDefinition>()) {
-       store(type_def.get<UnionDefinition>());
+        store_union_definition(type_def.get<UnionDefinition>());
         return;
     }
     if (type_def.is<TypeAlias>()) {
-        store(type_def.get<TypeAlias>());
+        store_type_alias_definition(type_def.get<TypeAlias>());
         return;
     }
     assert_unreachable();
@@ -38,4 +38,13 @@ void TypeDefinitionsRegister::store(const TypeDefinition& type_def){
         return type_definitions.at(match_pattern);
     }
     throw std::runtime_error("NO TYPE FOUND: " + type_signature.to_string() + " " + type_signature.to_match_string());
+}
+
+[[nodiscard]] bool TypeDefinitionsRegister::contains(const TypeSignature& type_signature) {
+    try {
+        std::ignore = retrieve(type_signature);
+        return true;
+    } catch (...) {
+        return false;
+    }
 }

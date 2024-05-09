@@ -12,7 +12,7 @@
     return ptr->to_match_string(); 
 }
 
-[[nodiscard]] bool TypeSignature::is_generic(const std::vector<std::string>& generic_names) const { 
+[[nodiscard]] bool TypeSignature::is_generic(const TemplateGenerics& generic_names) const { 
     return ptr->is_generic(generic_names); 
 }
 
@@ -23,7 +23,7 @@
 
 BaseType::BaseType(
     const Token& typename_token, 
-    const std::vector<TypeSignature>& generics
+    const ConcreteGenerics& generics
 ) 
     : TypeSignatureBody(typename_token) 
     , type_name(typename_token.sourcetext)

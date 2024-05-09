@@ -5,6 +5,12 @@
 #include "errors/parsing_errors.hpp"
 #include "language/syntax.hpp"
 
+void TypeDefinitionsRegister::store_struct_defintion(const StructDefinition& struct_def){
+    const std::string match_pattern = struct_def.generate_match_pattern();
+    ensure_struct_doesnt_already_exists(match_pattern, struct_def, type_definitions);
+    type_definitions.insert(std::make_pair(match_pattern, struct_def));
+}
+
 [[nodiscard]] std::string StructDefinition::generate_match_pattern() const {
     std::string pattern_tag_name = struct_name;
     int number_of_generics = template_generics_names.size();
@@ -16,12 +22,6 @@
         pattern_tag_name.back() = '>';
     }
     return pattern_tag_name;
-}
-
-void TypeDefinitionsRegister::store(const StructDefinition& struct_def){
-    const std::string match_pattern = struct_def.generate_match_pattern();
-    ensure_struct_doesnt_already_exists(match_pattern, struct_def, type_definitions);
-    type_definitions.insert(std::make_pair(match_pattern, struct_def));
 }
 
 [[nodiscard]] std::string StructDefinition::generate_struct_id() const {

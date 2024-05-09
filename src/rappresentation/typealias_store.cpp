@@ -5,7 +5,7 @@
 #include "errors/parsing_errors.hpp"
 #include "language/syntax.hpp"
 
-void TypeDefinitionsRegister::store(const TypeAlias& alias_def){
+void TypeDefinitionsRegister::store_type_alias_definition(const TypeAlias& alias_def){
     const std::string match_pattern = alias_def.generate_match_pattern();
     ensure_alias_doesnt_already_exists(match_pattern, alias_def, type_definitions);
     type_definitions.insert(std::make_pair(match_pattern, alias_def));
