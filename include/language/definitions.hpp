@@ -13,6 +13,8 @@
 
 struct FunctionDefinition : public DebugInformationsAwareEntity {
     
+    FunctionDefinition(const Token& func_token);
+
     struct Argument {
         std::string arg_name;
         TypeSignature arg_type;
@@ -23,15 +25,12 @@ struct FunctionDefinition : public DebugInformationsAwareEntity {
     std::vector<std::string> template_generics_names;
     std::vector<Argument> arguments;
     std::vector<Statement> code;
-
-    FunctionDefinition(const Token& func_token)
-        : DebugInformationsAwareEntity(func_token) 
-        , function_name(func_token.sourcetext)
-    {}
 };
 
 
 struct StructDefinition : public DebugInformationsAwareEntity  {
+
+    StructDefinition(const Token& struct_token);
 
     struct Field {
         std::string field_name;
@@ -42,11 +41,6 @@ struct StructDefinition : public DebugInformationsAwareEntity  {
     std::vector<Field> fields;
     std::vector<std::string> template_generics_names;
 
-    StructDefinition(const Token& struct_token)
-        : DebugInformationsAwareEntity(struct_token)
-        , struct_name(struct_token.sourcetext)
-    {}
-
     [[nodiscard]] std::string generate_struct_id() const;
     [[nodiscard]] std::string generate_match_pattern() const;
     void instantiate_generics(const BaseType& concrete_type);
@@ -54,14 +48,11 @@ struct StructDefinition : public DebugInformationsAwareEntity  {
 
 struct UnionDefinition : public DebugInformationsAwareEntity  {
 
+    UnionDefinition(const Token& union_token);
+
     std::string union_name;
     std::vector<TypeSignature> types;
     std::vector<std::string> template_generics_names;
-
-    UnionDefinition(const Token& union_token)
-        : DebugInformationsAwareEntity(union_token)
-        , union_name(union_token.sourcetext)
-    {}
 
     [[nodiscard]] std::string generate_union_id() const;
     [[nodiscard]] std::string generate_match_pattern() const;
@@ -70,20 +61,15 @@ struct UnionDefinition : public DebugInformationsAwareEntity  {
 
 struct TypeAlias : public DebugInformationsAwareEntity {
 
-    std::string alias_name;
-    std::vector<std::string> template_generics_names;
-    TypeSignature aliased_type;
-
     TypeAlias(
         const Token& alias_token, 
         const std::vector<std::string>& template_generics_names, 
         const TypeSignature& aliased_type
-    )
-        : DebugInformationsAwareEntity(alias_token)
-        , alias_name(alias_token.sourcetext)
-        , template_generics_names(template_generics_names)
-        , aliased_type(aliased_type)
-    {}
+    );
+
+    std::string alias_name;
+    std::vector<std::string> template_generics_names;
+    TypeSignature aliased_type;
 
     [[nodiscard]] std::string generate_alias_id() const;
     [[nodiscard]] std::string generate_match_pattern() const;
