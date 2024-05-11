@@ -13,8 +13,8 @@ class Polymorph {
         template<typename ConcreteInnerStruct> 
         Polymorph(const ConcreteInnerStruct& type)
             requires(std::is_base_of_v<InnerStruct, ConcreteInnerStruct>){ 
-                    ptr = std::make_shared<ConcreteInnerStruct>(type); 
-                    cpp_type_info_str = typeid(ConcreteInnerStruct).name();
+                ptr = std::make_shared<ConcreteInnerStruct>(type); 
+                cpp_type_info_str = typeid(ConcreteInnerStruct).name();
         }
 
         template<typename ConcreteInnerStruct> 

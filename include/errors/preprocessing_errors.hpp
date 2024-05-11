@@ -52,3 +52,10 @@ void ensure_types_are_equality_comparable(
     const TypeSignature& left_type, 
     const TypeSignature& right_type
 );
+
+void ensure_type_not_already_found(
+    const std::pair<std::unordered_set<std::string>::iterator, bool>& insertion_result, 
+    const std::pair<std::string, TypeDefinition>& match_pattern_cursor, 
+    const FileRappresentation& file_rappresentation, 
+    const std::string& package
+);

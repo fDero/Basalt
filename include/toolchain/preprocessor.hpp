@@ -29,3 +29,16 @@ class TypeDependencyNavigator {
         ProgramRappresentation& program_rappresentation;
         std::unordered_set<std::string> visited_definitions;
 };
+
+class TypeConflictNavigator {
+    
+        public:
+            TypeConflictNavigator(ProgramRappresentation& program_rappresentation);
+            void visit_file(const FileRappresentation& file_rappresentation);
+            void visit_package(const PackageName& package_name);
+            
+        private:
+            ProgramRappresentation& program_rappresentation;
+            std::unordered_set<FileName> visited_files;
+            std::unordered_set<std::string> type_definition_match_patterns;
+};

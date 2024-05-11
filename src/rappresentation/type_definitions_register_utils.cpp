@@ -48,3 +48,7 @@ void TypeDefinitionsRegister::store(const TypeDefinition& type_def){
         return false;
     }
 }
+
+[[nodiscard]] const std::map<std::string, TypeDefinition>& TypeDefinitionsRegister::get_definitions() const {
+    return type_definitions;
+}

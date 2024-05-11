@@ -27,6 +27,6 @@ build-no-warnings:
 	${COMPILER} -Wno-all -std=${STD} src/*/*.cpp src/main.cpp -o ${TARGET} -I./include -DDEBUG_BUILD
 
 test:
-	${COMPILER} -Wall -std=${STD} tests/*/*.cpp src/*/*.cpp -o test_binary ${GTESTFLAGS} -I./include -O0 -DDEBUG_BUILD
+	${COMPILER} -Wall  -Woverloaded-virtual -std=${STD} tests/*/*.cpp src/*/*.cpp -o test_binary ${GTESTFLAGS} -I./include -O0 -DDEBUG_BUILD
 	./test_binary
 	${RM} test_binary

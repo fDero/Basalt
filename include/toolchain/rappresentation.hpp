@@ -13,6 +13,7 @@ class TypeDefinitionsRegister {
         void store(const TypeDefinition& type_def);
         [[nodiscard]] const TypeDefinition& retrieve(const TypeSignature& type_signature);
         [[nodiscard]] bool contains(const TypeSignature& type_signature);
+        [[nodiscard]] const std::map<std::string, TypeDefinition>& get_definitions() const;
 
 
     private:        
@@ -49,10 +50,13 @@ class ProgramRappresentation {
         void store_definitions_from_file(const FileRappresentation& file_rappresentation);
         [[nodiscard]] const TypeDefinition& retrieve_type_definition(const BaseType& type_signature);
 
-    private:
+    protected:
         
-        std::unordered_map<FileName, PackageName> package_name_by_file;
+        std::unordered_map<FileName, PackageName> package_name_by_file_name;
         std::unordered_map<PackageName, std::vector<FileRappresentation>> files_by_package;
         std::unordered_map<FileName, std::vector<PackageName>> imports_by_file;
-        std::unordered_map<FileName, TypeDefinitionsRegister> types_by_package;
+        std::unordered_map<PackageName, TypeDefinitionsRegister> types_by_package;
+
+    friend class TypeConflictNavigator;
+    friend class TypeDependencyNavigator;
 };
