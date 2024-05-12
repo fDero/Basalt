@@ -24,18 +24,10 @@
 }
 
 [[nodiscard]] std::string Parser::parse_package_prefix(){
-    std::string package_prefix = "";
-    while(iterator != source_tokens.end() && std::next(iterator) != source_tokens.end()){
-        if (std::next(iterator)->sourcetext == namespace_concatenation){
-            package_prefix += iterator->sourcetext + namespace_concatenation;
-            std::advance(iterator, 2);
-            continue;
-        }
-        break;
+    if (std::next(iterator)->sourcetext != namespace_concatenation){
+        return "";
     }
-    if (!package_prefix.empty()){
-        package_prefix.pop_back();
-        package_prefix.pop_back();
-    }
+    const std::string& package_prefix = iterator->sourcetext;
+    std::advance(iterator, 2);
     return package_prefix;
 }
