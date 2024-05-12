@@ -2,26 +2,26 @@
 #include "toolchain/rappresentation.hpp"
 #include "errors/preprocessing_errors.hpp"
 
+TypeDefinition ProgramRappresentation::retrieve_and_instantiate_type_definition(const BaseType& type_signature){
+    TypeDefinition type_definition = retrieve_type_definition(type_signature);
+    type_definition.instantiate_generics(type_signature);
+    return type_definition;
+}
+
 TypeDefinition ProgramRappresentation::retrieve_type_definition(const BaseType& type_signature){
     if (!type_signature.package_prefix.empty()){
         const std::string& package = type_signature.package_prefix;
-        TypeDefinition type_definition = retrieve_type_definition_from_package(type_signature, package);
-        type_definition.instantiate_generics(type_signature);
-        return type_definition;
+        return retrieve_type_definition_from_package(type_signature, package);
     }
     const PackageName& target_package_name = package_name_by_file_name.at(type_signature.filename);
     std::optional<TypeDefinition> retrieved = attempt_to_retrieve_type_definition_from_package(type_signature, target_package_name);
     if (retrieved.has_value()){
-        TypeDefinition type_definition = retrieved.value();
-        type_definition.instantiate_generics(type_signature);
-        return type_definition;
+        return retrieved.value();
     }
     for (const PackageName& package : imports_by_file.at(type_signature.filename)){
         std::optional<TypeDefinition> retrieved = attempt_to_retrieve_type_definition_from_package(type_signature, package);
         if (retrieved.has_value()){
-            TypeDefinition type_definition = retrieved.value();
-            type_definition.instantiate_generics(type_signature);
-            return type_definition;
+            return retrieved.value();
         }
     }
     throw_no_type_definition_found(type_signature);

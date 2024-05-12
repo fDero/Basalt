@@ -26,6 +26,8 @@ struct ProgramRappresentation {
     
     void store_type_definition(const TypeDefinition& type_definition, const PackageName& package_name);
     
+    [[nodiscard]] TypeDefinition retrieve_and_instantiate_type_definition(const BaseType& type_signature);
+
     [[nodiscard]] TypeDefinition retrieve_type_definition(const BaseType& type_signature);
     
     [[nodiscard]] std::optional<TypeDefinition> attempt_to_retrieve_type_definition_from_package(

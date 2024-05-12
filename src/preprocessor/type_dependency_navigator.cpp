@@ -38,7 +38,7 @@ void TypeDependencyNavigator::visit_typesignature(const TypeSignature& typesigna
     }
     else if (typesignature.is<BaseType>()) {
         const BaseType& base_type = typesignature.get<BaseType>();
-        TypeDefinition typedefinition = program_rappresentation.retrieve_type_definition(base_type);
+        TypeDefinition typedefinition = program_rappresentation.retrieve_and_instantiate_type_definition(base_type);
         visit_type_definition(typesignature, typedefinition, generics);
     }
 }
