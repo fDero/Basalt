@@ -23,7 +23,7 @@ void TypeDependencyNavigator::verify_that_the_type_exists(const TypeSignature& t
     }
 }
 
-void TypeDependencyNavigator::visit_typesignature(const TypeSignature& typesignature, const std::vector<std::string>& generics){
+void TypeDependencyNavigator::visit_typesignature(const TypeSignature& typesignature, const std::vector<std::string>& generics){    
     if (typesignature.is_generic(generics)){
         return;
     }

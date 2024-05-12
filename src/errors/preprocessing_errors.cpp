@@ -56,6 +56,14 @@ void ensure_function_is_non_void_in_expression_evaluation(
     };
 }
 
+[[noreturn]] void throw_no_type_definition_found(
+    const BaseType& type_signature
+){
+    throw std::runtime_error {
+        "No type definition found for type " + type_signature.to_string() + "\n"
+    };
+}
+
 [[noreturn]] void throw_invalid_binary_operator_use(
     const BinaryOperator& binary_operator, 
     const TypeSignature& left_operand_type, 
@@ -143,6 +151,16 @@ void ensure_type_not_already_found(
     if (!insertion_result.second){
         throw std::runtime_error {
             "Type " + match_pattern_cursor.first + " already found in package " + package + " while visiting file " + file_rappresentation.file_metadata.filename + "\n"
+        };
+    }
+}
+
+void ensure_type_was_successfully_retrieved(
+    const std::optional<TypeDefinition>& retrieved
+){
+    if (!retrieved.has_value()){
+        throw std::runtime_error {
+            "No type definition found\n"
         };
     }
 }

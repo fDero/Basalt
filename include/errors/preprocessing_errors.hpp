@@ -59,3 +59,34 @@ void ensure_type_not_already_found(
     const FileRappresentation& file_rappresentation, 
     const std::string& package
 );
+
+void ensure_no_multiple_definition_of_the_same_type(
+    const std::pair<std::map<std::string, TypeDefinition>::iterator, bool>& 
+        type_definition_insertion_outcome
+);
+
+void ensure_struct_doesnt_already_exists(
+    const std::string& struct_tag_name,
+    const StructDefinition& struct_def,
+    const std::map<std::string, TypeDefinition>& type_definitions_register
+);
+
+void ensure_union_doesnt_already_exists(
+    const std::string& union_tag_name,
+    const UnionDefinition& union_def,
+    const std::map<std::string, TypeDefinition>& type_definitions_register
+);
+
+void ensure_alias_doesnt_already_exists(
+    const std::string& alias_tag_name,
+    const TypeAlias& alias_def,
+    const std::map<std::string, TypeDefinition>& type_definitions_register
+);
+
+void ensure_type_was_successfully_retrieved(
+    const std::optional<TypeDefinition>& retrieved
+);
+
+[[noreturn]] void throw_no_type_definition_found(
+    const BaseType& type_signature
+);

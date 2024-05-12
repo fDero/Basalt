@@ -6,27 +6,6 @@
 #include <unordered_map>
 #include <map>
 
-class TypeDefinitionsRegister {
-    
-    public:
-
-        void store(const TypeDefinition& type_def);
-        [[nodiscard]] const TypeDefinition& retrieve(const TypeSignature& type_signature);
-        [[nodiscard]] bool contains(const TypeSignature& type_signature);
-        [[nodiscard]] const std::map<std::string, TypeDefinition>& get_definitions() const;
-
-
-    private:        
-
-        void store_struct_defintion(const StructDefinition& struct_def);
-        void store_union_definition(const UnionDefinition& union_def);
-        void store_type_alias_definition(const TypeAlias& alias_def);
-
-        std::map<std::string, TypeDefinition> type_definitions;
-};
-
-
-
 struct FileRappresentation {
 
     struct Metadata {
@@ -41,22 +20,26 @@ struct FileRappresentation {
 };
 
 
+struct ProgramRappresentation {
 
-
-class ProgramRappresentation {
-
-    public:
+    void store_definitions_from_file(const FileRappresentation& file_rappresentation);
     
-        void store_definitions_from_file(const FileRappresentation& file_rappresentation);
-        [[nodiscard]] const TypeDefinition& retrieve_type_definition(const BaseType& type_signature);
+    void store_type_definition(const TypeDefinition& type_definition, const PackageName& package_name);
+    
+    [[nodiscard]] TypeDefinition retrieve_type_definition(const BaseType& type_signature);
+    
+    [[nodiscard]] std::optional<TypeDefinition> attempt_to_retrieve_type_definition_from_package(
+        const BaseType& type_signature, const PackageName& package_name
+    );
 
-    protected:
-        
-        std::unordered_map<FileName, PackageName> package_name_by_file_name;
-        std::unordered_map<PackageName, std::vector<FileRappresentation>> files_by_package;
-        std::unordered_map<FileName, std::vector<PackageName>> imports_by_file;
-        std::unordered_map<PackageName, TypeDefinitionsRegister> types_by_package;
+    [[nodiscard]] TypeDefinition retrieve_type_definition_from_package(
+        const BaseType& type_signature, const PackageName& package_name
+    );
 
-    friend class TypeConflictNavigator;
-    friend class TypeDependencyNavigator;
+    
+    using PackageTypeDefinitions = std::map<std::string, TypeDefinition>;
+    std::unordered_map<FileName, PackageName> package_name_by_file_name;
+    std::unordered_map<PackageName, std::vector<FileRappresentation>> files_by_package;
+    std::unordered_map<FileName, std::vector<PackageName>> imports_by_file;
+    std::unordered_map<PackageName, PackageTypeDefinitions> types_by_package;
 };

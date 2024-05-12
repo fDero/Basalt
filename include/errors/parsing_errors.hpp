@@ -76,24 +76,6 @@ void ensure_square_bracket_gets_closed_in_expression_wrapping(
 
 );
 
-void ensure_struct_doesnt_already_exists(
-    const std::string& struct_tag_name,
-    const StructDefinition& struct_def,
-    const std::map<std::string, TypeDefinition>& type_definitions_register
-);
-
-void ensure_union_doesnt_already_exists(
-    const std::string& union_tag_name,
-    const UnionDefinition& union_def,
-    const std::map<std::string, TypeDefinition>& type_definitions_register
-);
-
-void ensure_alias_doesnt_already_exists(
-    const std::string& alias_tag_name,
-    const TypeAlias& alias_def,
-    const std::map<std::string, TypeDefinition>& type_definitions_register
-);
-
 void ensure_there_is_still_a_scope_in_wich_keep_searching_struct_definitions(
     const std::map<std::string, std::string>::const_iterator& parent_scope_search_outcome,
     const std::map<std::string, std::string>& struct_parents
@@ -123,11 +105,6 @@ void ensure_no_function_overload_was_found_before_this(
 void ensure_no_multiple_definition_of_the_same_function(
     const std::pair<std::unordered_map<std::string, FunctionDefinition>::iterator, bool>& 
         function_definition_insertion_outcome
-);
-
-void ensure_no_multiple_definition_of_the_same_type(
-    const std::pair<std::map<std::string, TypeDefinition>::iterator, bool>& 
-        type_definition_insertion_outcome
 );
 
 void ensure_type_not_already_visited_hence_no_cyclic_dependency(
