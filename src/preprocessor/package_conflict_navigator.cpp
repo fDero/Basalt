@@ -3,10 +3,10 @@
 #include "toolchain/preprocessor.hpp"
 #include "errors/preprocessing_errors.hpp"
 
-TypeConflictNavigator::TypeConflictNavigator(ProgramRappresentation& program_rappresentation) 
+PackageTypeConflictNavigator::PackageTypeConflictNavigator(ProgramRappresentation& program_rappresentation) 
     : program_rappresentation(program_rappresentation) {}
 
-void TypeConflictNavigator::visit_file(const FileRappresentation& file_rappresentation) {
+void PackageTypeConflictNavigator::visit_file(const FileRappresentation& file_rappresentation) {
     if (visited_files.find(file_rappresentation.file_metadata.filename) != visited_files.end()){
         return;
     }
@@ -23,7 +23,7 @@ void TypeConflictNavigator::visit_file(const FileRappresentation& file_rappresen
     }
 }
 
-void TypeConflictNavigator::visit_package(const PackageName& package_name) {
+void PackageTypeConflictNavigator::visit_package(const PackageName& package_name) {
     for (const FileRappresentation& file : program_rappresentation.files_by_package[package_name]){
         visit_file(file);
     }

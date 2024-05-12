@@ -30,10 +30,10 @@ class TypeDependencyNavigator {
         std::unordered_set<std::string> visited_definitions;
 };
 
-class TypeConflictNavigator {
+class PackageTypeConflictNavigator {
     
         public:
-            TypeConflictNavigator(ProgramRappresentation& program_rappresentation);
+            PackageTypeConflictNavigator(ProgramRappresentation& program_rappresentation);
             void visit_file(const FileRappresentation& file_rappresentation);
             void visit_package(const PackageName& package_name);
             

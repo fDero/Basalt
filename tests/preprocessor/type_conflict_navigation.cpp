@@ -24,7 +24,7 @@ TEST(Preprocessor, No_Type_Conflict_In_Same_File) {
     
     ProgramRappresentation rappresentation;
     rappresentation.store_definitions_from_file(main_dot_basalt);
-    TypeConflictNavigator navigator(rappresentation);
+    PackageTypeConflictNavigator navigator(rappresentation);
     navigator.visit_package("testpackage");
 }
 
@@ -57,7 +57,7 @@ TEST(Preprocessor, No_Type_Conflict_In_Two_File_Of_Same_Package) {
     ProgramRappresentation rappresentation;
     rappresentation.store_definitions_from_file(a_dot_basalt);
     rappresentation.store_definitions_from_file(b_dot_basalt);
-    TypeConflictNavigator navigator(rappresentation);
+    PackageTypeConflictNavigator navigator(rappresentation);
     navigator.visit_package("testpackage");
 }
 
@@ -90,6 +90,6 @@ TEST(Preprocessor, No_Type_Conflict_In_Two_File_Of_Different_Packages) {
     ProgramRappresentation rappresentation;
     rappresentation.store_definitions_from_file(a_dot_basalt);
     rappresentation.store_definitions_from_file(b_dot_basalt);
-    TypeConflictNavigator navigator(rappresentation);
+    PackageTypeConflictNavigator navigator(rappresentation);
     navigator.visit_package("apackage");
 }
