@@ -7,11 +7,9 @@
 #include <assert.h>
 
 [[nodiscard]] TypeSignature Parser::parse_typesignature(){
-    std::string package_prefix = parse_package_prefix();
     if (iterator->sourcetext == pointer_type_symbol) return parse_pointer_type();
     if (iterator->sourcetext == array_type_first_symbol) return parse_array_type();
     if (iterator->sourcetext == slice_type_symbol) return parse_slice_type();
-    ensure_token_is_typesignature(source_tokens, iterator);
     if (primitive_types.find(iterator->sourcetext) != primitive_types.end()) {
         return parse_primitive_type();
     }
@@ -63,11 +61,13 @@
 }
 
 [[nodiscard]] TypeSignature Parser::parse_base_type(){
-    assert_token_is_simple_type(source_tokens, iterator);
+    PackageName package_prefix = parse_package_prefix();
+    ensure_token_is_typesignature(source_tokens, iterator);
     assert_type_is_properly_formatted(iterator);
     const Token& typesignature_token = *(iterator++);
     const ConcreteGenerics generics = parse_concrete_generics();
     BaseType base_type { typesignature_token, generics };
+    base_type.package_prefix = package_prefix;
     return base_type;
 }
 
