@@ -33,5 +33,9 @@
         }
         break;
     }
+    if (!package_prefix.empty()){
+        package_prefix.pop_back();
+        package_prefix.pop_back();
+    }
     return package_prefix;
 }
