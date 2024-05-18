@@ -12,7 +12,7 @@ void ProgramRepresentation::store_type_definition(
     ensure_no_multiple_definition_of_the_same_type(insertion_outcome);
 }
 
-TypeDefinition ProgramRepresentation::retrieve_type_definition(const BaseType& type_signature){
+TypeDefinition ProgramRepresentation::retrieve_type_definition(const BaseType& type_signature){    
     if (!type_signature.package_prefix.empty()){
         const std::string& package = type_signature.package_prefix;
         std::optional<TypeDefinition> retrieved = search_type_definition_in_package(type_signature, package);
