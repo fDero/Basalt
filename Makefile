@@ -21,12 +21,9 @@ clean:
 	@$(RM) *.out
 
 build:
-	${COMPILER} -Wall -std=${STD} src/*/*.cpp src/main.cpp -o ${TARGET} -I./include -DDEBUG_BUILD
-
-build-no-warnings:
-	${COMPILER} -Wno-all -std=${STD} src/*/*.cpp src/main.cpp -o ${TARGET} -I./include -DDEBUG_BUILD
-
+	${COMPILER} -Wall -Wpedantic -std=${STD} src/*/*.cpp src/main.cpp -o ${TARGET} -I./include -DDEBUG_BUILD
+	
 test:
-	${COMPILER} -Wall -std=${STD} tests/*/*.cpp src/*/*.cpp -o test_binary ${GTESTFLAGS} -I./include -O0 -DDEBUG_BUILD
+	${COMPILER} -Wall -Wpedantic -std=${STD} tests/*/*.cpp src/*/*.cpp -o test_binary ${GTESTFLAGS} -I./include -O0 -DDEBUG_BUILD
 	./test_binary
 	${RM} test_binary
