@@ -1,10 +1,10 @@
 
 #include "errors/internal_errors.hpp"
-#include "toolchain/rappresentation.hpp"
+#include "toolchain/representation.hpp"
 #include <unordered_set>
 
 void assert_parsed_files_outcome_empty(
-    const std::vector<FileRappresentation>& parsed_files_outcome
+    const std::vector<Filerepresentation>& parsed_files_outcome
 ){
     #ifdef DEBUG_BUILD
     if (parsed_files_outcome.size() != 0){

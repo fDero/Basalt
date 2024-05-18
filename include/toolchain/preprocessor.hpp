@@ -11,7 +11,7 @@
 class TypeDependencyNavigator {
 
     public:
-        TypeDependencyNavigator(ProgramRappresentation& program_rappresentation);
+        TypeDependencyNavigator(ProgramRepresentation& program_representation);
         void visit_struct_definition(const StructDefinition& struct_definition);
         void visit_union_definition(const UnionDefinition& union_definition);
         
@@ -26,19 +26,19 @@ class TypeDependencyNavigator {
         void visit_typesignature(const TypeSignature& typesignature, const std::vector<std::string>& union_def_generics);
         void verify_that_the_type_exists(const TypeSignature& type_signature);
 
-        ProgramRappresentation& program_rappresentation;
+        ProgramRepresentation& program_representation;
         std::unordered_set<std::string> visited_definitions;
 };
 
 class PackageTypeConflictNavigator {
     
         public:
-            PackageTypeConflictNavigator(ProgramRappresentation& program_rappresentation);
-            void visit_file(const FileRappresentation& file_rappresentation);
+            PackageTypeConflictNavigator(ProgramRepresentation& program_representation);
+            void visit_file(const Filerepresentation& file_representation);
             void visit_package(const PackageName& package_name);
             
         private:
-            ProgramRappresentation& program_rappresentation;
+            ProgramRepresentation& program_representation;
             std::unordered_set<FileName> visited_files;
             std::unordered_set<std::string> type_definition_match_patterns;
 };

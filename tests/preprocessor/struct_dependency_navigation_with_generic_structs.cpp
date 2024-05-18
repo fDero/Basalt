@@ -9,7 +9,7 @@
 
 TEST(Preprocessor, Recursive_Two_Struct_Dependency_Is_Cyclic_Dependency_Even_When_One_Is_Generic) {
     
-    FileRappresentation main_dot_basalt = {
+    Filerepresentation main_dot_basalt = {
         .file_metadata = {
             .filename = "main.basalt",
             .packagename = "testpackage",
@@ -36,10 +36,10 @@ TEST(Preprocessor, Recursive_Two_Struct_Dependency_Is_Cyclic_Dependency_Even_Whe
         .func_defs = { }
     };
     
-    ProgramRappresentation rappresentation;
-    rappresentation.store_definitions_from_file(main_dot_basalt);
+    ProgramRepresentation representation;
+    representation.store_definitions_from_file(main_dot_basalt);
     const StructDefinition& A = main_dot_basalt.type_defs[0].get<StructDefinition>();
-    TypeDependencyNavigator navigator(rappresentation);
+    TypeDependencyNavigator navigator(representation);
     EXPECT_ANY_THROW({
         navigator.visit_struct_definition(A);
     });
@@ -47,7 +47,7 @@ TEST(Preprocessor, Recursive_Two_Struct_Dependency_Is_Cyclic_Dependency_Even_Whe
 
 TEST(Preprocessor, Type_Dependency_Navigation_Works_Fine_On_Instantiated_Non_Recursive_Generic_Structs) {
     
-    FileRappresentation main_dot_basalt = {
+    Filerepresentation main_dot_basalt = {
         .file_metadata = {
             .filename = "main.basalt",
             .packagename = "testpackage",
@@ -74,16 +74,16 @@ TEST(Preprocessor, Type_Dependency_Navigation_Works_Fine_On_Instantiated_Non_Rec
         .func_defs = { }
     };
     
-    ProgramRappresentation rappresentation;
-    rappresentation.store_definitions_from_file(main_dot_basalt);
+    ProgramRepresentation representation;
+    representation.store_definitions_from_file(main_dot_basalt);
     const StructDefinition& B = main_dot_basalt.type_defs[1].get<StructDefinition>();
-    TypeDependencyNavigator navigator(rappresentation);
+    TypeDependencyNavigator navigator(representation);
     navigator.visit_struct_definition(B);
 }
 
 TEST(Preprocessor, Type_Dependency_Spots_Cyclic_Dependency_Even_On_Generic_Structs_Instantiation) {
     
-    FileRappresentation main_dot_basalt = {
+    Filerepresentation main_dot_basalt = {
         .file_metadata = {
             .filename = "main.basalt",
             .packagename = "testpackage",
@@ -110,10 +110,10 @@ TEST(Preprocessor, Type_Dependency_Spots_Cyclic_Dependency_Even_On_Generic_Struc
         .func_defs = { }
     };
     
-    ProgramRappresentation rappresentation;
-    rappresentation.store_definitions_from_file(main_dot_basalt);
+    ProgramRepresentation representation;
+    representation.store_definitions_from_file(main_dot_basalt);
     const StructDefinition& B = main_dot_basalt.type_defs[1].get<StructDefinition>();
-    TypeDependencyNavigator navigator(rappresentation);
+    TypeDependencyNavigator navigator(representation);
     EXPECT_ANY_THROW({
         navigator.visit_struct_definition(B);
     });

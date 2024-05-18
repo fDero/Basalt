@@ -9,7 +9,7 @@
 
 TEST(Preprocessor, Recursive_Two_Struct_Dependency_Is_Cyclic_Dependency) {
     
-    FileRappresentation main_dot_basalt = {
+    Filerepresentation main_dot_basalt = {
         .file_metadata = {
             .filename = "main.basalt",
             .packagename = "testpackage",
@@ -34,10 +34,10 @@ TEST(Preprocessor, Recursive_Two_Struct_Dependency_Is_Cyclic_Dependency) {
         .func_defs = { }
     };
     
-    ProgramRappresentation rappresentation;
-    rappresentation.store_definitions_from_file(main_dot_basalt);
+    ProgramRepresentation representation;
+    representation.store_definitions_from_file(main_dot_basalt);
     const StructDefinition& A = main_dot_basalt.type_defs[0].get<StructDefinition>();
-    TypeDependencyNavigator navigator(rappresentation);
+    TypeDependencyNavigator navigator(representation);
     EXPECT_ANY_THROW({
         navigator.visit_struct_definition(A);
     });
@@ -45,7 +45,7 @@ TEST(Preprocessor, Recursive_Two_Struct_Dependency_Is_Cyclic_Dependency) {
 
 TEST(Preprocessor, Recursive_Two_Struct_Dependency_With_Pointer) {
     
-    FileRappresentation main_dot_basalt = {
+    Filerepresentation main_dot_basalt = {
         .file_metadata = {
             .filename = "main.basalt",
             .packagename = "testpackage",
@@ -72,16 +72,16 @@ TEST(Preprocessor, Recursive_Two_Struct_Dependency_With_Pointer) {
         .func_defs = { }
     };
     
-    ProgramRappresentation rappresentation;
-    rappresentation.store_definitions_from_file(main_dot_basalt);
+    ProgramRepresentation representation;
+    representation.store_definitions_from_file(main_dot_basalt);
     const StructDefinition& A = main_dot_basalt.type_defs[0].get<StructDefinition>();
-    TypeDependencyNavigator navigator(rappresentation);
+    TypeDependencyNavigator navigator(representation);
     navigator.visit_struct_definition(A);
 }
 
 TEST(Preprocessor, Recursive_Two_Struct_Dependency_With_Slices) {
     
-    FileRappresentation main_dot_basalt = {
+    Filerepresentation main_dot_basalt = {
         .file_metadata = {
             .filename = "main.basalt",
             .packagename = "testpackage",
@@ -108,16 +108,16 @@ TEST(Preprocessor, Recursive_Two_Struct_Dependency_With_Slices) {
         .func_defs = { }
     };
     
-    ProgramRappresentation rappresentation;
-    rappresentation.store_definitions_from_file(main_dot_basalt);
+    ProgramRepresentation representation;
+    representation.store_definitions_from_file(main_dot_basalt);
     const StructDefinition& A = main_dot_basalt.type_defs[0].get<StructDefinition>();
-    TypeDependencyNavigator navigator(rappresentation);
+    TypeDependencyNavigator navigator(representation);
     navigator.visit_struct_definition(A);
 }
 
 TEST(Preprocessor, Recursive_Two_Struct_Dependency_With_Array_Is_Cyclic_Dependency) {
     
-    FileRappresentation main_dot_basalt = {
+    Filerepresentation main_dot_basalt = {
         .file_metadata = {
             .filename = "main.basalt",
             .packagename = "testpackage",
@@ -144,10 +144,10 @@ TEST(Preprocessor, Recursive_Two_Struct_Dependency_With_Array_Is_Cyclic_Dependen
         .func_defs = { }
     };
     
-    ProgramRappresentation rappresentation;
-    rappresentation.store_definitions_from_file(main_dot_basalt);
+    ProgramRepresentation representation;
+    representation.store_definitions_from_file(main_dot_basalt);
     const StructDefinition& A = main_dot_basalt.type_defs[0].get<StructDefinition>();
-    TypeDependencyNavigator navigator(rappresentation);
+    TypeDependencyNavigator navigator(representation);
     EXPECT_ANY_THROW({
         navigator.visit_struct_definition(A);
     });

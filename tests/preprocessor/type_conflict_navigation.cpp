@@ -9,7 +9,7 @@
 
 TEST(Preprocessor, No_Type_Conflict_In_Same_File) {
     
-    FileRappresentation main_dot_basalt = {
+    Filerepresentation main_dot_basalt = {
         .file_metadata = {
             .filename = "main.basalt",
             .packagename = "testpackage",
@@ -22,15 +22,15 @@ TEST(Preprocessor, No_Type_Conflict_In_Same_File) {
         .func_defs = { }
     };
     
-    ProgramRappresentation rappresentation;
-    rappresentation.store_definitions_from_file(main_dot_basalt);
-    PackageTypeConflictNavigator navigator(rappresentation);
+    ProgramRepresentation representation;
+    representation.store_definitions_from_file(main_dot_basalt);
+    PackageTypeConflictNavigator navigator(representation);
     navigator.visit_package("testpackage");
 }
 
 TEST(Preprocessor, No_Type_Conflict_In_Two_File_Of_Same_Package) {
     
-    FileRappresentation a_dot_basalt = {
+    Filerepresentation a_dot_basalt = {
         .file_metadata = {
             .filename = "a.basalt",
             .packagename = "testpackage",
@@ -42,7 +42,7 @@ TEST(Preprocessor, No_Type_Conflict_In_Two_File_Of_Same_Package) {
         .func_defs = { }
     };
 
-    FileRappresentation b_dot_basalt = {
+    Filerepresentation b_dot_basalt = {
         .file_metadata = {
             .filename = "b.basalt",
             .packagename = "testpackage",
@@ -54,16 +54,16 @@ TEST(Preprocessor, No_Type_Conflict_In_Two_File_Of_Same_Package) {
         .func_defs = { }
     };
     
-    ProgramRappresentation rappresentation;
-    rappresentation.store_definitions_from_file(a_dot_basalt);
-    rappresentation.store_definitions_from_file(b_dot_basalt);
-    PackageTypeConflictNavigator navigator(rappresentation);
+    ProgramRepresentation representation;
+    representation.store_definitions_from_file(a_dot_basalt);
+    representation.store_definitions_from_file(b_dot_basalt);
+    PackageTypeConflictNavigator navigator(representation);
     navigator.visit_package("testpackage");
 }
 
 TEST(Preprocessor, No_Type_Conflict_In_Two_File_Of_Different_Packages) {
     
-    FileRappresentation a_dot_basalt = {
+    Filerepresentation a_dot_basalt = {
         .file_metadata = {
             .filename = "a.basalt",
             .packagename = "apackage",
@@ -75,7 +75,7 @@ TEST(Preprocessor, No_Type_Conflict_In_Two_File_Of_Different_Packages) {
         .func_defs = { }
     };
 
-    FileRappresentation b_dot_basalt = {
+    Filerepresentation b_dot_basalt = {
         .file_metadata = {
             .filename = "b.basalt",
             .packagename = "bpackage",
@@ -87,9 +87,9 @@ TEST(Preprocessor, No_Type_Conflict_In_Two_File_Of_Different_Packages) {
         .func_defs = { }
     };
     
-    ProgramRappresentation rappresentation;
-    rappresentation.store_definitions_from_file(a_dot_basalt);
-    rappresentation.store_definitions_from_file(b_dot_basalt);
-    PackageTypeConflictNavigator navigator(rappresentation);
+    ProgramRepresentation representation;
+    representation.store_definitions_from_file(a_dot_basalt);
+    representation.store_definitions_from_file(b_dot_basalt);
+    PackageTypeConflictNavigator navigator(representation);
     navigator.visit_package("apackage");
 }

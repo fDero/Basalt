@@ -9,7 +9,7 @@
 
 TEST(Preprocessor, Recursive_Two_Struct_Dependency_With_Pointer_Accross_Different_Files_Of_The_Same_Package) {
     
-    FileRappresentation a_dot_basalt = {
+    Filerepresentation a_dot_basalt = {
         .file_metadata = {
             .filename = "a.basalt",
             .packagename = "testpackage",
@@ -28,7 +28,7 @@ TEST(Preprocessor, Recursive_Two_Struct_Dependency_With_Pointer_Accross_Differen
     };
 
     
-    FileRappresentation b_dot_basalt = {
+    Filerepresentation b_dot_basalt = {
         .file_metadata = {
             .filename = "b.basalt",
             .packagename = "testpackage",
@@ -48,17 +48,17 @@ TEST(Preprocessor, Recursive_Two_Struct_Dependency_With_Pointer_Accross_Differen
         .func_defs = { }
     };
 
-    ProgramRappresentation rappresentation;
-    rappresentation.store_definitions_from_file(a_dot_basalt);
-    rappresentation.store_definitions_from_file(b_dot_basalt);
+    ProgramRepresentation representation;
+    representation.store_definitions_from_file(a_dot_basalt);
+    representation.store_definitions_from_file(b_dot_basalt);
     const StructDefinition& A = a_dot_basalt.type_defs[0].get<StructDefinition>();
-    TypeDependencyNavigator navigator(rappresentation);
+    TypeDependencyNavigator navigator(representation);
     navigator.visit_struct_definition(A);
 }
 
 TEST(Preprocessor, Simple_Two_Struct_Dependency_With_Pointer_Accross_Different_Packages_With_Import) {
     
-    FileRappresentation a_dot_basalt = {
+    Filerepresentation a_dot_basalt = {
         .file_metadata = {
             .filename = "a.basalt",
             .packagename = "importedpackage",
@@ -77,7 +77,7 @@ TEST(Preprocessor, Simple_Two_Struct_Dependency_With_Pointer_Accross_Different_P
     };
 
     
-    FileRappresentation b_dot_basalt = {
+    Filerepresentation b_dot_basalt = {
         .file_metadata = {
             .filename = "b.basalt",
             .packagename = "testpackage",
@@ -97,18 +97,18 @@ TEST(Preprocessor, Simple_Two_Struct_Dependency_With_Pointer_Accross_Different_P
         .func_defs = { }
     };
 
-    ProgramRappresentation rappresentation;
-    rappresentation.store_definitions_from_file(a_dot_basalt);
-    rappresentation.store_definitions_from_file(b_dot_basalt);
+    ProgramRepresentation representation;
+    representation.store_definitions_from_file(a_dot_basalt);
+    representation.store_definitions_from_file(b_dot_basalt);
     const StructDefinition& A = a_dot_basalt.type_defs[0].get<StructDefinition>();
-    TypeDependencyNavigator navigator(rappresentation);
+    TypeDependencyNavigator navigator(representation);
     navigator.visit_struct_definition(A);
 }
 
 
 TEST(Preprocessor, Recursive_Two_Struct_Dependency_With_Pointer_Accross_Different_Packages_With_Recursive_Imports) {
     
-    FileRappresentation a_dot_basalt = {
+    Filerepresentation a_dot_basalt = {
         .file_metadata = {
             .filename = "a.basalt",
             .packagename = "apackage",
@@ -127,7 +127,7 @@ TEST(Preprocessor, Recursive_Two_Struct_Dependency_With_Pointer_Accross_Differen
     };
 
     
-    FileRappresentation b_dot_basalt = {
+    Filerepresentation b_dot_basalt = {
         .file_metadata = {
             .filename = "b.basalt",
             .packagename = "bpackage",
@@ -147,17 +147,17 @@ TEST(Preprocessor, Recursive_Two_Struct_Dependency_With_Pointer_Accross_Differen
         .func_defs = { }
     };
 
-    ProgramRappresentation rappresentation;
-    rappresentation.store_definitions_from_file(a_dot_basalt);
-    rappresentation.store_definitions_from_file(b_dot_basalt);
+    ProgramRepresentation representation;
+    representation.store_definitions_from_file(a_dot_basalt);
+    representation.store_definitions_from_file(b_dot_basalt);
     const StructDefinition& A = a_dot_basalt.type_defs[0].get<StructDefinition>();
-    TypeDependencyNavigator navigator(rappresentation);
+    TypeDependencyNavigator navigator(representation);
     navigator.visit_struct_definition(A);
 }
 
 TEST(Preprocessor, Recursive_Two_Struct_Dependency_With_Pointer_Accross_Different_Packages_With_Direct_Path) {
     
-    FileRappresentation a_dot_basalt = {
+    Filerepresentation a_dot_basalt = {
         .file_metadata = {
             .filename = "a.basalt",
             .packagename = "apackage",
@@ -179,7 +179,7 @@ TEST(Preprocessor, Recursive_Two_Struct_Dependency_With_Pointer_Accross_Differen
     a_type_with_package_prefix.package_prefix = "apackage";
 
     
-    FileRappresentation b_dot_basalt = {
+    Filerepresentation b_dot_basalt = {
         .file_metadata = {
             .filename = "b.basalt",
             .packagename = "bpackage",
@@ -199,10 +199,10 @@ TEST(Preprocessor, Recursive_Two_Struct_Dependency_With_Pointer_Accross_Differen
         .func_defs = { }
     };
 
-    ProgramRappresentation rappresentation;
-    rappresentation.store_definitions_from_file(a_dot_basalt);
-    rappresentation.store_definitions_from_file(b_dot_basalt);
+    ProgramRepresentation representation;
+    representation.store_definitions_from_file(a_dot_basalt);
+    representation.store_definitions_from_file(b_dot_basalt);
     const StructDefinition& A = a_dot_basalt.type_defs[0].get<StructDefinition>();
-    TypeDependencyNavigator navigator(rappresentation);
+    TypeDependencyNavigator navigator(representation);
     navigator.visit_struct_definition(A);
 }

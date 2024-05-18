@@ -1,6 +1,6 @@
 
 #include <gtest/gtest.h>
-#include "toolchain/rappresentation.hpp"
+#include "toolchain/representation.hpp"
 #include "language/syntax.hpp"
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
@@ -8,9 +8,9 @@
 #include "../tests_utilities/typesignature_factory.hpp"
 #include "../tests_utilities/type_alias_factory.hpp"
 
-TEST(Rappresentation, Retrieve_StructDefinition_From_TypeSignature_In_The_Same_File) {
+TEST(representation, Retrieve_StructDefinition_From_TypeSignature_In_The_Same_File) {
     
-    FileRappresentation file {
+    Filerepresentation file {
         .file_metadata = { 
             .filename = "test.basalt",
             .packagename = "testpackage",
@@ -26,7 +26,7 @@ TEST(Rappresentation, Retrieve_StructDefinition_From_TypeSignature_In_The_Same_F
         .func_defs = {}
     };
 
-    ProgramRappresentation program;
+    ProgramRepresentation program;
     program.store_definitions_from_file(file);
 
     TypeDefinition type_def =  program.retrieve_type_definition(
@@ -40,9 +40,9 @@ TEST(Rappresentation, Retrieve_StructDefinition_From_TypeSignature_In_The_Same_F
     EXPECT_TRUE(struct_def.template_generics_names.empty());
 }
 
-TEST(Rappresentation, Retrieve_StructDefinition_From_TypeSignature_In_Different_Package_That_Was_Imported) {
+TEST(representation, Retrieve_StructDefinition_From_TypeSignature_In_Different_Package_That_Was_Imported) {
 
-    FileRappresentation imported_dot_basalt {
+    Filerepresentation imported_dot_basalt {
         .file_metadata = { 
             .filename = "imported.basalt",
             .packagename = "importedpackage",
@@ -58,7 +58,7 @@ TEST(Rappresentation, Retrieve_StructDefinition_From_TypeSignature_In_Different_
         .func_defs = {}
     };
 
-    FileRappresentation main_dot_basalt {
+    Filerepresentation main_dot_basalt {
         .file_metadata = { 
             .filename = "main.basalt",
             .packagename = "testpackage",
@@ -68,7 +68,7 @@ TEST(Rappresentation, Retrieve_StructDefinition_From_TypeSignature_In_Different_
         .func_defs = {}
     };
 
-    ProgramRappresentation program;
+    ProgramRepresentation program;
     program.store_definitions_from_file(main_dot_basalt);
     program.store_definitions_from_file(imported_dot_basalt);
 
@@ -83,9 +83,9 @@ TEST(Rappresentation, Retrieve_StructDefinition_From_TypeSignature_In_Different_
     EXPECT_TRUE(struct_def.template_generics_names.empty());
 }
 
-TEST(Rappresentation, Retrieve_StructDefinition_From_TypeSignature_In_Different_Files_Of_The_Same_Package) {
+TEST(representation, Retrieve_StructDefinition_From_TypeSignature_In_Different_Files_Of_The_Same_Package) {
 
-    FileRappresentation imported_dot_basalt {
+    Filerepresentation imported_dot_basalt {
         .file_metadata = { 
             .filename = "imported.basalt",
             .packagename = "testpackage",
@@ -101,7 +101,7 @@ TEST(Rappresentation, Retrieve_StructDefinition_From_TypeSignature_In_Different_
         .func_defs = {}
     };
 
-    FileRappresentation main_dot_basalt {
+    Filerepresentation main_dot_basalt {
         .file_metadata = { 
             .filename = "main.basalt",
             .packagename = "testpackage",
@@ -111,7 +111,7 @@ TEST(Rappresentation, Retrieve_StructDefinition_From_TypeSignature_In_Different_
         .func_defs = {}
     };
 
-    ProgramRappresentation program;
+    ProgramRepresentation program;
     program.store_definitions_from_file(main_dot_basalt);
     program.store_definitions_from_file(imported_dot_basalt);
 
@@ -127,9 +127,9 @@ TEST(Rappresentation, Retrieve_StructDefinition_From_TypeSignature_In_Different_
 }
 
 
-TEST(Rappresentation, Retrieve_StructDefinition_From_TypeSignature_In_Different_Packages_By_Direct_Path) {
+TEST(representation, Retrieve_StructDefinition_From_TypeSignature_In_Different_Packages_By_Direct_Path) {
 
-    FileRappresentation other_dot_basalt {
+    Filerepresentation other_dot_basalt {
         .file_metadata = { 
             .filename = "other.basalt",
             .packagename = "otherpackage",
@@ -145,7 +145,7 @@ TEST(Rappresentation, Retrieve_StructDefinition_From_TypeSignature_In_Different_
         .func_defs = {}
     };
 
-    FileRappresentation test_dot_basalt {
+    Filerepresentation test_dot_basalt {
         .file_metadata = { 
             .filename = "main.basalt",
             .packagename = "mainpackage",
@@ -155,7 +155,7 @@ TEST(Rappresentation, Retrieve_StructDefinition_From_TypeSignature_In_Different_
         .func_defs = {}
     };
 
-    ProgramRappresentation program;
+    ProgramRepresentation program;
     program.store_definitions_from_file(test_dot_basalt);
     program.store_definitions_from_file(other_dot_basalt);
 

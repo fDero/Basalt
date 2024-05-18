@@ -56,7 +56,7 @@ void ensure_types_are_equality_comparable(
 void ensure_type_not_already_found(
     const std::pair<std::unordered_set<std::string>::iterator, bool>& insertion_result, 
     const std::pair<std::string, TypeDefinition>& match_pattern_cursor, 
-    const FileRappresentation& file_rappresentation, 
+    const Filerepresentation& file_representation, 
     const std::string& package
 );
 

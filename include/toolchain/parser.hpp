@@ -1,7 +1,7 @@
 
 #pragma once
 #include "toolchain/tokenizer.hpp"
-#include "toolchain/rappresentation.hpp"
+#include "toolchain/representation.hpp"
 #include "errors/parsing_errors.hpp"
 #include "language/statements.hpp"
 #include "language/definitions.hpp"
@@ -18,7 +18,7 @@ class Parser {
 
     public:
         Parser(const std::vector<Token>& tokens);
-        [[nodiscard]] FileRappresentation parse_everything();
+        [[nodiscard]] Filerepresentation parse_everything();
 
         [[nodiscard]] Expression parse_array_literal();
         [[nodiscard]] Expression parse_expression();
@@ -70,9 +70,9 @@ class Parser {
         [[nodiscard]] std::string parse_package_name();
         [[nodiscard]] std::string parse_package_import();
         [[nodiscard]] TypeAlias parse_type_alias();
-        void parse_source_code(FileRappresentation& output);
-        void parse_alias_section(FileRappresentation& output);
-        void parse_import_section(FileRappresentation& output);
+        void parse_source_code(Filerepresentation& output);
+        void parse_alias_section(Filerepresentation& output);
+        void parse_import_section(Filerepresentation& output);
 
     private:
         TemplateGenerics template_generics;

@@ -4,8 +4,8 @@
 #include "errors/parsing_errors.hpp"
 
 TypeDependencyNavigator::TypeDependencyNavigator(
-    ProgramRappresentation& program_rappresentation
-) : program_rappresentation(program_rappresentation) {}
+    ProgramRepresentation& program_representation
+) : program_representation(program_representation) {}
 
 void TypeDependencyNavigator::verify_that_the_type_exists(const TypeSignature& type_signature){
     if (type_signature.is<PointerType>()) {
@@ -19,7 +19,7 @@ void TypeDependencyNavigator::verify_that_the_type_exists(const TypeSignature& t
     }
     else if (type_signature.is<BaseType>()) {
         const BaseType& base_type = type_signature.get<BaseType>();
-        std::ignore = program_rappresentation.retrieve_type_definition(base_type);
+        std::ignore = program_representation.retrieve_type_definition(base_type);
     }
 }
 
@@ -38,7 +38,7 @@ void TypeDependencyNavigator::visit_typesignature(const TypeSignature& typesigna
     }
     else if (typesignature.is<BaseType>()) {
         const BaseType& base_type = typesignature.get<BaseType>();
-        TypeDefinition typedefinition = program_rappresentation.retrieve_and_instantiate_type_definition(base_type);
+        TypeDefinition typedefinition = program_representation.retrieve_type_definition(base_type);
         visit_type_definition(typesignature, typedefinition, generics);
     }
 }

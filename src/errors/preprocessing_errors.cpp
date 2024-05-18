@@ -1,7 +1,7 @@
 
 #include "errors/internal_errors.hpp"
 #include "errors/preprocessing_errors.hpp"
-#include "toolchain/rappresentation.hpp"
+#include "toolchain/representation.hpp"
 #include <unordered_set>
 
 void ensure_type_not_already_visited_hence_no_cyclic_dependency(
@@ -145,12 +145,12 @@ void ensure_types_are_equality_comparable(
 void ensure_type_not_already_found(
     const std::pair<std::unordered_set<std::string>::iterator, bool>& insertion_result, 
     const std::pair<std::string, TypeDefinition>& match_pattern_cursor, 
-    const FileRappresentation& file_rappresentation, 
+    const Filerepresentation& file_representation, 
     const std::string& package
 ){
     if (!insertion_result.second){
         throw std::runtime_error {
-            "Type " + match_pattern_cursor.first + " already found in package " + package + " while visiting file " + file_rappresentation.file_metadata.filename + "\n"
+            "Type " + match_pattern_cursor.first + " already found in package " + package + " while visiting file " + file_representation.file_metadata.filename + "\n"
         };
     }
 }
