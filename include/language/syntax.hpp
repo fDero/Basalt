@@ -78,6 +78,8 @@ inline const std::set<std::string> infixies{
     "&&","||","^^"
 };
 
+inline const std::set<std::string> type_operators { "is", "as" };
+
 inline const std::map<std::string, short> infix_operators_priority {
     { "||", 1 }, { "&&", 1 }, { "^^", 1 }, { "<", 2 }, { ">", 2 }, { "<=", 2 }, { ">=", 2 }, 
     { "!=", 2 }, { "==", 2 }, { "+", 3 }, { "-", 3 }, { "*", 4 }, { "/", 4 }, { "%", 4 }, 
@@ -98,6 +100,7 @@ inline const std::map<std::string, Token::Type> keywords {
     {"if",       Token::Type::if_keyword},       {"else",     Token::Type::else_keyword},
     {"while",    Token::Type::while_keyword},    {"until",    Token::Type::until_keyword},
     {"var",      Token::Type::var_keyword},      {"const",    Token::Type::const_keyword},
+    {"is",       Token::Type::is_keyword},       {"as",       Token::Type::as_keyword},
     {"package",  Token::Type::package_keyword},  {"import",   Token::Type::import_keyword},
     {"alias",    Token::Type::alias_keyword}
 };

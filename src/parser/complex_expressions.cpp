@@ -86,9 +86,17 @@
     while(!expression_ended()) {
         if (is_binary_operator()) expression = compose_binary_operator(expression);
         else if (is_square_bracket()) expression = compose_square_bracket_access(expression);
+        else if (is_type_operator()) expression = compose_type_operator(expression);
         else throw_expression_expected_got_unrecognized(iterator);
     }
     return expression;
+}
+
+[[nodiscard]] bool Parser::is_type_operator() {
+    return (
+        iterator->type == Token::Type::as_keyword || 
+        iterator->type == Token::Type::is_keyword 
+    );
 }
 
 [[nodiscard]] bool Parser::is_binary_operator(){

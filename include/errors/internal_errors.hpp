@@ -35,6 +35,8 @@ void assert_token_is_prefix_operator(const std::vector<Token>::iterator& iterato
 
 void assert_token_is_binary_operator(const std::vector<Token>::iterator& iterator);
 
+void assert_token_is_type_operator(const std::vector<Token>::iterator& iterator);
+
 void assert_basetype_has_no_generics(const TypeSignature& typesignature);
 
 void assert_type_is_non_primitive(const TypeSignature& type);

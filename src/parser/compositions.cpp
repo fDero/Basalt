@@ -21,3 +21,12 @@
     binary_operator.operator_text = square_brackets_access;
     return rotate_binary_operator_to_match_operators_priority(binary_operator);
 }
+
+[[nodiscard]] Expression Parser::compose_type_operator(const Expression& expression){
+    assert_token_is_type_operator(iterator);
+    const Token& operator_token = *iterator;
+    std::advance(iterator, 1);
+    TypeSignature typesignature = parse_typesignature();
+    TypeOperator is_operator { operator_token, expression, typesignature };
+    return rotate_to_match_is_operator_priority(is_operator);
+}

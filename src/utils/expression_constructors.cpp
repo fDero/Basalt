@@ -14,6 +14,17 @@ ArrayLiteral::ArrayLiteral(
     , elements(elements)
 {}
 
+TypeOperator::TypeOperator(
+    const Token& operator_token,
+    const Expression& expression, 
+    const TypeSignature& typesignature
+)
+    : ExpressionBody(operator_token)
+    , operator_text(operator_token.sourcetext)
+    , expression(expression)
+    , typesignature(typesignature)
+{}
+
 BinaryOperator::BinaryOperator(
     const Token& operator_token, 
     const Expression& lx, 

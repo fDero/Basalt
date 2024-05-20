@@ -42,3 +42,21 @@
         )
     };
 }
+
+[[nodiscard]] Expression Parser::rotate_to_match_is_operator_priority(const TypeOperator& type_operator){
+    if (type_operator.expression.is<BinaryOperator>()){
+        BinaryOperator rotated_expression = type_operator.expression.get<BinaryOperator>();
+        rotated_expression.right_operand = rotate_to_match_is_operator_priority (
+            TypeOperator { type_operator.as_token(), rotated_expression.right_operand, type_operator.typesignature }
+        );
+        return rotated_expression;
+    }
+    if (type_operator.expression.is<UnaryOperator>()){
+        UnaryOperator rotated_expression = type_operator.expression.get<UnaryOperator>();
+        rotated_expression.operand = rotate_to_match_is_operator_priority (
+            TypeOperator { type_operator.as_token(), rotated_expression.operand, type_operator.typesignature }
+        );
+        return rotated_expression;
+    }
+    return type_operator;
+}

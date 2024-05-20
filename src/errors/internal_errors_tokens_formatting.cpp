@@ -110,6 +110,17 @@ void assert_token_is_binary_operator(const std::vector<Token>::iterator& iterato
     #endif
 }
 
+void assert_token_is_type_operator(const std::vector<Token>::iterator& iterator){
+    #ifdef DEBUG_BUILD
+    if (type_operators.find(iterator->sourcetext) == type_operators.end()){
+        throw InternalError {
+            "somehow the parser expected this token to be a type operator, instead it is: " +
+            iterator->sourcetext
+        };
+    }
+    #endif
+}
+
 void assert_tokens_not_ended(const std::vector<Token>::iterator& iterator, const std::vector<Token>& tokens){
     #ifdef DEBUG_BUILD
     if (iterator == tokens.end()){

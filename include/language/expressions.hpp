@@ -46,6 +46,23 @@ struct ArrayLiteral : public ExpressionBody {
 
 };
 
+struct TypeOperator : public ExpressionBody {
+    
+    virtual ~TypeOperator() = default;
+    TypeOperator(
+        const Token& operator_token,
+        const Expression& expression, 
+        const TypeSignature& typesignature
+    );
+
+    std::string operator_text;
+    Expression expression;
+    TypeSignature typesignature;
+
+    Token as_token() const;
+};
+
+
 struct BinaryOperator : public ExpressionBody {
     
     virtual ~BinaryOperator() = default;
