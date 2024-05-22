@@ -19,6 +19,13 @@ struct Filerepresentation {
     std::vector<FunctionDefinition> func_defs;
 };
 
+struct ScopeContext {
+
+    PackageName current_package;
+    std::vector<PackageName> imported_packages;
+    std::map<std::string, TypeDefinition> local_variables;
+};
+
 
 struct ProgramRepresentation {
 

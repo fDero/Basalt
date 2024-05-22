@@ -4,11 +4,13 @@
 
 struct TypeSignatureFactory {
 
-    inline static const TypeSignature Int    = PrimitiveType{ Token { "Int", "test.basalt", 1, 1, 3, Token::Type::type}    };
-    inline static const TypeSignature Float  = PrimitiveType{ Token { "Float", "test.basalt", 1, 1, 5, Token::Type::type}  };
-    inline static const TypeSignature String = PrimitiveType{ Token { "String", "test.basalt", 1, 1, 6, Token::Type::type} };
-    inline static const TypeSignature Bool   = PrimitiveType{ Token { "Bool", "test.basalt", 1, 1, 4, Token::Type::type}   };
-    inline static const TypeSignature Char   = PrimitiveType{ Token { "Char", "test.basalt", 1, 1, 4, Token::Type::type}   };
+    inline static const TypeSignature Int       = PrimitiveType{ Token { "Int",       "test.basalt", 1, 1, 3, Token::Type::type}    };
+    inline static const TypeSignature Float     = PrimitiveType{ Token { "Float",     "test.basalt", 1, 1, 5, Token::Type::type}  };
+    inline static const TypeSignature String    = PrimitiveType{ Token { "String",    "test.basalt", 1, 1, 6, Token::Type::type} };
+    inline static const TypeSignature Bool      = PrimitiveType{ Token { "Bool",      "test.basalt", 1, 1, 4, Token::Type::type}   };
+    inline static const TypeSignature Char      = PrimitiveType{ Token { "Char",      "test.basalt", 1, 1, 4, Token::Type::type}   };
+    inline static const TypeSignature Byte      = PrimitiveType{ Token { "Byte",      "test.basalt", 1, 1, 4, Token::Type::type}   };
+    inline static const TypeSignature RawString = PrimitiveType{ Token { "RawString", "test.basalt", 1, 1, 9, Token::Type::type}   };
 
     inline static const TypeSignature T = TemplateType{ Token { "T", "test.basalt", 1, 1, 1, Token::Type::type} };
     inline static const TypeSignature U = TemplateType{ Token { "U", "test.basalt", 1, 1, 1, Token::Type::type} };
