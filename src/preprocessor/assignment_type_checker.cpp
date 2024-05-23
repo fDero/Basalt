@@ -6,8 +6,26 @@
 AssignmentTypeChecker::AssignmentTypeChecker(ProgramRepresentation& program_representation) 
     : program_representation(program_representation) {}
 
+GenericSubstitutionRuleSet& AssignmentTypeChecker::get_generic_substitution_rules() 
+    { return generic_substitution_rules; }
+
 bool AssignmentTypeChecker::validate_assignment(const TypeSignature& source, const TypeSignature& dest){
-    if (source.is<TemplateType>() || dest.is<TemplateType>()){
+    if (dest.is<TemplateType>()){
+        for (GenericSubstitutionRule& rule : generic_substitution_rules){
+            if (rule.to_be_substituded == dest.get<TemplateType>().type_name){
+                if (validate_assignment(source, rule.replacement)){
+                    return true;
+                }
+                else if (validate_assignment(rule.replacement, source)){
+                    rule.replacement = source;
+                    return true;
+                }
+                else  {
+                    return false;
+                }
+            }
+        }
+        generic_substitution_rules.push_back({dest.get<TemplateType>().type_name, source});
         return true;
     }
     else if (dest.is<BaseType>()){

@@ -3,6 +3,7 @@
 #include "toolchain/tokenizer.hpp"
 #include "toolchain/parser.hpp"
 #include "language/syntax.hpp"
+#include "language/generics.hpp"
 #include <vector>
 #include <string>
 #include <variant>
@@ -48,6 +49,7 @@ class AssignmentTypeChecker {
     public:
         AssignmentTypeChecker(ProgramRepresentation& program_representation);
         bool validate_assignment(const TypeSignature& source, const TypeSignature& dest);
+        GenericSubstitutionRuleSet& get_generic_substitution_rules(); 
 
     private:
         bool validate_assignment_between_base_types(const BaseType& source, const BaseType& dest);
@@ -60,4 +62,5 @@ class AssignmentTypeChecker {
         bool validate_assignment_between_slices(const SliceType& source, const SliceType& dest);
 
         ProgramRepresentation& program_representation;
+        GenericSubstitutionRuleSet generic_substitution_rules;
 };
