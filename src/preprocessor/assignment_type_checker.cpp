@@ -110,7 +110,12 @@ bool AssignmentTypeChecker::validate_assignment_to_union(const TypeSignature& so
 bool AssignmentTypeChecker::validate_assignment_between_base_types(const BaseType& source, const BaseType& dest){
     if (source.type_name == dest.type_name && source.instantiationd_generics.size() == dest.instantiationd_generics.size()){
         for (int i = 0; i < source.instantiationd_generics.size(); i++){
-            if (!validate_assignment(source.instantiationd_generics[i], dest.instantiationd_generics[i])){
+            if (dest.instantiationd_generics[i].is<TemplateType>()){
+                if (!validate_assignment(source.instantiationd_generics[i], dest.instantiationd_generics[i])){
+                    return false;
+                }
+            }
+            else if (dest.instantiationd_generics[i].to_string() != source.instantiationd_generics[i].to_string()){
                 return false;
             }
         }

@@ -107,10 +107,35 @@ TEST(Preprocessor, List_Of_Ints_And_List_Of_Number_Are_Compatible_With_List_Of_T
     TypeSignature list_of_ints = BaseType { Token { "List", "main.basalt", 1, 1, 1, Token::Type::type }, { TypeSignatureFactory::Int } };
     TypeSignature list_of_numbers = BaseType { Token { "List", "main.basalt", 1, 1, 1, Token::Type::type }, { number_type } };
     TypeSignature list_of_Ts = BaseType { Token { "List", "main.basalt", 1, 1, 1, Token::Type::type }, { TypeSignatureFactory::T } };
-    
-
     bool list_of_numbers_compatible_with_list_of_Ts = type_checker.validate_assignment(list_of_numbers, list_of_Ts);
     bool int_is_compatible_with_template_t = type_checker.validate_assignment(list_of_ints, list_of_Ts);
     EXPECT_TRUE(list_of_numbers_compatible_with_list_of_Ts);
     EXPECT_TRUE(int_is_compatible_with_template_t);
+}
+
+TEST(Preprocessor, List_Of_Ints_And_List_Of_Number_Are_Non_Mutually_Compatible_With_Each_Other) {
+    ProgramRepresentation simple_union_definition_program;
+    simple_union_definition_program.store_definitions_from_file(
+        Filerepresentation {
+            .file_metadata = {
+                .filename = "main.basalt",
+                .packagename = "testpackage",
+                .imports = { }
+            },
+            .type_defs = { 
+                StructDefinitionFactory::make_struct_definition(
+                    "List", { "T "}, { StructDefinitionFactory::no_fields }
+                ),
+            },
+            .func_defs = { }
+        }
+    );
+    AssignmentTypeChecker type_checker(simple_union_definition_program);
+    TypeSignature number_type = BaseType { Token { "Number", "main.basalt", 1, 1, 1, Token::Type::type }, {} };
+    TypeSignature list_of_ints = BaseType { Token { "List", "main.basalt", 1, 1, 1, Token::Type::type }, { TypeSignatureFactory::Int } };
+    TypeSignature list_of_numbers = BaseType { Token { "List", "main.basalt", 1, 1, 1, Token::Type::type }, { number_type } };
+    bool list_of_numbers_compatible_with_list_of_ints = type_checker.validate_assignment(list_of_numbers, list_of_ints);
+    bool list_of_ints_compatible_with_list_of_numbers = type_checker.validate_assignment(list_of_ints, list_of_numbers);
+    EXPECT_FALSE(list_of_numbers_compatible_with_list_of_ints);
+    EXPECT_FALSE(list_of_ints_compatible_with_list_of_numbers);
 }
