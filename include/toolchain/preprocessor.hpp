@@ -60,6 +60,7 @@ class AssignmentTypeChecker {
         bool validate_assignment_between_pointer_types(const PointerType& source, const PointerType& dest);
         bool validate_assignment_array_to_slice(const ArrayType& source, const SliceType& dest);
         bool validate_assignment_between_slices(const SliceType& source, const SliceType& dest);
+        
 
         ProgramRepresentation& program_representation;
         GenericSubstitutionRuleSet generic_substitution_rules;

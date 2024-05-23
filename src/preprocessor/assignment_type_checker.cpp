@@ -1,3 +1,4 @@
+
 #include "toolchain/representation.hpp"
 #include "toolchain/preprocessor.hpp"
 #include "errors/preprocessing_errors.hpp"
@@ -44,7 +45,13 @@ bool AssignmentTypeChecker::validate_assignment(const TypeSignature& source, con
             return validate_assignment_between_primitive_types(source.get<PrimitiveType>(), dest.get<PrimitiveType>());
         }
         else {
-            return false;
+            TypeDefinition source_type_definition = program_representation.retrieve_type_definition(source.get<BaseType>());
+            if (source_type_definition.is<TypeAlias>()){
+                return validate_assignment(source_type_definition.get<TypeAlias>().aliased_type, dest);
+            }
+            else {
+                return false;
+            }
         }
     }
     else if (dest.is<ArrayType>()){
@@ -52,7 +59,13 @@ bool AssignmentTypeChecker::validate_assignment(const TypeSignature& source, con
             return validate_assignment_between_array_types(source.get<ArrayType>(), dest.get<ArrayType>());
         }
         else {
-            return false;
+            TypeDefinition source_type_definition = program_representation.retrieve_type_definition(source.get<BaseType>());
+            if (source_type_definition.is<TypeAlias>()){
+                return validate_assignment(source_type_definition.get<TypeAlias>().aliased_type, dest);
+            }
+            else {
+                return false;
+            }
         }
     }
     else if (dest.is<PointerType>()){
@@ -60,7 +73,13 @@ bool AssignmentTypeChecker::validate_assignment(const TypeSignature& source, con
             return validate_assignment_between_pointer_types(source.get<PointerType>(), dest.get<PointerType>());
         }
         else {
-            return false;
+            TypeDefinition source_type_definition = program_representation.retrieve_type_definition(source.get<BaseType>());
+            if (source_type_definition.is<TypeAlias>()){
+                return validate_assignment(source_type_definition.get<TypeAlias>().aliased_type, dest);
+            }
+            else {
+                return false;
+            }
         }
     }
     else if (dest.is<SliceType>()){
@@ -68,7 +87,13 @@ bool AssignmentTypeChecker::validate_assignment(const TypeSignature& source, con
             return validate_assignment_array_to_slice(source.get<ArrayType>(), dest.get<SliceType>());
         }
         else if (source.is<SliceType>()){
-            return validate_assignment_between_slices(source.get<SliceType>(), dest.get<SliceType>());
+            TypeDefinition source_type_definition = program_representation.retrieve_type_definition(source.get<BaseType>());
+            if (source_type_definition.is<TypeAlias>()){
+                return validate_assignment(source_type_definition.get<TypeAlias>().aliased_type, dest);
+            }
+            else {
+                return false;
+            }
         }
     }
     assert_unreachable();
@@ -76,12 +101,14 @@ bool AssignmentTypeChecker::validate_assignment(const TypeSignature& source, con
 
 bool AssignmentTypeChecker::validate_assignment_to_union(const TypeSignature& source, const BaseType& dest){
     const TypeDefinition& dest_type_definition = program_representation.retrieve_type_definition(dest);
-    if (!dest_type_definition.is<UnionDefinition>()){
-        return false;
+    if (dest_type_definition.is<TypeAlias>()){
+        return validate_assignment(source, dest_type_definition.get<TypeAlias>().aliased_type);
     }
-    for (const TypeSignature& alternative : dest_type_definition.get<UnionDefinition>().types){
-        if (validate_assignment(source, alternative)){
-            return true;
+    if (dest_type_definition.is<UnionDefinition>()){    
+        for (const TypeSignature& alternative : dest_type_definition.get<UnionDefinition>().types){
+            if (validate_assignment(source, alternative)){
+                return true;
+            }
         }
     }
     if (!source.is<BaseType>()){
@@ -89,7 +116,10 @@ bool AssignmentTypeChecker::validate_assignment_to_union(const TypeSignature& so
     }
     const BaseType& source_base_type = source.get<BaseType>();
     const TypeDefinition& source_type_definition = program_representation.retrieve_type_definition(source_base_type);
-    if (!source_type_definition.is<UnionDefinition>()){
+    if (source_type_definition.is<TypeAlias>()){
+        return validate_assignment(source_type_definition.get<TypeAlias>().aliased_type, dest);
+    }
+    if (!source_type_definition.is<UnionDefinition>() || !dest_type_definition.is<UnionDefinition>()){
         return false;
     }
     for (const TypeSignature& source_alternative : source_type_definition.get<UnionDefinition>().types){

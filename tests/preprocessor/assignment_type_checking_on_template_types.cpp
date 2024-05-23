@@ -80,8 +80,8 @@ TEST(Preprocessor, String_And_Int_Cannot_Be_Compatible_With_T_Simultaneously) {
 }
 
 TEST(Preprocessor, List_Of_Ints_And_List_Of_Number_Are_Compatible_With_List_Of_T) {
-    ProgramRepresentation simple_union_definition_program;
-    simple_union_definition_program.store_definitions_from_file(
+    ProgramRepresentation simple_multi_definition_program;
+    simple_multi_definition_program.store_definitions_from_file(
         Filerepresentation {
             .file_metadata = {
                 .filename = "main.basalt",
@@ -102,7 +102,7 @@ TEST(Preprocessor, List_Of_Ints_And_List_Of_Number_Are_Compatible_With_List_Of_T
             .func_defs = { }
         }
     );
-    AssignmentTypeChecker type_checker(simple_union_definition_program);
+    AssignmentTypeChecker type_checker(simple_multi_definition_program);
     TypeSignature number_type = BaseType { Token { "Number", "main.basalt", 1, 1, 1, Token::Type::type }, {} };
     TypeSignature list_of_ints = BaseType { Token { "List", "main.basalt", 1, 1, 1, Token::Type::type }, { TypeSignatureFactory::Int } };
     TypeSignature list_of_numbers = BaseType { Token { "List", "main.basalt", 1, 1, 1, Token::Type::type }, { number_type } };
@@ -124,7 +124,7 @@ TEST(Preprocessor, List_Of_Ints_And_List_Of_Number_Are_Non_Mutually_Compatible_W
             },
             .type_defs = { 
                 StructDefinitionFactory::make_struct_definition(
-                    "List", { "T "}, { StructDefinitionFactory::no_fields }
+                    "List", { "T" }, { StructDefinitionFactory::no_fields }
                 ),
             },
             .func_defs = { }
