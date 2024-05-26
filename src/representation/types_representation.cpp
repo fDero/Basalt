@@ -6,9 +6,8 @@ void ProgramRepresentation::store_type_definition(
     const TypeDefinition& type_def, 
     const PackageName& package_name
 ){
-    const std::string match_pattern = type_def.generate_match_pattern();
-    PackageTypeDefinitions& definitions = types_by_package[package_name];
-    const auto& insertion_outcome = definitions.insert({match_pattern, type_def});
+    const std::string match_pattern = package_name + namespace_concatenation + type_def.generate_match_pattern();
+    const auto& insertion_outcome = type_definitions.insert({match_pattern, type_def});
     ensure_no_multiple_definition_of_the_same_type(insertion_outcome);
 }
 
@@ -37,21 +36,20 @@ std::optional<TypeDefinition> ProgramRepresentation::search_type_definition_in_p
     const BaseType& type_signature, 
     const PackageName& package_name
 ){
-    PackageTypeDefinitions& definitions = types_by_package[package_name];
-    const std::string instantiated_concrete_type_key = type_signature.to_string();
-    auto retrieved = definitions.find(instantiated_concrete_type_key);
-    if (retrieved != definitions.end()){
+    const std::string instantiated_concrete_type_key = package_name + namespace_concatenation + type_signature.to_string();
+    auto retrieved = type_definitions.find(instantiated_concrete_type_key);
+    if (retrieved != type_definitions.end()){
         return retrieved->second;
     }
-    const std::string template_generic_type_key = type_signature.to_match_string();
-    retrieved = definitions.find(template_generic_type_key);
-    if (retrieved == definitions.end()){
+    const std::string template_generic_type_key = package_name + namespace_concatenation + type_signature.to_match_string();
+    retrieved = type_definitions.find(template_generic_type_key);
+    if (retrieved == type_definitions.end()){
         return std::nullopt;
     }
     else {
         TypeDefinition instantiated = retrieved->second;
         instantiated.instantiate_generics(type_signature);
-        types_by_package[package_name].insert({instantiated_concrete_type_key, instantiated});
+        type_definitions.insert({instantiated_concrete_type_key, instantiated});
         return instantiated;
     }
 }

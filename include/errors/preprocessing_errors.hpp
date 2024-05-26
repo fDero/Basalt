@@ -61,7 +61,7 @@ void ensure_type_not_already_found(
 );
 
 void ensure_no_multiple_definition_of_the_same_type(
-    const std::pair<std::map<std::string, TypeDefinition>::iterator, bool>& 
+    const std::pair<std::unordered_map<std::string, TypeDefinition>::iterator, bool>& 
         type_definition_insertion_outcome
 );
 
