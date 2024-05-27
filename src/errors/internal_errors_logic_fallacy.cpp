@@ -26,7 +26,7 @@ void assert_basetype_has_no_generics(const TypeSignature& typesignature){
             "typesignature was expected to be a base type (non generic), but this wasn't the case"
         };
     }
-    if (!(typesignature.get<BaseType>().instantiationd_generics.empty())){
+    if (!(typesignature.get<BaseType>().instantiation_generics.empty())){
         throw InternalError {
             "base-type was expected to be non generic, but this wasn't the case"
         };

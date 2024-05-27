@@ -10,7 +10,7 @@ BaseType::BaseType(
 ) 
     : TypeSignatureBody(typename_token) 
     , type_name(typename_token.sourcetext)
-    , instantiationd_generics(generics)
+    , instantiation_generics(generics)
 {}
 
 TemplateType::TemplateType(

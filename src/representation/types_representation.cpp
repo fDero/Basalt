@@ -83,7 +83,7 @@ std::string ProgramRepresentation::get_fully_quilified_typesignature_name(const 
     const BaseType& type_signature
 ){
     std::string pattern_tag_name = packageName + namespace_concatenation + type_signature.type_name;
-    size_t number_of_generics = type_signature.instantiationd_generics.size();
+    size_t number_of_generics = type_signature.instantiation_generics.size();
     if (number_of_generics > 0) {
         pattern_tag_name += "<";
         for (int i = 0; i < number_of_generics; i++) { 
@@ -122,11 +122,11 @@ std::string ProgramRepresentation::get_fully_quilified_typesignature_name(const 
         assert_typesignature_is<BaseType>(type_signature);        
         const BaseType& base_type = type_signature.get<BaseType>();
         std::string non_generic_aware_name = packageName + namespace_concatenation + base_type.type_name;
-        if (base_type.instantiationd_generics.empty()){
+        if (base_type.instantiation_generics.empty()){
             return non_generic_aware_name;
         }
         std::string generics_section = "<";
-        for (const TypeSignature& generic : base_type.instantiationd_generics){
+        for (const TypeSignature& generic : base_type.instantiation_generics){
             if (generic.is<BaseType>()){
                 generics_section += get_fully_quilified_typesignature_name(generic.get<BaseType>());
             }

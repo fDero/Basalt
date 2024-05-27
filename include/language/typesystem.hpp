@@ -42,7 +42,7 @@ struct BaseType : public TypeSignatureBody {
     void instantiate_generics(const GenericSubstitutionRuleSet&) override;
 
     std::string type_name;
-    std::vector<TypeSignature> instantiationd_generics;
+    std::vector<TypeSignature> instantiation_generics;
     std::string package_prefix;
 };
 

@@ -15,7 +15,7 @@ TEST(Parsing, Base_Type_WithOut_Generics) {
         TypeSignature type = parser.parse_typesignature();
         ASSERT_TRUE(type.is<BaseType>());
         ASSERT_EQ(type.get<BaseType>().type_name, typesignature.sourcetext);
-        ASSERT_TRUE(type.get<BaseType>().instantiationd_generics.empty());
+        ASSERT_TRUE(type.get<BaseType>().instantiation_generics.empty());
     }
 }
 
@@ -30,9 +30,9 @@ TEST(Parsing, Custom_Type_With_One_Generic) {
     TypeSignature type = parser.parse_typesignature();
     ASSERT_TRUE(type.is<BaseType>());
     ASSERT_EQ(type.get<BaseType>().type_name, "Wrapper");
-    ASSERT_EQ(type.get<BaseType>().instantiationd_generics.size(), 1);
-    ASSERT_TRUE(type.get<BaseType>().instantiationd_generics[0].is<PrimitiveType>());
-    EXPECT_EQ(type.get<BaseType>().instantiationd_generics[0].get<PrimitiveType>().type_name, "String");
+    ASSERT_EQ(type.get<BaseType>().instantiation_generics.size(), 1);
+    ASSERT_TRUE(type.get<BaseType>().instantiation_generics[0].is<PrimitiveType>());
+    EXPECT_EQ(type.get<BaseType>().instantiation_generics[0].get<PrimitiveType>().type_name, "String");
 }
 
 TEST(Parsing, Base_Type_With_Multiple_Generic) {
@@ -49,11 +49,11 @@ TEST(Parsing, Base_Type_With_Multiple_Generic) {
     Parser parser = Parser(typesignature);
     TypeSignature type = parser.parse_typesignature();
     ASSERT_TRUE(type.is<BaseType>());
-    ASSERT_EQ(type.get<BaseType>().instantiationd_generics.size(), 3);
-    ASSERT_TRUE(type.get<BaseType>().instantiationd_generics[0].is<PrimitiveType>());
-    ASSERT_TRUE(type.get<BaseType>().instantiationd_generics[1].is<PrimitiveType>());
-    ASSERT_TRUE(type.get<BaseType>().instantiationd_generics[2].is<PrimitiveType>());
-    ASSERT_EQ(type.get<BaseType>().instantiationd_generics[0].get<PrimitiveType>().type_name, "String");
-    ASSERT_EQ(type.get<BaseType>().instantiationd_generics[1].get<PrimitiveType>().type_name, "Int");
-    ASSERT_EQ(type.get<BaseType>().instantiationd_generics[2].get<PrimitiveType>().type_name, "Bool");
+    ASSERT_EQ(type.get<BaseType>().instantiation_generics.size(), 3);
+    ASSERT_TRUE(type.get<BaseType>().instantiation_generics[0].is<PrimitiveType>());
+    ASSERT_TRUE(type.get<BaseType>().instantiation_generics[1].is<PrimitiveType>());
+    ASSERT_TRUE(type.get<BaseType>().instantiation_generics[2].is<PrimitiveType>());
+    ASSERT_EQ(type.get<BaseType>().instantiation_generics[0].get<PrimitiveType>().type_name, "String");
+    ASSERT_EQ(type.get<BaseType>().instantiation_generics[1].get<PrimitiveType>().type_name, "Int");
+    ASSERT_EQ(type.get<BaseType>().instantiation_generics[2].get<PrimitiveType>().type_name, "Bool");
 }

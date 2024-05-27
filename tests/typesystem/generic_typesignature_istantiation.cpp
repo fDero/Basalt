@@ -31,13 +31,13 @@ TEST(TypeSystem, Non_Generic_Typesignature_Instantiations) {
     EXPECT_EQ(array_of_strings.to_string(), "[10]String");
 }
 
-TEST(TypeSystem, Base_Type_With_Two_Generics_instantiationd) {
+TEST(TypeSystem, Base_Type_With_Two_Generics_instantiation) {
     TypeSignature Pair = TypeSignatureFactory::make_base_type("Pair", { TypeSignatureFactory::T, TypeSignatureFactory::U });
     Pair.instantiate_generics(rules);
     EXPECT_EQ(Pair.to_string(), "Pair<Int,List<String>>");
 }
 
-TEST(TypeSystem, Base_Type_With_One_Conrete_Generic_And_One_Template_Generic_instantiationd) {
+TEST(TypeSystem, Base_Type_With_One_Conrete_Generic_And_One_Template_Generic_instantiation) {
     TypeSignature Pair = TypeSignatureFactory::make_base_type("Pair", { TypeSignatureFactory::T, TypeSignatureFactory::Char });
     Pair.instantiate_generics(rules);
     EXPECT_EQ(Pair.to_string(), "Pair<Int,Char>");

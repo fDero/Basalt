@@ -21,6 +21,6 @@ struct GenericSubstitutionRuleSet : public std::vector<GenericSubstitutionRule> 
     
     [[nodiscard]] static GenericSubstitutionRuleSet zip_components_vectors (
         const TemplateGenerics& template_generics,
-        const ConcreteGenerics& instantiationd_generics
+        const ConcreteGenerics& instantiation_generics
     );
 };

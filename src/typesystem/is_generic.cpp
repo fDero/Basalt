@@ -9,7 +9,7 @@
 }
 
 [[nodiscard]] bool BaseType::is_generic(const TemplateGenerics& generics_names) const {
-    for (const TypeSignature& generic : instantiationd_generics){
+    for (const TypeSignature& generic : instantiation_generics){
         if (generic.is_generic(generics_names)) {
             return true;
         }

@@ -19,7 +19,7 @@ TEST(Parsing, Array_Literal_Without_Explicit_Size) {
     EXPECT_TRUE(expr.get<ArrayLiteral>().elements.empty());
     ASSERT_TRUE(expr.get<ArrayLiteral>().stored_type.is<BaseType>());
     EXPECT_EQ(expr.get<ArrayLiteral>().stored_type.get<BaseType>().type_name, "Ent");
-    EXPECT_TRUE(expr.get<ArrayLiteral>().stored_type.get<BaseType>().instantiationd_generics.empty());
+    EXPECT_TRUE(expr.get<ArrayLiteral>().stored_type.get<BaseType>().instantiation_generics.empty());
 }
 
 TEST(Parsing, Array_Literal_Of_Generic_StoredType_Without_Explicit_Size) {
@@ -42,7 +42,7 @@ TEST(Parsing, Array_Literal_Of_Generic_StoredType_Without_Explicit_Size) {
     EXPECT_TRUE(expr.get<ArrayLiteral>().elements.empty());
     ASSERT_TRUE(expr.get<ArrayLiteral>().stored_type.is<BaseType>());
     EXPECT_EQ(expr.get<ArrayLiteral>().stored_type.get<BaseType>().type_name, "Pair");
-    EXPECT_EQ(expr.get<ArrayLiteral>().stored_type.get<BaseType>().instantiationd_generics.size(), 2);
+    EXPECT_EQ(expr.get<ArrayLiteral>().stored_type.get<BaseType>().instantiation_generics.size(), 2);
 }
 
 TEST(Parsing, Nested_Array_Literals_Without_Explicit_Size_And_Incorrect_Type) {
