@@ -62,18 +62,18 @@ TEST(representation, Ambiguous_Instantiated_Generic_Struct_Retrieval) {
     program.store_definitions_from_file(employee_file_of_x_package);
     program.store_definitions_from_file(employee_file_of_y_package);
 
-    BaseType xemployee = BaseType { Token { "Employee", "test.basalt", 1, 1, 1, Token::Type::type }, { } };
+    CustomType xemployee = CustomType { Token { "Employee", "test.basalt", 1, 1, 1, Token::Type::type }, { } };
     xemployee.package_prefix = "xpackage";
 
-    BaseType yemployee = BaseType { Token { "Employee", "test.basalt", 1, 1, 1, Token::Type::type }, { } };
+    CustomType yemployee = CustomType { Token { "Employee", "test.basalt", 1, 1, 1, Token::Type::type }, { } };
     yemployee.package_prefix = "ypackage";
 
     TypeDefinition wrapper_of_xpackage_employee =  program.retrieve_type_definition(
-        BaseType { Token { "Wrapper", "test.basalt", 1, 1, 1, Token::Type::type }, { xemployee } }
+        CustomType { Token { "Wrapper", "test.basalt", 1, 1, 1, Token::Type::type }, { xemployee } }
     );
 
     TypeDefinition wrapper_of_ypackage_employee =  program.retrieve_type_definition(
-        BaseType { Token { "Wrapper", "test.basalt", 1, 1, 1, Token::Type::type }, { yemployee } }
+        CustomType { Token { "Wrapper", "test.basalt", 1, 1, 1, Token::Type::type }, { yemployee } }
     );
     
     ASSERT_TRUE(wrapper_of_xpackage_employee.is<StructDefinition>());
@@ -94,11 +94,11 @@ TEST(representation, Ambiguous_Instantiated_Generic_Struct_Retrieval) {
     EXPECT_EQ(wrapper_of_xpackage_employee_struct_def.fields[0].field_name, "wrapped");
     EXPECT_EQ(wrapper_of_ypackage_employee_struct_def.fields[0].field_name, "wrapped");
 
-    ASSERT_TRUE(wrapper_of_xpackage_employee_struct_def.fields[0].field_type.is<BaseType>());
-    ASSERT_TRUE(wrapper_of_ypackage_employee_struct_def.fields[0].field_type.is<BaseType>());
+    ASSERT_TRUE(wrapper_of_xpackage_employee_struct_def.fields[0].field_type.is<CustomType>());
+    ASSERT_TRUE(wrapper_of_ypackage_employee_struct_def.fields[0].field_type.is<CustomType>());
 
-    BaseType xemployee_field = wrapper_of_xpackage_employee_struct_def.fields[0].field_type.get<BaseType>();
-    BaseType yemployee_field = wrapper_of_ypackage_employee_struct_def.fields[0].field_type.get<BaseType>();
+    CustomType xemployee_field = wrapper_of_xpackage_employee_struct_def.fields[0].field_type.get<CustomType>();
+    CustomType yemployee_field = wrapper_of_ypackage_employee_struct_def.fields[0].field_type.get<CustomType>();
 
     EXPECT_EQ(xemployee_field.type_name, "Employee");
     EXPECT_EQ(yemployee_field.type_name, "Employee");

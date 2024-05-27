@@ -11,18 +11,18 @@ TEST(TypeSystem, Generic_Union_Instantiation) {
         { "T", "U" }, 
         { 
             TypeSignatureFactory::make_ptr_type(TypeSignatureFactory::T),
-            TypeSignatureFactory::make_base_type("Pair", { TypeSignatureFactory::T, TypeSignatureFactory::U }),
+            TypeSignatureFactory::make_custom_type("Pair", { TypeSignatureFactory::T, TypeSignatureFactory::U }),
             TypeSignatureFactory::make_slice_type(TypeSignatureFactory::U),
             TypeSignatureFactory::make_array_type(TypeSignatureFactory::T, 10)
         }
     );
     UnionDefinition instantiated_union_definition = generic_union_definition;
     instantiated_union_definition.instantiate_generics(
-        TypeSignatureFactory::make_base_type("MyUnion", { 
+        TypeSignatureFactory::make_custom_type("MyUnion", { 
             TypeSignatureFactory::Int, 
             TypeSignatureFactory::Float 
         })
-            .get<BaseType>()
+            .get<CustomType>()
     );
     EXPECT_EQ(instantiated_union_definition.union_name, "MyUnion<Int,Float>");
     ASSERT_EQ(instantiated_union_definition.types.size(), 4);
@@ -43,7 +43,7 @@ TEST(TypeSystem, Non_Generic_Union_NoOp_Instantiation) {
     );
     UnionDefinition instantiated_union_definition = generic_union_definition;
     instantiated_union_definition.instantiate_generics(
-        TypeSignatureFactory::make_base_type("MyUnion", {}).get<BaseType>()
+        TypeSignatureFactory::make_custom_type("MyUnion", {}).get<CustomType>()
     );
     EXPECT_EQ(instantiated_union_definition.union_name, "MyUnion");
     ASSERT_EQ(instantiated_union_definition.types.size(), 2);
@@ -62,10 +62,10 @@ TEST(TypeSystem, Fake_Generic_Union_NoOp_Instantiation) {
     );
     UnionDefinition instantiated_union_definition = generic_union_definition;
     instantiated_union_definition.instantiate_generics(
-        TypeSignatureFactory::make_base_type("MyUnion", { 
+        TypeSignatureFactory::make_custom_type("MyUnion", { 
             TypeSignatureFactory::Int
         })
-            .get<BaseType>()
+            .get<CustomType>()
     );
     EXPECT_EQ(instantiated_union_definition.union_name, "MyUnion<Int>");
     ASSERT_EQ(instantiated_union_definition.types.size(), 2);

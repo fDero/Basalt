@@ -5,7 +5,7 @@
 #include <optional>
 #include <iostream>
 
-void StructDefinition::instantiate_generics(const BaseType& concrete_type) {
+void StructDefinition::instantiate_generics(const CustomType& concrete_type) {
     assert_instantiation_struct_is_compatible_with_template_struct(concrete_type, *this);
     const ConcreteGenerics& instantiation_generics = concrete_type.instantiation_generics;
     const TemplateGenerics& template_generics = template_generics_names;
@@ -19,7 +19,7 @@ void StructDefinition::instantiate_generics(const BaseType& concrete_type) {
     }
 }
 
-void UnionDefinition::instantiate_generics(const BaseType& concrete_type) {
+void UnionDefinition::instantiate_generics(const CustomType& concrete_type) {
     assert_instantiation_union_is_compatible_with_template_union(concrete_type, *this);
     const ConcreteGenerics& instantiation_generics = concrete_type.instantiation_generics;
     const TemplateGenerics& template_generics = template_generics_names;
@@ -33,7 +33,7 @@ void UnionDefinition::instantiate_generics(const BaseType& concrete_type) {
     }
 }
 
-void TypeAlias::instantiate_generics(const BaseType& concrete_type) {
+void TypeAlias::instantiate_generics(const CustomType& concrete_type) {
     assert_instantiation_union_is_compatible_with_template_alias(concrete_type, *this);
     const std::vector<TypeSignature>& instantiation_generics = concrete_type.instantiation_generics;
     const std::vector<std::string>& template_generics = template_generics_names;
@@ -45,7 +45,7 @@ void TypeAlias::instantiate_generics(const BaseType& concrete_type) {
     aliased_type.instantiate_generics(generic_substitution_rules);
 }
 
-void TypeDefinition::instantiate_generics(const BaseType& concrete_type) {
+void TypeDefinition::instantiate_generics(const CustomType& concrete_type) {
     if (std::holds_alternative<StructDefinition>(*this)){
         std::get<StructDefinition>(*this).instantiate_generics(concrete_type);
     }
@@ -82,7 +82,7 @@ void TypeSignature::instantiate_generics(const GenericSubstitutionRuleSet& gener
     ptr->instantiate_generics(generic_substitution_rules);
 }
 
-void BaseType::instantiate_generics(const GenericSubstitutionRuleSet& generic_substitution_rules) {
+void CustomType::instantiate_generics(const GenericSubstitutionRuleSet& generic_substitution_rules) {
     for (TypeSignature& generic : instantiation_generics){
         generic.instantiate_generics(generic_substitution_rules);
     }

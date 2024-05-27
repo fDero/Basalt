@@ -19,14 +19,14 @@ TEST(Preprocessor, Recursive_Two_Struct_Dependency_Is_Cyclic_Dependency_Even_Whe
             StructDefinitionFactory::make_struct_definition(
                 "A", { "T" }, {
                     StructDefinition::Field { "b",
-                        BaseType { Token { "B", "main.basalt", 1, 1, 1, Token::Type::type }, {} } 
+                        CustomType { Token { "B", "main.basalt", 1, 1, 1, Token::Type::type }, {} } 
                     }
                 }
             ),
             StructDefinitionFactory::make_struct_definition(
                 "B", { }, {
                     StructDefinition::Field { "a",
-                        BaseType { Token { "A", "main.basalt", 1, 1, 1, Token::Type::type }, {
+                        CustomType { Token { "A", "main.basalt", 1, 1, 1, Token::Type::type }, {
                             PrimitiveType { Token { "Int", "main.basalt", 1, 1, 1, Token::Type::type } }
                         } }
                     }
@@ -64,7 +64,7 @@ TEST(Preprocessor, Type_Dependency_Navigation_Works_Fine_On_Instantiated_Non_Rec
             StructDefinitionFactory::make_struct_definition(
                 "B", { }, {
                     StructDefinition::Field { "wrapper",
-                        BaseType { Token { "Wrapper", "main.basalt", 1, 1, 1, Token::Type::type }, {
+                        CustomType { Token { "Wrapper", "main.basalt", 1, 1, 1, Token::Type::type }, {
                             PrimitiveType { Token { "Int", "main.basalt", 1, 1, 1, Token::Type::type } }
                         } }
                     }
@@ -100,8 +100,8 @@ TEST(Preprocessor, Type_Dependency_Spots_Cyclic_Dependency_Even_On_Generic_Struc
             StructDefinitionFactory::make_struct_definition(
                 "B", { }, {
                     StructDefinition::Field { "wrapper",
-                        BaseType { Token { "Wrapper", "main.basalt", 1, 1, 1, Token::Type::type }, {
-                            BaseType { Token { "B", "main.basalt", 1, 1, 1, Token::Type::type }, {} }
+                        CustomType { Token { "Wrapper", "main.basalt", 1, 1, 1, Token::Type::type }, {
+                            CustomType { Token { "B", "main.basalt", 1, 1, 1, Token::Type::type }, {} }
                         } }
                     }
                 }

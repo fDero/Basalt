@@ -29,7 +29,7 @@ TEST(Preprocessor, Number_Union_Is_Compatible_With_Itself) {
     );
 
     AssignmentTypeChecker type_checker(simple_union_definition_program);
-    TypeSignature number_type = BaseType { Token { "Number", "main.basalt", 1, 1, 1, Token::Type::type }, {} };
+    TypeSignature number_type = CustomType { Token { "Number", "main.basalt", 1, 1, 1, Token::Type::type }, {} };
     bool number_is_compatible_with_itself = type_checker.validate_assignment(number_type, number_type);
     EXPECT_TRUE(number_is_compatible_with_itself);
 }
@@ -56,7 +56,7 @@ TEST(Preprocessor, Int_Compatible_With_Number_Union) {
     );
 
     AssignmentTypeChecker type_checker(simple_union_definition_program);
-    TypeSignature number_type = BaseType { Token { "Number", "main.basalt", 1, 1, 1, Token::Type::type }, {} };
+    TypeSignature number_type = CustomType { Token { "Number", "main.basalt", 1, 1, 1, Token::Type::type }, {} };
     bool int_compatible_with_number = type_checker.validate_assignment(TypeSignatureFactory::Int, number_type);
     bool number_compatible_with_int = type_checker.validate_assignment(number_type, TypeSignatureFactory::Int);
     EXPECT_TRUE(int_compatible_with_number);
@@ -96,8 +96,8 @@ TEST(Preprocessor, Number_Union_Compatible_With_Primitive_Union) {
     );
 
     AssignmentTypeChecker type_checker(simple_union_definition_program);
-    TypeSignature number_type = BaseType { Token { "Number", "main.basalt", 1, 1, 1, Token::Type::type }, {} };
-    TypeSignature primitive_type = BaseType { Token { "Primitive", "main.basalt", 1, 1, 1, Token::Type::type }, {} };
+    TypeSignature number_type = CustomType { Token { "Number", "main.basalt", 1, 1, 1, Token::Type::type }, {} };
+    TypeSignature primitive_type = CustomType { Token { "Primitive", "main.basalt", 1, 1, 1, Token::Type::type }, {} };
     bool number_compatible_with_primitive = type_checker.validate_assignment(number_type, primitive_type);
     bool primitive_compatible_with_number = type_checker.validate_assignment(primitive_type, number_type);
     EXPECT_TRUE(number_compatible_with_primitive);
@@ -122,7 +122,7 @@ TEST(Preprocessor, Int_Compatible_With_Primitive_When_Int_Implicitly_Named_Via_N
                 ),
                 UnionDefinitionFactory::make_union_definition(
                     "Primitive", { }, {
-                        BaseType { 
+                        CustomType { 
                             Token { "Number", "main.basalt", 1, 1, 1, Token::Type::type }, {} 
                         },
                         TypeSignatureFactory::Bool,
@@ -138,7 +138,7 @@ TEST(Preprocessor, Int_Compatible_With_Primitive_When_Int_Implicitly_Named_Via_N
     );
 
     AssignmentTypeChecker type_checker(simple_union_definition_program);
-    TypeSignature primitive_type = BaseType { Token { "Primitive", "main.basalt", 1, 1, 1, Token::Type::type }, {} };
+    TypeSignature primitive_type = CustomType { Token { "Primitive", "main.basalt", 1, 1, 1, Token::Type::type }, {} };
     bool int_compatible_with_primitive = type_checker.validate_assignment(TypeSignatureFactory::Int, primitive_type);
     EXPECT_TRUE(int_compatible_with_primitive);
 }
@@ -165,7 +165,7 @@ TEST(Preprocessor, Int_Compatible_With_Generic_Either_Union) {
     );
 
     AssignmentTypeChecker type_checker(simple_union_definition_program);
-    TypeSignature either_int_or_float = BaseType { 
+    TypeSignature either_int_or_float = CustomType { 
         Token { "Either", "main.basalt", 1, 1, 1, Token::Type::type }, {
             TypeSignatureFactory::Int,
             TypeSignatureFactory::Float

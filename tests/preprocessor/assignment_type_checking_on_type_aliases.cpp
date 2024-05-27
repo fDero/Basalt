@@ -26,7 +26,7 @@ TEST(Preprocessor, Int_Is_Mutually_Compatible_With_AliasedInt) {
         }
     );
     AssignmentTypeChecker type_checker(simple_alias_definition_program);
-    TypeSignature aliased_int = BaseType { Token { "AliasedInt", "main.basalt", 1, 1, 1, Token::Type::type }, {} };
+    TypeSignature aliased_int = CustomType { Token { "AliasedInt", "main.basalt", 1, 1, 1, Token::Type::type }, {} };
     bool aliased_int_is_compatible_with_int = type_checker.validate_assignment(aliased_int, TypeSignatureFactory::Int);
     bool int_is_compatible_with_aliased_int = type_checker.validate_assignment(TypeSignatureFactory::Int, aliased_int);
     EXPECT_TRUE(aliased_int_is_compatible_with_int);
@@ -51,7 +51,7 @@ TEST(Preprocessor, Int_Is_Mutually_Compatible_With_Generic_Alias_Instantiated_Wi
         }
     );
     AssignmentTypeChecker type_checker(simple_alias_definition_program);
-    TypeSignature aliased_int = BaseType { Token { "SameAs", "main.basalt", 1, 1, 1, Token::Type::type }, { TypeSignatureFactory::Int } };
+    TypeSignature aliased_int = CustomType { Token { "SameAs", "main.basalt", 1, 1, 1, Token::Type::type }, { TypeSignatureFactory::Int } };
     bool aliased_int_is_compatible_with_int = type_checker.validate_assignment(aliased_int, TypeSignatureFactory::Int);
     bool int_is_compatible_with_aliased_int = type_checker.validate_assignment(TypeSignatureFactory::Int, aliased_int);
     EXPECT_TRUE(aliased_int_is_compatible_with_int);
@@ -76,7 +76,7 @@ TEST(Preprocessor, Pair_Of_Int_Int_Is_Compatible_With_Pair_Of_One_Generic_T_Via_
                 ),
                 TypeAliasFactory::make_type_alias(
                     "Pair", { "T" }, TypeSignature {
-                        BaseType { Token { "Pair", "main.basalt", 1, 1, 1, Token::Type::type }, { 
+                        CustomType { Token { "Pair", "main.basalt", 1, 1, 1, Token::Type::type }, { 
                             TypeSignatureFactory::T, 
                             TypeSignatureFactory::T 
                         } }
@@ -87,13 +87,13 @@ TEST(Preprocessor, Pair_Of_Int_Int_Is_Compatible_With_Pair_Of_One_Generic_T_Via_
         }
     );
     AssignmentTypeChecker type_checker(simple_alias_definition_program);
-    TypeSignature pair_int_int = BaseType { 
+    TypeSignature pair_int_int = CustomType { 
         Token { "Pair", "main.basalt", 1, 1, 1, Token::Type::type }, { 
             TypeSignatureFactory::Int, 
             TypeSignatureFactory::Int 
         } 
     };
-    TypeSignature pair_of_Ts = BaseType { 
+    TypeSignature pair_of_Ts = CustomType { 
         Token { "Pair", "main.basalt", 1, 1, 1, Token::Type::type }, { 
             TypeSignatureFactory::T 
         } 
@@ -120,7 +120,7 @@ TEST(Preprocessor, Pair_Of_Int_Is_Compatible_With_Pair_Of_T_U) {
                 ),
                 TypeAliasFactory::make_type_alias(
                     "Pair", { "T" }, TypeSignature {
-                        BaseType { Token { "Pair", "main.basalt", 1, 1, 1, Token::Type::type }, { 
+                        CustomType { Token { "Pair", "main.basalt", 1, 1, 1, Token::Type::type }, { 
                             TypeSignatureFactory::T, 
                             TypeSignatureFactory::T 
                         } }
@@ -131,13 +131,13 @@ TEST(Preprocessor, Pair_Of_Int_Is_Compatible_With_Pair_Of_T_U) {
         }
     );
     AssignmentTypeChecker type_checker(simple_alias_definition_program);
-    TypeSignature pair_T_U = BaseType { 
+    TypeSignature pair_T_U = CustomType { 
         Token { "Pair", "main.basalt", 1, 1, 1, Token::Type::type }, { 
             TypeSignatureFactory::T, 
             TypeSignatureFactory::U 
         } 
     };
-    TypeSignature pair_of_ints = BaseType { 
+    TypeSignature pair_of_ints = CustomType { 
         Token { "Pair", "main.basalt", 1, 1, 1, Token::Type::type }, { 
             TypeSignatureFactory::Int
         } 

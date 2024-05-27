@@ -8,7 +8,7 @@
     return ptr->to_match_string(); 
 }
 
-[[nodiscard]] std::string BaseType::to_match_string() const {
+[[nodiscard]] std::string CustomType::to_match_string() const {
     assert_type_is_non_primitive(*this);
     if (instantiation_generics.empty()) {
         return type_name;

@@ -92,5 +92,5 @@ void ensure_type_was_successfully_retrieved(
 );
 
 [[noreturn]] void throw_no_type_definition_found(
-    const BaseType& type_signature
+    const CustomType& type_signature
 );

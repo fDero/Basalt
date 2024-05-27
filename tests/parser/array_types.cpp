@@ -37,6 +37,6 @@ TEST(Parsing, Nested_Array_Types) {
     ArrayType inner_array = type.get<ArrayType>().stored_type.get<ArrayType>();
     EXPECT_EQ(outer_array.array_length, 10);
     EXPECT_EQ(inner_array.array_length, 10);
-    ASSERT_TRUE(inner_array.stored_type.is<BaseType>());
-    EXPECT_EQ(inner_array.stored_type.get<BaseType>().type_name, "Ent");
+    ASSERT_TRUE(inner_array.stored_type.is<CustomType>());
+    EXPECT_EQ(inner_array.stored_type.get<CustomType>().type_name, "Ent");
 }

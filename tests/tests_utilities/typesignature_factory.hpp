@@ -18,10 +18,10 @@ struct TypeSignatureFactory {
     inline static const TypeSignature K = TemplateType{ Token { "K", "test.basalt", 1, 1, 1, Token::Type::type} };
     inline static const TypeSignature S = TemplateType{ Token { "S", "test.basalt", 1, 1, 1, Token::Type::type} };
 
-    inline static const TypeSignature ListOfStrings       = BaseType{ Token { "List", "test.basalt", 1, 1, 4, Token::Type::type}, { String } };
-    inline static const TypeSignature ListOfInts          = BaseType{ Token { "List", "test.basalt", 1, 1, 4, Token::Type::type}, { Int } };
-    inline static const TypeSignature PairOfStringAndInt  = BaseType{ Token { "Pair", "test.basalt", 1, 1, 4, Token::Type::type}, { String, Int } };
-    inline static const TypeSignature PairOfStringAndChar = BaseType{ Token { "Pair", "test.basalt", 1, 1, 4, Token::Type::type}, { String, Char } };
+    inline static const TypeSignature ListOfStrings       = CustomType{ Token { "List", "test.basalt", 1, 1, 4, Token::Type::type}, { String } };
+    inline static const TypeSignature ListOfInts          = CustomType{ Token { "List", "test.basalt", 1, 1, 4, Token::Type::type}, { Int } };
+    inline static const TypeSignature PairOfStringAndInt  = CustomType{ Token { "Pair", "test.basalt", 1, 1, 4, Token::Type::type}, { String, Int } };
+    inline static const TypeSignature PairOfStringAndChar = CustomType{ Token { "Pair", "test.basalt", 1, 1, 4, Token::Type::type}, { String, Char } };
 
     inline static const TypeSignature PointerToInt = PointerType{ Token { "#", "test.basalt", 1, 1, 4, Token::Type::type}, Int };
     inline static const TypeSignature PointerToFloat = PointerType{ Token { "#", "test.basalt", 1, 1, 4, Token::Type::type}, Float };
@@ -42,8 +42,8 @@ struct TypeSignatureFactory {
     inline static const TypeSignature SliceOfChars = SliceType{ Token { "[]", "test.basalt", 1, 1, 4, Token::Type::type}, Char };
 
 
-    static TypeSignature make_base_type(const std::string& type_name, const ConcreteGenerics& generics){
-        return BaseType{ 
+    static TypeSignature make_custom_type(const std::string& type_name, const ConcreteGenerics& generics){
+        return CustomType{ 
             Token { 
                 type_name, "test.basalt", 1, 1, 
                 static_cast<unsigned int>(type_name.size()), 

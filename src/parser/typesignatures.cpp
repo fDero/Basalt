@@ -17,7 +17,7 @@
         return parse_template_type();
     }
     else {
-        return parse_base_type();
+        return parse_custom_type();
     }
 }
 
@@ -60,15 +60,15 @@
     return SliceType { slice_type_symbol_token, slice_stored_type };
 }
 
-[[nodiscard]] TypeSignature Parser::parse_base_type(){
+[[nodiscard]] TypeSignature Parser::parse_custom_type(){
     PackageName package_prefix = parse_package_prefix();
     ensure_token_is_typesignature(source_tokens, iterator);
     assert_type_is_properly_formatted(iterator);
     const Token& typesignature_token = *(iterator++);
     const ConcreteGenerics generics = parse_concrete_generics();
-    BaseType base_type { typesignature_token, generics };
-    base_type.package_prefix = package_prefix;
-    return base_type;
+    CustomType custom_type { typesignature_token, generics };
+    custom_type.package_prefix = package_prefix;
+    return custom_type;
 }
 
 [[nodiscard]] std::vector<std::string> Parser::parse_template_generics(){

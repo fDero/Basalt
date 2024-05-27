@@ -19,7 +19,7 @@ TEST(Preprocessor, Recursive_Two_Struct_Dependency_With_Pointer_Accross_Differen
             StructDefinitionFactory::make_struct_definition(
                 "A", { }, {
                     StructDefinition::Field { "b",
-                        BaseType { Token { "B", "a.basalt", 1, 1, 1, Token::Type::type }, {} } 
+                        CustomType { Token { "B", "a.basalt", 1, 1, 1, Token::Type::type }, {} } 
                     }
                 }
             )
@@ -39,7 +39,7 @@ TEST(Preprocessor, Recursive_Two_Struct_Dependency_With_Pointer_Accross_Differen
                 "B", { }, {
                     StructDefinition::Field { "ptr",
                         PointerType { Token { "#", "b.basalt", 1, 1, 1, Token::Type::symbol },
-                            BaseType { Token { "A", "b.basalt", 1, 1, 1, Token::Type::type }, {} } 
+                            CustomType { Token { "A", "b.basalt", 1, 1, 1, Token::Type::type }, {} } 
                         }
                     }
                 }
@@ -88,7 +88,7 @@ TEST(Preprocessor, Simple_Two_Struct_Dependency_With_Pointer_Accross_Different_P
                 "B", { }, {
                     StructDefinition::Field { "ptr",
                         PointerType { Token { "#", "b.basalt", 1, 1, 1, Token::Type::symbol },
-                            BaseType { Token { "A", "b.basalt", 1, 1, 1, Token::Type::type }, {} } 
+                            CustomType { Token { "A", "b.basalt", 1, 1, 1, Token::Type::type }, {} } 
                         }
                     }
                 }
@@ -138,7 +138,7 @@ TEST(Preprocessor, Recursive_Two_Struct_Dependency_With_Pointer_Accross_Differen
                 "B", { }, {
                     StructDefinition::Field { "ptr",
                         PointerType { Token { "#", "b.basalt", 1, 1, 1, Token::Type::symbol },
-                            BaseType { Token { "A", "b.basalt", 1, 1, 1, Token::Type::type }, {} } 
+                            CustomType { Token { "A", "b.basalt", 1, 1, 1, Token::Type::type }, {} } 
                         }
                     }
                 }
@@ -175,7 +175,7 @@ TEST(Preprocessor, Recursive_Two_Struct_Dependency_With_Pointer_Accross_Differen
         .func_defs = { }
     };
 
-    auto a_type_with_package_prefix = BaseType { Token { "A", "b.basalt", 1, 1, 1, Token::Type::type }, {} };
+    auto a_type_with_package_prefix = CustomType { Token { "A", "b.basalt", 1, 1, 1, Token::Type::type }, {} };
     a_type_with_package_prefix.package_prefix = "apackage";
 
     

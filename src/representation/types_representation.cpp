@@ -14,12 +14,12 @@ void ProgramRepresentation::store_type_definition(
 }
 
 
-[[nodiscard]] TypeDefinition ProgramRepresentation::retrieve_type_definition(const BaseType& type_signature){
+[[nodiscard]] TypeDefinition ProgramRepresentation::retrieve_type_definition(const CustomType& type_signature){
     const std::string& fully_qualified_name = get_fully_quilified_typesignature_name(type_signature);
     return type_definitions.at(fully_qualified_name);
 }
 
-std::string ProgramRepresentation::get_fully_quilified_typesignature_name(const BaseType& type_signature){    
+std::string ProgramRepresentation::get_fully_quilified_typesignature_name(const CustomType& type_signature){    
     if (!type_signature.package_prefix.empty()){
         const std::string& package = type_signature.package_prefix;
         std::optional<std::string> retrieved = search_fully_qualified_typesignature_name(type_signature, package);
@@ -41,7 +41,7 @@ std::string ProgramRepresentation::get_fully_quilified_typesignature_name(const 
 }
 
 [[nodiscard]] std::optional<std::string> ProgramRepresentation::search_fully_qualified_typesignature_name(
-    const BaseType& type_signature, 
+    const CustomType& type_signature, 
     const PackageName& package_name
 ){
     const std::string instantiated_concrete_type_key = infer_possible_fully_qualified_name(package_name, type_signature);
@@ -80,7 +80,7 @@ std::string ProgramRepresentation::get_fully_quilified_typesignature_name(const 
 
 [[nodiscard]] std::string ProgramRepresentation::get_type_signature_match_pattern(
     const PackageName& packageName, 
-    const BaseType& type_signature
+    const CustomType& type_signature
 ){
     std::string pattern_tag_name = packageName + namespace_concatenation + type_signature.type_name;
     size_t number_of_generics = type_signature.instantiation_generics.size();
@@ -119,16 +119,16 @@ std::string ProgramRepresentation::get_fully_quilified_typesignature_name(const 
         return type_signature.get<TemplateType>().type_name;
     }
     else {
-        assert_typesignature_is<BaseType>(type_signature);        
-        const BaseType& base_type = type_signature.get<BaseType>();
-        std::string non_generic_aware_name = packageName + namespace_concatenation + base_type.type_name;
-        if (base_type.instantiation_generics.empty()){
+        assert_typesignature_is<CustomType>(type_signature);        
+        const CustomType& custom_type = type_signature.get<CustomType>();
+        std::string non_generic_aware_name = packageName + namespace_concatenation + custom_type.type_name;
+        if (custom_type.instantiation_generics.empty()){
             return non_generic_aware_name;
         }
         std::string generics_section = "<";
-        for (const TypeSignature& generic : base_type.instantiation_generics){
-            if (generic.is<BaseType>()){
-                generics_section += get_fully_quilified_typesignature_name(generic.get<BaseType>());
+        for (const TypeSignature& generic : custom_type.instantiation_generics){
+            if (generic.is<CustomType>()){
+                generics_section += get_fully_quilified_typesignature_name(generic.get<CustomType>());
             }
             else {
                 generics_section += infer_possible_fully_qualified_name(packageName, generic);

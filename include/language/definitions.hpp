@@ -26,7 +26,7 @@ struct FunctionDefinition : public DebugInformationsAwareEntity {
     std::vector<Argument> arguments;
     std::vector<Statement> code;
 
-    void instantiate_generics(const BaseType& concrete_type);
+    void instantiate_generics(const CustomType& concrete_type);
 };
 
 
@@ -44,7 +44,7 @@ struct StructDefinition : public DebugInformationsAwareEntity  {
     std::vector<std::string> template_generics_names;
 
     [[nodiscard]] std::string generate_struct_id() const;
-    void instantiate_generics(const BaseType& concrete_type);
+    void instantiate_generics(const CustomType& concrete_type);
 };
 
 struct UnionDefinition : public DebugInformationsAwareEntity  {
@@ -56,7 +56,7 @@ struct UnionDefinition : public DebugInformationsAwareEntity  {
     std::vector<std::string> template_generics_names;
 
     [[nodiscard]] std::string generate_union_id() const;
-    void instantiate_generics(const BaseType& concrete_type);
+    void instantiate_generics(const CustomType& concrete_type);
 };
 
 struct TypeAlias : public DebugInformationsAwareEntity {
@@ -72,7 +72,7 @@ struct TypeAlias : public DebugInformationsAwareEntity {
     TypeSignature aliased_type;
 
     [[nodiscard]] std::string generate_alias_id() const;
-    void instantiate_generics(const BaseType& concrete_type);
+    void instantiate_generics(const CustomType& concrete_type);
 };
 
 struct TypeDefinition 
@@ -88,5 +88,5 @@ struct TypeDefinition
     [[nodiscard]] std::string generate_id() const;
     [[nodiscard]] std::string get_simple_name() const;
     [[nodiscard]] size_t get_number_of_generics() const;
-    void instantiate_generics(const BaseType& concrete_type);
+    void instantiate_generics(const CustomType& concrete_type);
 };

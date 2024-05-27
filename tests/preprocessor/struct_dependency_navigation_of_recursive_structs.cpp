@@ -19,14 +19,14 @@ TEST(Preprocessor, Recursive_Two_Struct_Dependency_Is_Cyclic_Dependency) {
             StructDefinitionFactory::make_struct_definition(
                 "A", { }, {
                     StructDefinition::Field { "b",
-                        BaseType { Token { "B", "main.basalt", 1, 1, 1, Token::Type::type }, {} } 
+                        CustomType { Token { "B", "main.basalt", 1, 1, 1, Token::Type::type }, {} } 
                     }
                 }
             ),
             StructDefinitionFactory::make_struct_definition(
                 "B", { }, {
                     StructDefinition::Field { "a",
-                        BaseType { Token { "A", "main.basalt", 1, 1, 1, Token::Type::type }, {} } 
+                        CustomType { Token { "A", "main.basalt", 1, 1, 1, Token::Type::type }, {} } 
                     }
                 }
             )
@@ -55,7 +55,7 @@ TEST(Preprocessor, Recursive_Two_Struct_Dependency_With_Pointer) {
             StructDefinitionFactory::make_struct_definition(
                 "A", { }, {
                     StructDefinition::Field { "b",
-                        BaseType { Token { "B", "main.basalt", 1, 1, 1, Token::Type::type }, {} } 
+                        CustomType { Token { "B", "main.basalt", 1, 1, 1, Token::Type::type }, {} } 
                     }
                 }
             ),
@@ -63,7 +63,7 @@ TEST(Preprocessor, Recursive_Two_Struct_Dependency_With_Pointer) {
                 "B", { }, {
                     StructDefinition::Field { "ptr",
                         PointerType { Token { "#", "main.basalt", 1, 1, 1, Token::Type::symbol },
-                            BaseType { Token { "A", "main.basalt", 1, 1, 1, Token::Type::type }, {} } 
+                            CustomType { Token { "A", "main.basalt", 1, 1, 1, Token::Type::type }, {} } 
                         }
                     }
                 }
@@ -91,7 +91,7 @@ TEST(Preprocessor, Recursive_Two_Struct_Dependency_With_Slices) {
             StructDefinitionFactory::make_struct_definition(
                 "A", { }, {
                     StructDefinition::Field { "b",
-                        BaseType { Token { "B", "main.basalt", 1, 1, 1, Token::Type::type }, {} } 
+                        CustomType { Token { "B", "main.basalt", 1, 1, 1, Token::Type::type }, {} } 
                     }
                 }
             ),
@@ -99,7 +99,7 @@ TEST(Preprocessor, Recursive_Two_Struct_Dependency_With_Slices) {
                 "B", { }, {
                     StructDefinition::Field { "slice",
                         SliceType { Token { "$", "main.basalt", 1, 1, 1, Token::Type::symbol },
-                            BaseType { Token { "A", "main.basalt", 1, 1, 1, Token::Type::type }, {} } 
+                            CustomType { Token { "A", "main.basalt", 1, 1, 1, Token::Type::type }, {} } 
                         }
                     }
                 }
@@ -127,7 +127,7 @@ TEST(Preprocessor, Recursive_Two_Struct_Dependency_With_Array_Is_Cyclic_Dependen
             StructDefinitionFactory::make_struct_definition(
                 "A", { }, {
                     StructDefinition::Field { "b",
-                        BaseType { Token { "B", "main.basalt", 1, 1, 1, Token::Type::type }, {} } 
+                        CustomType { Token { "B", "main.basalt", 1, 1, 1, Token::Type::type }, {} } 
                     }
                 }
             ),
@@ -135,7 +135,7 @@ TEST(Preprocessor, Recursive_Two_Struct_Dependency_With_Array_Is_Cyclic_Dependen
                 "B", { }, {
                     StructDefinition::Field { "arr",
                         ArrayType { Token { "[", "main.basalt", 1, 1, 1, Token::Type::symbol }, 10,
-                            BaseType { Token { "A", "main.basalt", 1, 1, 1, Token::Type::type }, {} } 
+                            CustomType { Token { "A", "main.basalt", 1, 1, 1, Token::Type::type }, {} } 
                         }
                     }
                 }

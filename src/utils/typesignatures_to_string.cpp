@@ -8,15 +8,15 @@
     return ptr->to_string();
 }
 
-[[nodiscard]] std::string BaseType::to_string() const {
+[[nodiscard]] std::string CustomType::to_string() const {
     std::string fully_qualified_name = type_name;
     if (instantiation_generics.empty()) return fully_qualified_name;
-    std::string serialized_base_type = fully_qualified_name + "<";
+    std::string serialized_custom_type = fully_qualified_name + "<";
     for (const TypeSignature& generic : instantiation_generics){
-        serialized_base_type += generic.to_string() + ",";
+        serialized_custom_type += generic.to_string() + ",";
     }
-    serialized_base_type.back() = '>';
-    return serialized_base_type;
+    serialized_custom_type.back() = '>';
+    return serialized_custom_type;
 }
 
 [[nodiscard]] std::string PointerType::to_string() const {

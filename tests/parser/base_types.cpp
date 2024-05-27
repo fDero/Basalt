@@ -4,7 +4,7 @@
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 
-TEST(Parsing, Base_Type_WithOut_Generics) {
+TEST(Parsing, CustomType_WithOut_Generics) {
     std::vector<Token> typesignatures = {
         { "Person",   "test.basalt", 1, 1, 1,  Token::Type::type },
         { "Employee", "test.basalt", 1, 2, 9,  Token::Type::type },
@@ -13,9 +13,9 @@ TEST(Parsing, Base_Type_WithOut_Generics) {
     Parser parser = Parser(typesignatures);
     for (const auto& typesignature : typesignatures){
         TypeSignature type = parser.parse_typesignature();
-        ASSERT_TRUE(type.is<BaseType>());
-        ASSERT_EQ(type.get<BaseType>().type_name, typesignature.sourcetext);
-        ASSERT_TRUE(type.get<BaseType>().instantiation_generics.empty());
+        ASSERT_TRUE(type.is<CustomType>());
+        ASSERT_EQ(type.get<CustomType>().type_name, typesignature.sourcetext);
+        ASSERT_TRUE(type.get<CustomType>().instantiation_generics.empty());
     }
 }
 
@@ -28,14 +28,14 @@ TEST(Parsing, Custom_Type_With_One_Generic) {
     };
     Parser parser = Parser(typesignature);
     TypeSignature type = parser.parse_typesignature();
-    ASSERT_TRUE(type.is<BaseType>());
-    ASSERT_EQ(type.get<BaseType>().type_name, "Wrapper");
-    ASSERT_EQ(type.get<BaseType>().instantiation_generics.size(), 1);
-    ASSERT_TRUE(type.get<BaseType>().instantiation_generics[0].is<PrimitiveType>());
-    EXPECT_EQ(type.get<BaseType>().instantiation_generics[0].get<PrimitiveType>().type_name, "String");
+    ASSERT_TRUE(type.is<CustomType>());
+    ASSERT_EQ(type.get<CustomType>().type_name, "Wrapper");
+    ASSERT_EQ(type.get<CustomType>().instantiation_generics.size(), 1);
+    ASSERT_TRUE(type.get<CustomType>().instantiation_generics[0].is<PrimitiveType>());
+    EXPECT_EQ(type.get<CustomType>().instantiation_generics[0].get<PrimitiveType>().type_name, "String");
 }
 
-TEST(Parsing, Base_Type_With_Multiple_Generic) {
+TEST(Parsing, CustomType_With_Multiple_Generic) {
     std::vector<Token> typesignature = {
         { "MultiWrapper", "test.basalt", 1, 1, 1, Token::Type::type },
         { "<", "test.basalt", 1, 2, 13, Token::Type::symbol },
@@ -48,12 +48,12 @@ TEST(Parsing, Base_Type_With_Multiple_Generic) {
     };
     Parser parser = Parser(typesignature);
     TypeSignature type = parser.parse_typesignature();
-    ASSERT_TRUE(type.is<BaseType>());
-    ASSERT_EQ(type.get<BaseType>().instantiation_generics.size(), 3);
-    ASSERT_TRUE(type.get<BaseType>().instantiation_generics[0].is<PrimitiveType>());
-    ASSERT_TRUE(type.get<BaseType>().instantiation_generics[1].is<PrimitiveType>());
-    ASSERT_TRUE(type.get<BaseType>().instantiation_generics[2].is<PrimitiveType>());
-    ASSERT_EQ(type.get<BaseType>().instantiation_generics[0].get<PrimitiveType>().type_name, "String");
-    ASSERT_EQ(type.get<BaseType>().instantiation_generics[1].get<PrimitiveType>().type_name, "Int");
-    ASSERT_EQ(type.get<BaseType>().instantiation_generics[2].get<PrimitiveType>().type_name, "Bool");
+    ASSERT_TRUE(type.is<CustomType>());
+    ASSERT_EQ(type.get<CustomType>().instantiation_generics.size(), 3);
+    ASSERT_TRUE(type.get<CustomType>().instantiation_generics[0].is<PrimitiveType>());
+    ASSERT_TRUE(type.get<CustomType>().instantiation_generics[1].is<PrimitiveType>());
+    ASSERT_TRUE(type.get<CustomType>().instantiation_generics[2].is<PrimitiveType>());
+    ASSERT_EQ(type.get<CustomType>().instantiation_generics[0].get<PrimitiveType>().type_name, "String");
+    ASSERT_EQ(type.get<CustomType>().instantiation_generics[1].get<PrimitiveType>().type_name, "Int");
+    ASSERT_EQ(type.get<CustomType>().instantiation_generics[2].get<PrimitiveType>().type_name, "Bool");
 }

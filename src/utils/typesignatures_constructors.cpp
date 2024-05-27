@@ -4,7 +4,7 @@
 #include <regex>
 #include <optional>
 
-BaseType::BaseType(
+CustomType::CustomType(
     const Token& typename_token, 
     const ConcreteGenerics& generics
 ) 

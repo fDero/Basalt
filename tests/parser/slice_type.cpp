@@ -13,8 +13,8 @@ TEST(Parsing, Simple_Slice) {
     TypeSignature type = parser.parse_typesignature();
     ASSERT_TRUE(type.is<SliceType>());
     SliceType inner_slice = type.get<SliceType>();
-    ASSERT_TRUE(inner_slice.stored_type.is<BaseType>());
-    EXPECT_EQ(type.get<SliceType>().stored_type.get<BaseType>().type_name, "Ent");
+    ASSERT_TRUE(inner_slice.stored_type.is<CustomType>());
+    EXPECT_EQ(type.get<SliceType>().stored_type.get<CustomType>().type_name, "Ent");
 }
 
 TEST(Parsing, Nested_Slice_Types) {

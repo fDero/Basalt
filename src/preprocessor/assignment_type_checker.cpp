@@ -15,16 +15,16 @@ bool AssignmentTypeChecker::validate_assignment(const TypeSignature& source, con
     if (validate_type_alias_unaware_assignment(source, dest)){
         return true;
     }
-    if (source.is<BaseType>()){
-        TypeDefinition source_type_definition = program_representation.retrieve_type_definition(source.get<BaseType>());
+    if (source.is<CustomType>()){
+        TypeDefinition source_type_definition = program_representation.retrieve_type_definition(source.get<CustomType>());
         if (source_type_definition.is<TypeAlias>()){
             if (validate_assignment(source_type_definition.get<TypeAlias>().aliased_type, dest)){
                 return true;
             }
         }
     }
-    if (dest.is<BaseType>()){
-        TypeDefinition dest_type_definition = program_representation.retrieve_type_definition(dest.get<BaseType>());
+    if (dest.is<CustomType>()){
+        TypeDefinition dest_type_definition = program_representation.retrieve_type_definition(dest.get<CustomType>());
         if (dest_type_definition.is<TypeAlias>()){
             if (validate_assignment(source, dest_type_definition.get<TypeAlias>().aliased_type)){
                 return true;
@@ -38,8 +38,8 @@ bool AssignmentTypeChecker::validate_type_alias_unaware_assignment(const TypeSig
     if (dest.is<TemplateType>()){
         return validate_assignment_to_template_generic(source, dest.get<TemplateType>());
     }
-    else if (dest.is<BaseType>()){
-        return validate_assignment_to_base_type(source, dest.get<BaseType>());
+    else if (dest.is<CustomType>()){
+        return validate_assignment_to_custom_type(source, dest.get<CustomType>());
     }
     else if (dest.is<PrimitiveType>()){
         return validate_assignment_to_primitive_type(source, dest.get<PrimitiveType>());
@@ -100,9 +100,9 @@ bool AssignmentTypeChecker::validate_assignment_to_template_generic(const TypeSi
     return true;
 }
 
-bool AssignmentTypeChecker::validate_assignment_to_base_type(const TypeSignature& source, const BaseType& dest){
-    return (source.is<BaseType>())
-        ? validate_assignment_between_base_types(source.get<BaseType>(), dest)
+bool AssignmentTypeChecker::validate_assignment_to_custom_type(const TypeSignature& source, const CustomType& dest){
+    return (source.is<CustomType>())
+        ? validate_assignment_between_custom_types(source.get<CustomType>(), dest)
         : validate_complex_assignment(source, dest);
 }
 
@@ -127,18 +127,18 @@ bool AssignmentTypeChecker::validate_assignment_to_union(const TypeSignature& so
     return false;
 }
 
-bool AssignmentTypeChecker::validate_complex_assignment(const TypeSignature& source, const BaseType& dest){
+bool AssignmentTypeChecker::validate_complex_assignment(const TypeSignature& source, const CustomType& dest){
     const TypeDefinition& dest_type_definition = program_representation.retrieve_type_definition(dest);
     if (dest_type_definition.is<UnionDefinition>()){    
         if (validate_assignment_to_union(source, dest_type_definition.get<UnionDefinition>())){
             return true;
         }
     }
-    if (!source.is<BaseType>()){
+    if (!source.is<CustomType>()){
         return false;
     }
-    const BaseType& source_base_type = source.get<BaseType>();
-    const TypeDefinition& source_type_definition = program_representation.retrieve_type_definition(source_base_type);
+    const CustomType& source_custom_type = source.get<CustomType>();
+    const TypeDefinition& source_type_definition = program_representation.retrieve_type_definition(source_custom_type);
     if (!source_type_definition.is<UnionDefinition>() || !dest_type_definition.is<UnionDefinition>()){
         return false;
     }
@@ -152,7 +152,7 @@ bool AssignmentTypeChecker::validate_complex_assignment(const TypeSignature& sou
     return true;
 }
 
-bool AssignmentTypeChecker::validate_assignment_between_base_types(const BaseType& source, const BaseType& dest){
+bool AssignmentTypeChecker::validate_assignment_between_custom_types(const CustomType& source, const CustomType& dest){
     if (source.type_name == dest.type_name && source.instantiation_generics.size() == dest.instantiation_generics.size()){
         for (int i = 0; i < source.instantiation_generics.size(); i++){
             if (dest.instantiation_generics[i].is<TemplateType>()){

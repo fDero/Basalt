@@ -67,7 +67,7 @@ void ensure_function_is_non_void_in_expression_evaluation(
 }
 
 [[noreturn]] void throw_no_type_definition_found(
-    const BaseType& type_signature
+    const CustomType& type_signature
 ){
     throw std::runtime_error {
         "No type definition found for type " + type_signature.to_string() + "\n"
@@ -99,8 +99,8 @@ void ensure_mathematical_prefix_operator_unique_operand_is_numerical(
     const UnaryOperator& unary_operator, 
     const TypeSignature& operand_type
 ){
-    if (!operand_type.is<BaseType>() || 
-        (operand_type.get<BaseType>().type_name != "Int" && operand_type.get<BaseType>().type_name != "Float")){
+    if (!operand_type.is<CustomType>() || 
+        (operand_type.get<CustomType>().type_name != "Int" && operand_type.get<CustomType>().type_name != "Float")){
             throw std::runtime_error {
                 "Invalid use of pointer dereference operator on non-pointer type " + operand_type.to_string() + "\n"
             };
@@ -111,7 +111,7 @@ void ensure_not_operator_unique_operand_is_of_type_bool(
     const UnaryOperator& unary_operator, 
     const TypeSignature& operand_type
 ){
-    if (!operand_type.is<BaseType>() || operand_type.get<BaseType>().type_name != "Bool"){
+    if (!operand_type.is<CustomType>() || operand_type.get<CustomType>().type_name != "Bool"){
         throw std::runtime_error {
             "Invalid use of pointer dereference operator on non-pointer type " + operand_type.to_string() + "\n"
         };
@@ -133,7 +133,7 @@ void enrue_right_operand_is_array_index_type_when_deducing_expression_type(
     const BinaryOperator& binary_operator, 
     const TypeSignature& operand_type
 ){
-    if (!operand_type.is<BaseType>() || operand_type.get<BaseType>().type_name != "Int"){
+    if (!operand_type.is<CustomType>() || operand_type.get<CustomType>().type_name != "Int"){
         throw std::runtime_error {
             "invalid use of square brackets access operator with bad index type: " + operand_type.to_string() + "\n"
         };

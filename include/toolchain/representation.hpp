@@ -35,16 +35,16 @@ struct ProgramRepresentation {
     
         void store_type_definition(const TypeDefinition& type_definition, const PackageName& package_name);
 
-        [[nodiscard]] TypeDefinition retrieve_type_definition(const BaseType& type_signature);
+        [[nodiscard]] TypeDefinition retrieve_type_definition(const CustomType& type_signature);
 
     protected:
 
         [[nodiscard]] std::string get_fully_quilified_typesignature_name(
-            const BaseType& type_signature
+            const CustomType& type_signature
         );
 
         [[nodiscard]] std::optional<std::string> search_fully_qualified_typesignature_name(
-            const BaseType& type_signature, const PackageName& package_name
+            const CustomType& type_signature, const PackageName& package_name
         );
 
         [[nodiscard]] std::string get_type_definition_match_pattern(
@@ -52,7 +52,7 @@ struct ProgramRepresentation {
         );
 
         [[nodiscard]] std::string get_type_signature_match_pattern(
-            const PackageName& packageName, const BaseType& type_signature
+            const PackageName& packageName, const CustomType& type_signature
         );
 
         [[nodiscard]] std::string infer_possible_fully_qualified_name(

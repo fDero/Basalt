@@ -17,9 +17,9 @@ void TypeDependencyNavigator::verify_that_the_type_exists(const TypeSignature& t
     else if (type_signature.is<SliceType>()) {
         verify_that_the_type_exists(type_signature.get<SliceType>().stored_type);
     }
-    else if (type_signature.is<BaseType>()) {
-        const BaseType& base_type = type_signature.get<BaseType>();
-        std::ignore = program_representation.retrieve_type_definition(base_type);
+    else if (type_signature.is<CustomType>()) {
+        const CustomType& custom_type = type_signature.get<CustomType>();
+        std::ignore = program_representation.retrieve_type_definition(custom_type);
     }
 }
 
@@ -36,9 +36,9 @@ void TypeDependencyNavigator::visit_typesignature(const TypeSignature& typesigna
     else if (typesignature.is<SliceType>()) {
         verify_that_the_type_exists(typesignature.get<SliceType>().stored_type);
     }
-    else if (typesignature.is<BaseType>()) {
-        const BaseType& base_type = typesignature.get<BaseType>();
-        TypeDefinition typedefinition = program_representation.retrieve_type_definition(base_type);
+    else if (typesignature.is<CustomType>()) {
+        const CustomType& custom_type = typesignature.get<CustomType>();
+        TypeDefinition typedefinition = program_representation.retrieve_type_definition(custom_type);
         visit_type_definition(typesignature, typedefinition, generics);
     }
 }

@@ -32,9 +32,9 @@ struct TypeSignature : public Polymorph<TypeSignatureBody> {
     void instantiate_generics(const GenericSubstitutionRuleSet& rules);
 };
 
-struct BaseType : public TypeSignatureBody {
+struct CustomType : public TypeSignatureBody {
  
-    BaseType(const Token& typename_token, const ConcreteGenerics& generics);
+    CustomType(const Token& typename_token, const ConcreteGenerics& generics);
 
     [[nodiscard]] std::string to_string() const override;
     [[nodiscard]] std::string to_match_string() const override;

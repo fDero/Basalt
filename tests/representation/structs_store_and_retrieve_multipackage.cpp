@@ -30,7 +30,7 @@ TEST(representation, Retrieve_StructDefinition_From_TypeSignature_In_The_Same_Fi
     program.store_definitions_from_file(file);
 
     TypeDefinition type_def =  program.retrieve_type_definition(
-        BaseType { Token { "MyStruct", "test.basalt", 1, 1, 1, Token::Type::type }, {} }
+        CustomType { Token { "MyStruct", "test.basalt", 1, 1, 1, Token::Type::type }, {} }
     );
 
     ASSERT_TRUE(type_def.is<StructDefinition>());
@@ -73,7 +73,7 @@ TEST(representation, Retrieve_StructDefinition_From_TypeSignature_In_Different_P
     program.store_definitions_from_file(imported_dot_basalt);
 
     TypeDefinition type_def =  program.retrieve_type_definition(
-        BaseType { Token { "MyStruct", "main.basalt", 1, 1, 1, Token::Type::type }, {} }
+        CustomType { Token { "MyStruct", "main.basalt", 1, 1, 1, Token::Type::type }, {} }
     );
 
     ASSERT_TRUE(type_def.is<StructDefinition>());
@@ -116,7 +116,7 @@ TEST(representation, Retrieve_StructDefinition_From_TypeSignature_In_Different_F
     program.store_definitions_from_file(imported_dot_basalt);
 
     TypeDefinition type_def =  program.retrieve_type_definition(
-        BaseType { Token { "MyStruct", "main.basalt", 1, 1, 1, Token::Type::type }, {} }
+        CustomType { Token { "MyStruct", "main.basalt", 1, 1, 1, Token::Type::type }, {} }
     );
 
     ASSERT_TRUE(type_def.is<StructDefinition>());
@@ -159,7 +159,7 @@ TEST(representation, Retrieve_StructDefinition_From_TypeSignature_In_Different_P
     program.store_definitions_from_file(test_dot_basalt);
     program.store_definitions_from_file(other_dot_basalt);
 
-    BaseType type_signature = { Token { "MyStruct", "main.basalt", 1, 1, 1, Token::Type::type }, {} };
+    CustomType type_signature = { Token { "MyStruct", "main.basalt", 1, 1, 1, Token::Type::type }, {} };
     type_signature.package_prefix = "otherpackage";
     TypeDefinition type_def =  program.retrieve_type_definition(type_signature);
 

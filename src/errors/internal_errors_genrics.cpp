@@ -16,7 +16,7 @@ void assert_vectors_have_same_size_hence_they_can_be_zipped(
 }
 
 void assert_instantiation_struct_is_compatible_with_template_struct(
-    const BaseType& concrete_type,
+    const CustomType& concrete_type,
     const StructDefinition& template_struct
 ){
     #ifdef DEBUG_BUILD
@@ -30,7 +30,7 @@ void assert_instantiation_struct_is_compatible_with_template_struct(
 }
 
 void assert_instantiation_union_is_compatible_with_template_union(
-    const BaseType& concrete_type,
+    const CustomType& concrete_type,
     const UnionDefinition& template_union
 ){
     #ifdef DEBUG_BUILD
@@ -44,7 +44,7 @@ void assert_instantiation_union_is_compatible_with_template_union(
 }
 
 void assert_instantiation_union_is_compatible_with_template_alias(
-    const BaseType& concrete_type,
+    const CustomType& concrete_type,
     const TypeAlias& template_alias
 ){
     #ifdef DEBUG_BUILD

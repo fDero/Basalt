@@ -4,7 +4,7 @@
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 
-TEST(Parsing, Package_Prefixed_Concrete_Generic_BaseType){
+TEST(Parsing, Package_Prefixed_Concrete_Generic_CustomType){
     std::vector<Token> tokens = {
         { "collections", "test.basalt", 1, 1, 11, Token::Type::text   },
         { "::",          "test.basalt", 1, 2, 13, Token::Type::symbol },
@@ -15,8 +15,8 @@ TEST(Parsing, Package_Prefixed_Concrete_Generic_BaseType){
     };
     Parser parser = Parser(tokens);
     TypeSignature typesignature = parser.parse_typesignature();
-    ASSERT_TRUE(typesignature.is<BaseType>());
-    BaseType basetype = typesignature.get<BaseType>();
+    ASSERT_TRUE(typesignature.is<CustomType>());
+    CustomType basetype = typesignature.get<CustomType>();
     EXPECT_EQ(basetype.package_prefix, "collections");
     EXPECT_EQ(basetype.type_name, "List");
     EXPECT_EQ(basetype.instantiation_generics.size(), 1);
@@ -25,7 +25,7 @@ TEST(Parsing, Package_Prefixed_Concrete_Generic_BaseType){
     EXPECT_EQ(generic.type_name, "Int");
 }
 
-TEST(Parsing, Package_Prefixed_Non_Generic_BaseType){
+TEST(Parsing, Package_Prefixed_Non_Generic_CustomType){
     std::vector<Token> tokens = {
         { "graphics",  "test.basalt", 1, 1, 11, Token::Type::text   },
         { "::",        "test.basalt", 1, 2, 13, Token::Type::symbol },
@@ -33,8 +33,8 @@ TEST(Parsing, Package_Prefixed_Non_Generic_BaseType){
     };
     Parser parser = Parser(tokens);
     TypeSignature typesignature = parser.parse_typesignature();
-    ASSERT_TRUE(typesignature.is<BaseType>());
-    BaseType basetype = typesignature.get<BaseType>();
+    ASSERT_TRUE(typesignature.is<CustomType>());
+    CustomType basetype = typesignature.get<CustomType>();
     EXPECT_EQ(basetype.package_prefix, "graphics");
     EXPECT_EQ(basetype.type_name, "Texture");
     EXPECT_TRUE(basetype.instantiation_generics.empty());

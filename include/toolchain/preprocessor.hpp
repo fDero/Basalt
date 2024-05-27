@@ -61,10 +61,10 @@ class AssignmentTypeChecker {
         bool validate_assignment_to_pointer_type(const TypeSignature& source, const PointerType& dest);
         bool validate_assignment_to_array_type(const TypeSignature& source, const ArrayType& dest);
         bool validate_assignment_to_primitive_type(const TypeSignature& source, const PrimitiveType& dest);
-        bool validate_assignment_to_base_type(const TypeSignature& source, const BaseType& dest);
+        bool validate_assignment_to_custom_type(const TypeSignature& source, const CustomType& dest);
         bool validate_assignment_to_template_generic(const TypeSignature& source, const TemplateType& dest);
-        bool validate_assignment_between_base_types(const BaseType& source, const BaseType& dest);
-        bool validate_complex_assignment(const TypeSignature& source, const BaseType& dest);
+        bool validate_assignment_between_custom_types(const CustomType& source, const CustomType& dest);
+        bool validate_complex_assignment(const TypeSignature& source, const CustomType& dest);
         bool validate_assignment_to_string(const TypeSignature& source, const PrimitiveType& dest);
         bool validate_assignment_to_union(const TypeSignature& source, const UnionDefinition& union_def);
         

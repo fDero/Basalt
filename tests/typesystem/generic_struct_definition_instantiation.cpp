@@ -5,7 +5,7 @@
 #include "../tests_utilities/struct_definition_factory.hpp"
 #include "../tests_utilities/typesignature_factory.hpp"
 
-TEST(TypeSystem, Generic_Struct_With_Base_Type_Fields_Instantiation) {
+TEST(TypeSystem, Generic_Struct_With_CustomType_Fields_Instantiation) {
     StructDefinition generic_struct_definition = StructDefinitionFactory::make_struct_definition(
         "Pair", 
         { "T", "U" }, 
@@ -16,11 +16,11 @@ TEST(TypeSystem, Generic_Struct_With_Base_Type_Fields_Instantiation) {
     );
     StructDefinition instantiated_struct_definition = generic_struct_definition;
     instantiated_struct_definition.instantiate_generics(
-        TypeSignatureFactory::make_base_type("Pair", { 
+        TypeSignatureFactory::make_custom_type("Pair", { 
             TypeSignatureFactory::Int, 
             TypeSignatureFactory::ListOfStrings 
         })
-            .get<BaseType>()
+            .get<CustomType>()
     );
     EXPECT_EQ(instantiated_struct_definition.struct_name, "Pair<Int,List<String>>");
     ASSERT_EQ(instantiated_struct_definition.fields.size(), 2);
@@ -42,8 +42,8 @@ TEST(TypeSystem, Generic_Struct_With_PointerType_Field_Instantiation) {
     );
     StructDefinition instantiated_struct_definition = generic_struct_definition;
     instantiated_struct_definition.instantiate_generics(
-        TypeSignatureFactory::make_base_type("PointerWrapper", { TypeSignatureFactory::Int })
-            .get<BaseType>()
+        TypeSignatureFactory::make_custom_type("PointerWrapper", { TypeSignatureFactory::Int })
+            .get<CustomType>()
     );
     EXPECT_EQ(instantiated_struct_definition.struct_name, "PointerWrapper<Int>");
     ASSERT_EQ(instantiated_struct_definition.fields.size(), 1);
@@ -63,8 +63,8 @@ TEST(TypeSystem, Generic_Struct_With_Slice_Type_Field_Instantiation) {
     );
     StructDefinition instantiated_struct_definition = generic_struct_definition;
     instantiated_struct_definition.instantiate_generics(
-        TypeSignatureFactory::make_base_type("SliceWrapper", { TypeSignatureFactory::Int })
-            .get<BaseType>()
+        TypeSignatureFactory::make_custom_type("SliceWrapper", { TypeSignatureFactory::Int })
+            .get<CustomType>()
     );
     EXPECT_EQ(instantiated_struct_definition.struct_name, "SliceWrapper<Int>");
     ASSERT_EQ(instantiated_struct_definition.fields.size(), 1);
@@ -84,8 +84,8 @@ TEST(TypeSystem, Generic_Struct_With_Array_Type_Field_Instantiation) {
     );
     StructDefinition instantiated_struct_definition = generic_struct_definition;
     instantiated_struct_definition.instantiate_generics(
-        TypeSignatureFactory::make_base_type("ArrayWrapper", { TypeSignatureFactory::Int })
-            .get<BaseType>()
+        TypeSignatureFactory::make_custom_type("ArrayWrapper", { TypeSignatureFactory::Int })
+            .get<CustomType>()
     );
     EXPECT_EQ(instantiated_struct_definition.struct_name, "ArrayWrapper<Int>");
     ASSERT_EQ(instantiated_struct_definition.fields.size(), 1);

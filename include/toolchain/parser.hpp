@@ -48,7 +48,7 @@ class Parser {
         [[nodiscard]] TypeSignature parse_pointer_type();
         [[nodiscard]] TypeSignature parse_array_type();
         [[nodiscard]] TypeSignature parse_slice_type();
-        [[nodiscard]] TypeSignature parse_base_type();
+        [[nodiscard]] TypeSignature parse_custom_type();
         [[nodiscard]] TypeSignature parse_primitive_type();
         [[nodiscard]] TypeSignature parse_template_type();
       
