@@ -126,6 +126,12 @@ TEST(Preprocessor, List_Of_Ints_And_List_Of_Number_Are_Non_Mutually_Compatible_W
                 StructDefinitionFactory::make_struct_definition(
                     "List", { "T" }, { StructDefinitionFactory::no_fields }
                 ),
+                UnionDefinitionFactory::make_union_definition(
+                    "Number", { }, {
+                        TypeSignatureFactory::Int,
+                        TypeSignatureFactory::Float
+                    }
+                )
             },
             .func_defs = { }
         }

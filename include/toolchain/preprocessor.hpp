@@ -56,16 +56,18 @@ class AssignmentTypeChecker {
         GenericSubstitutionRuleSet& get_generic_substitution_rules(); 
 
     private:
+        bool validate_type_alias_unaware_assignment(const TypeSignature& source, const TypeSignature& dest);
+        bool validate_assignment_to_slice_type(const TypeSignature& source, const SliceType& dest);
+        bool validate_assignment_to_pointer_type(const TypeSignature& source, const PointerType& dest);
+        bool validate_assignment_to_array_type(const TypeSignature& source, const ArrayType& dest);
+        bool validate_assignment_to_primitive_type(const TypeSignature& source, const PrimitiveType& dest);
+        bool validate_assignment_to_base_type(const TypeSignature& source, const BaseType& dest);
+        bool validate_assignment_to_template_generic(const TypeSignature& source, const TemplateType& dest);
         bool validate_assignment_between_base_types(const BaseType& source, const BaseType& dest);
-        bool validate_assignment_to_union(const TypeSignature& source, const BaseType& dest);
+        bool validate_complex_assignment(const TypeSignature& source, const BaseType& dest);
         bool validate_assignment_to_string(const TypeSignature& source, const PrimitiveType& dest);
-        bool validate_assignment_between_primitive_types(const PrimitiveType& source, const PrimitiveType& dest);
-        bool validate_assignment_between_array_types(const ArrayType& source, const ArrayType& dest);
-        bool validate_assignment_between_pointer_types(const PointerType& source, const PointerType& dest);
-        bool validate_assignment_array_to_slice(const ArrayType& source, const SliceType& dest);
-        bool validate_assignment_between_slices(const SliceType& source, const SliceType& dest);
+        bool validate_assignment_to_union(const TypeSignature& source, const UnionDefinition& union_def);
         
-
         ProgramRepresentation& program_representation;
         GenericSubstitutionRuleSet generic_substitution_rules;
 };

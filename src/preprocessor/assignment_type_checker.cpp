@@ -7,108 +7,131 @@
 AssignmentTypeChecker::AssignmentTypeChecker(ProgramRepresentation& program_representation) 
     : program_representation(program_representation) {}
 
-GenericSubstitutionRuleSet& AssignmentTypeChecker::get_generic_substitution_rules() 
-    { return generic_substitution_rules; }
+GenericSubstitutionRuleSet& AssignmentTypeChecker::get_generic_substitution_rules() { 
+    return generic_substitution_rules; 
+}
 
-bool AssignmentTypeChecker::validate_assignment(const TypeSignature& source, const TypeSignature& dest){
+bool AssignmentTypeChecker::validate_type_alias_unaware_assignment(const TypeSignature& source, const TypeSignature& dest){
     if (dest.is<TemplateType>()){
-        for (GenericSubstitutionRule& rule : generic_substitution_rules){
-            if (rule.to_be_substituded == dest.get<TemplateType>().type_name){
-                if (validate_assignment(source, rule.replacement)){
-                    return true;
-                }
-                else if (validate_assignment(rule.replacement, source)){
-                    rule.replacement = source;
-                    return true;
-                }
-                else  {
-                    return false;
-                }
-            }
-        }
-        generic_substitution_rules.push_back({dest.get<TemplateType>().type_name, source});
-        return true;
+        return validate_assignment_to_template_generic(source, dest.get<TemplateType>());
     }
     else if (dest.is<BaseType>()){
-        if (source.is<BaseType>()) {
-            return validate_assignment_between_base_types(source.get<BaseType>(), dest.get<BaseType>());
-        }
-        else {
-            return validate_assignment_to_union(source, dest.get<BaseType>());
-        }
+        return validate_assignment_to_base_type(source, dest.get<BaseType>());
     }
     else if (dest.is<PrimitiveType>()){
-        if (dest.get<PrimitiveType>().type_name == "String" || dest.get<PrimitiveType>().type_name == "RawString"){
-            return validate_assignment_to_string(source, dest.get<PrimitiveType>());
-        }
-        else if (source.is<PrimitiveType>()){
-            return validate_assignment_between_primitive_types(source.get<PrimitiveType>(), dest.get<PrimitiveType>());
-        }
-        else {
-            TypeDefinition source_type_definition = program_representation.retrieve_type_definition(source.get<BaseType>());
-            if (source_type_definition.is<TypeAlias>()){
-                return validate_assignment(source_type_definition.get<TypeAlias>().aliased_type, dest);
-            }
-            else {
-                return false;
-            }
-        }
+        return validate_assignment_to_primitive_type(source, dest.get<PrimitiveType>());
     }
     else if (dest.is<ArrayType>()){
-        if (source.is<ArrayType>()){
-            return validate_assignment_between_array_types(source.get<ArrayType>(), dest.get<ArrayType>());
-        }
-        else {
-            TypeDefinition source_type_definition = program_representation.retrieve_type_definition(source.get<BaseType>());
-            if (source_type_definition.is<TypeAlias>()){
-                return validate_assignment(source_type_definition.get<TypeAlias>().aliased_type, dest);
-            }
-            else {
-                return false;
-            }
-        }
+        return validate_assignment_to_array_type(source, dest.get<ArrayType>());
     }
     else if (dest.is<PointerType>()){
-        if (source.is<PointerType>()){
-            return validate_assignment_between_pointer_types(source.get<PointerType>(), dest.get<PointerType>());
-        }
-        else {
-            TypeDefinition source_type_definition = program_representation.retrieve_type_definition(source.get<BaseType>());
-            if (source_type_definition.is<TypeAlias>()){
-                return validate_assignment(source_type_definition.get<TypeAlias>().aliased_type, dest);
-            }
-            else {
-                return false;
-            }
-        }
+        return validate_assignment_to_pointer_type(source, dest.get<PointerType>());
     }
     else if (dest.is<SliceType>()){
-        if (source.is<ArrayType>()){
-            return validate_assignment_array_to_slice(source.get<ArrayType>(), dest.get<SliceType>());
-        }
-        else if (source.is<SliceType>()){
-            TypeDefinition source_type_definition = program_representation.retrieve_type_definition(source.get<BaseType>());
-            if (source_type_definition.is<TypeAlias>()){
-                return validate_assignment(source_type_definition.get<TypeAlias>().aliased_type, dest);
-            }
-            else {
-                return false;
-            }
-        }
+        return validate_assignment_to_slice_type(source, dest.get<SliceType>());
     }
     assert_unreachable();
 }
 
-bool AssignmentTypeChecker::validate_assignment_to_union(const TypeSignature& source, const BaseType& dest){
-    const TypeDefinition& dest_type_definition = program_representation.retrieve_type_definition(dest);
-    if (dest_type_definition.is<TypeAlias>()){
-        return validate_assignment(source, dest_type_definition.get<TypeAlias>().aliased_type);
+bool AssignmentTypeChecker::validate_assignment(const TypeSignature& source, const TypeSignature& dest){
+    if (validate_type_alias_unaware_assignment(source, dest)){
+        return true;
     }
-    if (dest_type_definition.is<UnionDefinition>()){    
-        for (const TypeSignature& alternative : dest_type_definition.get<UnionDefinition>().types){
-            if (validate_assignment(source, alternative)){
+    if (source.is<BaseType>()){
+        TypeDefinition source_type_definition = program_representation.retrieve_type_definition(source.get<BaseType>());
+        if (source_type_definition.is<TypeAlias>()){
+            if (validate_assignment(source_type_definition.get<TypeAlias>().aliased_type, dest)){
                 return true;
             }
+        }
+    }
+    if (dest.is<BaseType>()){
+        TypeDefinition dest_type_definition = program_representation.retrieve_type_definition(dest.get<BaseType>());
+        if (dest_type_definition.is<TypeAlias>()){
+            if (validate_assignment(source, dest_type_definition.get<TypeAlias>().aliased_type)){
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+bool AssignmentTypeChecker::validate_assignment_to_slice_type(const TypeSignature& source, const SliceType& dest){
+    if (source.is<ArrayType>()){
+        return validate_assignment(source.get<ArrayType>().stored_type, dest.stored_type);
+    }
+    else if (source.is<SliceType>()){
+        return validate_assignment(source.get<SliceType>().stored_type, dest.stored_type);
+    }
+    return false;
+}
+
+bool AssignmentTypeChecker::validate_assignment_to_pointer_type(const TypeSignature& source, const PointerType& dest){
+    if (source.is<PointerType>()){
+        return validate_assignment(source.get<PointerType>().pointed_type, dest.pointed_type);
+    }
+    else {
+        return false;
+    }
+}
+
+bool AssignmentTypeChecker::validate_assignment_to_array_type(const TypeSignature& source, const ArrayType& dest){
+    if (source.is<ArrayType>()){
+        return validate_assignment(source.get<ArrayType>().stored_type, dest.stored_type);
+    }
+    else {
+        return false;
+    }
+}
+
+bool AssignmentTypeChecker::validate_assignment_to_template_generic(const TypeSignature& source, const TemplateType& dest){
+    for (GenericSubstitutionRule& rule : generic_substitution_rules){
+        if (rule.to_be_substituded == dest.type_name){
+            if (validate_assignment(rule.replacement, source)){
+                rule.replacement = source;
+                return true;
+            }
+            else {
+                return validate_assignment(source, rule.replacement);
+            }
+        }
+    }
+    generic_substitution_rules.push_back({dest.type_name, source});
+    return true;
+}
+
+bool AssignmentTypeChecker::validate_assignment_to_base_type(const TypeSignature& source, const BaseType& dest){
+    return (source.is<BaseType>())
+        ? validate_assignment_between_base_types(source.get<BaseType>(), dest)
+        : validate_complex_assignment(source, dest);
+}
+
+bool AssignmentTypeChecker::validate_assignment_to_primitive_type(const TypeSignature& source, const PrimitiveType& dest){
+    if (dest.type_name == "String" || dest.type_name == "RawString"){
+        return validate_assignment_to_string(source, dest);
+    }
+    else if (source.is<PrimitiveType>()){
+        return source.get<PrimitiveType>().type_name == dest.type_name;
+    }
+    else {
+        return false;
+    }
+}
+
+bool AssignmentTypeChecker::validate_assignment_to_union(const TypeSignature& source, const UnionDefinition& union_def){
+    for (const TypeSignature& alternative : union_def.types){
+        if (validate_assignment(source, alternative)){
+            return true;
+        }
+    }
+    return false;
+}
+
+bool AssignmentTypeChecker::validate_complex_assignment(const TypeSignature& source, const BaseType& dest){
+    const TypeDefinition& dest_type_definition = program_representation.retrieve_type_definition(dest);
+    if (dest_type_definition.is<UnionDefinition>()){    
+        if (validate_assignment_to_union(source, dest_type_definition.get<UnionDefinition>())){
+            return true;
         }
     }
     if (!source.is<BaseType>()){
@@ -116,21 +139,13 @@ bool AssignmentTypeChecker::validate_assignment_to_union(const TypeSignature& so
     }
     const BaseType& source_base_type = source.get<BaseType>();
     const TypeDefinition& source_type_definition = program_representation.retrieve_type_definition(source_base_type);
-    if (source_type_definition.is<TypeAlias>()){
-        return validate_assignment(source_type_definition.get<TypeAlias>().aliased_type, dest);
-    }
     if (!source_type_definition.is<UnionDefinition>() || !dest_type_definition.is<UnionDefinition>()){
         return false;
     }
-    for (const TypeSignature& source_alternative : source_type_definition.get<UnionDefinition>().types){
-        bool found = false;
-        for (const TypeSignature& dest_alternative : dest_type_definition.get<UnionDefinition>().types){
-            if (validate_assignment(source_alternative, dest_alternative)){
-                found = true;
-                break;
-            }
-        }
-        if (!found){
+    const UnionDefinition& source_union_definition = source_type_definition.get<UnionDefinition>();
+    const UnionDefinition& dest_union_definition = dest_type_definition.get<UnionDefinition>();
+    for (const TypeSignature& source_alternative : source_union_definition.types){
+        if (!validate_assignment_to_union(source_alternative, dest_union_definition)){
             return false;
         }
     }
@@ -152,7 +167,7 @@ bool AssignmentTypeChecker::validate_assignment_between_base_types(const BaseTyp
         return true;
     }
     else {
-        return validate_assignment_to_union(source, dest);
+        return validate_complex_assignment(source, dest);
     }
 }
 
@@ -172,24 +187,4 @@ bool AssignmentTypeChecker::validate_assignment_to_string(const TypeSignature& s
     else {
         return false;
     }
-}
-
-bool AssignmentTypeChecker::validate_assignment_between_primitive_types(const PrimitiveType& source, const PrimitiveType& dest){
-    return source.type_name == dest.type_name;
-}
-
-bool AssignmentTypeChecker::validate_assignment_between_array_types(const ArrayType& source, const ArrayType& dest){
-    return validate_assignment(source.stored_type, dest.stored_type);
-}
-
-bool AssignmentTypeChecker::validate_assignment_between_pointer_types(const PointerType& source, const PointerType& dest){
-    return validate_assignment(source.pointed_type, dest.pointed_type);
-}
-
-bool AssignmentTypeChecker::validate_assignment_array_to_slice(const ArrayType& source, const SliceType& dest){
-    return validate_assignment(source.stored_type, dest.stored_type);
-}
-
-bool AssignmentTypeChecker::validate_assignment_between_slices(const SliceType& source, const SliceType& dest){
-    return validate_assignment(source.stored_type, dest.stored_type);
 }
