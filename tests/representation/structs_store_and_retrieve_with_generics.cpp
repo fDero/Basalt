@@ -65,28 +65,23 @@ TEST(representation, Struct_Overloads_Are_Distinguished_By_Template_Generics_Cou
         },
         .func_defs = {}
     };
-
     ProgramRepresentation program;
     program.store_definitions_from_file(file);
-
     TypeDefinition heterogeneous_pair =  program.retrieve_type_definition(
         BaseType { Token { "Pair", "test.basalt", 1, 1, 1, Token::Type::type }, {
             PrimitiveType { Token { "Int", "test.basalt", 1, 1, 1, Token::Type::type } },
             PrimitiveType { Token { "String", "test.basalt", 1, 1, 1, Token::Type::type } },
         } }
     );
-
     TypeDefinition homogeneous_pair =  program.retrieve_type_definition(
         BaseType { Token { "Pair", "test.basalt", 1, 1, 1, Token::Type::type }, {
             PrimitiveType { Token { "Int", "test.basalt", 1, 1, 1, Token::Type::type } }
         } }
     );
-
     ASSERT_TRUE(heterogeneous_pair.is<StructDefinition>());
     StructDefinition heterogeneous_pair_def = heterogeneous_pair.get<StructDefinition>();
     EXPECT_EQ(heterogeneous_pair_def.struct_name, "Pair<Int,String>");
     EXPECT_TRUE(heterogeneous_pair_def.template_generics_names.empty());
-
     ASSERT_TRUE(homogeneous_pair.is<StructDefinition>());
     StructDefinition homogeneous_pair_def = homogeneous_pair.get<StructDefinition>();
     EXPECT_EQ(homogeneous_pair_def.struct_name, "Pair<Int>");

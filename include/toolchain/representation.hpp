@@ -37,11 +37,27 @@ struct ProgramRepresentation {
 
         [[nodiscard]] TypeDefinition retrieve_type_definition(const BaseType& type_signature);
 
-
     protected:
 
-        [[nodiscard]] std::optional<TypeDefinition> search_type_definition_in_package(
+        [[nodiscard]] std::string get_fully_quilified_typesignature_name(
+            const BaseType& type_signature
+        );
+
+        [[nodiscard]] std::optional<std::string> search_fully_qualified_typesignature_name(
             const BaseType& type_signature, const PackageName& package_name
+        );
+
+        [[nodiscard]] std::string get_type_definition_match_pattern(
+            const PackageName& packageName, const TypeDefinition& type_definition
+        );
+
+        [[nodiscard]] std::string get_type_signature_match_pattern(
+            const PackageName& packageName, const BaseType& type_signature
+        );
+
+        [[nodiscard]] std::string infer_possible_fully_qualified_name(
+            const PackageName& packageName, 
+            const TypeSignature& type_signature
         );
 
         std::unordered_map<FileName, PackageName> package_name_by_file_name;

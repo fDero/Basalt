@@ -45,6 +45,18 @@ void TypeAlias::instantiate_generics(const BaseType& concrete_type) {
     aliased_type.instantiate_generics(generic_substitution_rules);
 }
 
+void TypeDefinition::instantiate_generics(const BaseType& concrete_type) {
+    if (std::holds_alternative<StructDefinition>(*this)){
+        std::get<StructDefinition>(*this).instantiate_generics(concrete_type);
+    }
+    else if (std::holds_alternative<UnionDefinition>(*this)){
+        std::get<UnionDefinition>(*this).instantiate_generics(concrete_type);
+    }
+    else if (std::holds_alternative<TypeAlias>(*this)){
+        std::get<TypeAlias>(*this).instantiate_generics(concrete_type);
+    }
+}
+
 [[nodiscard]] GenericSubstitutionRuleSet GenericSubstitutionRuleSet::zip_components_vectors (
     const TemplateGenerics& template_generics,
     const ConcreteGenerics& instantiationd_generics
@@ -91,4 +103,3 @@ void ArrayType::instantiate_generics(const GenericSubstitutionRuleSet& generic_s
 void TemplateType::instantiate_generics(const GenericSubstitutionRuleSet& generic_substitution_rules) {}
 
 void PrimitiveType::instantiate_generics(const GenericSubstitutionRuleSet& generic_substitution_rules) {}
-

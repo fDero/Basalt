@@ -13,29 +13,29 @@
     }
     throw;
 }
-    
-[[nodiscard]] std::string TypeDefinition::generate_match_pattern() const {
+
+size_t TypeDefinition::get_number_of_generics() const {
     if (std::holds_alternative<StructDefinition>(*this)){
-        return std::get<StructDefinition>(*this).generate_match_pattern();
+        return std::get<StructDefinition>(*this).template_generics_names.size();
     }
     if (std::holds_alternative<UnionDefinition>(*this)){
-        return std::get<UnionDefinition>(*this).generate_match_pattern();
+        return std::get<UnionDefinition>(*this).template_generics_names.size();
     }
     if (std::holds_alternative<TypeAlias>(*this)){
-        return std::get<TypeAlias>(*this).generate_match_pattern();
+        return std::get<TypeAlias>(*this).template_generics_names.size();
     }
     throw;
 }
-    
-void TypeDefinition::instantiate_generics(const BaseType& concrete_type){
+
+std::string TypeDefinition::get_simple_name() const {
     if (std::holds_alternative<StructDefinition>(*this)){
-        return std::get<StructDefinition>(*this).instantiate_generics(concrete_type);
+        return std::get<StructDefinition>(*this).struct_name;
     }
     if (std::holds_alternative<UnionDefinition>(*this)){
-        return std::get<UnionDefinition>(*this).instantiate_generics(concrete_type);
+        return std::get<UnionDefinition>(*this).union_name;
     }
     if (std::holds_alternative<TypeAlias>(*this)){
-        return std::get<TypeAlias>(*this).instantiate_generics(concrete_type);
+        return std::get<TypeAlias>(*this).alias_name;
     }
     throw;
 }

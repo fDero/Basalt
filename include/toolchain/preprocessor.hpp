@@ -41,7 +41,11 @@ class PackageTypeConflictNavigator {
     private:
         ProgramRepresentation& program_representation;
         std::unordered_set<FileName> visited_files;
-        std::unordered_set<std::string> type_definition_match_patterns;
+        std::unordered_set<std::string> type_definition_conflict_detection_patterns;
+
+        [[nodiscard]] std::string get_type_definition_conflict_detection_pattern(
+            const TypeDefinition& type_definition
+        );
 };
 
 class AssignmentTypeChecker {

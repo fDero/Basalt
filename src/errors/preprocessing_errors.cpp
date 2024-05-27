@@ -31,7 +31,17 @@ void ensure_no_multiple_definition_of_the_same_type(
 ){
     if (!(type_definition_insertion_outcome.second)){
         throw std::runtime_error {
-            "Multiple definition of the same struct in different files\n"
+            "Multiple definition of the same type in different files\n"
+        };
+    }
+}
+
+void ensure_no_type_definition_conflict_detected(
+    const std::pair<std::unordered_set<std::string>::iterator, bool>& insertion_outcome
+){
+    if (!(insertion_outcome.second)){
+        throw std::runtime_error {
+            "Multiple definition of the same type in different packages, both included by the same file\n"
         };
     }
 }
@@ -156,7 +166,7 @@ void ensure_type_not_already_found(
 }
 
 void ensure_type_was_successfully_retrieved(
-    const std::optional<TypeDefinition>& retrieved
+    const std::optional<std::string>& retrieved
 ){
     if (!retrieved.has_value()){
         throw std::runtime_error {

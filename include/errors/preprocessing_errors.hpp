@@ -65,6 +65,10 @@ void ensure_no_multiple_definition_of_the_same_type(
         type_definition_insertion_outcome
 );
 
+void ensure_no_type_definition_conflict_detected(
+    const std::pair<std::unordered_set<std::string>::iterator, bool>& insertion_outcome
+);
+
 void ensure_struct_doesnt_already_exists(
     const std::string& struct_tag_name,
     const StructDefinition& struct_def,
@@ -84,7 +88,7 @@ void ensure_alias_doesnt_already_exists(
 );
 
 void ensure_type_was_successfully_retrieved(
-    const std::optional<TypeDefinition>& retrieved
+    const std::optional<std::string>& retrieved
 );
 
 [[noreturn]] void throw_no_type_definition_found(

@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include "language/typesystem.hpp"
+#include "language/definitions.hpp"
 #include "misc/aliases.hpp"
 
 struct GenericSubstitutionRule {
