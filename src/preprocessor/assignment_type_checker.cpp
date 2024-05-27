@@ -11,28 +11,6 @@ GenericSubstitutionRuleSet& AssignmentTypeChecker::get_generic_substitution_rule
     return generic_substitution_rules; 
 }
 
-bool AssignmentTypeChecker::validate_type_alias_unaware_assignment(const TypeSignature& source, const TypeSignature& dest){
-    if (dest.is<TemplateType>()){
-        return validate_assignment_to_template_generic(source, dest.get<TemplateType>());
-    }
-    else if (dest.is<BaseType>()){
-        return validate_assignment_to_base_type(source, dest.get<BaseType>());
-    }
-    else if (dest.is<PrimitiveType>()){
-        return validate_assignment_to_primitive_type(source, dest.get<PrimitiveType>());
-    }
-    else if (dest.is<ArrayType>()){
-        return validate_assignment_to_array_type(source, dest.get<ArrayType>());
-    }
-    else if (dest.is<PointerType>()){
-        return validate_assignment_to_pointer_type(source, dest.get<PointerType>());
-    }
-    else if (dest.is<SliceType>()){
-        return validate_assignment_to_slice_type(source, dest.get<SliceType>());
-    }
-    assert_unreachable();
-}
-
 bool AssignmentTypeChecker::validate_assignment(const TypeSignature& source, const TypeSignature& dest){
     if (validate_type_alias_unaware_assignment(source, dest)){
         return true;
@@ -54,6 +32,28 @@ bool AssignmentTypeChecker::validate_assignment(const TypeSignature& source, con
         }
     }
     return false;
+}
+
+bool AssignmentTypeChecker::validate_type_alias_unaware_assignment(const TypeSignature& source, const TypeSignature& dest){
+    if (dest.is<TemplateType>()){
+        return validate_assignment_to_template_generic(source, dest.get<TemplateType>());
+    }
+    else if (dest.is<BaseType>()){
+        return validate_assignment_to_base_type(source, dest.get<BaseType>());
+    }
+    else if (dest.is<PrimitiveType>()){
+        return validate_assignment_to_primitive_type(source, dest.get<PrimitiveType>());
+    }
+    else if (dest.is<ArrayType>()){
+        return validate_assignment_to_array_type(source, dest.get<ArrayType>());
+    }
+    else if (dest.is<PointerType>()){
+        return validate_assignment_to_pointer_type(source, dest.get<PointerType>());
+    }
+    else if (dest.is<SliceType>()){
+        return validate_assignment_to_slice_type(source, dest.get<SliceType>());
+    }
+    assert_unreachable();
 }
 
 bool AssignmentTypeChecker::validate_assignment_to_slice_type(const TypeSignature& source, const SliceType& dest){
