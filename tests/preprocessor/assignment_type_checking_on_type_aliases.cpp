@@ -100,6 +100,10 @@ TEST(Preprocessor, Pair_Of_Int_Int_Is_Compatible_With_Pair_Of_One_Generic_T_Via_
     };
     bool pair_int_int_compatible_with_pair_of_Ts = type_checker.validate_assignment(pair_int_int, pair_of_Ts);
     EXPECT_TRUE(pair_int_int_compatible_with_pair_of_Ts);
+    EXPECT_EQ(type_checker.get_generic_substitution_rules().size(), 1);
+    EXPECT_EQ(type_checker.get_generic_substitution_rules().back().to_be_substituded, "T");
+    ASSERT_TRUE(type_checker.get_generic_substitution_rules().back().replacement.is<PrimitiveType>());
+    EXPECT_EQ(type_checker.get_generic_substitution_rules().back().replacement.get<PrimitiveType>().type_name, "Int");
 }
 
 TEST(Preprocessor, Pair_Of_Int_Is_Compatible_With_Pair_Of_T_U) {
@@ -144,4 +148,11 @@ TEST(Preprocessor, Pair_Of_Int_Is_Compatible_With_Pair_Of_T_U) {
     };
     bool pair_int_compatible_with_pair_of_T_U = type_checker.validate_assignment(pair_of_ints, pair_T_U);
     EXPECT_TRUE(pair_int_compatible_with_pair_of_T_U);
+    EXPECT_EQ(type_checker.get_generic_substitution_rules().size(), 2);
+    EXPECT_EQ(type_checker.get_generic_substitution_rules().front().to_be_substituded, "T");
+    ASSERT_TRUE(type_checker.get_generic_substitution_rules().front().replacement.is<PrimitiveType>());
+    EXPECT_EQ(type_checker.get_generic_substitution_rules().front().replacement.get<PrimitiveType>().type_name, "Int");
+    EXPECT_EQ(type_checker.get_generic_substitution_rules().back().to_be_substituded, "U");
+    ASSERT_TRUE(type_checker.get_generic_substitution_rules().back().replacement.is<PrimitiveType>());
+    EXPECT_EQ(type_checker.get_generic_substitution_rules().back().replacement.get<PrimitiveType>().type_name, "Int");
 }

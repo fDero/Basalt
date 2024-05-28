@@ -40,6 +40,10 @@ TEST(Preprocessor, Int_And_Number_Are_Compatible_With_Template_T) {
     bool number_is_compatible_with_template_t = type_checker.validate_assignment(number_type, TypeSignatureFactory::T);
     EXPECT_TRUE(int_is_compatible_with_template_t);
     EXPECT_TRUE(number_is_compatible_with_template_t);
+    EXPECT_EQ(type_checker.get_generic_substitution_rules().size(), 1);
+    EXPECT_EQ(type_checker.get_generic_substitution_rules().back().to_be_substituded, "T");
+    ASSERT_TRUE(type_checker.get_generic_substitution_rules().back().replacement.is<CustomType>());
+    EXPECT_EQ(type_checker.get_generic_substitution_rules().back().replacement.get<CustomType>().type_name, "Number");
 }
 
 TEST(Preprocessor, Number_And_Int_Are_Compatible_With_Template_T) {
@@ -68,6 +72,10 @@ TEST(Preprocessor, Number_And_Int_Are_Compatible_With_Template_T) {
     bool int_is_compatible_with_template_t = type_checker.validate_assignment(TypeSignatureFactory::Int, TypeSignatureFactory::T);
     EXPECT_TRUE(int_is_compatible_with_template_t);
     EXPECT_TRUE(number_is_compatible_with_template_t);
+    EXPECT_EQ(type_checker.get_generic_substitution_rules().size(), 1);
+    EXPECT_EQ(type_checker.get_generic_substitution_rules().back().to_be_substituded, "T");
+    ASSERT_TRUE(type_checker.get_generic_substitution_rules().back().replacement.is<CustomType>());
+    EXPECT_EQ(type_checker.get_generic_substitution_rules().back().replacement.get<CustomType>().type_name, "Number");
 }
 
 TEST(Preprocessor, String_And_Int_Cannot_Be_Compatible_With_T_Simultaneously) {
@@ -111,6 +119,10 @@ TEST(Preprocessor, List_Of_Ints_And_List_Of_Number_Are_Compatible_With_List_Of_T
     bool int_is_compatible_with_template_t = type_checker.validate_assignment(list_of_ints, list_of_Ts);
     EXPECT_TRUE(list_of_numbers_compatible_with_list_of_Ts);
     EXPECT_TRUE(int_is_compatible_with_template_t);
+    EXPECT_EQ(type_checker.get_generic_substitution_rules().size(), 1);
+    EXPECT_EQ(type_checker.get_generic_substitution_rules().back().to_be_substituded, "T");
+    ASSERT_TRUE(type_checker.get_generic_substitution_rules().back().replacement.is<CustomType>());
+    EXPECT_EQ(type_checker.get_generic_substitution_rules().back().replacement.get<CustomType>().type_name, "Number");
 }
 
 TEST(Preprocessor, List_Of_Ints_And_List_Of_Number_Are_Non_Mutually_Compatible_With_Each_Other) {
