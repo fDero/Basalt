@@ -41,3 +41,17 @@ TEST(Preprocessor, Assignment_Type_Checking_For_Char_Slice_Assigned_To_String) {
     bool char_slice_is_compatible_with_string = type_checker.validate_assignment(TypeSignatureFactory::SliceOfChars, TypeSignatureFactory::String);
     EXPECT_TRUE(char_slice_is_compatible_with_string);
 }
+
+TEST(Preprocessor, Assignment_Type_Checking_For_String_Assigned_To_RawString) {
+    ProgramRepresentation empty_program; 
+    AssignmentTypeChecker type_checker(empty_program);
+    bool string_is_compatible_with_rawstring = type_checker.validate_assignment(TypeSignatureFactory::String, TypeSignatureFactory::RawString);
+    EXPECT_TRUE(string_is_compatible_with_rawstring);
+}
+
+TEST(Preprocessor, Assignment_Type_Checking_For_RawString_Assigned_To_String) {
+    ProgramRepresentation empty_program; 
+    AssignmentTypeChecker type_checker(empty_program);
+    bool rawstring_is_compatible_with_string = type_checker.validate_assignment(TypeSignatureFactory::RawString, TypeSignatureFactory::String);
+    EXPECT_FALSE(rawstring_is_compatible_with_string);
+}

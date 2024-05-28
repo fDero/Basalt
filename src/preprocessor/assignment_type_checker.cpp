@@ -174,8 +174,10 @@ bool AssignmentTypeChecker::validate_assignment_between_custom_types(const Custo
 
 bool AssignmentTypeChecker::validate_assignment_to_string(const TypeSignature& source, const PrimitiveType& dest){
     if (source.is<PrimitiveType>()){
-        return source.get<PrimitiveType>().type_name == "String" || 
-            source.get<PrimitiveType>().type_name == "RawString";
+        if (source.get<PrimitiveType>().type_name == "RawString")
+            return dest.type_name == "RawString";
+        else
+            return (source.get<PrimitiveType>().type_name == "String");
     }
     else if (source.is<SliceType>()){
         return source.get<SliceType>().stored_type.is<PrimitiveType>() && 
