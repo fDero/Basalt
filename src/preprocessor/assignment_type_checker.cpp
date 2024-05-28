@@ -153,22 +153,23 @@ bool AssignmentTypeChecker::validate_complex_assignment(const TypeSignature& sou
 }
 
 bool AssignmentTypeChecker::validate_assignment_between_custom_types(const CustomType& source, const CustomType& dest){
-    if (source.type_name == dest.type_name && source.instantiation_generics.size() == dest.instantiation_generics.size()){
-        for (int i = 0; i < source.instantiation_generics.size(); i++){
-            if (dest.instantiation_generics[i].is<TemplateType>()){
-                if (!validate_assignment(source.instantiation_generics[i], dest.instantiation_generics[i])){
-                    return false;
-                }
-            }
-            else if (dest.instantiation_generics[i].to_string() != source.instantiation_generics[i].to_string()){
+    if (source.type_name != dest.type_name || source.instantiation_generics.size() != dest.instantiation_generics.size()){
+        return validate_complex_assignment(source, dest);
+    }
+    for (int i = 0; i < source.instantiation_generics.size(); i++){
+        if (dest.instantiation_generics[i].is<TemplateType>()){
+            if (!validate_assignment(source.instantiation_generics[i], dest.instantiation_generics[i])){
                 return false;
             }
         }
-        return true;
+        else if (
+            !validate_assignment(source.instantiation_generics[i], dest.instantiation_generics[i]) ||
+            !validate_assignment(dest.instantiation_generics[i], source.instantiation_generics[i])
+        ){
+            return false;
+        }
     }
-    else {
-        return validate_complex_assignment(source, dest);
-    }
+    return true;
 }
 
 bool AssignmentTypeChecker::validate_assignment_to_string(const TypeSignature& source, const PrimitiveType& dest){
