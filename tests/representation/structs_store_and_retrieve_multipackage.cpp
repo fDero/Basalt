@@ -8,7 +8,7 @@
 #include "../tests_utilities/typesignature_factory.hpp"
 #include "../tests_utilities/type_alias_factory.hpp"
 
-TEST(representation, Retrieve_StructDefinition_From_TypeSignature_In_The_Same_File) {
+TEST(Representation, Retrieve_StructDefinition_From_TypeSignature_In_The_Same_File) {
     
     Filerepresentation file {
         .file_metadata = { 
@@ -40,7 +40,7 @@ TEST(representation, Retrieve_StructDefinition_From_TypeSignature_In_The_Same_Fi
     EXPECT_TRUE(struct_def.template_generics_names.empty());
 }
 
-TEST(representation, Retrieve_StructDefinition_From_TypeSignature_In_Different_Package_That_Was_Imported) {
+TEST(Representation, Retrieve_StructDefinition_From_TypeSignature_In_Different_Package_That_Was_Imported) {
 
     Filerepresentation imported_dot_basalt {
         .file_metadata = { 
@@ -83,7 +83,7 @@ TEST(representation, Retrieve_StructDefinition_From_TypeSignature_In_Different_P
     EXPECT_TRUE(struct_def.template_generics_names.empty());
 }
 
-TEST(representation, Retrieve_StructDefinition_From_TypeSignature_In_Different_Files_Of_The_Same_Package) {
+TEST(Representation, Retrieve_StructDefinition_From_TypeSignature_In_Different_Files_Of_The_Same_Package) {
 
     Filerepresentation imported_dot_basalt {
         .file_metadata = { 
@@ -127,7 +127,7 @@ TEST(representation, Retrieve_StructDefinition_From_TypeSignature_In_Different_F
 }
 
 
-TEST(representation, Retrieve_StructDefinition_From_TypeSignature_In_Different_Packages_By_Direct_Path) {
+TEST(Representation, Retrieve_StructDefinition_From_TypeSignature_In_Different_Packages_By_Direct_Path) {
 
     Filerepresentation other_dot_basalt {
         .file_metadata = { 

@@ -8,7 +8,7 @@
 #include "../tests_utilities/typesignature_factory.hpp"
 #include "../tests_utilities/type_alias_factory.hpp"
 
-TEST(representation, Ambiguous_Instantiated_Generic_Struct_Retrieval) {
+TEST(Representation, Ambiguous_Instantiated_Generic_Struct_Retrieval) {
     
     Filerepresentation wrapper_file {
         .file_metadata = { 

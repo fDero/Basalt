@@ -8,7 +8,7 @@
 #include "../tests_utilities/typesignature_factory.hpp"
 #include "../tests_utilities/type_alias_factory.hpp"
 
-TEST(representation, Retrieve_Generic_StructDefinition_From_TypeSignature_In_The_Same_File) {
+TEST(Representation, Retrieve_Generic_StructDefinition_From_TypeSignature_In_The_Same_File) {
     
     Filerepresentation file {
         .file_metadata = { 
@@ -42,7 +42,7 @@ TEST(representation, Retrieve_Generic_StructDefinition_From_TypeSignature_In_The
     EXPECT_TRUE(struct_def.template_generics_names.empty());
 }
 
-TEST(representation, Struct_Overloads_Are_Distinguished_By_Template_Generics_Count) {
+TEST(Representation, Struct_Overloads_Are_Distinguished_By_Template_Generics_Count) {
     
     Filerepresentation file {
         .file_metadata = { 
