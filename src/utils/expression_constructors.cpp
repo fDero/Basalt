@@ -79,10 +79,10 @@ CharLiteral::CharLiteral(const Token& char_literal_token)
 FunctionCall::FunctionCall(
     const Token& function_call_token, 
     const std::vector<Expression>& args, 
-    const std::vector<TypeSignature>& instaciated_generics
+    const std::vector<TypeSignature>& instantiated_generics
 ) 
     : ExpressionBody(function_call_token)
     , StatementBody(function_call_token)
     , function_name(function_call_token.sourcetext)
-    , instaciated_generics(instaciated_generics)
+    , instantiated_generics(instantiated_generics)
     , arguments(args) {}
