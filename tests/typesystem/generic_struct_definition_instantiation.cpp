@@ -4,13 +4,14 @@
 #include "errors/internal_errors.hpp"
 #include "../tests_utilities/struct_definition_factory.hpp"
 #include "../tests_utilities/typesignature_factory.hpp"
+#include "../tests_utilities/type_queries.hpp"
 
 TEST(TypeSystem, Generic_Struct_With_CustomType_Fields_Instantiation) {
     StructDefinition generic_struct_definition = StructDefinitionFactory::make_struct_definition(
         "Pair", 
         { "T", "U" }, 
         { 
-            StructDefinition::Field { "first", TypeSignatureFactory::T },
+            StructDefinition::Field { "first",  TypeSignatureFactory::T },
             StructDefinition::Field { "second", TypeSignatureFactory::U }
         }
     );
@@ -22,12 +23,11 @@ TEST(TypeSystem, Generic_Struct_With_CustomType_Fields_Instantiation) {
         })
             .get<CustomType>()
     );
-    EXPECT_EQ(instantiated_struct_definition.struct_name, "Pair<Int,List<String>>");
     ASSERT_EQ(instantiated_struct_definition.fields.size(), 2);
     EXPECT_EQ(instantiated_struct_definition.fields[0].field_name, "first");
-    EXPECT_EQ(instantiated_struct_definition.fields[0].field_type.to_string(), "Int");
     EXPECT_EQ(instantiated_struct_definition.fields[1].field_name, "second");
-    EXPECT_EQ(instantiated_struct_definition.fields[1].field_type.to_string(), "List<String>");
+    EXPECT_TRUE(is_int(instantiated_struct_definition.fields[0].field_type));
+    EXPECT_TRUE(is_list_of_strings(instantiated_struct_definition.fields[1].field_type));
 }
 
 TEST(TypeSystem, Generic_Struct_With_PointerType_Field_Instantiation) {
@@ -45,10 +45,12 @@ TEST(TypeSystem, Generic_Struct_With_PointerType_Field_Instantiation) {
         TypeSignatureFactory::make_custom_type("PointerWrapper", { TypeSignatureFactory::Int })
             .get<CustomType>()
     );
-    EXPECT_EQ(instantiated_struct_definition.struct_name, "PointerWrapper<Int>");
     ASSERT_EQ(instantiated_struct_definition.fields.size(), 1);
     EXPECT_EQ(instantiated_struct_definition.fields[0].field_name, "poited_object");
-    EXPECT_EQ(instantiated_struct_definition.fields[0].field_type.to_string(), "#Int");
+    ASSERT_TRUE(instantiated_struct_definition.fields[0].field_type.is<PointerType>());
+    PointerType pointed_type = instantiated_struct_definition.fields[0].field_type.get<PointerType>();
+    ASSERT_TRUE(pointed_type.pointed_type.is<PrimitiveType>());
+    EXPECT_EQ(pointed_type.pointed_type.get<PrimitiveType>().type_name, "Int");
 }
 
 TEST(TypeSystem, Generic_Struct_With_Slice_Type_Field_Instantiation) {
@@ -66,10 +68,12 @@ TEST(TypeSystem, Generic_Struct_With_Slice_Type_Field_Instantiation) {
         TypeSignatureFactory::make_custom_type("SliceWrapper", { TypeSignatureFactory::Int })
             .get<CustomType>()
     );
-    EXPECT_EQ(instantiated_struct_definition.struct_name, "SliceWrapper<Int>");
     ASSERT_EQ(instantiated_struct_definition.fields.size(), 1);
     EXPECT_EQ(instantiated_struct_definition.fields[0].field_name, "slice_object");
-    EXPECT_EQ(instantiated_struct_definition.fields[0].field_type.to_string(), "$Int");
+    ASSERT_TRUE(instantiated_struct_definition.fields[0].field_type.is<SliceType>());
+    SliceType slice_type = instantiated_struct_definition.fields[0].field_type.get<SliceType>();
+    ASSERT_TRUE(slice_type.stored_type.is<PrimitiveType>());
+    EXPECT_EQ(slice_type.stored_type.get<PrimitiveType>().type_name, "Int");
 }
 
 TEST(TypeSystem, Generic_Struct_With_Array_Type_Field_Instantiation) {
@@ -87,8 +91,11 @@ TEST(TypeSystem, Generic_Struct_With_Array_Type_Field_Instantiation) {
         TypeSignatureFactory::make_custom_type("ArrayWrapper", { TypeSignatureFactory::Int })
             .get<CustomType>()
     );
-    EXPECT_EQ(instantiated_struct_definition.struct_name, "ArrayWrapper<Int>");
     ASSERT_EQ(instantiated_struct_definition.fields.size(), 1);
     EXPECT_EQ(instantiated_struct_definition.fields[0].field_name, "array_object");
-    EXPECT_EQ(instantiated_struct_definition.fields[0].field_type.to_string(), "[10]Int");
+    ASSERT_TRUE(instantiated_struct_definition.fields[0].field_type.is<ArrayType>());
+    ArrayType array_type = instantiated_struct_definition.fields[0].field_type.get<ArrayType>();
+    ASSERT_TRUE(array_type.stored_type.is<PrimitiveType>());
+    EXPECT_EQ(array_type.stored_type.get<PrimitiveType>().type_name, "Int");
+    EXPECT_EQ(array_type.array_length, 10);
 }

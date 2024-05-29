@@ -82,9 +82,6 @@ TEST(Representation, Ambiguous_Instantiated_Generic_Struct_Retrieval) {
     StructDefinition wrapper_of_xpackage_employee_struct_def = wrapper_of_xpackage_employee.get<StructDefinition>();
     StructDefinition wrapper_of_ypackage_employee_struct_def = wrapper_of_ypackage_employee.get<StructDefinition>();
 
-    EXPECT_EQ(wrapper_of_xpackage_employee_struct_def.struct_name, "Wrapper<Employee>");
-    EXPECT_EQ(wrapper_of_ypackage_employee_struct_def.struct_name, "Wrapper<Employee>");
-
     EXPECT_EQ(wrapper_of_xpackage_employee_struct_def.template_generics_names.size(), 0);
     EXPECT_EQ(wrapper_of_ypackage_employee_struct_def.template_generics_names.size(), 0);
 

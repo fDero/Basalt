@@ -62,7 +62,7 @@ void ensure_function_is_non_void_in_expression_evaluation(
     const TypeSignature& operand_type
 ){
     throw std::runtime_error {
-        "Invalid use of unary operator " + unary_operator.operator_text + " with operand of type " + operand_type.to_string() + "\n"
+        "Invalid use of unary operator " + unary_operator.operator_text + " with operand of type " + "<operand_type>" + "\n"
     };
 }
 
@@ -70,7 +70,7 @@ void ensure_function_is_non_void_in_expression_evaluation(
     const CustomType& type_signature
 ){
     throw std::runtime_error {
-        "No type definition found for type " + type_signature.to_string() + "\n"
+        "No type definition found for type " + type_signature.type_name + "\n"
     };
 }
 
@@ -80,7 +80,7 @@ void ensure_function_is_non_void_in_expression_evaluation(
     const TypeSignature& right_operand_type
 ){
     throw std::runtime_error {
-        "Invalid use of binary operator " + binary_operator.operator_text + " with operands of types " + left_operand_type.to_string() + " and " + right_operand_type.to_string() + "\n"
+        "Invalid use of binary operator " + binary_operator.operator_text + " with operands of types " + "<operand_type>" + " and " + "<operand_type>" + "\n"
     };
 }
 
@@ -90,7 +90,7 @@ void ensure_ptr_dereference_unique_operand_is_pointer(
 ){
     if (!operand_type.is<PointerType>()){
         throw std::runtime_error {
-            "Invalid use of pointer dereference operator on non-pointer type " + operand_type.to_string() + "\n"
+            "Invalid use of pointer dereference operator on non-pointer type <operand_type> \n"
         };
     }
 }
@@ -102,7 +102,7 @@ void ensure_mathematical_prefix_operator_unique_operand_is_numerical(
     if (!operand_type.is<CustomType>() || 
         (operand_type.get<CustomType>().type_name != "Int" && operand_type.get<CustomType>().type_name != "Float")){
             throw std::runtime_error {
-                "Invalid use of pointer dereference operator on non-pointer type " + operand_type.to_string() + "\n"
+                "Invalid use of pointer dereference operator on non-pointer type <operand_type> \n"
             };
     }
 }
@@ -113,7 +113,7 @@ void ensure_not_operator_unique_operand_is_of_type_bool(
 ){
     if (!operand_type.is<CustomType>() || operand_type.get<CustomType>().type_name != "Bool"){
         throw std::runtime_error {
-            "Invalid use of pointer dereference operator on non-pointer type " + operand_type.to_string() + "\n"
+            "Invalid use of pointer dereference operator on non-pointer type <operand_type> \n"
         };
     }
 }
@@ -124,7 +124,7 @@ void enure_left_operand_is_array_type_when_deducing_expression_type(
 ){
     if (!operand_type.is<ArrayType>()){
         throw std::runtime_error {
-            "invalid use of square brackets access operator with bad accessed type: " + operand_type.to_string() + "\n"
+            "invalid use of square brackets access operator with bad accessed type: <operand_type> \n"
         };
     }
 }
@@ -135,19 +135,7 @@ void enrue_right_operand_is_array_index_type_when_deducing_expression_type(
 ){
     if (!operand_type.is<CustomType>() || operand_type.get<CustomType>().type_name != "Int"){
         throw std::runtime_error {
-            "invalid use of square brackets access operator with bad index type: " + operand_type.to_string() + "\n"
-        };
-    }
-}
-
-void ensure_types_are_equality_comparable(
-    const BinaryOperator& binary_operator, 
-    const TypeSignature& left_type, 
-    const TypeSignature& right_type
-){
-    if (left_type.to_string() != right_type.to_string()){
-        throw std::runtime_error {
-            "Invalid use of equality operator with non-equality-comparable types: " + left_type.to_string() + " and " + right_type.to_string() + "\n"
+            "invalid use of square brackets access operator with bad index type: <operand_type> \n"
         };
     }
 }

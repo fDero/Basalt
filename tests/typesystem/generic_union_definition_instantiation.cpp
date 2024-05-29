@@ -4,6 +4,7 @@
 #include "errors/internal_errors.hpp"
 #include "../tests_utilities/union_definition_factory.hpp"
 #include "../tests_utilities/typesignature_factory.hpp"
+#include "../tests_utilities/type_queries.hpp"
 
 TEST(TypeSystem, Generic_Union_Instantiation) {
     UnionDefinition generic_union_definition = UnionDefinitionFactory::make_union_definition(
@@ -24,12 +25,15 @@ TEST(TypeSystem, Generic_Union_Instantiation) {
         })
             .get<CustomType>()
     );
-    EXPECT_EQ(instantiated_union_definition.union_name, "MyUnion<Int,Float>");
     ASSERT_EQ(instantiated_union_definition.types.size(), 4);
-    EXPECT_EQ(instantiated_union_definition.types[0].to_string(), "#Int");
-    EXPECT_EQ(instantiated_union_definition.types[1].to_string(), "Pair<Int,Float>");
-    EXPECT_EQ(instantiated_union_definition.types[2].to_string(), "$Float");
-    EXPECT_EQ(instantiated_union_definition.types[3].to_string(), "[10]Int");
+    EXPECT_TRUE(is_pointer_to_int(instantiated_union_definition.types[0]));
+    CustomType pair_type = instantiated_union_definition.types[1].get<CustomType>();
+    EXPECT_EQ(pair_type.type_name, "Pair");
+    ASSERT_EQ(pair_type.instantiation_generics.size(), 2);
+    EXPECT_TRUE(is_int(pair_type.instantiation_generics[0]));
+    EXPECT_TRUE(is_float(pair_type.instantiation_generics[1]));
+    EXPECT_TRUE(is_slice_of_floats(instantiated_union_definition.types[2]));
+    EXPECT_TRUE(is_array_of_ints_of_size_n(instantiated_union_definition.types[3], 10));
 }
 
 TEST(TypeSystem, Non_Generic_Union_NoOp_Instantiation) {
@@ -45,10 +49,9 @@ TEST(TypeSystem, Non_Generic_Union_NoOp_Instantiation) {
     instantiated_union_definition.instantiate_generics(
         TypeSignatureFactory::make_custom_type("MyUnion", {}).get<CustomType>()
     );
-    EXPECT_EQ(instantiated_union_definition.union_name, "MyUnion");
     ASSERT_EQ(instantiated_union_definition.types.size(), 2);
-    EXPECT_EQ(instantiated_union_definition.types[0].to_string(), "Int");
-    EXPECT_EQ(instantiated_union_definition.types[1].to_string(), "Float");
+    EXPECT_TRUE(is_int(instantiated_union_definition.types[0]));
+    EXPECT_TRUE(is_float(instantiated_union_definition.types[1]));
 }
 
 TEST(TypeSystem, Fake_Generic_Union_NoOp_Instantiation) {
@@ -67,8 +70,7 @@ TEST(TypeSystem, Fake_Generic_Union_NoOp_Instantiation) {
         })
             .get<CustomType>()
     );
-    EXPECT_EQ(instantiated_union_definition.union_name, "MyUnion<Int>");
     ASSERT_EQ(instantiated_union_definition.types.size(), 2);
-    EXPECT_EQ(instantiated_union_definition.types[0].to_string(), "Int");
-    EXPECT_EQ(instantiated_union_definition.types[1].to_string(), "Float");
+    EXPECT_TRUE(is_int(instantiated_union_definition.types[0]));
+    EXPECT_TRUE(is_float(instantiated_union_definition.types[1]));
 }

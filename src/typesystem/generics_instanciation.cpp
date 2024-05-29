@@ -9,7 +9,6 @@ void StructDefinition::instantiate_generics(const CustomType& concrete_type) {
     assert_instantiation_struct_is_compatible_with_template_struct(concrete_type, *this);
     const ConcreteGenerics& instantiation_generics = concrete_type.instantiation_generics;
     const TemplateGenerics& template_generics = template_generics_names;
-    struct_name = concrete_type.to_string();
     auto generic_substitution_rules = GenericSubstitutionRuleSet::zip_components_vectors(
         template_generics, instantiation_generics
     );
@@ -23,7 +22,6 @@ void UnionDefinition::instantiate_generics(const CustomType& concrete_type) {
     assert_instantiation_union_is_compatible_with_template_union(concrete_type, *this);
     const ConcreteGenerics& instantiation_generics = concrete_type.instantiation_generics;
     const TemplateGenerics& template_generics = template_generics_names;
-    union_name = concrete_type.to_string();
     auto generic_substitution_rules = GenericSubstitutionRuleSet::zip_components_vectors(
         template_generics, instantiation_generics
     );
@@ -37,7 +35,6 @@ void TypeAlias::instantiate_generics(const CustomType& concrete_type) {
     assert_instantiation_union_is_compatible_with_template_alias(concrete_type, *this);
     const std::vector<TypeSignature>& instantiation_generics = concrete_type.instantiation_generics;
     const std::vector<std::string>& template_generics = template_generics_names;
-    alias_name = concrete_type.to_string();
     auto generic_substitution_rules = GenericSubstitutionRuleSet::zip_components_vectors(
         template_generics, instantiation_generics
     );

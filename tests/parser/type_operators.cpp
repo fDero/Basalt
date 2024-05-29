@@ -30,7 +30,10 @@ TEST(Parsing, As_Cast_On_Complex_Expression_AST_Rotation_Needed){
     ASSERT_TRUE(expression.is<BinaryOperator>());
     BinaryOperator binary_operator = expression.get<BinaryOperator>();
     ASSERT_TRUE(binary_operator.right_operand.is<TypeOperator>());
-    EXPECT_EQ(binary_operator.right_operand.get<TypeOperator>().typesignature.to_string(), "Int");
+    TypeOperator type_operator = binary_operator.right_operand.get<TypeOperator>();
+    ASSERT_TRUE(type_operator.typesignature.is<PrimitiveType>());
+    PrimitiveType primitive_type = type_operator.typesignature.get<PrimitiveType>();
+    EXPECT_EQ(primitive_type.type_name, "Int");
 }
 
 TEST(Parsing, Is_Operator_Expression_Used_As_Operand){
