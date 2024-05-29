@@ -72,4 +72,5 @@ struct ProgramRepresentation {
 
     friend class TypeDependencyNavigator;
     friend class PackageTypeConflictNavigator;
+    friend class AssignmentTypeChecker;
 };

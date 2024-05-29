@@ -67,6 +67,9 @@ class AssignmentTypeChecker {
         bool validate_complex_assignment(const TypeSignature& source, const CustomType& dest);
         bool validate_assignment_to_string(const TypeSignature& source, const PrimitiveType& dest);
         bool validate_assignment_to_union(const TypeSignature& source, const UnionDefinition& union_def);
+
+        bool typesignatures_are_equal(const TypeSignature& t1, const TypeSignature& t2);
+        bool type_alias_unaware_typesignatures_are_equal(const TypeSignature& t1, const TypeSignature& t2);
         
         ProgramRepresentation& program_representation;
         GenericSubstitutionRuleSet generic_substitution_rules;
