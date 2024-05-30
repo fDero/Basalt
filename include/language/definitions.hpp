@@ -88,5 +88,7 @@ struct TypeDefinition
     [[nodiscard]] std::string generate_id() const;
     [[nodiscard]] std::string get_simple_name() const;
     [[nodiscard]] size_t get_number_of_generics() const;
+
     void instantiate_generics(const CustomType& concrete_type);
+    void set_name(const std::string& name);
 };

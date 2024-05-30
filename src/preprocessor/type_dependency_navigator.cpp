@@ -78,4 +78,5 @@ void TypeDependencyNavigator::visit_struct_definition(const StructDefinition& st
     for (const StructDefinition::Field& field : struct_definition.fields){
         visit_typesignature( field.field_type, struct_definition.template_generics_names );
     }
+    visited_definitions.erase(struct_id);
 }

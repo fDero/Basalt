@@ -3,7 +3,6 @@
 #include "errors/internal_errors.hpp"
 #include <regex>
 #include <optional>
-#include <iostream>
 
 void StructDefinition::instantiate_generics(const CustomType& concrete_type) {
     assert_instantiation_struct_is_compatible_with_template_struct(concrete_type, *this);
@@ -51,6 +50,24 @@ void TypeDefinition::instantiate_generics(const CustomType& concrete_type) {
     }
     else if (std::holds_alternative<TypeAlias>(*this)){
         std::get<TypeAlias>(*this).instantiate_generics(concrete_type);
+    }
+    else {
+        assert_unreachable();
+    }
+}
+
+void TypeDefinition::set_name(const std::string& name) {
+    if (std::holds_alternative<StructDefinition>(*this)){
+        std::get<StructDefinition>(*this).struct_name = name;
+    }
+    else if (std::holds_alternative<UnionDefinition>(*this)){
+        std::get<UnionDefinition>(*this).union_name = name;
+    }
+    else if (std::holds_alternative<TypeAlias>(*this)){
+        std::get<TypeAlias>(*this).alias_name = name;
+    }
+    else {
+        assert_unreachable();
     }
 }
 

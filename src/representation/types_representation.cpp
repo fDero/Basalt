@@ -57,6 +57,7 @@ std::string ProgramRepresentation::get_fully_quilified_typesignature_name(const 
     else {
         TypeDefinition instantiated = retrieved->second;
         instantiated.instantiate_generics(type_signature);
+        instantiated.set_name(instantiated_concrete_type_key);
         type_definitions.insert({instantiated_concrete_type_key, instantiated});
         return instantiated_concrete_type_key;
     }
