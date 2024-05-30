@@ -26,7 +26,7 @@ struct VariableDeclaration : public StatementBody {
     virtual ~VariableDeclaration() = default;
     VariableDeclaration(
         const std::string& name, 
-        TypeSignature& type,
+        const TypeSignature& type,
         const std::optional<Expression>& value,
         const Token& var_token
     );

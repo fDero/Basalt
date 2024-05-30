@@ -162,3 +162,35 @@ void ensure_type_was_successfully_retrieved(
         };
     }
 }
+
+void ensure_identifier_not_ambiguous_in_given_scope(
+    const std::string& identifier, 
+    const bool search_outcome
+){
+    if (search_outcome){
+        throw std::runtime_error {
+            "Identifier " + identifier + " already exists in the current scope\n"
+        };
+    }
+}
+
+void ensure_parent_scope_exists_for_further_local_object_search(
+    const ScopeContext* parent_scope, 
+    const std::string& identifier
+){
+    if (parent_scope == nullptr){
+        throw std::runtime_error {
+            "Cannot find object: " + identifier + "\n"
+        };
+    }
+}
+
+void ensure_object_is_mutable(
+    const bool is_const
+){
+    if (is_const){
+        throw std::runtime_error {
+            "Cannot modify a constant object\n"
+        };
+    }
+}

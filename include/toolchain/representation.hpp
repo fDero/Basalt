@@ -19,11 +19,28 @@ struct Filerepresentation {
     std::vector<FunctionDefinition> func_defs;
 };
 
-struct ScopeContext {
+class ScopeContext {
 
-    PackageName current_package;
-    std::vector<PackageName> imported_packages;
-    std::map<std::string, TypeDefinition> local_variables;
+    public:
+        void store_local_variable(const VariableDeclaration& var_declaration);
+        void store_local_constant(const ConstDeclaration& const_declaration);
+        
+        [[nodiscard]] bool contains(const std::string& identifier);
+        [[nodiscard]] TypeSignature& get_local_object_type(const std::string& identifier);
+        [[nodiscard]] TypeSignature& get_local_mutable_object_type(const std::string& identifier);
+        [[nodiscard]] ScopeContext   create_nested_scope();
+
+    private:
+        struct ObjectDescriptor {
+            std::string identifier;
+            TypeSignature type_signature;
+            bool is_const = false; 
+            bool gets_modified = false;
+            bool gets_accessed = false;
+        };
+
+        std::vector<ObjectDescriptor> local_objects;
+        ScopeContext* parent_scope = nullptr;
 };
 
 
@@ -34,7 +51,6 @@ struct ProgramRepresentation {
         void store_definitions_from_file(const Filerepresentation& file_representation);
     
         void store_type_definition(const TypeDefinition& type_definition, const PackageName& package_name);
-
         [[nodiscard]] TypeDefinition retrieve_type_definition(const CustomType& type_signature);
 
     protected:

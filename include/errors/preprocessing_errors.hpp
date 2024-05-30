@@ -94,3 +94,17 @@ void ensure_type_was_successfully_retrieved(
 [[noreturn]] void throw_no_type_definition_found(
     const CustomType& type_signature
 );
+
+void ensure_identifier_not_ambiguous_in_given_scope(
+    const std::string& identifier, 
+    const bool search_outcome
+);
+
+void ensure_parent_scope_exists_for_further_local_object_search(
+    const ScopeContext* parent_scope,
+    const std::string& identifier
+);
+
+void ensure_object_is_mutable(
+    const bool is_const
+);
