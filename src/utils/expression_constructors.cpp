@@ -86,3 +86,11 @@ FunctionCall::FunctionCall(
     , function_name(function_call_token.sourcetext)
     , instantiated_generics(instantiated_generics)
     , arguments(args) {}
+
+PrecompiledFunctionCall::PrecompiledFunctionCall(
+    const FunctionCall& original_function_call, 
+    const std::vector<TypeSignature>& arguments_types
+)
+    : original_function_call(original_function_call)
+    , arguments_types(arguments_types) 
+{ }

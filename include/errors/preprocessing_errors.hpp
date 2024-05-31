@@ -108,3 +108,12 @@ void ensure_parent_scope_exists_for_further_local_object_search(
 void ensure_object_is_mutable(
     const bool is_const
 );
+
+void ensure_no_ambiguous_function_definition_found(
+    const std::vector<FunctionDefinition>& compatible_defs,
+    const PrecompiledFunctionCall& precompiled_function_call
+);
+
+[[noreturn]] void throw_no_function_definition_found(
+    const PrecompiledFunctionCall& function_call
+);
