@@ -21,9 +21,8 @@
         return function_definitions_overload_sets[overload_set_id][index];
     }
     const std::string overload_set_id = get_function_call_overload_set_id(package_name, function_call);
-    const FunctionOverloadSet& overload_set = function_definitions_overload_sets[overload_set_id];
     std::vector<FunctionDefinition> compatible_functions_definitions = 
-        search_compatible_function_definitions_within_given_overload_set(function_call, overload_set);
+        search_compatible_function_definitions_within_given_overload_set(function_call, overload_set_id);
     ensure_no_ambiguous_function_definition_found(compatible_functions_definitions, function_call);
     return (!compatible_functions_definitions.empty())
         ? std::optional<FunctionDefinition>(compatible_functions_definitions.back())
@@ -50,8 +49,9 @@
 
 [[nodiscard]] std::vector<FunctionDefinition> ProgramRepresentation::search_compatible_function_definitions_within_given_overload_set(
     const PrecompiledFunctionCall& precompiled_function_call, 
-    const FunctionOverloadSet& function_overload_set
+    const std::string& overload_set_id
 ){
+    FunctionOverloadSet& function_overload_set = function_definitions_overload_sets[overload_set_id];
     size_t generics_so_far = std::numeric_limits<size_t>::max();
     std::vector<FunctionDefinition> compatible_functions_definitions;
     for (const FunctionDefinition& func_def : function_overload_set){
@@ -84,12 +84,31 @@
                 break;
             }
         }
+        if (substitution_rules.size() == 0){
+            substitution_rules = type_checker.get_generic_substitution_rules();    
+        }
         if (all_arguments_types_are_compatible){
             if (func_def.template_generics_names.size() < generics_so_far){
                 compatible_functions_definitions.clear();
                 generics_so_far = func_def.template_generics_names.size();
             }
-            compatible_functions_definitions.push_back(func_def);
+            if (substitution_rules.size() == 0){
+                compatible_functions_definitions.push_back(func_def);
+            }
+            else {
+                FunctionDefinition instantiated_func_def = func_def;
+                instantiated_func_def.instantiate_generics(substitution_rules);
+                size_t index_of_insertion = function_overload_set.size();
+                function_overload_set.push_back(instantiated_func_def);
+                std::vector<TypeSignature> arguments_types;
+                for (const FunctionDefinition::Argument& arg : instantiated_func_def.arguments){
+                    arguments_types.push_back(arg.arg_type);
+                }
+                const PackageName& package_name = package_name_by_file_name[precompiled_function_call.filename];
+                const std::string retrieve_key = get_function_fast_retrieve_key(package_name, func_def.function_name, arguments_types);
+                function_definitions[retrieve_key] = FunctionDefinitionFastRetrieveKey { overload_set_id, index_of_insertion };
+                compatible_functions_definitions.push_back(instantiated_func_def);
+            }
         }
     }
     return compatible_functions_definitions;

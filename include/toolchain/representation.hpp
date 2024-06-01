@@ -84,7 +84,7 @@ struct ProgramRepresentation {
 
         [[nodiscard]] std::vector<FunctionDefinition> search_compatible_function_definitions_within_given_overload_set(
             const PrecompiledFunctionCall& precompiled_function_call, 
-            const FunctionOverloadSet& function_overload_set
+            const std::string& overload_set_id
         );
 
         [[nodiscard]] std::optional<FunctionDefinition> search_compatible_function_definitions_within_given_package(
