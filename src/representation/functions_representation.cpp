@@ -5,6 +5,8 @@
 #include "toolchain/preprocessor.hpp"
 #include "language/generics.hpp"
 
+#include <iostream>
+
 [[nodiscard]] std::optional<FunctionDefinition> ProgramRepresentation::search_compatible_function_definitions_within_given_package(
     const PrecompiledFunctionCall& function_call, 
     const PackageName& package_name
@@ -15,7 +17,7 @@
     if (function_definitions.find(fast_retrieve_key) != function_definitions.end()){
         const FunctionDefinitionFastRetrieveKey& fast_retrieve_key_data = function_definitions[fast_retrieve_key];
         const std::string& overload_set_id = fast_retrieve_key_data.overload_set_id;
-        const size_t index = fast_retrieve_key_data.index_within_overload_set;
+        const size_t index = fast_retrieve_key_data.index_within_overload_set;       
         return function_definitions_overload_sets[overload_set_id][index];
     }
     const std::string overload_set_id = get_function_call_overload_set_id(package_name, function_call);
@@ -59,10 +61,18 @@
         if (func_def.arguments.size() != precompiled_function_call.arguments_types.size()){
             continue;
         }
-        GenericSubstitutionRuleSet substitution_rules = GenericSubstitutionRuleSet::zip_components_vectors(
-            func_def.template_generics_names, 
-            precompiled_function_call.arguments_types
-        );
+        size_t template_generics_count = func_def.template_generics_names.size();
+        size_t instantiated_generics_count = precompiled_function_call.original_function_call.instantiated_generics.size();
+        if (template_generics_count != instantiated_generics_count && instantiated_generics_count != 0){
+            continue;
+        }
+        GenericSubstitutionRuleSet substitution_rules;
+        if (instantiated_generics_count != 0){
+            substitution_rules = GenericSubstitutionRuleSet::zip_components_vectors(
+                func_def.template_generics_names, 
+                precompiled_function_call.original_function_call.instantiated_generics
+            );
+        }
         AssignmentTypeChecker type_checker(*this);
         bool all_arguments_types_are_compatible = true;
         for (size_t i = 0; i < precompiled_function_call.arguments_types.size(); i++){
@@ -98,8 +108,8 @@ void ProgramRepresentation::store_function_definition(
         for (const FunctionDefinition::Argument& arg : func_definition.arguments){
             arguments_types.push_back(arg.arg_type);
         }
-        const std::string overload_set_id = get_function_fast_retrieve_key(package_name, func_name, arguments_types);
-        function_definitions[overload_set_id] = FunctionDefinitionFastRetrieveKey {overload_set_id, index_of_insertion};
+        const std::string retrieve_key = get_function_fast_retrieve_key(package_name, func_name, arguments_types);
+        function_definitions[retrieve_key] = FunctionDefinitionFastRetrieveKey {overload_set_id, index_of_insertion};
     }
     else {
         const std::string generics_unaware_overload_set_id = get_generics_unaware_function_definition_overload_set_id(package_name, func_definition);

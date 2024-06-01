@@ -26,7 +26,7 @@ struct FunctionDefinition : public DebugInformationsAwareEntity {
     std::vector<Argument> arguments;
     std::vector<Statement> code;
 
-    void instantiate_generics(const CustomType& concrete_type);
+    //void instantiate_generics(const CustomType& concrete_type);
 };
 
 

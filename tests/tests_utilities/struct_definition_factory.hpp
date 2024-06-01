@@ -15,7 +15,7 @@ struct StructDefinitionFactory {
         StructDefinition new_struct_definition {
             Token {
                 struct_name, "test.basalt", 1, 2, 5,
-                Token::Type::struct_keyword
+                Token::Type::text
             },
         };
         new_struct_definition.fields = fields;

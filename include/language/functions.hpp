@@ -23,7 +23,8 @@ struct PrecompiledFunctionCall {
 
 	PrecompiledFunctionCall(
 	    const FunctionCall& original_function_call, 
-	    const std::vector<TypeSignature>& arguments_types
+	    const std::vector<TypeSignature>& arguments_types,
+		const std::string& filename
 	);
 
 	std::string filename;

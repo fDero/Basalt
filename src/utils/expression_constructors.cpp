@@ -89,8 +89,10 @@ FunctionCall::FunctionCall(
 
 PrecompiledFunctionCall::PrecompiledFunctionCall(
     const FunctionCall& original_function_call, 
-    const std::vector<TypeSignature>& arguments_types
+    const std::vector<TypeSignature>& arguments_types,
+    const std::string& filename
 )
-    : original_function_call(original_function_call)
+    : filename(filename)
+    , original_function_call(original_function_call)
     , arguments_types(arguments_types) 
 { }
