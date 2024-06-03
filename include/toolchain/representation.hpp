@@ -56,6 +56,8 @@ struct ProgramRepresentation {
         void store_function_definition(const FunctionDefinition& func_definition, const PackageName& package_name);
         [[nodiscard]] FunctionDefinition retrieve_func_definition(const PrecompiledFunctionCall& function_call);
 
+        TypeSignature unalias_type(const TypeSignature& type_signature);
+
     protected:
         
         std::unordered_map<FileName, PackageName> package_name_by_file_name;

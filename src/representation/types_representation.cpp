@@ -13,10 +13,24 @@ void ProgramRepresentation::store_type_definition(
     ensure_no_multiple_definition_of_the_same_type(insertion_outcome);
 }
 
-
 [[nodiscard]] TypeDefinition ProgramRepresentation::retrieve_type_definition(const CustomType& type_signature){
     const std::string& fully_qualified_name = get_fully_quilified_customtype_name(type_signature);
     return type_definitions.at(fully_qualified_name);
+}
+
+[[nodiscard]] TypeSignature ProgramRepresentation::unalias_type(const TypeSignature& type_signature){
+    if (!type_signature.is<CustomType>()){
+        return type_signature;
+    }
+    const CustomType& custom_type = type_signature.get<CustomType>();
+    TypeDefinition type_definition = retrieve_type_definition(custom_type);
+    if (type_definition.is<TypeAlias>()){
+        const TypeAlias& alias = type_definition.get<TypeAlias>();
+        return alias.aliased_type;
+    }
+    else {
+        return type_signature;
+    }
 }
 
 std::string ProgramRepresentation::get_fully_quilified_customtype_name(const CustomType& type_signature){    

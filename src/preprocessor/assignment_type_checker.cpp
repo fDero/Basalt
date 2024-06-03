@@ -11,84 +11,10 @@ GenericSubstitutionRuleSet& AssignmentTypeChecker::get_generic_substitution_rule
     return generic_substitution_rules; 
 }
 
-bool AssignmentTypeChecker::validate_assignment_between_custom_types_generic_type_parameters(const TypeSignature& source, const TypeSignature& dest){
-    if (validate_type_alias_unaware_assignment_between_custom_types_generic_type_parameters(source, dest)){
-        return true;
-    }
-    if (source.is<CustomType>()){
-        TypeDefinition source_type_definition = program_representation.retrieve_type_definition(source.get<CustomType>());
-        if (source_type_definition.is<TypeAlias>()){
-            if (validate_assignment_between_custom_types_generic_type_parameters(source_type_definition.get<TypeAlias>().aliased_type, dest)){
-                return true;
-            }
-        }
-    }
-    if (dest.is<CustomType>()){
-        TypeDefinition dest_type_definition = program_representation.retrieve_type_definition(dest.get<CustomType>());
-        if (dest_type_definition.is<TypeAlias>()){
-            if (validate_assignment_between_custom_types_generic_type_parameters(source, dest_type_definition.get<TypeAlias>().aliased_type)){
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
-bool AssignmentTypeChecker::validate_type_alias_unaware_assignment_between_custom_types_generic_type_parameters(const TypeSignature& source, const TypeSignature& dest){
-    if (dest.is<TemplateType>()){
-        return validate_assignment_to_template_generic(source, dest.get<TemplateType>());
-    }
-    else if (dest.is<CustomType>() && source.is<CustomType>()){
-        return validate_assignment_between_custom_types(source.get<CustomType>(), dest.get<CustomType>());
-    }
-    else if (dest.is<PrimitiveType>() && source.is<PrimitiveType>()){
-        return dest.get<PrimitiveType>().type_name == source.get<PrimitiveType>().type_name;
-    }
-    else if (dest.is<ArrayType>() && source.is<ArrayType>()){
-        const ArrayType& source_array = source.get<ArrayType>();
-        const ArrayType& dest_array = dest.get<ArrayType>();
-        return source_array.array_length == dest_array.array_length && 
-            validate_assignment_between_custom_types_generic_type_parameters(
-                source_array.stored_type, 
-                dest_array.stored_type
-            );
-    }
-    else if (dest.is<PointerType>() && source.is<PointerType>()){
-        return validate_assignment_between_custom_types_generic_type_parameters(
-            source.get<PointerType>().pointed_type, 
-            dest.get<PointerType>().pointed_type
-        );
-    }
-    else if (dest.is<SliceType>() && source.is<SliceType>()){
-        return validate_assignment_between_custom_types_generic_type_parameters(
-            source.get<SliceType>().stored_type, 
-            dest.get<SliceType>().stored_type
-        );
-    }
-    return false;
-}
-
 bool AssignmentTypeChecker::validate_assignment(const TypeSignature& source, const TypeSignature& dest){
-    if (validate_type_alias_unaware_assignment(source, dest)){
-        return true;
-    }
-    if (source.is<CustomType>()){
-        TypeDefinition source_type_definition = program_representation.retrieve_type_definition(source.get<CustomType>());
-        if (source_type_definition.is<TypeAlias>()){
-            if (validate_assignment(source_type_definition.get<TypeAlias>().aliased_type, dest)){
-                return true;
-            }
-        }
-    }
-    if (dest.is<CustomType>()){
-        TypeDefinition dest_type_definition = program_representation.retrieve_type_definition(dest.get<CustomType>());
-        if (dest_type_definition.is<TypeAlias>()){
-            if (validate_assignment(source, dest_type_definition.get<TypeAlias>().aliased_type)){
-                return true;
-            }
-        }
-    }
-    return false;
+    const TypeSignature unaliased_source_type = program_representation.unalias_type(source);
+    const TypeSignature unaliased_dest_type = program_representation.unalias_type(dest);
+    return validate_type_alias_unaware_assignment(unaliased_source_type, unaliased_dest_type);
 }
 
 bool AssignmentTypeChecker::validate_type_alias_unaware_assignment(const TypeSignature& source, const TypeSignature& dest){
@@ -231,6 +157,46 @@ bool AssignmentTypeChecker::validate_assignment_between_custom_types(const Custo
         }
     }
     return true;
+}
+
+bool AssignmentTypeChecker::validate_assignment_between_custom_types_generic_type_parameters(const TypeSignature& source, const TypeSignature& dest){
+    const TypeSignature unaliased_source_type = program_representation.unalias_type(source);
+    const TypeSignature unaliased_dest_type = program_representation.unalias_type(dest);
+    return validate_type_alias_unaware_assignment_between_custom_types_generic_type_parameters(unaliased_source_type, unaliased_dest_type);
+}
+
+bool AssignmentTypeChecker::validate_type_alias_unaware_assignment_between_custom_types_generic_type_parameters(const TypeSignature& source, const TypeSignature& dest){
+    if (dest.is<TemplateType>()){
+        return validate_assignment_to_template_generic(source, dest.get<TemplateType>());
+    }
+    else if (dest.is<CustomType>() && source.is<CustomType>()){
+        return validate_assignment_between_custom_types(source.get<CustomType>(), dest.get<CustomType>());
+    }
+    else if (dest.is<PrimitiveType>() && source.is<PrimitiveType>()){
+        return dest.get<PrimitiveType>().type_name == source.get<PrimitiveType>().type_name;
+    }
+    else if (dest.is<ArrayType>() && source.is<ArrayType>()){
+        const ArrayType& source_array = source.get<ArrayType>();
+        const ArrayType& dest_array = dest.get<ArrayType>();
+        return source_array.array_length == dest_array.array_length && 
+            validate_assignment_between_custom_types_generic_type_parameters(
+                source_array.stored_type, 
+                dest_array.stored_type
+            );
+    }
+    else if (dest.is<PointerType>() && source.is<PointerType>()){
+        return validate_assignment_between_custom_types_generic_type_parameters(
+            source.get<PointerType>().pointed_type, 
+            dest.get<PointerType>().pointed_type
+        );
+    }
+    else if (dest.is<SliceType>() && source.is<SliceType>()){
+        return validate_assignment_between_custom_types_generic_type_parameters(
+            source.get<SliceType>().stored_type, 
+            dest.get<SliceType>().stored_type
+        );
+    }
+    return false;
 }
 
 bool AssignmentTypeChecker::validate_assignment_to_string(const TypeSignature& source, const PrimitiveType& dest){
