@@ -157,3 +157,78 @@ TEST(Preprocessor, List_Of_Ints_And_List_Of_Number_Are_Non_Mutually_Compatible_W
     EXPECT_FALSE(list_of_numbers_compatible_with_list_of_ints);
     EXPECT_FALSE(list_of_ints_compatible_with_list_of_numbers);
 }
+
+
+TEST(Preprocessor, List_Of_List_Of_Ints_Is_Compatible_With_List_Of_List_Of_T) {
+    ProgramRepresentation simple_struct_definition_program;
+    simple_struct_definition_program.store_definitions_from_file(
+        Filerepresentation {
+            .file_metadata = {
+                .filename = "main.basalt",
+                .packagename = "testpackage",
+                .imports = { }
+            },
+            .type_defs = { 
+                StructDefinitionFactory::make_struct_definition(
+                    "List", { "T" }, { StructDefinitionFactory::no_fields }
+                )
+            },
+            .func_defs = { }
+        }
+    );
+    AssignmentTypeChecker type_checker(simple_struct_definition_program);
+    TypeSignature list_of_list_of_Ts = CustomType { Token { "List", "main.basalt", 1, 1, 1, Token::Type::type }, {
+        CustomType { Token { "List", "main.basalt", 1, 1, 1, Token::Type::type }, { TypeSignatureFactory::T } }
+    } };
+    TypeSignature list_of_list_of_ints = CustomType { Token { "List", "main.basalt", 1, 1, 1, Token::Type::type }, {
+        CustomType { Token { "List", "main.basalt", 1, 1, 1, Token::Type::type }, { TypeSignatureFactory::Int } }
+    } };
+    bool list_of_list_of_ints_compatible_with_list_of_list_of_Ts = 
+        type_checker.validate_assignment(list_of_list_of_ints, list_of_list_of_Ts);
+    EXPECT_TRUE(list_of_list_of_ints_compatible_with_list_of_list_of_Ts);
+}
+
+TEST(Preprocessor, List_Of_Ints_is_not_compatible_with_List_Of_Ints_When_Symbols_Are_From_Different_Packages) {
+    ProgramRepresentation simple_struct_definition_program;
+    simple_struct_definition_program.store_definitions_from_file(
+        Filerepresentation {
+            .file_metadata = {
+                .filename = "a.basalt",
+                .packagename = "apackage",
+                .imports = { }
+            },
+            .type_defs = { 
+                StructDefinitionFactory::make_struct_definition(
+                    "List", { "T" }, { StructDefinitionFactory::no_fields }
+                )
+            },
+            .func_defs = { }
+        }
+    );
+    simple_struct_definition_program.store_definitions_from_file(
+        Filerepresentation {
+            .file_metadata = {
+                .filename = "b.basalt",
+                .packagename = "bpackage",
+                .imports = { }
+            },
+            .type_defs = { 
+                StructDefinitionFactory::make_struct_definition(
+                    "List", { "T" }, { StructDefinitionFactory::no_fields }
+                )
+            },
+            .func_defs = { }
+        }
+    );
+    AssignmentTypeChecker type_checker(simple_struct_definition_program);
+    CustomType list_of_list_of_ints1 = CustomType { Token { "List", "a.basalt", 1, 1, 1, Token::Type::type }, {
+        TypeSignatureFactory::Int
+    } };
+    CustomType list_of_list_of_ints2 = CustomType { Token { "List", "a.basalt", 1, 1, 1, Token::Type::type }, {
+        TypeSignatureFactory::Int
+    } };
+    list_of_list_of_ints2.package_prefix = "bpackage";
+    bool list_of_ints_are_not_compatible_when_symbols_are_from_different_packages = 
+        type_checker.validate_assignment(list_of_list_of_ints1, list_of_list_of_ints2);
+    EXPECT_FALSE(list_of_ints_are_not_compatible_when_symbols_are_from_different_packages);
+}

@@ -11,6 +11,63 @@ GenericSubstitutionRuleSet& AssignmentTypeChecker::get_generic_substitution_rule
     return generic_substitution_rules; 
 }
 
+bool AssignmentTypeChecker::validate_assignment_between_custom_types_generic_type_parameters(const TypeSignature& source, const TypeSignature& dest){
+    if (validate_type_alias_unaware_assignment_between_custom_types_generic_type_parameters(source, dest)){
+        return true;
+    }
+    if (source.is<CustomType>()){
+        TypeDefinition source_type_definition = program_representation.retrieve_type_definition(source.get<CustomType>());
+        if (source_type_definition.is<TypeAlias>()){
+            if (validate_assignment_between_custom_types_generic_type_parameters(source_type_definition.get<TypeAlias>().aliased_type, dest)){
+                return true;
+            }
+        }
+    }
+    if (dest.is<CustomType>()){
+        TypeDefinition dest_type_definition = program_representation.retrieve_type_definition(dest.get<CustomType>());
+        if (dest_type_definition.is<TypeAlias>()){
+            if (validate_assignment_between_custom_types_generic_type_parameters(source, dest_type_definition.get<TypeAlias>().aliased_type)){
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+bool AssignmentTypeChecker::validate_type_alias_unaware_assignment_between_custom_types_generic_type_parameters(const TypeSignature& source, const TypeSignature& dest){
+    if (dest.is<TemplateType>()){
+        return validate_assignment_to_template_generic(source, dest.get<TemplateType>());
+    }
+    else if (dest.is<CustomType>() && source.is<CustomType>()){
+        return validate_assignment_between_custom_types(source.get<CustomType>(), dest.get<CustomType>());
+    }
+    else if (dest.is<PrimitiveType>() && source.is<PrimitiveType>()){
+        return dest.get<PrimitiveType>().type_name == source.get<PrimitiveType>().type_name;
+    }
+    else if (dest.is<ArrayType>() && source.is<ArrayType>()){
+        const ArrayType& source_array = source.get<ArrayType>();
+        const ArrayType& dest_array = dest.get<ArrayType>();
+        return source_array.array_length == dest_array.array_length && 
+            validate_assignment_between_custom_types_generic_type_parameters(
+                source_array.stored_type, 
+                dest_array.stored_type
+            );
+    }
+    else if (dest.is<PointerType>() && source.is<PointerType>()){
+        return validate_assignment_between_custom_types_generic_type_parameters(
+            source.get<PointerType>().pointed_type, 
+            dest.get<PointerType>().pointed_type
+        );
+    }
+    else if (dest.is<SliceType>() && source.is<SliceType>()){
+        return validate_assignment_between_custom_types_generic_type_parameters(
+            source.get<SliceType>().stored_type, 
+            dest.get<SliceType>().stored_type
+        );
+    }
+    return false;
+}
+
 bool AssignmentTypeChecker::validate_assignment(const TypeSignature& source, const TypeSignature& dest){
     if (validate_type_alias_unaware_assignment(source, dest)){
         return true;
@@ -101,9 +158,8 @@ bool AssignmentTypeChecker::validate_assignment_to_template_generic(const TypeSi
 }
 
 bool AssignmentTypeChecker::validate_assignment_to_custom_type(const TypeSignature& source, const CustomType& dest){
-    return (source.is<CustomType>())
-        ? validate_assignment_between_custom_types(source.get<CustomType>(), dest)
-        : validate_complex_assignment(source, dest);
+    bool direct_assignment = (source.is<CustomType>() && validate_assignment_between_custom_types(source.get<CustomType>(), dest));
+    return direct_assignment || validate_complex_assignment(source, dest);
 }
 
 bool AssignmentTypeChecker::validate_assignment_to_primitive_type(const TypeSignature& source, const PrimitiveType& dest){
@@ -154,15 +210,23 @@ bool AssignmentTypeChecker::validate_complex_assignment(const TypeSignature& sou
 
 bool AssignmentTypeChecker::validate_assignment_between_custom_types(const CustomType& source, const CustomType& dest){
     if (source.type_name != dest.type_name || source.instantiation_generics.size() != dest.instantiation_generics.size()){
-        return validate_complex_assignment(source, dest);
+        return false;
+    }
+    if (source.package_prefix != dest.package_prefix){
+        std::string source_package_name = (!source.package_prefix.empty())? source.package_prefix 
+            : program_representation.package_name_by_file_name[source.filename];
+        std::string dest_package_name = (!dest.package_prefix.empty())? dest.package_prefix 
+            : program_representation.package_name_by_file_name[dest.filename];
+        if (source_package_name != dest_package_name){
+            return false;
+        }
     }
     for (int i = 0; i < source.instantiation_generics.size(); i++){
-        if (dest.instantiation_generics[i].is<TemplateType>()){
-            if (!validate_assignment(source.instantiation_generics[i], dest.instantiation_generics[i])){
-                return false;
-            }
-        }
-        else if (!typesignatures_are_equal(source.instantiation_generics[i], dest.instantiation_generics[i])){
+        if (!validate_assignment_between_custom_types_generic_type_parameters(
+                source.instantiation_generics[i], 
+                dest.instantiation_generics[i]
+            )
+        ){
             return false;
         }
     }
