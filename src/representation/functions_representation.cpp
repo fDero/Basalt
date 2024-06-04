@@ -1,11 +1,8 @@
-
 #include "toolchain/representation.hpp"
 #include "errors/preprocessing_errors.hpp"
 #include "errors/internal_errors.hpp"
 #include "toolchain/preprocessor.hpp"
 #include "language/generics.hpp"
-
-#include <iostream>
 
 [[nodiscard]] std::optional<FunctionDefinition> ProgramRepresentation::search_compatible_function_definitions_within_given_package(
     const PrecompiledFunctionCall& function_call, 

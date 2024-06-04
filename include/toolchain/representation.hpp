@@ -5,6 +5,7 @@
 #include "misc/aliases.hpp"
 #include <unordered_map>
 #include <map>
+#include <functional>
 
 struct Filerepresentation {
 
@@ -43,6 +44,52 @@ class ScopeContext {
         ScopeContext* parent_scope = nullptr;
 };
 
+class FunctionSpecificityDescriptor {
+
+    public:
+
+        enum class ComparisonOutcome {
+            MORE_SPECIFIC,
+            LESS_SPECIFIC,
+            EQUALLY_SPECIFIC
+        };
+
+        FunctionSpecificityDescriptor(
+            ProgramRepresentation& program_representation,
+            const FunctionDefinition& func_definition
+        );
+
+        [[nodiscard]] ComparisonOutcome compare(const FunctionSpecificityDescriptor& other) const;
+        
+    private:
+        size_t number_of_generics = 0;
+        size_t number_of_generic_parameters_usage_in_signature = 0;
+        size_t argument_types_complexity_indicator = 0;
+        size_t amount_of_unions_in_argument_types = 0;
+        size_t amount_of_cases_covered_by_argument_types_unions = 0;
+        size_t amount_of_slices_in_argument_types = 0;
+        size_t amount_of_arrays_in_argument_types = 0;
+        size_t amount_of_strings_in_argument_types = 0;
+        size_t amount_of_c_strings_in_argument_types = 0;
+        
+        void compute_number_of_generics();
+        void compute_number_of_generic_parameters_usage_in_signature();
+        void compute_argument_types_complexity_indicator();
+        void compute_amount_of_unions_in_argument_types();
+        void compute_amount_of_cases_covered_by_argument_types_unions();
+        void compute_amount_of_slices_in_argument_types();
+        void compute_amount_of_arrays_in_argument_types();
+        void compute_amount_of_strings_in_argument_types();
+        void compute_amount_of_c_strings_in_argument_types();
+
+        [[nodiscard]] size_t count_recursivly_on_typesignature(
+            const TypeSignature& type_signature,
+            std::function<size_t(const TypeSignature&)> count_function
+        );
+
+        ProgramRepresentation& program_representation;
+        const FunctionDefinition& func_definition;
+};
 
 struct ProgramRepresentation {
 
