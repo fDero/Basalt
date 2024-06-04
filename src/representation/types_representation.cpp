@@ -26,7 +26,7 @@ void ProgramRepresentation::store_type_definition(
     TypeDefinition type_definition = retrieve_type_definition(custom_type);
     if (type_definition.is<TypeAlias>()){
         const TypeAlias& alias = type_definition.get<TypeAlias>();
-        return alias.aliased_type;
+        return unalias_type(alias.aliased_type);
     }
     else {
         return type_signature;
