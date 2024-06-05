@@ -99,7 +99,7 @@ void assert_function_actually_retrieved(
 );
 
 void assert_get_operation_is_possible(
-    const std::string& wanted_type, 
+    const char* wanted_type, 
     const std::type_info& type_info
 );
 

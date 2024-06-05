@@ -68,7 +68,7 @@ void assert_function_actually_retrieved(
     #endif
 }
 
-void assert_get_operation_is_possible(const std::string& wanted_type, const std::type_info& type_info) {
+void assert_get_operation_is_possible(const char* wanted_type, const std::type_info& type_info) {
     #ifdef DEBUG_BUILD
     if (wanted_type != type_info.name()) {
         throw InternalError {

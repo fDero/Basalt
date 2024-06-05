@@ -1,5 +1,6 @@
 
 #pragma once
+#include "forward_declarations.hpp"
 #include <memory>
 #include <string>
 
@@ -25,16 +26,7 @@ class Polymorph {
         
         template<typename Implementation> 
         const Implementation& get() const
-            requires(std::is_base_of_v<Interface, Implementation>) { 
-                
-                //this function it's in "errors/internal_errors.hpp" but
-                //include is impossible because it causes cyclic dependencies
-                //between header files and this leads to compilation failure
-                void assert_get_operation_is_possible(
-                    const std::string& wanted_type, 
-                    const std::type_info& type_info
-                );
-                
+            requires(std::is_base_of_v<Interface, Implementation>) {                 
                 assert_get_operation_is_possible(cpp_type_info_str, typeid(Implementation)); 
                 return *static_cast<Implementation*>(ptr.get());
         }
@@ -49,5 +41,5 @@ class Polymorph {
 
     protected:
         std::shared_ptr<Interface> ptr;
-        std::string cpp_type_info_str;
+        const char* cpp_type_info_str;
 };
