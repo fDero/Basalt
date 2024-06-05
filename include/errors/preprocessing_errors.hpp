@@ -112,8 +112,8 @@ void ensure_object_is_mutable(
 inline void ensure_no_ambiguous_function_definition_found(
     const std::list<std::shared_ptr<FunctionDefinition>>& compatible_defs,
     const PrecompiledFunctionCall& precompiled_function_call
-){
-    if (compatible_defs.size() > 1){
+) {
+    if (compatible_defs.size() > 1) {
         throw std::runtime_error {
             "Ambiguous function definition found for function call " + precompiled_function_call.original_function_call.function_name + "\n"
         };

@@ -10,7 +10,7 @@ TEST(Tokenizing, Integer_Literals) {
     Tokenizer tokenizer = Tokenizer(std::istringstream(inline_input));
     std::vector<Token> tokens = tokenizer.tokenize();
     ASSERT_EQ(tokens_text.size(), tokens.size());
-    for (int i = 0; i < tokens.size(); i++){
+    for (int i = 0; i < tokens.size(); i++) {
         EXPECT_EQ(tokens_text[i], tokens[i].sourcetext);
         EXPECT_EQ(tokens[i].type, Token::Type::integer_literal);
     }
@@ -21,7 +21,7 @@ TEST(Tokenizing, Floating_Literals) {
     Tokenizer tokenizer = Tokenizer(std::istringstream(inline_input));
     std::vector<Token> tokens = tokenizer.tokenize();
     ASSERT_EQ(tokens_text.size(), tokens.size());
-    for (int i = 0; i < tokens.size(); i++){
+    for (int i = 0; i < tokens.size(); i++) {
         EXPECT_EQ(tokens_text[i], tokens[i].sourcetext);
         EXPECT_EQ(tokens[i].type, Token::Type::floating_literal);
     }
@@ -32,7 +32,7 @@ TEST(Tokenizing, Boolean_Literals) {
     Tokenizer tokenizer = Tokenizer(std::istringstream(inline_input));
     std::vector<Token> tokens = tokenizer.tokenize();
     ASSERT_EQ(tokens_text.size(), tokens.size());
-    for (int i = 0; i < tokens.size(); i++){
+    for (int i = 0; i < tokens.size(); i++) {
         EXPECT_EQ(tokens_text[i], tokens[i].sourcetext);
         EXPECT_EQ(tokens[i].type, Token::Type::boolean_literal);
     }
@@ -43,7 +43,7 @@ TEST(Tokenizing, Char_Literals) {
     Tokenizer tokenizer = Tokenizer(std::istringstream(inline_input));
     std::vector<Token> tokens = tokenizer.tokenize();
     ASSERT_EQ(tokens_text.size(), tokens.size());
-    for (int i = 0; i < tokens.size(); i++){
+    for (int i = 0; i < tokens.size(); i++) {
         EXPECT_EQ(tokens_text[i], tokens[i].sourcetext);
         EXPECT_EQ(tokens[i].type, Token::Type::character_literal);
     }
@@ -54,7 +54,7 @@ TEST(Tokenizing, String_Literals_doublequotes) {
     Tokenizer tokenizer = Tokenizer(std::istringstream(inline_input));
     std::vector<Token> tokens = tokenizer.tokenize();
     ASSERT_EQ(tokens_text.size(), tokens.size());
-    for (int i = 0; i < tokens.size(); i++){
+    for (int i = 0; i < tokens.size(); i++) {
         EXPECT_EQ(tokens_text[i], tokens[i].sourcetext);
         EXPECT_EQ(tokens[i].type, Token::Type::string_literal);
     }
@@ -65,7 +65,7 @@ TEST(Tokenizing, String_Literals_backticks) {
     Tokenizer tokenizer = Tokenizer(std::istringstream(inline_input));
     std::vector<Token> tokens = tokenizer.tokenize();
     ASSERT_EQ(tokens_text.size(), tokens.size());
-    for (int i = 0; i < tokens.size(); i++){
+    for (int i = 0; i < tokens.size(); i++) {
         EXPECT_EQ(tokens_text[i], tokens[i].sourcetext);
         EXPECT_EQ(tokens[i].type, Token::Type::string_literal);
     }

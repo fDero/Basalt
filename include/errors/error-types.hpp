@@ -9,7 +9,7 @@ struct CommandLineError : public std::exception {
     std::string error_message;
     
     CommandLineError(const std::string& message) 
-        : error_message(message){ }
+        : error_message(message) { }
     
     const char* what() const noexcept override {
         return error_message.c_str();

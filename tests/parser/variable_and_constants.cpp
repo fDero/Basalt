@@ -4,7 +4,7 @@
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 
-TEST(Parsing, Variable_With_Type_And_Value){
+TEST(Parsing, Variable_With_Type_And_Value) {
     std::vector<Token> arraytokens = {
         { "var", "test.basalt", 1, 1, 1,  Token::Type::var_keyword },
         { "x",   "test.basalt", 1, 2, 4,  Token::Type::text },
@@ -23,7 +23,7 @@ TEST(Parsing, Variable_With_Type_And_Value){
     ASSERT_TRUE(var.initial_value.has_value());
 }
 
-TEST(Parsing, Variable_With_No_Value){
+TEST(Parsing, Variable_With_No_Value) {
     std::vector<Token> arraytokens = {
         { "var", "test.basalt", 1, 1, 1,  Token::Type::var_keyword },
         { "x",   "test.basalt", 1, 2, 4,  Token::Type::text },
@@ -40,7 +40,7 @@ TEST(Parsing, Variable_With_No_Value){
     ASSERT_FALSE(var.initial_value.has_value());
 }
 
-TEST(Parsing, Constant_With_Type_And_Value){
+TEST(Parsing, Constant_With_Type_And_Value) {
     std::vector<Token> arraytokens = {
         { "const", "test.basalt", 1, 1, 1,  Token::Type::const_keyword },
         { "x",   "test.basalt",   1, 2, 6,  Token::Type::text },

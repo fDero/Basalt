@@ -2,7 +2,7 @@
 #include "toolchain/representation.hpp"
 #include "errors/preprocessing_errors.hpp"
 
-void ScopeContext::store_local_variable(const VariableDeclaration& var_declaration){
+void ScopeContext::store_local_variable(const VariableDeclaration& var_declaration) {
     bool search_outcome = contains(var_declaration.identifier_name);
     ensure_identifier_not_ambiguous_in_given_scope(var_declaration.identifier_name, search_outcome);
     local_objects.push_back({
@@ -14,7 +14,7 @@ void ScopeContext::store_local_variable(const VariableDeclaration& var_declarati
     });
 }
 
-void ScopeContext::store_local_constant(const ConstDeclaration& const_declaration){
+void ScopeContext::store_local_constant(const ConstDeclaration& const_declaration) {
     bool search_outcome = contains(const_declaration.identifier_name);
     ensure_identifier_not_ambiguous_in_given_scope(const_declaration.identifier_name, search_outcome);
     local_objects.push_back({
@@ -27,8 +27,8 @@ void ScopeContext::store_local_constant(const ConstDeclaration& const_declaratio
 }
 
 bool ScopeContext::contains(const std::string& identifier) {
-    for (const ObjectDescriptor& object : local_objects){
-        if (object.identifier == identifier){
+    for (const ObjectDescriptor& object : local_objects) {
+        if (object.identifier == identifier) {
             return true;
         }
     }
@@ -37,8 +37,8 @@ bool ScopeContext::contains(const std::string& identifier) {
 }
 
 TypeSignature& ScopeContext::get_local_object_type(const std::string& identifier) {
-    for (ObjectDescriptor& object : local_objects){
-        if (object.identifier == identifier){
+    for (ObjectDescriptor& object : local_objects) {
+        if (object.identifier == identifier) {
             object.gets_accessed = true;
             return object.type_signature;
         }
@@ -48,8 +48,8 @@ TypeSignature& ScopeContext::get_local_object_type(const std::string& identifier
 }
 
 TypeSignature& ScopeContext::get_local_mutable_object_type(const std::string& identifier) {
-    for (ObjectDescriptor& object : local_objects){
-        if (object.identifier == identifier){
+    for (ObjectDescriptor& object : local_objects) {
+        if (object.identifier == identifier) {
             object.gets_accessed = true;
             object.gets_modified = true;
             ensure_object_is_mutable(object.is_const);

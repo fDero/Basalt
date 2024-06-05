@@ -21,7 +21,7 @@ $$ make build
 To make your first hello-world program in Basalt, all it takes is to create a file with the `.bt` extension 
 (in this case, it will be called `hello.bt`) containing the following code:
 ```go
-func main(){
+func main() {
     println("Hello world!");
 }
 ```
@@ -36,7 +36,7 @@ $$ Hello world!
 Basalt is a strictly typed language, it has a C-style type system with 
 `Int`, `Float`, `Bool`, `Char`, `String` as primitive types. 
 ```go
-func main(){
+func main() {
     var x : Int = 6;
     var y : Float = 9.4;
     var f : Bool = false;
@@ -49,7 +49,7 @@ func main(){
 Basalt supports recursion just like any other language, and a good way to show it is with the classic 
 fibonacci example, consider the following code:
 ```go
-func fibo(n : Int){
+func fibo(n : Int) {
     if (n < 2) {
         return 1;
     }
@@ -58,7 +58,7 @@ func fibo(n : Int){
     }
 }
 
-func main(){
+func main() {
     println(fibo(6));
 }
 ```

@@ -104,9 +104,9 @@ void assert_get_operation_is_possible(
 );
 
 template<typename T>
-inline void assert_typesignature_is(const TypeSignature& typesignature){
+inline void assert_typesignature_is(const TypeSignature& typesignature) {
     #ifdef DEBUG_BUILD
-    if (!typesignature.is<T>()){
+    if (!typesignature.is<T>()) {
         std::string T_type_converted_to_string = typeid(T).name();
         throw InternalError {
             "somehow a typesignature was expected to be a " + 

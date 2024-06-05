@@ -11,7 +11,7 @@ struct FunctionDefinitionFactory {
         const std::string& function_name, 
         const std::vector<std::string> generics, 
         const std::vector<FunctionDefinition::Argument>& args
-    ){
+    ) {
         FunctionDefinition new_func_definition {
             Token {
                 function_name, "test.basalt", 1, 2, 5,
@@ -28,7 +28,7 @@ struct FunctionDefinitionFactory {
         const std::vector<std::string> generics, 
         const std::vector<FunctionDefinition::Argument>& args,
         const std::optional<TypeSignature>& return_type
-    ){
+    ) {
         FunctionDefinition new_func_definition {
             Token {
                 function_name, "test.basalt", 1, 2, 5,

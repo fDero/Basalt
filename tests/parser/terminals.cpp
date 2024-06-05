@@ -12,7 +12,7 @@ TEST(Parsing, Simple_Identifiers) {
         { "variablename", "test.basalt", 1, 3, 8, Token::Type::text }
     };
     Parser parser = Parser(identifiers);
-    for (const auto& identifier : identifiers){
+    for (const auto& identifier : identifiers) {
         Expression expr = parser.parse_identifier();
         ASSERT_TRUE(expr.is<Identifier>());
         EXPECT_EQ(expr.get<Identifier>().name, identifier.sourcetext);

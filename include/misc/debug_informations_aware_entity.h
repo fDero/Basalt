@@ -8,7 +8,7 @@ struct DebugInformationsAwareEntity {
     unsigned int tok_number;
     unsigned int char_pos;
 
-    void source_informations_from(const DebugInformationsAwareEntity& other){
+    void source_informations_from(const DebugInformationsAwareEntity& other) {
         filename = other.filename;
         line_number = other.line_number;
         tok_number = other.tok_number;

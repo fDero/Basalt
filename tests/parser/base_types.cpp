@@ -11,7 +11,7 @@ TEST(Parsing, CustomType_WithOut_Generics) {
         { "Manager",  "test.basalt", 1, 3, 17, Token::Type::type }
     };
     Parser parser = Parser(typesignatures);
-    for (const auto& typesignature : typesignatures){
+    for (const auto& typesignature : typesignatures) {
         TypeSignature type = parser.parse_typesignature();
         ASSERT_TRUE(type.is<CustomType>());
         ASSERT_EQ(type.get<CustomType>().type_name, typesignature.sourcetext);

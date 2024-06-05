@@ -3,7 +3,7 @@
 #include <fstream>
 
 void ensure_lack_of_input_files(const std::vector<std::string>& input_files) {
-    if (!input_files.empty()){
+    if (!input_files.empty()) {
         throw CommandLineError {
             "input files were given but they wheren't needed, \n"
             "(please keep in mind that if you use version or help flag \n"
@@ -23,7 +23,7 @@ void ensure_lack_of_output_files(const std::vector<std::string>& output_files) {
     }
 }
 
-void ensure_source_file_is_open(const std::fstream& input_file, const std::string& file_name){
+void ensure_source_file_is_open(const std::fstream& input_file, const std::string& file_name) {
     if (!input_file.is_open()) {
         throw CommandLineError {
             "file " + file_name + " either is missing or is inaccessible \n"
@@ -36,7 +36,7 @@ void ensure_source_file_is_open(const std::fstream& input_file, const std::strin
 void ensure_version_flag_is_the_only_one(
     int current_flag_index, int arg_counter, const std::vector<std::string>& input_files, 
     const std::vector<std::string>& output_files, const CommandLineController::Mode mode
-){
+) {
     if (
         !input_files.empty()  || !output_files.empty() || 
         current_flag_index + 1 < arg_counter || 
@@ -50,7 +50,7 @@ void ensure_version_flag_is_the_only_one(
 void ensure_help_flag_is_the_only_one(
     int current_flag_index, int arg_counter, const std::vector<std::string>& input_files, 
     const std::vector<std::string>& output_files, const CommandLineController::Mode mode
-){
+) {
     if (
         !input_files.empty()  || !output_files.empty() || 
         current_flag_index + 1 < arg_counter || 

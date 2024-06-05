@@ -3,11 +3,11 @@
 #include "toolchain/tokenizer.hpp"
 #include "language/syntax.hpp"
 
-[[nodiscard]] std::optional<Token> Tokenizer::extract_number(){
+[[nodiscard]] std::optional<Token> Tokenizer::extract_number() {
     if (isdigit(current_line[char_pos])) {
         std::string buffer;
         bool floating = false;
-        for (size_t i = char_pos; i < current_line.size(); i++){
+        for (size_t i = char_pos; i < current_line.size(); i++) {
             if (!isdigit(current_line[i]) && current_line[i] != '.') break;
             avoid_multiple_floating_points(floating, current_line[i], *this);
             floating = floating || (current_line[i] == '.');
@@ -19,10 +19,10 @@
     return std::nullopt;
 }
 
-[[nodiscard]] std::optional<Token> Tokenizer::extract_text(){
+[[nodiscard]] std::optional<Token> Tokenizer::extract_text() {
     if (isalpha(current_line[char_pos])) {
         std::string buffer;
-        for (size_t i = char_pos; i < current_line.size(); i++){
+        for (size_t i = char_pos; i < current_line.size(); i++) {
             if (!isalpha(current_line[i]) && !isdigit(current_line[i]) && current_line[i] != '_') break;
             buffer.push_back(current_line[i]);
         }
@@ -32,12 +32,12 @@
     return std::nullopt;
 }
 
-[[nodiscard]] std::optional<Token> Tokenizer::extract_string(){
-    if (string_opening_characters.find(current_line[char_pos]) != string_opening_characters.end()){
+[[nodiscard]] std::optional<Token> Tokenizer::extract_string() {
+    if (string_opening_characters.find(current_line[char_pos]) != string_opening_characters.end()) {
         std::string buffer;
         bool escape = false;
         buffer.push_back(current_line[char_pos]);
-        for(size_t i = char_pos + 1; i < current_line.size() && !(current_line[char_pos] == current_line[i] && !escape); i++){
+        for(size_t i = char_pos + 1; i < current_line.size() && !(current_line[char_pos] == current_line[i] && !escape); i++) {
             escape = (current_line[i] == '\\' && !escape);
             buffer.push_back(current_line[i]);
         }
@@ -49,7 +49,7 @@
     return std::nullopt;
 }
 
-[[nodiscard]] std::optional<Token> Tokenizer::extract_symbol(){
+[[nodiscard]] std::optional<Token> Tokenizer::extract_symbol() {
     size_t i = char_pos, j = char_pos + 1;
     Token::Type type = Token::Type::symbol;
     if(i >= current_line.size() || symbols.find(current_line[i]) == symbols.end()) return std::nullopt;
@@ -58,7 +58,7 @@
     return make_token({current_line[i],current_line[j]}, type);
 }
 
-[[nodiscard]] std::optional<Token> Tokenizer::extract(){
+[[nodiscard]] std::optional<Token> Tokenizer::extract() {
     handle_multiline_comments();
     handle_simple_comments();
     ignore_discardable_characters();

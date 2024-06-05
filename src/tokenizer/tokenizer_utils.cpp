@@ -33,18 +33,18 @@ Tokenizer::Tokenizer(const std::filesystem::path& file_input)
         token_input = std::make_unique<std::fstream>(filename, std::ios::in);  
 }
 
-void Tokenizer::inspect_for_unexpected_tokens(){
+void Tokenizer::inspect_for_unexpected_tokens() {
     std::string buffer;
-    while (char_pos < current_line.size() && discardable.find(current_line[char_pos]) != discardable.end()){
+    while (char_pos < current_line.size() && discardable.find(current_line[char_pos]) != discardable.end()) {
         buffer.push_back(current_line[char_pos++]);
     }
-    if (!buffer.empty() && char_pos >= current_line.size()){
+    if (!buffer.empty() && char_pos >= current_line.size()) {
         throw_unexpected_token(buffer, *this);
     }
 }
 
-void Tokenizer::ignore_discardable_characters(){
-    while (char_pos < current_line.size() && discardable.find(current_line[char_pos]) != discardable.end()){
+void Tokenizer::ignore_discardable_characters() {
+    while (char_pos < current_line.size() && discardable.find(current_line[char_pos]) != discardable.end()) {
         char_pos = char_pos + 1;
     }
 }
@@ -57,7 +57,7 @@ void Tokenizer::ignore_discardable_characters(){
     };
 }
 
-[[nodiscard]] Token::Type Tokenizer::get_textual_token_type(const std::string& sourcetext){
+[[nodiscard]] Token::Type Tokenizer::get_textual_token_type(const std::string& sourcetext) {
     if (sourcetext == "true" || sourcetext == "false") return Token::Type::boolean_literal;
     if (isupper(sourcetext[0])) return Token::Type::type;
     auto keyword_search_outcome = keywords.find(sourcetext);
@@ -66,12 +66,12 @@ void Tokenizer::ignore_discardable_characters(){
         keyword_search_outcome->second : Token::Type::text;
 }
 
-[[nodiscard]] std::vector<Token> Tokenizer::tokenize(){
+[[nodiscard]] std::vector<Token> Tokenizer::tokenize() {
     std::vector<Token> tokens;
     while (std::getline(*token_input, current_line)) {
         line_number = line_number + 1;
         tok_number = char_pos = 0;
-        while (char_pos < current_line.size()){
+        while (char_pos < current_line.size()) {
             std::optional<Token> token = extract();
             if (token.has_value()) tokens.push_back(*token);
             tok_number += (token.has_value() && token->type != Token::Type::multiline_comment);

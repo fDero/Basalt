@@ -7,9 +7,9 @@
 #include <iostream>
 #include <cassert>
 
-void CommandLineController::dispatch_based_on_user_input(){
+void CommandLineController::dispatch_based_on_user_input() {
     using Mode = CommandLineController::Mode; 
-    switch(mode){
+    switch(mode) {
         break; case Mode::compiler:    instantiation_and_run_compiler();
         break; case Mode::interpreter: instantiation_and_run_interpreter();
         break; case Mode::debugger:    instantiation_and_run_debugger();
@@ -19,7 +19,7 @@ void CommandLineController::dispatch_based_on_user_input(){
     }
 }
 
-void CommandLineController::instantiation_and_run_compiler(){
+void CommandLineController::instantiation_and_run_compiler() {
     avoid_lack_of_input_files(inputs);
     avoid_lack_of_output_files(outputs);
     avoid_duplicate_input_files(inputs);
@@ -37,23 +37,23 @@ void CommandLineController::instantiation_and_run_compiler(){
     }
 }
 
-void CommandLineController::instantiation_and_run_interpreter(){
+void CommandLineController::instantiation_and_run_interpreter() {
     avoid_lack_of_input_files(inputs);
     ensure_lack_of_output_files(outputs);
     avoid_duplicate_input_files(inputs);
 }
 
-void CommandLineController::instantiation_and_run_debugger(){
+void CommandLineController::instantiation_and_run_debugger() {
     std::cout << "the basalt debugger is not yet implemented\n";
     std::cout << "check for updates at https://www.github.com/fDero/Basalt\n\n";
 }
 
-void CommandLineController::display_commandline_version(){
+void CommandLineController::display_commandline_version() {
     std::cout << "version: pre-release\n";
     std::cout << "check for updates at https://www.github.com/fDero/Basalt\n\n";
 }
 
-void CommandLineController::display_commandline_help(){
+void CommandLineController::display_commandline_help() {
     std::cout << "compile basalt code: \n\t basalt -c <input files> -o <output files>\n\n";
     std::cout << "run code directly: \n\t basalt -r <input files>\n\n";
     std::cout << "debug your code: \n\t basalt -d <input files>\n\n";

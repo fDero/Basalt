@@ -4,7 +4,7 @@
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 
-TEST(Parsing, Package_Prefixed_Concrete_Generic_CustomType){
+TEST(Parsing, Package_Prefixed_Concrete_Generic_CustomType) {
     std::vector<Token> tokens = {
         { "collections", "test.basalt", 1, 1, 11, Token::Type::text   },
         { "::",          "test.basalt", 1, 2, 13, Token::Type::symbol },
@@ -25,7 +25,7 @@ TEST(Parsing, Package_Prefixed_Concrete_Generic_CustomType){
     EXPECT_EQ(generic.type_name, "Int");
 }
 
-TEST(Parsing, Package_Prefixed_Non_Generic_CustomType){
+TEST(Parsing, Package_Prefixed_Non_Generic_CustomType) {
     std::vector<Token> tokens = {
         { "graphics",  "test.basalt", 1, 1, 11, Token::Type::text   },
         { "::",        "test.basalt", 1, 2, 13, Token::Type::symbol },

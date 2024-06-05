@@ -10,7 +10,7 @@ struct TypeAliasFactory {
         const std::string& alias_name, 
         const std::vector<std::string> generics, 
         const TypeSignature& aliased_type
-    ){
+    ) {
         TypeAlias new_type_alias {
             Token {
                 alias_name, "test.basalt", 1, 2, 5,

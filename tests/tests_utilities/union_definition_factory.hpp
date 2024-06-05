@@ -11,7 +11,7 @@ struct UnionDefinitionFactory {
         const std::string& union_name, 
         const TemplateGenerics generics, 
         const std::vector<TypeSignature>& types
-    ){
+    ) {
         UnionDefinition new_union_definition {
             Token {
                 union_name, "test.basalt", 1, 2, 5,

@@ -12,7 +12,7 @@ void StructDefinition::instantiate_generics(const CustomType& concrete_type) {
         template_generics, instantiation_generics
     );
     template_generics_names.clear();
-    for (StructDefinition::Field& concrete_field : fields){
+    for (StructDefinition::Field& concrete_field : fields) {
         concrete_field.field_type.instantiate_generics(generic_substitution_rules);
     }
 }
@@ -25,7 +25,7 @@ void UnionDefinition::instantiate_generics(const CustomType& concrete_type) {
         template_generics, instantiation_generics
     );
     template_generics_names.clear();
-    for (TypeSignature& alternative : types){
+    for (TypeSignature& alternative : types) {
         alternative.instantiate_generics(generic_substitution_rules);
     }
 }
@@ -42,13 +42,13 @@ void TypeAlias::instantiate_generics(const CustomType& concrete_type) {
 }
 
 void TypeDefinition::instantiate_generics(const CustomType& concrete_type) {
-    if (std::holds_alternative<StructDefinition>(*this)){
+    if (std::holds_alternative<StructDefinition>(*this)) {
         std::get<StructDefinition>(*this).instantiate_generics(concrete_type);
     }
-    else if (std::holds_alternative<UnionDefinition>(*this)){
+    else if (std::holds_alternative<UnionDefinition>(*this)) {
         std::get<UnionDefinition>(*this).instantiate_generics(concrete_type);
     }
-    else if (std::holds_alternative<TypeAlias>(*this)){
+    else if (std::holds_alternative<TypeAlias>(*this)) {
         std::get<TypeAlias>(*this).instantiate_generics(concrete_type);
     }
     else {
@@ -57,13 +57,13 @@ void TypeDefinition::instantiate_generics(const CustomType& concrete_type) {
 }
 
 void TypeDefinition::set_name(const std::string& name) {
-    if (std::holds_alternative<StructDefinition>(*this)){
+    if (std::holds_alternative<StructDefinition>(*this)) {
         std::get<StructDefinition>(*this).struct_name = name;
     }
-    else if (std::holds_alternative<UnionDefinition>(*this)){
+    else if (std::holds_alternative<UnionDefinition>(*this)) {
         std::get<UnionDefinition>(*this).union_name = name;
     }
-    else if (std::holds_alternative<TypeAlias>(*this)){
+    else if (std::holds_alternative<TypeAlias>(*this)) {
         std::get<TypeAlias>(*this).alias_name = name;
     }
     else {
@@ -74,10 +74,10 @@ void TypeDefinition::set_name(const std::string& name) {
 [[nodiscard]] GenericSubstitutionRuleSet GenericSubstitutionRuleSet::zip_components_vectors (
     const TemplateGenerics& template_generics,
     const ConcreteGenerics& instantiation_generics
-){
+) {
     assert_vectors_have_same_size_hence_they_can_be_zipped(template_generics, instantiation_generics);
     GenericSubstitutionRuleSet result;
-    for (size_t i = 0; i < instantiation_generics.size(); i++){
+    for (size_t i = 0; i < instantiation_generics.size(); i++) {
         const TypeSignature& instantiation_generic = instantiation_generics[i];
         const std::string& template_generic_name = template_generics[i];
         GenericSubstitutionRule rule = { template_generic_name, instantiation_generic};
@@ -87,8 +87,8 @@ void TypeDefinition::set_name(const std::string& name) {
 }
 
 void TypeSignature::instantiate_generics(const GenericSubstitutionRuleSet& generic_substitution_rules) {
-    for (GenericSubstitutionRule rule : generic_substitution_rules){
-        if (this->is<TemplateType>() && this->get<TemplateType>().type_name == rule.to_be_substituded){
+    for (GenericSubstitutionRule rule : generic_substitution_rules) {
+        if (this->is<TemplateType>() && this->get<TemplateType>().type_name == rule.to_be_substituded) {
             *this = rule.replacement;
             return;
         }
@@ -97,7 +97,7 @@ void TypeSignature::instantiate_generics(const GenericSubstitutionRuleSet& gener
 }
 
 void CustomType::instantiate_generics(const GenericSubstitutionRuleSet& generic_substitution_rules) {
-    for (TypeSignature& generic : instantiation_generics){
+    for (TypeSignature& generic : instantiation_generics) {
         generic.instantiate_generics(generic_substitution_rules);
     }
 }

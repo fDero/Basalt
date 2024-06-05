@@ -12,14 +12,14 @@ class Polymorph {
 
         template<typename Implementation> 
         Polymorph(const Implementation& type)
-            requires(std::is_base_of_v<Interface, Implementation>){ 
+            requires(std::is_base_of_v<Interface, Implementation>) { 
                 ptr = std::make_shared<Implementation>(type); 
                 cpp_type_info_str = typeid(Implementation).name();
         }
 
         template<typename Implementation> 
         bool is() const
-            requires(std::is_base_of_v<Interface, Implementation>){ 
+            requires(std::is_base_of_v<Interface, Implementation>) { 
                 return cpp_type_info_str == typeid(Implementation).name(); 
         }
         

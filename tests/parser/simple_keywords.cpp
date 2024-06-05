@@ -6,8 +6,8 @@
 
 TEST(Parsing, Return_Nothing) {
     std::vector<Token> tokens = {
-        { "return", "test.basalt", 1, 1, 1, Token::Type::text },
-        { ";", "test.basalt", 1, 4, 4, Token::Type::symbol }
+        { "return", "test.basalt", 1, 1, 1, Token::Type::return_keyword },
+        { ";",      "test.basalt", 1, 4, 4, Token::Type::symbol }
     };
     Parser parser = Parser(tokens);
     Statement statement = parser.parse_statement();
@@ -17,9 +17,9 @@ TEST(Parsing, Return_Nothing) {
 
 TEST(Parsing, Return_Integer) {
     std::vector<Token> tokens = {
-        { "return", "test.basalt", 1, 1, 1, Token::Type::text },
-        { "6", "test.basalt", 1, 4, 4, Token::Type::integer_literal },
-        { ";", "test.basalt", 1, 4, 4, Token::Type::symbol }
+        { "return", "test.basalt", 1, 1, 1, Token::Type::return_keyword },
+        { "6",      "test.basalt", 1, 4, 4, Token::Type::integer_literal },
+        { ";",      "test.basalt", 1, 4, 4, Token::Type::symbol }
     };
     Parser parser = Parser(tokens);
     Statement statement = parser.parse_statement();
@@ -31,11 +31,11 @@ TEST(Parsing, Return_Integer) {
 
 TEST(Parsing, Return_Expression) {
     std::vector<Token> tokens = {
-        { "return", "test.basalt", 1, 1, 1, Token::Type::text },
-        { "6", "test.basalt", 1, 4, 4, Token::Type::integer_literal },
-        { "*", "test.basalt", 1, 4, 4, Token::Type::integer_literal },
-        { "7", "test.basalt", 1, 4, 4, Token::Type::integer_literal },
-        { ";", "test.basalt", 1, 4, 4, Token::Type::symbol }
+        { "return", "test.basalt", 1, 1, 1, Token::Type::return_keyword  },
+        { "6",      "test.basalt", 1, 4, 4, Token::Type::integer_literal },
+        { "*",      "test.basalt", 1, 4, 4, Token::Type::integer_literal },
+        { "7",      "test.basalt", 1, 4, 4, Token::Type::integer_literal },
+        { ";",      "test.basalt", 1, 4, 4, Token::Type::symbol }
     };
     Parser parser = Parser(tokens);
     Statement statement = parser.parse_statement();

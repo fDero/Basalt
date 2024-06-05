@@ -5,7 +5,7 @@
 #include "toolchain/parser.hpp"
 #include "language/expressions.hpp"
 
-[[nodiscard]] Expression Parser::parse_array_literal(){
+[[nodiscard]] Expression Parser::parse_array_literal() {
     const Token& array_token = *iterator;
     assert_token_matches(source_tokens, iterator++, "[");
     ensure_there_are_still_tokens(source_tokens, iterator);
@@ -23,7 +23,7 @@
     if (iterator->sourcetext != "}") {
         elements.push_back(parse_expression());
     }
-    while (iterator->sourcetext == ","){
+    while (iterator->sourcetext == ",") {
         ++iterator;
         elements.push_back(parse_expression());
     }
@@ -31,7 +31,7 @@
     return ArrayLiteral { array_length, stored_type, elements, array_token };
 }
 
-[[nodiscard]] Expression Parser::parse_expression_wrapped_in_square_brackets(){
+[[nodiscard]] Expression Parser::parse_expression_wrapped_in_square_brackets() {
     assert_token_matches(source_tokens, iterator, "[");
     const Token& open_bracket_token = *(iterator++);
     Expression expression = parse_expression();
@@ -40,7 +40,7 @@
     return expression;
 }
 
-[[nodiscard]] Expression Parser::parse_expression_wrapped_in_parenthesis(){
+[[nodiscard]] Expression Parser::parse_expression_wrapped_in_parenthesis() {
     assert_token_matches(source_tokens, iterator, "(");
     const Token& open_paren_token = *(iterator++);
     Expression expression = parse_expression();
@@ -49,11 +49,11 @@
     return expression;
 }
 
-[[nodiscard]] Expression Parser::parse_terminal_expression(){
+[[nodiscard]] Expression Parser::parse_terminal_expression() {
     ensure_there_are_still_tokens(source_tokens, iterator);
-    switch(iterator->type){
+    switch(iterator->type) {
         break; case Token::Type::text: {
-            if (std::next(iterator) == source_tokens.end() || std::next(iterator)->sourcetext != "("){ 
+            if (std::next(iterator) == source_tokens.end() || std::next(iterator)->sourcetext != "(") { 
                 return parse_identifier();
             }
             FunctionCall fcall = parse_function_call();
@@ -69,11 +69,11 @@
         break; case Token::Type::boolean_literal:   return parse_boolean_literal();
         break; case Token::Type::character_literal: return parse_character_literal();
         break; case Token::Type::string_literal:    return parse_string_literal();
-        break; default: throw_expression_expected_got_unrecognized(iterator);
+        break; default:                             throw_expression_expected_got_unrecognized(iterator);
     }
 }
 
-[[nodiscard]] Expression Parser::parse_prefix_operator(){
+[[nodiscard]] Expression Parser::parse_prefix_operator() {
     assert_token_is_prefix_operator(iterator);
     const Token& operator_token = *iterator;
     std::advance(iterator, 1);
@@ -81,7 +81,7 @@
     return UnaryOperator { operator_token, operand };
 }
 
-[[nodiscard]] Expression Parser::parse_expression(){
+[[nodiscard]] Expression Parser::parse_expression() {
     Expression expression = parse_terminal_expression();
     while(!expression_ended()) {
         if (is_binary_operator()) expression = compose_binary_operator(expression);
@@ -99,19 +99,19 @@
     );
 }
 
-[[nodiscard]] bool Parser::is_binary_operator(){
+[[nodiscard]] bool Parser::is_binary_operator() {
     if (iterator == source_tokens.end()) return false;
     auto binary_operator_search_outcome =  infix_operators_priority.find(iterator->sourcetext);
     auto not_found = infix_operators_priority.end();
     return (binary_operator_search_outcome != not_found);
 }
 
-[[nodiscard]] bool Parser::is_square_bracket(){
+[[nodiscard]] bool Parser::is_square_bracket() {
     if (iterator == source_tokens.end()) return false;
     return (iterator->sourcetext == "[");
 }
 
-[[nodiscard]] bool Parser::expression_ended(){
+[[nodiscard]] bool Parser::expression_ended() {
     if (iterator == source_tokens.end()) return true;
     if (iterator->sourcetext == ")")     return true;
     if (iterator->sourcetext == "]")     return true;

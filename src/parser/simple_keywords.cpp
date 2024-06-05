@@ -7,21 +7,21 @@
 #include "language/expressions.hpp"
 #include "language/functions.hpp"
 
-[[nodiscard]] Statement Parser::parse_break_keyword(){
+[[nodiscard]] Statement Parser::parse_break_keyword() {
     const Token& break_token = *iterator;
     assert_token_matches(source_tokens, iterator++, "break");
     ensure_token_matches(source_tokens, iterator++, ";");
     return Break { break_token };
 }
 
-[[nodiscard]] Statement Parser::parse_continue_keyword(){
+[[nodiscard]] Statement Parser::parse_continue_keyword() {
     const Token& continue_token = *iterator;
     assert_token_matches(source_tokens, iterator++, "continue");
     ensure_token_matches(source_tokens, iterator++, ";");
     return Continue { continue_token };
 }
 
-[[nodiscard]] Statement Parser::parse_return_keyword(){
+[[nodiscard]] Statement Parser::parse_return_keyword() {
     const Token& return_token = *iterator;
     assert_token_matches(source_tokens, iterator++, "return");
     ensure_there_are_still_tokens(source_tokens, iterator);

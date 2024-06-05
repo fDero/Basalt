@@ -7,8 +7,8 @@ CommandLineController::CommandLineController(int argc, char** argv)
     : arg_counter(argc), arg_values(argv), arg_index(1)
 {
     mode = Mode::unspecified;
-    while (arg_index < arg_counter){
-        switch (detect_flag()){
+    while (arg_index < arg_counter) {
+        switch (detect_flag()) {
             break; case Flag::compiler:    compiler_flag();
             break; case Flag::interpreter: interpreter_flag();
             break; case Flag::output:      output_flag();
@@ -23,7 +23,7 @@ CommandLineController::CommandLineController(int argc, char** argv)
     ensure_existence_of_input_files();
 }
 
-void CommandLineController::validate_input_files(){
+void CommandLineController::validate_input_files() {
     for(const std::string& in : inputs) {
         if (file_extension(in) != FileExtension::basalt) { 
             throw_invalid_input_file_format(in);
@@ -31,7 +31,7 @@ void CommandLineController::validate_input_files(){
     }
 }
 
-void CommandLineController::validate_output_files(){
+void CommandLineController::validate_output_files() {
     for(const std::string& out : outputs) {
         if (
             file_extension(out) != FileExtension::nasm &&
@@ -42,22 +42,22 @@ void CommandLineController::validate_output_files(){
     }
 }
 
-void CommandLineController::ensure_existence_of_input_files(){
-    for (const std::string& input_file_name : inputs){
+void CommandLineController::ensure_existence_of_input_files() {
+    for (const std::string& input_file_name : inputs) {
         std::fstream fstream_file_reader(input_file_name, std::ios::in);
         ensure_source_file_is_open(fstream_file_reader, input_file_name);
         fstream_file_reader.close();
     }
 }
 
-bool CommandLineController::check_for_specific_file_extension(const std::string& filename, const std::string& extension){
+bool CommandLineController::check_for_specific_file_extension(const std::string& filename, const std::string& extension) {
     const int size = filename.size();
     const int extension_size = extension.size();
     const int prefix_size = size - extension_size;
     return (filename.substr(prefix_size, extension_size) == extension);
 }
 
-CommandLineController::Flag CommandLineController::detect_flag(){
+CommandLineController::Flag CommandLineController::detect_flag() {
     std::string text = std::string(arg_values[arg_index]);
     if (text == "-h" || text == "--help") return Flag::help;
     if (text == "-v" || text == "--version") return Flag::version;
@@ -68,7 +68,7 @@ CommandLineController::Flag CommandLineController::detect_flag(){
     return Flag::unspecified;
 }
 
-CommandLineController::FileExtension CommandLineController::file_extension(const std::string& filename){
+CommandLineController::FileExtension CommandLineController::file_extension(const std::string& filename) {
     if (check_for_specific_file_extension(filename, ".basalt")) return FileExtension::basalt;
     if (check_for_specific_file_extension(filename, ".bt"))     return FileExtension::basalt;
     if (check_for_specific_file_extension(filename, ".elf"))    return FileExtension::elf;

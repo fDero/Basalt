@@ -38,7 +38,7 @@ TEST(Tokenizing, Complex_Logical_Expression) {
     EXPECT_EQ(tokens[9].sourcetext, ";");
 }
 
-TEST(Tokenizing, Expression_With_Comments){
+TEST(Tokenizing, Expression_With_Comments) {
     std::string inline_input = "/*/**/*/(16+17* /*AA*/ 19)/2; // hello world";
     Tokenizer tokenizer = Tokenizer(std::istringstream(inline_input));
     std::vector<Token> tokens = tokenizer.tokenize();

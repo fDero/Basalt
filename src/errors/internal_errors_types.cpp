@@ -6,15 +6,15 @@ void assert_token_matches(
     const std::vector<Token>& source_tokens,
     const std::vector<Token>::iterator& iterator, 
     const std::string& text
-){
+) {
     #ifdef DEBUG_BUILD
-    if (iterator == source_tokens.end()){
+    if (iterator == source_tokens.end()) {
         throw InternalError {
             "somehow the parser was expecting  a token but there was none, "
             "the last token in the tokens vector was: " + source_tokens.back().sourcetext
         };
     }
-    if (iterator->sourcetext != text){
+    if (iterator->sourcetext != text) {
         throw InternalError {
             "somehow the parser expected the token to be: " + text + ", "
             "while the token itself is: " + iterator->sourcetext
@@ -28,9 +28,9 @@ void assert_token_is_of_given_type(
     const std::vector<Token>::iterator& iterator, 
     const std::string& expected_type_str,
     const Token::Type expected_type
-){
+) {
     #ifdef DEBUG_BUILD
-    if (iterator == source_tokens.end()){
+    if (iterator == source_tokens.end()) {
         throw InternalError {
             "somehow the parser was expecting  a token but there was none, "
             "the last token in the tokens vector was: " + source_tokens.back().sourcetext
@@ -45,51 +45,51 @@ void assert_token_is_of_given_type(
     #endif
 }
 
-void assert_token_is_string_literal(const std::vector<Token>& source_tokens, const std::vector<Token>::iterator& iterator){
+void assert_token_is_string_literal(const std::vector<Token>& source_tokens, const std::vector<Token>::iterator& iterator) {
     #ifdef DEBUG_BUILD
     assert_token_is_of_given_type(source_tokens, iterator, "string literal", Token::Type::string_literal);
     #endif
 }
 
-void assert_token_is_boolean_literal(const std::vector<Token>& source_tokens, const std::vector<Token>::iterator& iterator){
+void assert_token_is_boolean_literal(const std::vector<Token>& source_tokens, const std::vector<Token>::iterator& iterator) {
     #ifdef DEBUG_BUILD
     assert_token_is_of_given_type(source_tokens, iterator, "boolean literal", Token::Type::boolean_literal);
     #endif
 }
 
-void assert_token_is_character_literal(const std::vector<Token>& source_tokens, const std::vector<Token>::iterator& iterator){
+void assert_token_is_character_literal(const std::vector<Token>& source_tokens, const std::vector<Token>::iterator& iterator) {
     #ifdef DEBUG_BUILD
     assert_token_is_of_given_type(source_tokens, iterator, "character literal", Token::Type::character_literal);
     #endif
 }
 
-void assert_token_is_floating_literal(const std::vector<Token>& source_tokens, const std::vector<Token>::iterator& iterator){
+void assert_token_is_floating_literal(const std::vector<Token>& source_tokens, const std::vector<Token>::iterator& iterator) {
     #ifdef DEBUG_BUILD
     assert_token_is_of_given_type(source_tokens, iterator, "floating literal", Token::Type::floating_literal);
     #endif
 }
 
-void assert_token_is_integer_literal(const std::vector<Token>& source_tokens, const std::vector<Token>::iterator& iterator){
+void assert_token_is_integer_literal(const std::vector<Token>& source_tokens, const std::vector<Token>::iterator& iterator) {
     #ifdef DEBUG_BUILD
     assert_token_is_of_given_type(source_tokens, iterator, "integer literal", Token::Type::integer_literal);
     #endif
 }
 
-void assert_token_is_text(const std::vector<Token>& source_tokens, const std::vector<Token>::iterator& iterator){
+void assert_token_is_text(const std::vector<Token>& source_tokens, const std::vector<Token>::iterator& iterator) {
     #ifdef DEBUG_BUILD
     assert_token_is_of_given_type(source_tokens, iterator, "text", Token::Type::text);
     #endif
 }
 
-void assert_token_is_simple_type(const std::vector<Token>& source_tokens, const std::vector<Token>::iterator& iterator){
+void assert_token_is_simple_type(const std::vector<Token>& source_tokens, const std::vector<Token>::iterator& iterator) {
     #ifdef DEBUG_BUILD
     assert_token_is_of_given_type(source_tokens, iterator, "type", Token::Type::type);
     #endif
 }
 
-void assert_type_is_indeed_primitive_type(const std::string& type_name){
+void assert_type_is_indeed_primitive_type(const std::string& type_name) {
     #ifdef DEBUG_BUILD
-    if (primitive_types.find(type_name) == primitive_types.end()){
+    if (primitive_types.find(type_name) == primitive_types.end()) {
         throw InternalError {
             "somehow the parser was expecting a primitive type, "
             "but the type: " + type_name + " is not a primitive type"

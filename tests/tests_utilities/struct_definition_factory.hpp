@@ -11,7 +11,7 @@ struct StructDefinitionFactory {
         const std::string& struct_name, 
         const std::vector<std::string> generics, 
         const std::vector<StructDefinition::Field>& fields
-    ){
+    ) {
         StructDefinition new_struct_definition {
             Token {
                 struct_name, "test.basalt", 1, 2, 5,

@@ -42,7 +42,7 @@ struct TypeSignatureFactory {
     inline static const TypeSignature SliceOfChars = SliceType{ Token { "[]", "test.basalt", 1, 1, 4, Token::Type::type}, Char };
 
 
-    static TypeSignature make_custom_type(const std::string& type_name, const ConcreteGenerics& generics){
+    static TypeSignature make_custom_type(const std::string& type_name, const ConcreteGenerics& generics) {
         return CustomType{ 
             Token { 
                 type_name, "test.basalt", 1, 1, 
@@ -53,21 +53,21 @@ struct TypeSignatureFactory {
         };
     }
 
-    static TypeSignature make_ptr_type(const TypeSignature& pointed){
+    static TypeSignature make_ptr_type(const TypeSignature& pointed) {
         return PointerType { 
             Token { "#", "test.basalt", 1, 1, 1, Token::Type::type }, 
             pointed
         };
     }
 
-    static TypeSignature make_slice_type(const TypeSignature& stored){
+    static TypeSignature make_slice_type(const TypeSignature& stored) {
         return SliceType { 
             Token { "$", "test.basalt", 1, 1, 1, Token::Type::type }, 
             stored
         };
     }
 
-    static TypeSignature make_array_type(const TypeSignature& stored, int length){
+    static TypeSignature make_array_type(const TypeSignature& stored, int length) {
         return ArrayType { 
             Token { "[", "test.basalt", 1, 1, 1, Token::Type::type }, 
             length,
