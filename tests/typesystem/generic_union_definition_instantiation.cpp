@@ -29,9 +29,9 @@ TEST(TypeSystem, Generic_Union_Instantiation) {
     EXPECT_TRUE(is_pointer_to_int(instantiated_union_definition.types[0]));
     CustomType pair_type = instantiated_union_definition.types[1].get<CustomType>();
     EXPECT_EQ(pair_type.type_name, "Pair");
-    ASSERT_EQ(pair_type.instantiation_generics.size(), 2);
-    EXPECT_TRUE(is_int(pair_type.instantiation_generics[0]));
-    EXPECT_TRUE(is_float(pair_type.instantiation_generics[1]));
+    ASSERT_EQ(pair_type.type_parameters.size(), 2);
+    EXPECT_TRUE(is_int(pair_type.type_parameters[0]));
+    EXPECT_TRUE(is_float(pair_type.type_parameters[1]));
     EXPECT_TRUE(is_slice_of_floats(instantiated_union_definition.types[2]));
     EXPECT_TRUE(is_array_of_ints_of_size_n(instantiated_union_definition.types[3], 10));
 }

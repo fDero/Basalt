@@ -6,11 +6,11 @@
 
 CustomType::CustomType(
     const Token& typename_token, 
-    const ConcreteGenerics& generics
+    const std::vector<TypeSignature>& generics
 ) 
     : TypeSignatureBody(typename_token) 
     , type_name(typename_token.sourcetext)
-    , instantiation_generics(generics)
+    , type_parameters(generics)
 {}
 
 TemplateType::TemplateType(

@@ -122,7 +122,7 @@ void assert_no_errors_encountered_during_async_parsing_hence_error_vector_is_emp
 
 void assert_vectors_have_same_size_hence_they_can_be_zipped(
     const std::vector<std::string>& template_generics,
-    const std::vector<TypeSignature>& instantiation_generics
+    const std::vector<TypeSignature>& type_parameters
 );
 
 void assert_type_is_indeed_primitive_type(const std::string& type_name);

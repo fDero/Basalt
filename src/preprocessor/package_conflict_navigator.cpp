@@ -16,12 +16,12 @@ void PackageTypeConflictNavigator::visit_file(const Filerepresentation& file_rep
         ensure_no_type_definition_conflict_detected(insertion_outcome);
     }
     visited_files.insert(file_representation.file_metadata.filename);
-    for (const PackageName& import : file_representation.file_metadata.imports) {
+    for (const std::string& import : file_representation.file_metadata.imports) {
         visit_package(import);
     }
 }
 
-void PackageTypeConflictNavigator::visit_package(const PackageName& package_name) {
+void PackageTypeConflictNavigator::visit_package(const std::string& package_name) {
     for (const Filerepresentation& file : program_representation.files_by_package[package_name]) {
         visit_file(file);
     }

@@ -36,9 +36,9 @@ TEST(TypeSystem, CustomType_With_Two_Generics_instantiation) {
     EXPECT_TRUE(Pair.is<CustomType>());
     CustomType pair = Pair.get<CustomType>();
     EXPECT_EQ(pair.type_name, "Pair");
-    ASSERT_EQ(pair.instantiation_generics.size(), 2);
-    EXPECT_TRUE(is_int(pair.instantiation_generics[0]));
-    EXPECT_TRUE(is_list_of_strings(pair.instantiation_generics[1]));
+    ASSERT_EQ(pair.type_parameters.size(), 2);
+    EXPECT_TRUE(is_int(pair.type_parameters[0]));
+    EXPECT_TRUE(is_list_of_strings(pair.type_parameters[1]));
 }
 
 TEST(TypeSystem, CustomType_With_One_Conrete_Generic_And_One_Template_Generic_instantiation) {
@@ -47,9 +47,9 @@ TEST(TypeSystem, CustomType_With_One_Conrete_Generic_And_One_Template_Generic_in
     EXPECT_TRUE(Pair.is<CustomType>());
     CustomType pair = Pair.get<CustomType>();
     EXPECT_EQ(pair.type_name, "Pair");
-    ASSERT_EQ(pair.instantiation_generics.size(), 2);
-    EXPECT_TRUE(is_int(pair.instantiation_generics[0]));
-    EXPECT_TRUE(is_char(pair.instantiation_generics[1]));
+    ASSERT_EQ(pair.type_parameters.size(), 2);
+    EXPECT_TRUE(is_int(pair.type_parameters[0]));
+    EXPECT_TRUE(is_char(pair.type_parameters[1]));
 }
 
 TEST(TypeSystem, Pointer_To_Pointer_To_Array_Of_Generic_Type_Instanc_Test) {

@@ -36,11 +36,11 @@ class PackageTypeConflictNavigator {
     public:
         PackageTypeConflictNavigator(ProgramRepresentation& program_representation);
         void visit_file(const Filerepresentation& file_representation);
-        void visit_package(const PackageName& package_name);
+        void visit_package(const std::string& package_name);
         
     private:
         ProgramRepresentation& program_representation;
-        std::unordered_set<FileName> visited_files;
+        std::unordered_set<std::string> visited_files;
         std::unordered_set<std::string> type_definition_conflict_detection_patterns;
 
         [[nodiscard]] std::string get_type_definition_conflict_detection_pattern(

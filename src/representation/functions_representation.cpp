@@ -6,7 +6,7 @@
 
 void ProgramRepresentation::store_function_definition(
     const FunctionDefinition& func_definition, 
-    const PackageName& package_name
+    const std::string& package_name
 ) {
     FunctionDefinitionRef inserted_func_ref = std::make_shared<FunctionDefinition>(func_definition);
     store_function_definition_ref(inserted_func_ref, package_name);
@@ -14,7 +14,7 @@ void ProgramRepresentation::store_function_definition(
 
 void ProgramRepresentation::store_function_definition_ref(
     const FunctionDefinitionRef& func_definition_ref, 
-    const PackageName& package_name
+    const std::string& package_name
 ) {
     const std::string overload_set_id = get_function_definition_overload_set_id(package_name, *func_definition_ref);
     const FunctionSpecificityDescriptor function_specificity(*this, *func_definition_ref);
@@ -38,8 +38,8 @@ void ProgramRepresentation::store_function_definition_ref(
     if (func_def.has_value()) {
         return *func_def.value();
     }
-    for (const FileName& imported_file : imports_by_file[function_call.filename]) {
-        const PackageName& package_name = package_name_by_file_name[imported_file];
+    for (const std::string& imported_file : imports_by_file[function_call.filename]) {
+        const std::string& package_name = package_name_by_file_name[imported_file];
         func_def = search_compatible_function_definitions_within_given_package(function_call, package_name);
         if (func_def.has_value()) {
             return *func_def.value();
@@ -51,7 +51,7 @@ void ProgramRepresentation::store_function_definition_ref(
 [[nodiscard]] std::optional<ProgramRepresentation::FunctionDefinitionRef> 
 ProgramRepresentation::search_compatible_function_definitions_within_given_package(
     const PrecompiledFunctionCall& function_call, 
-    const PackageName& package_name
+    const std::string& package_name
 ) {
     const std::string fast_retrieve_key = get_function_fast_retrieve_key(package_name, function_call);
     if (function_definitions.find(fast_retrieve_key) != function_definitions.end()) {
@@ -154,7 +154,7 @@ ProgramRepresentation::check_function_definition_compatibility(
 }
 
 [[nodiscard]] std::string ProgramRepresentation::get_function_fast_retrieve_key(
-    const PackageName& package_name,
+    const std::string& package_name,
     const FunctionDefinitionRef& function_definition_ref
 ) {
     const std::string& func_name = function_definition_ref->function_name;
@@ -170,7 +170,7 @@ ProgramRepresentation::check_function_definition_compatibility(
 }
 
 [[nodiscard]] std::string ProgramRepresentation::get_function_fast_retrieve_key(
-    const PackageName& package_name,
+    const std::string& package_name,
     const PrecompiledFunctionCall& precompiled_function_call
 ) {
     const std::string& func_name = precompiled_function_call.original_function_call.function_name;
@@ -186,7 +186,7 @@ ProgramRepresentation::check_function_definition_compatibility(
 }
 
 [[nodiscard]] std::string ProgramRepresentation::get_function_definition_overload_set_id(
-    const PackageName& package_name, 
+    const std::string& package_name, 
     const FunctionDefinition& function_definition
 ) {
     const std::string& function_name = function_definition.function_name;
@@ -198,7 +198,7 @@ ProgramRepresentation::check_function_definition_compatibility(
 }
 
 [[nodiscard]] std::string ProgramRepresentation::get_generics_unaware_function_definition_overload_set_id(
-    const PackageName& package_name, 
+    const std::string& package_name, 
     const FunctionDefinition& function_definition
 ) {
     const std::string& function_name = function_definition.function_name;
@@ -208,12 +208,12 @@ ProgramRepresentation::check_function_definition_compatibility(
 }
 
 [[nodiscard]] std::string ProgramRepresentation::get_function_call_overload_set_id(
-    const PackageName& package_name, 
+    const std::string& package_name, 
     const PrecompiledFunctionCall& precompiled_function_call
 ) {
     const std::string& function_name = precompiled_function_call.original_function_call.function_name;
     const std::vector<TypeSignature>& arguments_types = precompiled_function_call.arguments_types;
-    const ConcreteGenerics& genenerics = precompiled_function_call.original_function_call.instantiated_generics;
+    const std::vector<TypeSignature>& genenerics = precompiled_function_call.original_function_call.instantiated_generics;
     const std::string generics_string = "<" + std::to_string(genenerics.size()) + ">";
     const std::string args_string = "(" + std::to_string(arguments_types.size()) + ")";
     std::string overload_set_id = package_name + namespace_concatenation + function_name + generics_string + args_string;

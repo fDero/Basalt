@@ -10,8 +10,8 @@ inline bool is_primitive_type(const TypeSignature& ts, const std::string& type_n
 inline bool is_list_of_strings(const TypeSignature& ts) {
     return 
         ts.is<CustomType>() && ts.get<CustomType>().type_name == "List" && 
-        ts.get<CustomType>().instantiation_generics[0].is<PrimitiveType>() &&
-        ts.get<CustomType>().instantiation_generics[0].get<PrimitiveType>().type_name == "String";
+        ts.get<CustomType>().type_parameters[0].is<PrimitiveType>() &&
+        ts.get<CustomType>().type_parameters[0].get<PrimitiveType>().type_name == "String";
 }
 
 inline bool is_pointer_to_primitive_type(const TypeSignature& ts, const std::string& type_name) {

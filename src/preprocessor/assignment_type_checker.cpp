@@ -135,7 +135,7 @@ bool AssignmentTypeChecker::validate_complex_assignment(const TypeSignature& sou
 }
 
 bool AssignmentTypeChecker::validate_assignment_between_custom_types(const CustomType& source, const CustomType& dest) {
-    if (source.type_name != dest.type_name || source.instantiation_generics.size() != dest.instantiation_generics.size()) {
+    if (source.type_name != dest.type_name || source.type_parameters.size() != dest.type_parameters.size()) {
         return false;
     }
     if (source.package_prefix != dest.package_prefix) {
@@ -147,10 +147,10 @@ bool AssignmentTypeChecker::validate_assignment_between_custom_types(const Custo
             return false;
         }
     }
-    for (int i = 0; i < source.instantiation_generics.size(); i++) {
+    for (int i = 0; i < source.type_parameters.size(); i++) {
         if (!validate_assignment_between_custom_types_generic_type_parameters(
-                source.instantiation_generics[i], 
-                dest.instantiation_generics[i]
+                source.type_parameters[i], 
+                dest.type_parameters[i]
             )
         ) {
             return false;

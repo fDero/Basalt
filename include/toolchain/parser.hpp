@@ -52,8 +52,8 @@ class Parser {
         [[nodiscard]] TypeSignature parse_primitive_type();
         [[nodiscard]] TypeSignature parse_template_type();
       
-        [[nodiscard]] TemplateGenerics parse_template_generics();
-        [[nodiscard]] ConcreteGenerics parse_concrete_generics();
+        [[nodiscard]] std::vector<std::string> parse_template_generics();
+        [[nodiscard]] std::vector<TypeSignature> parse_concrete_generics();
         
         [[nodiscard]] FunctionDefinition parse_function_definition();
         [[nodiscard]] FunctionCall parse_function_call();
@@ -75,7 +75,7 @@ class Parser {
         void parse_import_section(Filerepresentation& output);
 
     private:
-        TemplateGenerics template_generics;
+        std::vector<std::string> template_generics;
         std::vector<Token> source_tokens;
         std::vector<Token>::iterator iterator;
 

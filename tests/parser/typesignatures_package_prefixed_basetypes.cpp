@@ -19,9 +19,9 @@ TEST(Parsing, Package_Prefixed_Concrete_Generic_CustomType) {
     CustomType basetype = typesignature.get<CustomType>();
     EXPECT_EQ(basetype.package_prefix, "collections");
     EXPECT_EQ(basetype.type_name, "List");
-    EXPECT_EQ(basetype.instantiation_generics.size(), 1);
-    ASSERT_TRUE(basetype.instantiation_generics[0].is<PrimitiveType>());
-    PrimitiveType generic = basetype.instantiation_generics[0].get<PrimitiveType>();
+    EXPECT_EQ(basetype.type_parameters.size(), 1);
+    ASSERT_TRUE(basetype.type_parameters[0].is<PrimitiveType>());
+    PrimitiveType generic = basetype.type_parameters[0].get<PrimitiveType>();
     EXPECT_EQ(generic.type_name, "Int");
 }
 
@@ -37,5 +37,5 @@ TEST(Parsing, Package_Prefixed_Non_Generic_CustomType) {
     CustomType basetype = typesignature.get<CustomType>();
     EXPECT_EQ(basetype.package_prefix, "graphics");
     EXPECT_EQ(basetype.type_name, "Texture");
-    EXPECT_TRUE(basetype.instantiation_generics.empty());
+    EXPECT_TRUE(basetype.type_parameters.empty());
 }

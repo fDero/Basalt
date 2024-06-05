@@ -2,7 +2,7 @@
 #pragma once
 #include "language/definitions.hpp"
 #include "language/functions.hpp"
-#include "misc/aliases.hpp"
+#include "misc/forward_declarations.hpp"
 #include <unordered_map>
 #include <map>
 #include <functional>
@@ -11,9 +11,9 @@
 struct Filerepresentation {
 
     struct Metadata {
-        FileName filename;
-        PackageName packagename;
-        std::vector<PackageName> imports;
+        std::string filename;
+        std::string packagename;
+        std::vector<std::string> imports;
     };
 
     Metadata file_metadata;
@@ -97,29 +97,29 @@ struct ProgramRepresentation {
 
         void store_definitions_from_file(const Filerepresentation& file_representation);
     
-        void store_type_definition(const TypeDefinition& type_definition, const PackageName& package_name);
+        void store_type_definition(const TypeDefinition& type_definition, const std::string& package_name);
         [[nodiscard]] TypeDefinition retrieve_type_definition(const CustomType& type_signature);
 
-        void store_function_definition(const FunctionDefinition& func_definition, const PackageName& package_name);
+        void store_function_definition(const FunctionDefinition& func_definition, const std::string& package_name);
         [[nodiscard]] FunctionDefinition retrieve_func_definition(const PrecompiledFunctionCall& function_call);
 
         TypeSignature unalias_type(const TypeSignature& type_signature);
 
     protected:
         
-        std::unordered_map<FileName, PackageName> package_name_by_file_name;
-        std::unordered_map<PackageName, std::vector<Filerepresentation>> files_by_package;
-        std::unordered_map<FileName, std::vector<PackageName>> imports_by_file;
+        std::unordered_map<std::string, std::string> package_name_by_file_name;
+        std::unordered_map<std::string, std::vector<Filerepresentation>> files_by_package;
+        std::unordered_map<std::string, std::vector<std::string>> imports_by_file;
 
         std::unordered_map<std::string, TypeDefinition> type_definitions;
          
         [[nodiscard]] std::string get_fully_quilified_customtype_name(const CustomType& type_signature);
         [[nodiscard]] std::string get_fully_quilified_typesignature_name(const TypeSignature& type_signature);
-        [[nodiscard]] std::optional<std::string> search_fully_qualified_typesignature_name(const CustomType&, const PackageName&);
-        [[nodiscard]] std::string get_type_definition_match_pattern(const PackageName&, const TypeDefinition&);
-        [[nodiscard]] std::string get_type_signature_match_pattern(const PackageName&, const CustomType&);
-        [[nodiscard]] std::string infer_possible_fully_qualified_typesignature_name(const PackageName&, const TypeSignature&);
-        [[nodiscard]] std::string infer_possible_fully_qualified_typesignature_name_for_custom_type(const PackageName&, const CustomType&);
+        [[nodiscard]] std::optional<std::string> search_fully_qualified_typesignature_name(const CustomType&, const std::string&);
+        [[nodiscard]] std::string get_type_definition_match_pattern(const std::string&, const TypeDefinition&);
+        [[nodiscard]] std::string get_type_signature_match_pattern(const std::string&, const CustomType&);
+        [[nodiscard]] std::string infer_possible_fully_qualified_typesignature_name(const std::string&, const TypeSignature&);
+        [[nodiscard]] std::string infer_possible_fully_qualified_typesignature_name_for_custom_type(const std::string&, const CustomType&);
 
         using FunctionDefinitionRef = std::shared_ptr<FunctionDefinition>;
         using FunctionOverloadSet = std::vector<FunctionDefinitionRef>;
@@ -135,7 +135,7 @@ struct ProgramRepresentation {
 
         [[nodiscard]] std::optional<FunctionDefinitionRef> search_compatible_function_definitions_within_given_package(
             const PrecompiledFunctionCall& precompiled_function_call, 
-            const PackageName& package_name
+            const std::string& package_name
         );
 
         [[nodiscard]] std::optional<FunctionDefinitionRef> check_function_definition_compatibility(
@@ -143,23 +143,23 @@ struct ProgramRepresentation {
             const PrecompiledFunctionCall& precompiled_function_call
         );
 
-        [[nodiscard]] std::string get_function_definition_overload_set_id(const PackageName&, const FunctionDefinition&);
-        [[nodiscard]] std::string get_generics_unaware_function_definition_overload_set_id(const PackageName&, const FunctionDefinition&);
-        [[nodiscard]] std::string get_function_call_overload_set_id(const PackageName&, const PrecompiledFunctionCall&);
+        [[nodiscard]] std::string get_function_definition_overload_set_id(const std::string&, const FunctionDefinition&);
+        [[nodiscard]] std::string get_generics_unaware_function_definition_overload_set_id(const std::string&, const FunctionDefinition&);
+        [[nodiscard]] std::string get_function_call_overload_set_id(const std::string&, const PrecompiledFunctionCall&);
 
         [[nodiscard]] std::string get_function_fast_retrieve_key(
-            const PackageName& package_name,
+            const std::string& package_name,
             const FunctionDefinitionRef& function_definition_ref
         );
 
         [[nodiscard]] std::string get_function_fast_retrieve_key(
-            const PackageName& package_name,
+            const std::string& package_name,
             const PrecompiledFunctionCall& precompiled_function_call
         );
 
         void store_function_definition_ref(
             const FunctionDefinitionRef& func_definition_ref, 
-            const PackageName& package_name
+            const std::string& package_name
         );
 
 

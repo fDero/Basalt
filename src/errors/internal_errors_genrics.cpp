@@ -6,10 +6,10 @@
 
 void assert_vectors_have_same_size_hence_they_can_be_zipped(
     const std::vector<std::string>& template_generics,
-    const std::vector<TypeSignature>& instantiation_generics
+    const std::vector<TypeSignature>& type_parameters
 ) {
     #ifdef DEBUG_BUILD
-    if (template_generics.size() != instantiation_generics.size()) {
+    if (template_generics.size() != type_parameters.size()) {
         throw InternalError{ "template generics and instantiation generics have different sizes" };
     }
     #endif
@@ -20,7 +20,7 @@ void assert_instantiation_struct_is_compatible_with_template_struct(
     const StructDefinition& template_struct
 ) {
     #ifdef DEBUG_BUILD
-    if (concrete_type.instantiation_generics.size() != template_struct.template_generics_names.size()) {
+    if (concrete_type.type_parameters.size() != template_struct.template_generics_names.size()) {
         throw InternalError{ "concrete type and template struct have different number of generics" };
     }
     //if (concrete_type.to_match_string() != template_struct.generate_match_pattern()) {
@@ -34,7 +34,7 @@ void assert_instantiation_union_is_compatible_with_template_union(
     const UnionDefinition& template_union
 ) {
     #ifdef DEBUG_BUILD
-    if (concrete_type.instantiation_generics.size() != template_union.template_generics_names.size()) {
+    if (concrete_type.type_parameters.size() != template_union.template_generics_names.size()) {
         throw InternalError{ "concrete type and template union have different number of generics" };
     }
     //if (concrete_type.to_match_string() != template_union.generate_match_pattern()) {
@@ -48,7 +48,7 @@ void assert_instantiation_union_is_compatible_with_template_alias(
     const TypeAlias& template_alias
 ) {
     #ifdef DEBUG_BUILD
-    if (concrete_type.instantiation_generics.size() != template_alias.template_generics_names.size()) {
+    if (concrete_type.type_parameters.size() != template_alias.template_generics_names.size()) {
         throw InternalError{ "concrete type and template union have different number of generics" };
     }
     //if (concrete_type.to_match_string() != template_alias.generate_match_pattern()) {

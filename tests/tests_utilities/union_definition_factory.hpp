@@ -9,7 +9,7 @@ struct UnionDefinitionFactory {
 
     static UnionDefinition make_union_definition(
         const std::string& union_name, 
-        const TemplateGenerics generics, 
+        const std::vector<std::string> generics, 
         const std::vector<TypeSignature>& types
     ) {
         UnionDefinition new_union_definition {

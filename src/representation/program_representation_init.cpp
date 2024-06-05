@@ -13,6 +13,6 @@ void ProgramRepresentation::store_definitions_from_file(const Filerepresentation
         store_function_definition(func_def, package_name);
     }
     const std::string& filename = file_representation.file_metadata.filename;
-    const std::vector<PackageName>& imports = file_representation.file_metadata.imports;
+    const std::vector<std::string>& imports = file_representation.file_metadata.imports;
     imports_by_file[filename] = imports;
 }

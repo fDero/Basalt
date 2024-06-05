@@ -6,7 +6,7 @@
 
 void ProgramRepresentation::store_type_definition(
     const TypeDefinition& type_def, 
-    const PackageName& package_name
+    const std::string& package_name
 ) {
     const std::string match_pattern = get_type_definition_match_pattern(package_name, type_def);
     const auto& insertion_outcome = type_definitions.insert({match_pattern, type_def});
@@ -40,12 +40,12 @@ std::string ProgramRepresentation::get_fully_quilified_customtype_name(const Cus
         ensure_type_was_successfully_retrieved(retrieved);
         return retrieved.value();
     }
-    const PackageName& target_package_name = package_name_by_file_name.at(type_signature.filename);
+    const std::string& target_package_name = package_name_by_file_name.at(type_signature.filename);
     std::optional<std::string> retrieved = search_fully_qualified_typesignature_name(type_signature, target_package_name);
     if (retrieved.has_value()) {
         return retrieved.value();
     }
-    for (const PackageName& package : imports_by_file.at(type_signature.filename)) {
+    for (const std::string& package : imports_by_file.at(type_signature.filename)) {
         std::optional<std::string> retrieved = search_fully_qualified_typesignature_name(type_signature, package);
         if (retrieved.has_value()) {
             return retrieved.value();
@@ -84,7 +84,7 @@ std::string ProgramRepresentation::get_fully_quilified_typesignature_name(const 
 
 [[nodiscard]] std::optional<std::string> ProgramRepresentation::search_fully_qualified_typesignature_name(
     const CustomType& type_signature, 
-    const PackageName& package_name
+    const std::string& package_name
 ) {
     const std::string instantiated_concrete_type_key = infer_possible_fully_qualified_typesignature_name(package_name, type_signature);
     auto retrieved = type_definitions.find(instantiated_concrete_type_key);
@@ -106,7 +106,7 @@ std::string ProgramRepresentation::get_fully_quilified_typesignature_name(const 
 }
 
 [[nodiscard]] std::string ProgramRepresentation::get_type_definition_match_pattern(
-    const PackageName& packageName, 
+    const std::string& packageName, 
     const TypeDefinition& type_definition
 ) {
     std::string pattern_tag_name = packageName + namespace_concatenation + type_definition.get_simple_name();
@@ -116,17 +116,17 @@ std::string ProgramRepresentation::get_fully_quilified_typesignature_name(const 
 }
 
 [[nodiscard]] std::string ProgramRepresentation::get_type_signature_match_pattern(
-    const PackageName& packageName, 
+    const std::string& packageName, 
     const CustomType& type_signature
 ) {
     std::string pattern_tag_name = packageName + namespace_concatenation + type_signature.type_name;
-    size_t number_of_generics = type_signature.instantiation_generics.size();
+    size_t number_of_generics = type_signature.type_parameters.size();
     std::string generics_section = (number_of_generics > 0)? "<" + std::to_string(number_of_generics) + ">" : "";
     return pattern_tag_name + generics_section;
 }
 
 [[nodiscard]] std::string ProgramRepresentation::infer_possible_fully_qualified_typesignature_name(
-    const PackageName& packageName, 
+    const std::string& packageName, 
     const TypeSignature& type_signature
 ) {
     if (type_signature.is<SliceType>()) {
@@ -157,15 +157,15 @@ std::string ProgramRepresentation::get_fully_quilified_typesignature_name(const 
 }
 
 [[nodiscard]] std::string ProgramRepresentation::infer_possible_fully_qualified_typesignature_name_for_custom_type(
-    const PackageName& packageName, 
+    const std::string& packageName, 
     const CustomType& custom_type
 ) {
     std::string non_generic_aware_name = packageName + namespace_concatenation + custom_type.type_name;
-    if (custom_type.instantiation_generics.empty()) {
+    if (custom_type.type_parameters.empty()) {
         return non_generic_aware_name;
     }
     std::string generics_section = "<";
-    for (const TypeSignature& generic : custom_type.instantiation_generics) {
+    for (const TypeSignature& generic : custom_type.type_parameters) {
         if (generic.is<CustomType>()) {
             generics_section += get_fully_quilified_customtype_name(generic.get<CustomType>());
         }

@@ -206,7 +206,7 @@ void FunctionSpecificityDescriptor::compute_amount_of_c_strings_in_argument_type
     }
     if (type_signature.is<CustomType>()) {
         const CustomType& custom_type = type_signature.get<CustomType>();
-        for (const TypeSignature& generic : custom_type.instantiation_generics) {
+        for (const TypeSignature& generic : custom_type.type_parameters) {
             current_count += count_recursivly_on_typesignature(generic, count_function);
         }
         return current_count;
