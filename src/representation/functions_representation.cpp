@@ -66,9 +66,16 @@ ProgramRepresentation::search_compatible_function_definitions_within_given_packa
     std::list<FunctionDefinitionRef> compatible_functions_definitions = 
         search_compatible_function_definitions_within_given_overload_set(function_call, overload_set_id);
     ensure_no_ambiguous_function_definition_found(compatible_functions_definitions, function_call);
-    return (!compatible_functions_definitions.empty())
-        ? std::optional<FunctionDefinitionRef>(compatible_functions_definitions.back())
-        : std::nullopt;
+    if (compatible_functions_definitions.empty()){
+        return std::nullopt;
+    }
+    const std::string& function_call_source_package_name = (function_call.package_prefix.empty())
+        ? package_name_by_file_name[function_call.filename]
+        : function_call.package_prefix;
+    const std::string newly_creared_fast_retrieve_key = 
+        get_function_fast_retrieve_key(function_call_source_package_name, compatible_functions_definitions.front());
+    function_definitions[newly_creared_fast_retrieve_key] = compatible_functions_definitions.front();
+    return compatible_functions_definitions.front();
 } 
 
 [[nodiscard]] std::list<ProgramRepresentation::FunctionDefinitionRef> 
