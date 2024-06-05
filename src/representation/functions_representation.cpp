@@ -4,8 +4,6 @@
 #include "toolchain/preprocessor.hpp"
 #include "language/generics.hpp"
 
-//------------------------------------- FUNCTION STORE
-
 void ProgramRepresentation::store_function_definition(
     const FunctionDefinition& func_definition, 
     const PackageName& package_name
@@ -31,9 +29,6 @@ void ProgramRepresentation::store_function_definition_ref(
         function_definitions_overload_sets[generics_unaware_overload_set_id].push_back(func_definition_ref);
     }
 }
-
-
-// ------------------------------------- FUNCTION RETRIEVE
 
 [[nodiscard]] FunctionDefinition ProgramRepresentation::retrieve_func_definition(const PrecompiledFunctionCall& function_call){
     const std::string& target_package = (function_call.package_prefix.empty())
@@ -158,10 +153,6 @@ ProgramRepresentation::check_function_definition_compatibility(
     return instantiated_func;
 }
 
-
-
-//------------------------------------- FUNCTION FAST RETRIEVE KEY
-
 [[nodiscard]] std::string ProgramRepresentation::get_function_fast_retrieve_key(
     const PackageName& package_name,
     const FunctionDefinitionRef& function_definition_ref
@@ -193,12 +184,6 @@ ProgramRepresentation::check_function_definition_compatibility(
     }
     return function_fast_retrieve_key;
 }
-
-
-
-
-
-//------------------------------------- OVERLOAD SET ID
 
 [[nodiscard]] std::string ProgramRepresentation::get_function_definition_overload_set_id(
     const PackageName& package_name, 

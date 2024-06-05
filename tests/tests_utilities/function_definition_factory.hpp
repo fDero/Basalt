@@ -27,7 +27,7 @@ struct FunctionDefinitionFactory {
         const std::string& function_name, 
         const std::vector<std::string> generics, 
         const std::vector<FunctionDefinition::Argument>& args,
-        const TypeSignature& return_type
+        const std::optional<TypeSignature>& return_type
     ){
         FunctionDefinition new_func_definition {
             Token {

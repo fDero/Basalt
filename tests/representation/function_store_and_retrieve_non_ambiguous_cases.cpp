@@ -53,7 +53,6 @@ TEST(Representation, Simple_Function_Store_And_Retrieve) {
     });
 }
 
-
 TEST(Representation, Generic_Function_Store_And_Retrieve_No_Type_Inference) {
     
     Filerepresentation file {
@@ -75,7 +74,7 @@ TEST(Representation, Generic_Function_Store_And_Retrieve_No_Type_Inference) {
                 "add", 
                 { "T" },
                 { { "x", TypeSignatureFactory::T }, { "y", TypeSignatureFactory::T } },
-                TypeSignatureFactory::Int
+                TypeSignatureFactory::T
             )
         }
     };
@@ -175,7 +174,7 @@ TEST(Representation, Generic_Function_Store_And_Retrieve_With_Bad_Concrete_Gener
                 "add", 
                 { "T" },
                 { { "x", TypeSignatureFactory::T }, { "y", TypeSignatureFactory::T } },
-                TypeSignatureFactory::Int
+                TypeSignatureFactory::T
             )
         }
     };
@@ -227,7 +226,7 @@ TEST(Representation, Generic_Function_Store_And_Retrieve_With_Bad_Arguments_And_
                 "add", 
                 { "T" },
                 { { "x", TypeSignatureFactory::T }, { "y", TypeSignatureFactory::T } },
-                TypeSignatureFactory::Int
+                TypeSignatureFactory::T
             )
         }
     };
