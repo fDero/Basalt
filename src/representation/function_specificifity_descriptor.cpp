@@ -7,19 +7,16 @@
 FunctionSpecificityDescriptor::FunctionSpecificityDescriptor(
     ProgramRepresentation& program_representation,
     const FunctionDefinition& func_definition
-) 
-    : program_representation(program_representation)
-    , func_definition(func_definition)
-{
-    compute_number_of_generics();
-    compute_number_of_generic_parameters_usage_in_signature();
-    compute_argument_types_complexity_indicator();
-    compute_amount_of_unions_in_argument_types();
-    compute_amount_of_cases_covered_by_argument_types_unions();
-    compute_amount_of_slices_in_argument_types();
-    compute_amount_of_arrays_in_argument_types();
-    compute_amount_of_strings_in_argument_types();
-    compute_amount_of_c_strings_in_argument_types();
+){
+    compute_number_of_generics(program_representation, func_definition);
+    compute_number_of_generic_parameters_usage_in_signature(program_representation, func_definition);
+    compute_argument_types_complexity_indicator(program_representation, func_definition);
+    compute_amount_of_unions_in_argument_types(program_representation, func_definition);
+    compute_amount_of_cases_covered_by_argument_types_unions(program_representation, func_definition);
+    compute_amount_of_slices_in_argument_types(program_representation, func_definition);
+    compute_amount_of_arrays_in_argument_types(program_representation, func_definition);
+    compute_amount_of_strings_in_argument_types(program_representation, func_definition);
+    compute_amount_of_c_strings_in_argument_types(program_representation, func_definition);
 }
 
 [[nodiscard]] FunctionSpecificityDescriptor::ComparisonOutcome 
@@ -47,11 +44,24 @@ FunctionSpecificityDescriptor::compare(const FunctionSpecificityDescriptor& othe
     return ComparisonOutcome::EQUALLY_SPECIFIC;
 }
 
-void FunctionSpecificityDescriptor::compute_number_of_generics(){
+[[nodiscard]] FunctionSpecificityDescriptor::ComparisonOutcome 
+FunctionSpecificityDescriptor::compare(const std::optional<FunctionSpecificityDescriptor>& other) const {
+    return (other.has_value())
+        ? this->compare(other.value())
+        : ComparisonOutcome::MORE_SPECIFIC;
+}
+
+void FunctionSpecificityDescriptor::compute_number_of_generics(
+    ProgramRepresentation& program_representation,
+    const FunctionDefinition& func_definition
+) {
     number_of_generics = func_definition.template_generics_names.size();
 }
 
-void FunctionSpecificityDescriptor::compute_number_of_generic_parameters_usage_in_signature(){
+void FunctionSpecificityDescriptor::compute_number_of_generic_parameters_usage_in_signature(
+    ProgramRepresentation& program_representation,
+    const FunctionDefinition& func_definition
+) {
     std::function<size_t(const TypeSignature&)> count_function = [](const TypeSignature& type_signature){
         return (size_t) type_signature.is<TemplateType>();
     };
@@ -61,7 +71,10 @@ void FunctionSpecificityDescriptor::compute_number_of_generic_parameters_usage_i
     }
 }
 
-void FunctionSpecificityDescriptor::compute_argument_types_complexity_indicator(){
+void FunctionSpecificityDescriptor::compute_argument_types_complexity_indicator(
+    ProgramRepresentation& program_representation,
+    const FunctionDefinition& func_definition
+) {
     std::function<size_t(const TypeSignature&)> count_function = [](const TypeSignature& type_signature){
         return (size_t) 1;
     };
@@ -71,12 +84,15 @@ void FunctionSpecificityDescriptor::compute_argument_types_complexity_indicator(
     }
 }
 
-void FunctionSpecificityDescriptor::compute_amount_of_unions_in_argument_types(){
-    std::function<size_t(const TypeSignature&)> count_function = [this](const TypeSignature& type_signature){
+void FunctionSpecificityDescriptor::compute_amount_of_unions_in_argument_types(
+    ProgramRepresentation& program_representation,
+    const FunctionDefinition& func_definition
+) {
+    std::function<size_t(const TypeSignature&)> count_function = [&program_representation](const TypeSignature& type_signature){
         if (!type_signature.is<CustomType>()) {
             return (size_t) 0;
         }
-        TypeDefinition def = this->program_representation.retrieve_type_definition(type_signature.get<CustomType>());
+        TypeDefinition def = program_representation.retrieve_type_definition(type_signature.get<CustomType>());
         return (size_t) def.is<UnionDefinition>();
     };
     for (const FunctionDefinition::Argument& arg : func_definition.arguments){
@@ -85,16 +101,19 @@ void FunctionSpecificityDescriptor::compute_amount_of_unions_in_argument_types()
     }
 }
 
-void FunctionSpecificityDescriptor::compute_amount_of_cases_covered_by_argument_types_unions(){
-    std::function<size_t(const TypeSignature&)> count_function = [this, &count_function](const TypeSignature& type_signature){
+void FunctionSpecificityDescriptor::compute_amount_of_cases_covered_by_argument_types_unions(
+    ProgramRepresentation& program_representation,
+    const FunctionDefinition& func_definition
+) {
+    std::function<size_t(const TypeSignature&)> count_function = [this, &program_representation, &count_function](const TypeSignature& type_signature){
         if (!type_signature.is<CustomType>()) {
             return (size_t) 0;
         }
-        TypeDefinition def = this->program_representation.retrieve_type_definition(type_signature.get<CustomType>());
+        TypeDefinition def = program_representation.retrieve_type_definition(type_signature.get<CustomType>());
         size_t count = 1;
         if (def.is<UnionDefinition>()){
             for (const TypeSignature& alternative : def.get<UnionDefinition>().types){
-                count += count_recursivly_on_typesignature(alternative, count_function);
+                count += this->count_recursivly_on_typesignature(alternative, count_function);
             }
         }
         return count;
@@ -105,7 +124,10 @@ void FunctionSpecificityDescriptor::compute_amount_of_cases_covered_by_argument_
     }
 }
 
-void FunctionSpecificityDescriptor::compute_amount_of_slices_in_argument_types(){
+void FunctionSpecificityDescriptor::compute_amount_of_slices_in_argument_types(
+    ProgramRepresentation& program_representation,
+    const FunctionDefinition& func_definition
+) {
     std::function<size_t(const TypeSignature&)> count_function = [](const TypeSignature& type_signature){
         return (size_t) type_signature.is<SliceType>();
     };
@@ -115,7 +137,10 @@ void FunctionSpecificityDescriptor::compute_amount_of_slices_in_argument_types()
     }
 }
 
-void FunctionSpecificityDescriptor::compute_amount_of_arrays_in_argument_types(){
+void FunctionSpecificityDescriptor::compute_amount_of_arrays_in_argument_types(
+    ProgramRepresentation& program_representation,
+    const FunctionDefinition& func_definition
+) {
     std::function<size_t(const TypeSignature&)> count_function = [](const TypeSignature& type_signature){
         return (size_t) type_signature.is<ArrayType>();
     };
@@ -125,7 +150,10 @@ void FunctionSpecificityDescriptor::compute_amount_of_arrays_in_argument_types()
     }
 }
 
-void FunctionSpecificityDescriptor::compute_amount_of_strings_in_argument_types(){
+void FunctionSpecificityDescriptor::compute_amount_of_strings_in_argument_types(
+    ProgramRepresentation& program_representation,
+    const FunctionDefinition& func_definition
+) {
     std::function<size_t(const TypeSignature&)> count_function = [](const TypeSignature& type_signature){
         return (size_t) (type_signature.is<PrimitiveType>() && type_signature.get<PrimitiveType>().type_name == "String");
     };
@@ -135,7 +163,10 @@ void FunctionSpecificityDescriptor::compute_amount_of_strings_in_argument_types(
     }
 }
 
-void FunctionSpecificityDescriptor::compute_amount_of_c_strings_in_argument_types(){
+void FunctionSpecificityDescriptor::compute_amount_of_c_strings_in_argument_types(
+    ProgramRepresentation& program_representation,
+    const FunctionDefinition& func_definition
+) {
     std::function<size_t(const TypeSignature&)> count_function = [](const TypeSignature& type_signature){
         return (size_t) (type_signature.is<PrimitiveType>() && type_signature.get<PrimitiveType>().type_name == "RawString");
     };
@@ -152,7 +183,7 @@ void FunctionSpecificityDescriptor::compute_amount_of_c_strings_in_argument_type
     std::function<size_t(const TypeSignature&)> count_function
 ){
     size_t current_count = count_function(type_signature);
-    if (type_signature.is<PrimitiveType>()){
+    if (type_signature.is<PrimitiveType>() || type_signature.is<TemplateType>()){
         return current_count;
     }
     if (type_signature.is<ArrayType>()){

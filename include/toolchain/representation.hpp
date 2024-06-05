@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <map>
 #include <functional>
+#include <list>
 
 struct Filerepresentation {
 
@@ -60,7 +61,9 @@ class FunctionSpecificityDescriptor {
         );
 
         [[nodiscard]] ComparisonOutcome compare(const FunctionSpecificityDescriptor& other) const;
+        [[nodiscard]] ComparisonOutcome compare(const std::optional<FunctionSpecificityDescriptor>& other) const;
         
+
     private:
         size_t number_of_generics = 0;
         size_t number_of_generic_parameters_usage_in_signature = 0;
@@ -72,23 +75,20 @@ class FunctionSpecificityDescriptor {
         size_t amount_of_strings_in_argument_types = 0;
         size_t amount_of_c_strings_in_argument_types = 0;
         
-        void compute_number_of_generics();
-        void compute_number_of_generic_parameters_usage_in_signature();
-        void compute_argument_types_complexity_indicator();
-        void compute_amount_of_unions_in_argument_types();
-        void compute_amount_of_cases_covered_by_argument_types_unions();
-        void compute_amount_of_slices_in_argument_types();
-        void compute_amount_of_arrays_in_argument_types();
-        void compute_amount_of_strings_in_argument_types();
-        void compute_amount_of_c_strings_in_argument_types();
+        void compute_number_of_generics(ProgramRepresentation&, const FunctionDefinition&);
+        void compute_number_of_generic_parameters_usage_in_signature(ProgramRepresentation&, const FunctionDefinition&);
+        void compute_argument_types_complexity_indicator(ProgramRepresentation&, const FunctionDefinition&);
+        void compute_amount_of_unions_in_argument_types(ProgramRepresentation&, const FunctionDefinition&);
+        void compute_amount_of_cases_covered_by_argument_types_unions(ProgramRepresentation&, const FunctionDefinition&);
+        void compute_amount_of_slices_in_argument_types(ProgramRepresentation&, const FunctionDefinition&);
+        void compute_amount_of_arrays_in_argument_types(ProgramRepresentation&, const FunctionDefinition&);
+        void compute_amount_of_strings_in_argument_types(ProgramRepresentation&, const FunctionDefinition&);
+        void compute_amount_of_c_strings_in_argument_types(ProgramRepresentation&, const FunctionDefinition&);
 
         [[nodiscard]] size_t count_recursivly_on_typesignature(
             const TypeSignature& type_signature,
             std::function<size_t(const TypeSignature&)> count_function
         );
-
-        ProgramRepresentation& program_representation;
-        const FunctionDefinition& func_definition;
 };
 
 struct ProgramRepresentation {
@@ -121,24 +121,26 @@ struct ProgramRepresentation {
         [[nodiscard]] std::string infer_possible_fully_qualified_typesignature_name(const PackageName&, const TypeSignature&);
         [[nodiscard]] std::string infer_possible_fully_qualified_typesignature_name_for_custom_type(const PackageName&, const CustomType&);
 
-        using FunctionOverloadSet = std::vector<FunctionDefinition>;
-        
-        struct FunctionDefinitionFastRetrieveKey {
-            std::string overload_set_id;
-            size_t index_within_overload_set;
-        };
+        using FunctionDefinitionRef = std::shared_ptr<FunctionDefinition>;
+        using FunctionOverloadSet = std::vector<FunctionDefinitionRef>;
 
         std::unordered_map<std::string, FunctionOverloadSet> function_definitions_overload_sets;
-        std::unordered_map<std::string, FunctionDefinitionFastRetrieveKey> function_definitions;
+        std::unordered_map<std::string, FunctionDefinitionRef> function_definitions;
+        std::unordered_map<FunctionDefinitionRef, FunctionSpecificityDescriptor> function_definitions_specificity;
 
-        [[nodiscard]] std::vector<FunctionDefinition> search_compatible_function_definitions_within_given_overload_set(
+        [[nodiscard]] std::list<FunctionDefinitionRef> search_compatible_function_definitions_within_given_overload_set(
             const PrecompiledFunctionCall& precompiled_function_call, 
             const std::string& overload_set_id
         );
 
-        [[nodiscard]] std::optional<FunctionDefinition> search_compatible_function_definitions_within_given_package(
+        [[nodiscard]] std::optional<FunctionDefinitionRef> search_compatible_function_definitions_within_given_package(
             const PrecompiledFunctionCall& precompiled_function_call, 
             const PackageName& package_name
+        );
+
+        [[nodiscard]] std::optional<FunctionDefinitionRef> check_function_definition_compatibility(
+            const FunctionDefinitionRef& function_definition_ref,
+            const PrecompiledFunctionCall& precompiled_function_call
         );
 
         [[nodiscard]] std::string get_function_definition_overload_set_id(const PackageName&, const FunctionDefinition&);
@@ -147,9 +149,18 @@ struct ProgramRepresentation {
 
         [[nodiscard]] std::string get_function_fast_retrieve_key(
             const PackageName& package_name,
-            const std::string& func_name, 
-            const std::vector<TypeSignature>& arguments_types
-        );         
+            const FunctionDefinitionRef& function_definition_ref
+        );
+
+        [[nodiscard]] std::string get_function_fast_retrieve_key(
+            const PackageName& package_name,
+            const PrecompiledFunctionCall& precompiled_function_call
+        );
+
+        void store_function_definition_ref(
+            const FunctionDefinitionRef& func_definition_ref, 
+            const PackageName& package_name
+        );
 
 
     friend class TypeDependencyNavigator;

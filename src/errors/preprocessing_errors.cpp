@@ -195,17 +195,6 @@ void ensure_object_is_mutable(
     }
 }
 
-void ensure_no_ambiguous_function_definition_found(
-    const std::vector<FunctionDefinition>& compatible_defs,
-    const PrecompiledFunctionCall& precompiled_function_call
-){
-    if (compatible_defs.size() > 1){
-        throw std::runtime_error {
-            "Ambiguous function definition found for function call " + precompiled_function_call.original_function_call.function_name + "\n"
-        };
-    }
-}
-
 [[noreturn]] void throw_no_function_definition_found(
     const PrecompiledFunctionCall& function_call
 ){
