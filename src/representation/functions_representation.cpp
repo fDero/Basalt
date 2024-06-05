@@ -119,9 +119,9 @@ ProgramRepresentation::check_function_definition_compatibility(
     const FunctionDefinitionRef& function_definition_ref,
     const PrecompiledFunctionCall& precompiled_function_call
 ){
-    size_t instantiated_generics_count = precompiled_function_call.original_function_call.instantiated_generics.size();
+    size_t function_call_explicit_generics_count = precompiled_function_call.original_function_call.instantiated_generics.size();
     GenericSubstitutionRuleSet substitution_rules;
-    if (instantiated_generics_count != 0){
+    if (function_call_explicit_generics_count != 0){
         substitution_rules = GenericSubstitutionRuleSet::zip_components_vectors(
             function_definition_ref->template_generics_names, 
             precompiled_function_call.original_function_call.instantiated_generics
@@ -137,6 +137,11 @@ ProgramRepresentation::check_function_definition_compatibility(
         if (!all_arguments_types_are_compatible){
             break;
         }
+    }
+    size_t expected_generics_count = function_definition_ref->template_generics_names.size();
+    size_t inferred_generics_count = type_checker.get_generic_substitution_rules().size();
+    if (expected_generics_count != inferred_generics_count && function_call_explicit_generics_count == 0){
+        return std::nullopt;
     }
     if (!all_arguments_types_are_compatible){
         return std::nullopt;
