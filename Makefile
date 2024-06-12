@@ -3,6 +3,7 @@
 COMPILER=clang++
 STD=c++20
 LINKER=clang++
+WARNINGS=-Wall -Wpedantic
 
 MKDIR := mkdir -p
 RM := rm -rf
@@ -21,9 +22,9 @@ clean:
 	@$(RM) *.out
 
 build:
-	${COMPILER} -Wall -Wpedantic -std=${STD} src/*/*.cpp src/main.cpp -o ${TARGET} -I./include -DDEBUG_BUILD
-	
+	${COMPILER} ${WARNINGS} -std=${STD} src/*/*.cpp src/main.cpp -o ${TARGET} -I./include -DDEBUG_BUILD
+
 test:
-	${COMPILER} -Wall -Wpedantic -std=${STD} tests/*/*.cpp src/*/*.cpp -o test_binary ${GTESTFLAGS} -I./include -O0 -DDEBUG_BUILD
+	${COMPILER} ${WARNINGS} -std=${STD} tests/*/*.cpp src/*/*.cpp -o test_binary ${GTESTFLAGS} -I./include -O0 -DDEBUG_BUILD
 	./test_binary
 	${RM} test_binary

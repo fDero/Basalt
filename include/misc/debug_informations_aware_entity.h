@@ -28,4 +28,8 @@ struct DebugInformationsAwareEntity {
     {}
 
     DebugInformationsAwareEntity(const DebugInformationsAwareEntity& other) = default;
+    DebugInformationsAwareEntity& operator=(const DebugInformationsAwareEntity& other) = default;
+
+    DebugInformationsAwareEntity(DebugInformationsAwareEntity&& other) = default;
+    DebugInformationsAwareEntity& operator=(DebugInformationsAwareEntity&& other) = default;
 };

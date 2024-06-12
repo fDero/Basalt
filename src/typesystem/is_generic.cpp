@@ -4,8 +4,8 @@
 #include <regex>
 #include <optional>
 
-[[nodiscard]] bool TypeSignature::is_generic(const std::vector<std::string>& generic_names) const { 
-    return ptr->is_generic(generic_names); 
+[[nodiscard]] bool TypeSignature::is_generic(const std::vector<std::string>& generic_names) const {
+    return ptr->is_generic(generic_names);
 }
 
 [[nodiscard]] bool CustomType::is_generic(const std::vector<std::string>& generics_names) const {

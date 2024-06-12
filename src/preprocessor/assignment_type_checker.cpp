@@ -17,7 +17,7 @@ bool AssignmentTypeChecker::validate_assignment(const TypeSignature& source, con
     return validate_type_alias_unaware_assignment(unaliased_source_type, unaliased_dest_type);
 }
 
-bool AssignmentTypeChecker::validate_type_alias_unaware_assignment(const TypeSignature& source, const TypeSignature& dest) {
+bool AssignmentTypeChecker::validate_type_alias_unaware_assignment(const TypeSignature& source, const TypeSignature& dest) {    
     if (dest.is<TemplateType>()) {
         return validate_assignment_to_template_generic(source, dest.get<TemplateType>());
     }
