@@ -3,7 +3,7 @@
 COMPILER=clang++
 STD=c++20
 LINKER=clang++
-WARNINGS=-Wall -Wpedantic
+WARNINGS=-Wall -Wpedantic -Wfloat-equal
 
 MKDIR := mkdir -p
 RM := rm -rf
