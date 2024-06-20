@@ -51,8 +51,11 @@
 }
 
 [[nodiscard]] std::optional<TypeSignature> Parser::parse_function_return_type() {
-    try { return parse_typesignature(); }
-    catch(...) { return std::nullopt; }
+    if (iterator->sourcetext != "->") {
+        return std::nullopt;
+    }
+    assert_token_matches(source_tokens, iterator++, "->");
+    return parse_typesignature(); 
 }
 
 [[nodiscard]] std::vector<FunctionDefinition::Argument> Parser::parse_function_def_arguments() {
