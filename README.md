@@ -12,11 +12,16 @@ and reducing wasted time by removing the need to perform a full compilation of y
 In order to install Basalt, you have to build it from source. Basalt can easily be built with CMake. Assuming 
 CMake is installed on your machine, all you have to do is run the following commands.
 ```bash
-$$ git clone https://www.github.com/fDero/Basalt
-$$ cd Basalt
-$$ cmake -S . -B build
-$$ cmake --build build
+$ git clone https://www.github.com/fDero/Basalt
+$ cd Basalt
+$ cmake -S . -B build
+$ cmake --build build --target basalt
 ```
+
+### Run the tests
+If you want to run the unit-tests, run the command `cmake --build build --target basalt_unit_tests`. This will create
+a binary called `basalt_unit_tests` that will perform the tests when executed. Tests are written using the gtest (googletest) unit-testing
+framework. Keep in mind that compiling the test-suite will take much longer then compiling `basalt` iteself.
 
 ### Hello World
 To make your first hello-world program in Basalt, all it takes is to create a file with the `.bt` extension 
@@ -25,14 +30,14 @@ To make your first hello-world program in Basalt, all it takes is to create a fi
 package main;
 
 func main() {
-    console::println("Hello world!");
+    console::println("Hello, World!");
 }
 ```
 
 Once you have the file set up, to run it just use the `basalt -r hello.bt` command in console.
 ```bash
-$$ basalt -r hello.bt
-$$ Hello world!
+$ basalt -r hello.bt
+Hello, World!
 ```
 
 ### Types
@@ -72,6 +77,6 @@ func main() {
 assuming the file is called `fibo.bt`, then it can be executed just like we did earlier with the hello-world example, 
 using the `basalt -r` command.
 ```bash
-$$ basalt -r fibo.bt
-$$ 21
+$ basalt -r fibo.bt
+21
 ```

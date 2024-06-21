@@ -51,12 +51,18 @@ target_compile_options(
   ${MAIN_BINARY}
   PRIVATE
   -O3
+  -Wall
+  -Wpedantic
+  -Wfloat-equal
 )
 
 target_compile_options(
   ${TEST_BINARY}
   PRIVATE
   -O0
+  -Wall
+  -Wpedantic
+  -Wfloat-equal
 )
 
 target_link_libraries(

@@ -8,3 +8,8 @@ hidden
 *.basalt
 grammar/.antlr
 build
+out/*
+out/bin/*
+out/lib/*
+basalt
+basalt_unit_tests

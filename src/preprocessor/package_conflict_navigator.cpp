@@ -34,7 +34,7 @@ std::string PackageTypeConflictNavigator::get_type_definition_conflict_detection
     size_t number_of_generics = type_definition.get_number_of_generics();
     if (number_of_generics > 0) {
         pattern_tag_name += "<";
-        for (int i = 0; i < number_of_generics; i++) { 
+        for (size_t i = 0; i < number_of_generics; i++) {
             pattern_tag_name += "?,";
         }
         pattern_tag_name.back() = '>';

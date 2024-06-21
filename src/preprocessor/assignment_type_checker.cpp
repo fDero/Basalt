@@ -4,11 +4,11 @@
 #include "errors/preprocessing_errors.hpp"
 #include "errors/internal_errors.hpp"
 
-AssignmentTypeChecker::AssignmentTypeChecker(ProgramRepresentation& program_representation) 
+AssignmentTypeChecker::AssignmentTypeChecker(ProgramRepresentation& program_representation)
     : program_representation(program_representation) {}
 
-GenericSubstitutionRuleSet& AssignmentTypeChecker::get_generic_substitution_rules() { 
-    return generic_substitution_rules; 
+GenericSubstitutionRuleSet& AssignmentTypeChecker::get_generic_substitution_rules() {
+    return generic_substitution_rules;
 }
 
 bool AssignmentTypeChecker::validate_assignment(const TypeSignature& source, const TypeSignature& dest) {
@@ -17,7 +17,7 @@ bool AssignmentTypeChecker::validate_assignment(const TypeSignature& source, con
     return validate_type_alias_unaware_assignment(unaliased_source_type, unaliased_dest_type);
 }
 
-bool AssignmentTypeChecker::validate_type_alias_unaware_assignment(const TypeSignature& source, const TypeSignature& dest) {    
+bool AssignmentTypeChecker::validate_type_alias_unaware_assignment(const TypeSignature& source, const TypeSignature& dest) {
     if (dest.is<TemplateType>()) {
         return validate_assignment_to_template_generic(source, dest.get<TemplateType>());
     }
@@ -111,7 +111,7 @@ bool AssignmentTypeChecker::validate_assignment_to_union(const TypeSignature& so
 
 bool AssignmentTypeChecker::validate_complex_assignment(const TypeSignature& source, const CustomType& dest) {
     const TypeDefinition& dest_type_definition = program_representation.retrieve_type_definition(dest);
-    if (dest_type_definition.is<UnionDefinition>()) {    
+    if (dest_type_definition.is<UnionDefinition>()) {
         if (validate_assignment_to_union(source, dest_type_definition.get<UnionDefinition>())) {
             return true;
         }
@@ -139,17 +139,17 @@ bool AssignmentTypeChecker::validate_assignment_between_custom_types(const Custo
         return false;
     }
     if (source.package_prefix != dest.package_prefix) {
-        std::string source_package_name = (!source.package_prefix.empty())? source.package_prefix 
+        std::string source_package_name = (!source.package_prefix.empty())? source.package_prefix
             : program_representation.package_name_by_file_name[source.filename];
-        std::string dest_package_name = (!dest.package_prefix.empty())? dest.package_prefix 
+        std::string dest_package_name = (!dest.package_prefix.empty())? dest.package_prefix
             : program_representation.package_name_by_file_name[dest.filename];
         if (source_package_name != dest_package_name) {
             return false;
         }
     }
-    for (int i = 0; i < source.type_parameters.size(); i++) {
+    for (size_t i = 0; i < source.type_parameters.size(); i++) {
         if (!validate_assignment_between_custom_types_generic_type_parameters(
-                source.type_parameters[i], 
+                source.type_parameters[i],
                 dest.type_parameters[i]
             )
         ) {
@@ -178,21 +178,21 @@ bool AssignmentTypeChecker::validate_type_alias_unaware_assignment_between_custo
     else if (dest.is<ArrayType>() && source.is<ArrayType>()) {
         const ArrayType& source_array = source.get<ArrayType>();
         const ArrayType& dest_array = dest.get<ArrayType>();
-        return source_array.array_length == dest_array.array_length && 
+        return source_array.array_length == dest_array.array_length &&
             validate_assignment_between_custom_types_generic_type_parameters(
-                source_array.stored_type, 
+                source_array.stored_type,
                 dest_array.stored_type
             );
     }
     else if (dest.is<PointerType>() && source.is<PointerType>()) {
         return validate_assignment_between_custom_types_generic_type_parameters(
-            source.get<PointerType>().pointed_type, 
+            source.get<PointerType>().pointed_type,
             dest.get<PointerType>().pointed_type
         );
     }
     else if (dest.is<SliceType>() && source.is<SliceType>()) {
         return validate_assignment_between_custom_types_generic_type_parameters(
-            source.get<SliceType>().stored_type, 
+            source.get<SliceType>().stored_type,
             dest.get<SliceType>().stored_type
         );
     }
@@ -207,7 +207,7 @@ bool AssignmentTypeChecker::validate_assignment_to_string(const TypeSignature& s
             return (source.get<PrimitiveType>().type_name == "String");
     }
     else if (source.is<SliceType>()) {
-        return source.get<SliceType>().stored_type.is<PrimitiveType>() && 
+        return source.get<SliceType>().stored_type.is<PrimitiveType>() &&
             source.get<SliceType>().stored_type.get<PrimitiveType>().type_name == "Char";
     }
     else if (source.is<ArrayType>()) {
@@ -246,7 +246,7 @@ bool AssignmentTypeChecker::type_alias_unaware_typesignatures_are_equal(const Ty
         return typesignatures_are_equal(t1.get<PointerType>().pointed_type, t2.get<PointerType>().pointed_type);
     }
     if (t1.is<ArrayType>() && t2.is<ArrayType>()) {
-        return t1.get<ArrayType>().array_length == t2.get<ArrayType>().array_length && 
+        return t1.get<ArrayType>().array_length == t2.get<ArrayType>().array_length &&
             typesignatures_are_equal(t1.get<ArrayType>().stored_type, t2.get<ArrayType>().stored_type);
     }
     if (t1.is<SliceType>() && t2.is<SliceType>()) {
