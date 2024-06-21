@@ -18,10 +18,11 @@ $ cmake -S . -B build
 $ cmake --build build --target basalt
 ```
 
-### Run the tests
 If you want to run the unit-tests, run the command `cmake --build build --target basalt_unit_tests`. This will create
-a binary called `basalt_unit_tests` that will perform the tests when executed. Tests are written using the gtest (googletest) unit-testing
-framework. Keep in mind that compiling the test-suite will take much longer then compiling `basalt` iteself.
+a binary called `basalt_unit_tests` that will perform the tests when executed. Tests are written using the
+gtest (googletest) unit-testing framework. Keep in mind that compilation will take much longer when compiling
+the test-suite, since gtest is a framework that heavily relies on the use of macros.
+
 
 ### Hello World
 To make your first hello-world program in Basalt, all it takes is to create a file with the `.bt` extension 
