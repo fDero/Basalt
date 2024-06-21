@@ -1,5 +1,11 @@
 cmake_minimum_required(VERSION 3.22)
-project(my_project)
+
+project(
+  Basalt
+  DESCRIPTION "The Basalt Programming Language"
+  HOMEPAGE_URL https://github.com/fDero/Basalt
+  LANGUAGES CXX
+)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -35,6 +41,18 @@ add_executable(
   ${TEST_BINARY}
   ${SOURCE_FILES}
   ${TEST_FILES}
+)
+
+target_compile_options(
+  ${MAIN_BINARY}
+  PRIVATE
+  -O3
+)
+
+target_compile_options(
+  ${TEST_BINARY}
+  PRIVATE
+  -O0
 )
 
 target_link_libraries(
