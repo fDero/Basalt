@@ -75,15 +75,15 @@ class FunctionSpecificityDescriptor {
         size_t amount_of_strings_in_argument_types = 0;
         size_t amount_of_c_strings_in_argument_types = 0;
         
-        void compute_number_of_generics(ProgramRepresentation&, const FunctionDefinition&);
-        void compute_number_of_generic_parameters_usage_in_signature(ProgramRepresentation&, const FunctionDefinition&);
-        void compute_argument_types_complexity_indicator(ProgramRepresentation&, const FunctionDefinition&);
+        void compute_number_of_generics(const FunctionDefinition&);
+        void compute_number_of_generic_parameters_usage_in_signature(const FunctionDefinition&);
+        void compute_argument_types_complexity_indicator(const FunctionDefinition&);
         void compute_amount_of_unions_in_argument_types(ProgramRepresentation&, const FunctionDefinition&);
         void compute_amount_of_cases_covered_by_argument_types_unions(ProgramRepresentation&, const FunctionDefinition&);
-        void compute_amount_of_slices_in_argument_types(ProgramRepresentation&, const FunctionDefinition&);
-        void compute_amount_of_arrays_in_argument_types(ProgramRepresentation&, const FunctionDefinition&);
-        void compute_amount_of_strings_in_argument_types(ProgramRepresentation&, const FunctionDefinition&);
-        void compute_amount_of_c_strings_in_argument_types(ProgramRepresentation&, const FunctionDefinition&);
+        void compute_amount_of_slices_in_argument_types(const FunctionDefinition&);
+        void compute_amount_of_arrays_in_argument_types(const FunctionDefinition&);
+        void compute_amount_of_strings_in_argument_types(const FunctionDefinition&);
+        void compute_amount_of_c_strings_in_argument_types(const FunctionDefinition&);
 
         [[nodiscard]] size_t count_recursively_on_typesignature(
             const TypeSignature& type_signature,

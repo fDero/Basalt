@@ -8,37 +8,45 @@ FunctionSpecificityDescriptor::FunctionSpecificityDescriptor(
     ProgramRepresentation& program_representation,
     const FunctionDefinition& func_definition
 ) {
-    compute_number_of_generics(program_representation, func_definition);
-    compute_number_of_generic_parameters_usage_in_signature(program_representation, func_definition);
-    compute_argument_types_complexity_indicator(program_representation, func_definition);
+    compute_number_of_generics(func_definition);
+    compute_number_of_generic_parameters_usage_in_signature(func_definition);
+    compute_argument_types_complexity_indicator(func_definition);
     compute_amount_of_unions_in_argument_types(program_representation, func_definition);
     compute_amount_of_cases_covered_by_argument_types_unions(program_representation, func_definition);
-    compute_amount_of_slices_in_argument_types(program_representation, func_definition);
-    compute_amount_of_arrays_in_argument_types(program_representation, func_definition);
-    compute_amount_of_strings_in_argument_types(program_representation, func_definition);
-    compute_amount_of_c_strings_in_argument_types(program_representation, func_definition);
+    compute_amount_of_slices_in_argument_types(func_definition);
+    compute_amount_of_arrays_in_argument_types(func_definition);
+    compute_amount_of_strings_in_argument_types(func_definition);
+    compute_amount_of_c_strings_in_argument_types(func_definition);
 }
 
 [[nodiscard]] FunctionSpecificityDescriptor::ComparisonOutcome 
 FunctionSpecificityDescriptor::compare(const FunctionSpecificityDescriptor& other) const {
-    const size_t LOWER_IS_BETTER = 1;
-    const size_t HIGHER_IS_BETTER = -1;
-    size_t difference_array[] = {
-        LOWER_IS_BETTER  * (number_of_generics - other.number_of_generics),
-        LOWER_IS_BETTER  * (number_of_generic_parameters_usage_in_signature - other.number_of_generic_parameters_usage_in_signature),
-        HIGHER_IS_BETTER * (argument_types_complexity_indicator - other.argument_types_complexity_indicator),
-        LOWER_IS_BETTER  * (amount_of_unions_in_argument_types - other.amount_of_unions_in_argument_types),
-        LOWER_IS_BETTER  * (amount_of_cases_covered_by_argument_types_unions - other.amount_of_cases_covered_by_argument_types_unions),
-        LOWER_IS_BETTER  * (amount_of_slices_in_argument_types - other.amount_of_slices_in_argument_types),
-        LOWER_IS_BETTER  * (amount_of_arrays_in_argument_types - other.amount_of_arrays_in_argument_types),
-        LOWER_IS_BETTER  * (amount_of_strings_in_argument_types - other.amount_of_strings_in_argument_types),
-        LOWER_IS_BETTER  * (amount_of_c_strings_in_argument_types - other.amount_of_c_strings_in_argument_types)
+    enum class Policy {
+        LOWER_IS_BETTER,
+        HIGHER_IS_BETTER
     };
-    for (const size_t delta : difference_array) {
-        if (delta != 0) {
-            return (delta > 0) 
-                ? ComparisonOutcome::MORE_SPECIFIC 
-                : ComparisonOutcome::LESS_SPECIFIC;
+    std::tuple<Policy, size_t, size_t> incremental_comparison_policies[] = {
+            {Policy::LOWER_IS_BETTER,  number_of_generics,                               other.number_of_generics},
+            {Policy::LOWER_IS_BETTER,  number_of_generic_parameters_usage_in_signature,  other.number_of_generic_parameters_usage_in_signature},
+            {Policy::HIGHER_IS_BETTER, argument_types_complexity_indicator,              other.argument_types_complexity_indicator},
+            {Policy::LOWER_IS_BETTER,  amount_of_unions_in_argument_types,               other.amount_of_unions_in_argument_types},
+            {Policy::LOWER_IS_BETTER,  amount_of_cases_covered_by_argument_types_unions, other.amount_of_cases_covered_by_argument_types_unions},
+            {Policy::HIGHER_IS_BETTER, amount_of_arrays_in_argument_types,               other.amount_of_arrays_in_argument_types},
+            {Policy::HIGHER_IS_BETTER, amount_of_slices_in_argument_types,               other.amount_of_slices_in_argument_types},
+            {Policy::HIGHER_IS_BETTER, amount_of_strings_in_argument_types,              other.amount_of_strings_in_argument_types},
+            {Policy::HIGHER_IS_BETTER, amount_of_c_strings_in_argument_types,            other.amount_of_c_strings_in_argument_types}
+    };
+    for (const auto& policy : incremental_comparison_policies) {
+        if (std::get<1>(policy) == std::get<2>(policy)) {
+            continue;
+        }
+        if (std::get<0>(policy) == Policy::LOWER_IS_BETTER){
+            return (std::get<1>(policy) < std::get<2>(policy))?
+                ComparisonOutcome::MORE_SPECIFIC : ComparisonOutcome::LESS_SPECIFIC;
+        }
+        else {
+            return (std::get<1>(policy) > std::get<2>(policy))?
+                   ComparisonOutcome::MORE_SPECIFIC : ComparisonOutcome::LESS_SPECIFIC;
         }
     }
     return ComparisonOutcome::EQUALLY_SPECIFIC;
@@ -52,14 +60,12 @@ FunctionSpecificityDescriptor::compare(const std::optional<FunctionSpecificityDe
 }
 
 void FunctionSpecificityDescriptor::compute_number_of_generics(
-    ProgramRepresentation& program_representation,
     const FunctionDefinition& func_definition
 ) {
     number_of_generics = func_definition.template_generics_names.size();
 }
 
 void FunctionSpecificityDescriptor::compute_number_of_generic_parameters_usage_in_signature(
-    ProgramRepresentation& program_representation,
     const FunctionDefinition& func_definition
 ) {
     std::function<size_t(const TypeSignature&)> count_function = [](const TypeSignature& type_signature) {
@@ -72,7 +78,6 @@ void FunctionSpecificityDescriptor::compute_number_of_generic_parameters_usage_i
 }
 
 void FunctionSpecificityDescriptor::compute_argument_types_complexity_indicator(
-    ProgramRepresentation& program_representation,
     const FunctionDefinition& func_definition
 ) {
     std::function<size_t(const TypeSignature&)> count_function = [](const TypeSignature& type_signature) {
@@ -125,7 +130,6 @@ void FunctionSpecificityDescriptor::compute_amount_of_cases_covered_by_argument_
 }
 
 void FunctionSpecificityDescriptor::compute_amount_of_slices_in_argument_types(
-    ProgramRepresentation& program_representation,
     const FunctionDefinition& func_definition
 ) {
     std::function<size_t(const TypeSignature&)> count_function = [](const TypeSignature& type_signature) {
@@ -138,7 +142,6 @@ void FunctionSpecificityDescriptor::compute_amount_of_slices_in_argument_types(
 }
 
 void FunctionSpecificityDescriptor::compute_amount_of_arrays_in_argument_types(
-    ProgramRepresentation& program_representation,
     const FunctionDefinition& func_definition
 ) {
     std::function<size_t(const TypeSignature&)> count_function = [](const TypeSignature& type_signature) {
@@ -151,7 +154,6 @@ void FunctionSpecificityDescriptor::compute_amount_of_arrays_in_argument_types(
 }
 
 void FunctionSpecificityDescriptor::compute_amount_of_strings_in_argument_types(
-    ProgramRepresentation& program_representation,
     const FunctionDefinition& func_definition
 ) {
     std::function<size_t(const TypeSignature&)> count_function = [](const TypeSignature& type_signature) {
@@ -164,7 +166,6 @@ void FunctionSpecificityDescriptor::compute_amount_of_strings_in_argument_types(
 }
 
 void FunctionSpecificityDescriptor::compute_amount_of_c_strings_in_argument_types(
-    ProgramRepresentation& program_representation,
     const FunctionDefinition& func_definition
 ) {
     std::function<size_t(const TypeSignature&)> count_function = [](const TypeSignature& type_signature) {
