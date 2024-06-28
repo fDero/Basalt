@@ -10,7 +10,7 @@
 
 TEST(Representation, Ambiguous_Instantiated_Generic_Struct_Retrieval) {
     
-    Filerepresentation wrapper_file {
+    FileRepresentation wrapper_file {
         .file_metadata = { 
             .filename = "test.basalt",
             .packagename = "testpackage",
@@ -28,7 +28,7 @@ TEST(Representation, Ambiguous_Instantiated_Generic_Struct_Retrieval) {
         .func_defs = {}
     };
 
-    Filerepresentation employee_file_of_x_package {
+    FileRepresentation employee_file_of_x_package {
         .file_metadata = { 
             .filename = "xemployee.basalt",
             .packagename = "xpackage",
@@ -43,7 +43,7 @@ TEST(Representation, Ambiguous_Instantiated_Generic_Struct_Retrieval) {
     };
 
     
-    Filerepresentation employee_file_of_y_package {
+    FileRepresentation employee_file_of_y_package {
         .file_metadata = { 
             .filename = "yemployee.basalt",
             .packagename = "ypackage",

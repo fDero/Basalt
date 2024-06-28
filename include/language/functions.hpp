@@ -8,6 +8,7 @@ struct FunctionCall
 	, public StatementBody
 {
 	virtual ~FunctionCall() = default;
+
 	FunctionCall(
 	    const Token& function_call_token, 
 	    const std::vector<Expression>& args, 

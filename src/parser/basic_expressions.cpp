@@ -8,7 +8,7 @@
 
 [[nodiscard]] Expression Parser::parse_string_literal() {
     assert_token_is_string_literal(source_tokens, iterator);
-    assert_string_literal_properly_fromatted(iterator);
+    assert_string_literal_properly_formatted(iterator);
     StringLiteral string_literal = StringLiteral(*iterator);
     std::advance(iterator, 1);
     return string_literal;
@@ -48,7 +48,7 @@
 
 [[nodiscard]] Expression Parser::parse_identifier() {
     assert_token_is_text(source_tokens, iterator);
-    assert_identifier_is_properly_fromatted(iterator);
+    assert_identifier_is_properly_formatted(iterator);
     Identifier identifier = Identifier (*iterator);
     std::advance(iterator, 1);
     return identifier;

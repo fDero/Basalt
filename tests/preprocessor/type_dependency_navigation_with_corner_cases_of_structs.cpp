@@ -9,7 +9,7 @@
 
 TEST(Preprocessor, Dependency_Navigation_Works_Fine_With_Multiple_Fields_Of_Same_Type) {
     
-    Filerepresentation main_dot_basalt = {
+    FileRepresentation main_dot_basalt = {
         .file_metadata = {
             .filename = "main.basalt",
             .packagename = "testpackage",
@@ -41,7 +41,7 @@ TEST(Preprocessor, Dependency_Navigation_Works_Fine_With_Multiple_Fields_Of_Same
 
 TEST(Preprocessor, Dependency_Navigation_Works_Fine_With_Multiple_Fields_Of_Different_Instantiations_Of_Same_Generic_Type) {
     
-    Filerepresentation main_dot_basalt = {
+    FileRepresentation main_dot_basalt = {
         .file_metadata = {
             .filename = "main.basalt",
             .packagename = "testpackage",

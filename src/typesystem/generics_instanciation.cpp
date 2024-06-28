@@ -2,7 +2,6 @@
 #include "language/generics.hpp"
 #include "errors/internal_errors.hpp"
 #include <regex>
-#include <optional>
 
 void StructDefinition::instantiate_generics(const CustomType& concrete_type) {
     assert_instantiation_struct_is_compatible_with_template_struct(concrete_type, *this);
@@ -87,8 +86,8 @@ void TypeDefinition::set_name(const std::string& name) {
 }
 
 void TypeSignature::instantiate_generics(const GenericSubstitutionRuleSet& generic_substitution_rules) {
-    for (GenericSubstitutionRule rule : generic_substitution_rules) {
-        if (this->is<TemplateType>() && this->get<TemplateType>().type_name == rule.to_be_substituded) {
+    for (const GenericSubstitutionRule& rule : generic_substitution_rules) {
+        if (this->is<TemplateType>() && this->get<TemplateType>().type_name == rule.to_be_replaced) {
             *this = rule.replacement;
             return;
         }

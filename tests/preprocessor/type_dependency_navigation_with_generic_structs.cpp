@@ -9,7 +9,7 @@
 
 TEST(Preprocessor, Recursive_Two_Struct_Dependency_Is_Cyclic_Dependency_Even_When_One_Is_Generic) {
     
-    Filerepresentation main_dot_basalt = {
+    FileRepresentation main_dot_basalt = {
         .file_metadata = {
             .filename = "main.basalt",
             .packagename = "testpackage",
@@ -47,7 +47,7 @@ TEST(Preprocessor, Recursive_Two_Struct_Dependency_Is_Cyclic_Dependency_Even_Whe
 
 TEST(Preprocessor, Type_Dependency_Navigation_Works_Fine_On_Instantiated_Non_Recursive_Generic_Structs) {
     
-    Filerepresentation main_dot_basalt = {
+    FileRepresentation main_dot_basalt = {
         .file_metadata = {
             .filename = "main.basalt",
             .packagename = "testpackage",
@@ -83,7 +83,7 @@ TEST(Preprocessor, Type_Dependency_Navigation_Works_Fine_On_Instantiated_Non_Rec
 
 TEST(Preprocessor, Type_Dependency_Spots_Cyclic_Dependency_Even_On_Generic_Structs_Instantiation) {
     
-    Filerepresentation main_dot_basalt = {
+    FileRepresentation main_dot_basalt = {
         .file_metadata = {
             .filename = "main.basalt",
             .packagename = "testpackage",

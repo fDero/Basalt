@@ -66,8 +66,8 @@ void FunctionSpecificityDescriptor::compute_number_of_generic_parameters_usage_i
         return (size_t) type_signature.is<TemplateType>();
     };
     for (const FunctionDefinition::Argument& arg : func_definition.arguments) {
-        number_of_generic_parameters_usage_in_signature += 
-            count_recursivly_on_typesignature(arg.arg_type, count_function);
+        number_of_generic_parameters_usage_in_signature +=
+                count_recursively_on_typesignature(arg.arg_type, count_function);
     }
 }
 
@@ -79,8 +79,8 @@ void FunctionSpecificityDescriptor::compute_argument_types_complexity_indicator(
         return (size_t) 1;
     };
     for (const FunctionDefinition::Argument& arg : func_definition.arguments) {
-        argument_types_complexity_indicator += 
-            count_recursivly_on_typesignature(arg.arg_type, count_function);
+        argument_types_complexity_indicator +=
+                count_recursively_on_typesignature(arg.arg_type, count_function);
     }
 }
 
@@ -96,8 +96,8 @@ void FunctionSpecificityDescriptor::compute_amount_of_unions_in_argument_types(
         return (size_t) def.is<UnionDefinition>();
     };
     for (const FunctionDefinition::Argument& arg : func_definition.arguments) {
-        amount_of_unions_in_argument_types += 
-            count_recursivly_on_typesignature(arg.arg_type, count_function);
+        amount_of_unions_in_argument_types +=
+                count_recursively_on_typesignature(arg.arg_type, count_function);
     }
 }
 
@@ -113,14 +113,14 @@ void FunctionSpecificityDescriptor::compute_amount_of_cases_covered_by_argument_
         size_t count = 1;
         if (def.is<UnionDefinition>()) {
             for (const TypeSignature& alternative : def.get<UnionDefinition>().types) {
-                count += this->count_recursivly_on_typesignature(alternative, count_function);
+                count += this->count_recursively_on_typesignature(alternative, count_function);
             }
         }
         return count;
     };
     for (const FunctionDefinition::Argument& arg : func_definition.arguments) {
-        amount_of_unions_in_argument_types += 
-            count_recursivly_on_typesignature(arg.arg_type, count_function);
+        amount_of_unions_in_argument_types +=
+                count_recursively_on_typesignature(arg.arg_type, count_function);
     }
 }
 
@@ -132,8 +132,8 @@ void FunctionSpecificityDescriptor::compute_amount_of_slices_in_argument_types(
         return (size_t) type_signature.is<SliceType>();
     };
     for (const FunctionDefinition::Argument& arg : func_definition.arguments) {
-        amount_of_slices_in_argument_types += 
-            count_recursivly_on_typesignature(arg.arg_type, count_function);
+        amount_of_slices_in_argument_types +=
+                count_recursively_on_typesignature(arg.arg_type, count_function);
     }
 }
 
@@ -145,8 +145,8 @@ void FunctionSpecificityDescriptor::compute_amount_of_arrays_in_argument_types(
         return (size_t) type_signature.is<ArrayType>();
     };
     for (const FunctionDefinition::Argument& arg : func_definition.arguments) {
-        amount_of_arrays_in_argument_types += 
-            count_recursivly_on_typesignature(arg.arg_type, count_function);
+        amount_of_arrays_in_argument_types +=
+                count_recursively_on_typesignature(arg.arg_type, count_function);
     }
 }
 
@@ -158,8 +158,8 @@ void FunctionSpecificityDescriptor::compute_amount_of_strings_in_argument_types(
         return (size_t) (type_signature.is<PrimitiveType>() && type_signature.get<PrimitiveType>().type_name == "String");
     };
     for (const FunctionDefinition::Argument& arg : func_definition.arguments) {
-        amount_of_strings_in_argument_types += 
-            count_recursivly_on_typesignature(arg.arg_type, count_function);
+        amount_of_strings_in_argument_types +=
+                count_recursively_on_typesignature(arg.arg_type, count_function);
     }
 }
 
@@ -171,43 +171,43 @@ void FunctionSpecificityDescriptor::compute_amount_of_c_strings_in_argument_type
         return (size_t) (type_signature.is<PrimitiveType>() && type_signature.get<PrimitiveType>().type_name == "RawString");
     };
     for (const FunctionDefinition::Argument& arg : func_definition.arguments) {
-        amount_of_c_strings_in_argument_types += 
-            count_recursivly_on_typesignature(arg.arg_type, count_function);
+        amount_of_c_strings_in_argument_types +=
+                count_recursively_on_typesignature(arg.arg_type, count_function);
     }
 }
 
 
 
-[[nodiscard]] size_t FunctionSpecificityDescriptor::count_recursivly_on_typesignature(
+[[nodiscard]] size_t FunctionSpecificityDescriptor::count_recursively_on_typesignature(
     const TypeSignature& type_signature,
-    std::function<size_t(const TypeSignature&)> count_function
+    const std::function<size_t(const TypeSignature&)>& count_function
 ) {
     size_t current_count = count_function(type_signature);
     if (type_signature.is<PrimitiveType>() || type_signature.is<TemplateType>()) {
         return current_count;
     }
     if (type_signature.is<ArrayType>()) {
-        return current_count + count_recursivly_on_typesignature(
-            type_signature.get<ArrayType>().stored_type,
-            count_function
+        return current_count + count_recursively_on_typesignature(
+                type_signature.get<ArrayType>().stored_type,
+                count_function
         );
     }
     if (type_signature.is<SliceType>()) {
-        return current_count + count_recursivly_on_typesignature(
-            type_signature.get<SliceType>().stored_type,
-            count_function
+        return current_count + count_recursively_on_typesignature(
+                type_signature.get<SliceType>().stored_type,
+                count_function
         );
     }
     if (type_signature.is<PointerType>()) {
-        return current_count + count_recursivly_on_typesignature(
-            type_signature.get<PointerType>().pointed_type,
-            count_function
+        return current_count + count_recursively_on_typesignature(
+                type_signature.get<PointerType>().pointed_type,
+                count_function
         );
     }
     if (type_signature.is<CustomType>()) {
         const CustomType& custom_type = type_signature.get<CustomType>();
         for (const TypeSignature& generic : custom_type.type_parameters) {
-            current_count += count_recursivly_on_typesignature(generic, count_function);
+            current_count += count_recursively_on_typesignature(generic, count_function);
         }
         return current_count;
     }

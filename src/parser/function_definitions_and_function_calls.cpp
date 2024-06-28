@@ -20,7 +20,7 @@
 
 [[nodiscard]] FunctionCall Parser::parse_function_call() {
     assert_token_is_text(source_tokens, iterator);
-    assert_identifier_is_properly_fromatted(iterator);
+    assert_identifier_is_properly_formatted(iterator);
     const Token& function_name_token = *( iterator++ );
     std::vector<TypeSignature> concrete_generics = parse_concrete_generics();
     assert_token_matches(source_tokens, iterator++, "(");

@@ -9,7 +9,7 @@
 
 TEST(Preprocessor, No_Type_Conflict_In_Same_File) {
     
-    Filerepresentation main_dot_basalt = {
+    FileRepresentation main_dot_basalt = {
         .file_metadata = {
             .filename = "main.basalt",
             .packagename = "testpackage",
@@ -30,7 +30,7 @@ TEST(Preprocessor, No_Type_Conflict_In_Same_File) {
 
 TEST(Preprocessor, No_Type_Conflict_In_Two_File_Of_Same_Package) {
     
-    Filerepresentation a_dot_basalt = {
+    FileRepresentation a_dot_basalt = {
         .file_metadata = {
             .filename = "a.basalt",
             .packagename = "testpackage",
@@ -42,7 +42,7 @@ TEST(Preprocessor, No_Type_Conflict_In_Two_File_Of_Same_Package) {
         .func_defs = { }
     };
 
-    Filerepresentation b_dot_basalt = {
+    FileRepresentation b_dot_basalt = {
         .file_metadata = {
             .filename = "b.basalt",
             .packagename = "testpackage",
@@ -63,7 +63,7 @@ TEST(Preprocessor, No_Type_Conflict_In_Two_File_Of_Same_Package) {
 
 TEST(Preprocessor, No_Type_Conflict_In_Two_File_Of_Different_Packages) {
     
-    Filerepresentation a_dot_basalt = {
+    FileRepresentation a_dot_basalt = {
         .file_metadata = {
             .filename = "a.basalt",
             .packagename = "apackage",
@@ -75,7 +75,7 @@ TEST(Preprocessor, No_Type_Conflict_In_Two_File_Of_Different_Packages) {
         .func_defs = { }
     };
 
-    Filerepresentation b_dot_basalt = {
+    FileRepresentation b_dot_basalt = {
         .file_metadata = {
             .filename = "b.basalt",
             .packagename = "bpackage",

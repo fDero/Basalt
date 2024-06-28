@@ -14,7 +14,7 @@ void ProgramRepresentation::store_type_definition(
 }
 
 [[nodiscard]] TypeDefinition ProgramRepresentation::retrieve_type_definition(const CustomType& type_signature) {
-    const std::string& fully_qualified_name = get_fully_quilified_customtype_name(type_signature);
+    const std::string& fully_qualified_name = get_fully_qualified_customtype_name(type_signature);
     return type_definitions.at(fully_qualified_name);
 }
 
@@ -33,7 +33,7 @@ void ProgramRepresentation::store_type_definition(
     }
 }
 
-std::string ProgramRepresentation::get_fully_quilified_customtype_name(const CustomType& type_signature) {    
+std::string ProgramRepresentation::get_fully_qualified_customtype_name(const CustomType& type_signature) {
     if (!type_signature.package_prefix.empty()) {
         const std::string& package = type_signature.package_prefix;
         std::optional<std::string> retrieved = search_fully_qualified_typesignature_name(type_signature, package);
@@ -46,7 +46,7 @@ std::string ProgramRepresentation::get_fully_quilified_customtype_name(const Cus
         return retrieved.value();
     }
     for (const std::string& package : imports_by_file.at(type_signature.filename)) {
-        std::optional<std::string> retrieved = search_fully_qualified_typesignature_name(type_signature, package);
+        retrieved = search_fully_qualified_typesignature_name(type_signature, package);
         if (retrieved.has_value()) {
             return retrieved.value();
         }
@@ -54,20 +54,20 @@ std::string ProgramRepresentation::get_fully_quilified_customtype_name(const Cus
     throw_no_type_definition_found(type_signature);
 }
 
-std::string ProgramRepresentation::get_fully_quilified_typesignature_name(const TypeSignature& type_signature) {    
+std::string ProgramRepresentation::get_fully_qualified_typesignature_name(const TypeSignature& type_signature) {
     if (type_signature.is<SliceType>()) {
         const TypeSignature& stored_type = type_signature.get<SliceType>().stored_type;
-        return "$" + get_fully_quilified_typesignature_name(stored_type);
+        return "$" + get_fully_qualified_typesignature_name(stored_type);
     }
     else if (type_signature.is<PointerType>()) {
         const TypeSignature& pointed_type = type_signature.get<PointerType>().pointed_type;
-        return "#" + get_fully_quilified_typesignature_name(pointed_type);
+        return "#" + get_fully_qualified_typesignature_name(pointed_type);
     }
     else if (type_signature.is<ArrayType>()) {
         const TypeSignature& stored_type = type_signature.get<ArrayType>().stored_type;
         const ArrayType& array_type = type_signature.get<ArrayType>();
         std::string array_size_section = "[" + ((array_type.array_length == -1)? "" : std::to_string(array_type.array_length)) + "]";
-        return array_size_section + get_fully_quilified_typesignature_name(stored_type);
+        return array_size_section + get_fully_qualified_typesignature_name(stored_type);
     }
     else if (type_signature.is<PrimitiveType>()) {
         return type_signature.get<PrimitiveType>().type_name;
@@ -78,7 +78,7 @@ std::string ProgramRepresentation::get_fully_quilified_typesignature_name(const 
     else {
         assert_typesignature_is<CustomType>(type_signature);        
         const CustomType& custom_type = type_signature.get<CustomType>();
-        return get_fully_quilified_customtype_name(custom_type);
+        return get_fully_qualified_customtype_name(custom_type);
     }
 }
 
@@ -86,7 +86,7 @@ std::string ProgramRepresentation::get_fully_quilified_typesignature_name(const 
     const CustomType& type_signature, 
     const std::string& package_name
 ) {
-    const std::string instantiated_concrete_type_key = infer_possible_fully_qualified_typesignature_name(package_name, type_signature);
+    std::string instantiated_concrete_type_key = infer_possible_fully_qualified_typesignature_name(package_name, type_signature);
     auto retrieved = type_definitions.find(instantiated_concrete_type_key);
     if (retrieved != type_definitions.end()) {
         return instantiated_concrete_type_key;
@@ -167,7 +167,7 @@ std::string ProgramRepresentation::get_fully_quilified_typesignature_name(const 
     std::string generics_section = "<";
     for (const TypeSignature& generic : custom_type.type_parameters) {
         if (generic.is<CustomType>()) {
-            generics_section += get_fully_quilified_customtype_name(generic.get<CustomType>());
+            generics_section += get_fully_qualified_customtype_name(generic.get<CustomType>());
         }
         else {
             generics_section += infer_possible_fully_qualified_typesignature_name(packageName, generic);

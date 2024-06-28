@@ -13,8 +13,6 @@
 
 [[noreturn]] void assert_unreachable();
 
-[[noreturn]] void throw_unknown_token_type();
-
 [[noreturn]] void throw_attempt_to_retrieve_struct_definition_from_primitive_type(const TypeSignature& type);
 
 void assert_integer_literal_properly_formatted(const std::vector<Token>::iterator& iterator);
@@ -25,9 +23,9 @@ void assert_character_literal_properly_formatted(const std::vector<Token>::itera
 
 void assert_boolean_literal_properly_formatted(const std::vector<Token>::iterator& iterator);
 
-void assert_string_literal_properly_fromatted(const std::vector<Token>::iterator& iterator);
+void assert_string_literal_properly_formatted(const std::vector<Token>::iterator& iterator);
 
-void assert_identifier_is_properly_fromatted(const std::vector<Token>::iterator& iterator);
+void assert_identifier_is_properly_formatted(const std::vector<Token>::iterator& iterator);
 
 void assert_type_is_properly_formatted(const std::vector<Token>::iterator& iterator);
 

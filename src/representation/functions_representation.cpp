@@ -1,6 +1,5 @@
 #include "toolchain/representation.hpp"
 #include "errors/preprocessing_errors.hpp"
-#include "errors/internal_errors.hpp"
 #include "toolchain/preprocessor.hpp"
 #include "language/generics.hpp"
 
@@ -67,9 +66,9 @@ ProgramRepresentation::search_compatible_function_definitions_within_given_packa
     const std::string& function_call_source_package_name = (function_call.package_prefix.empty())
         ? package_name_by_file_name[function_call.filename]
         : function_call.package_prefix;
-    const std::string newly_creared_fast_retrieve_key = 
+    const std::string newly_created_fast_retrieve_key =
         get_function_fast_retrieve_key(function_call_source_package_name, compatible_functions_definitions.front());
-    function_definitions[newly_creared_fast_retrieve_key] = compatible_functions_definitions.front();
+    function_definitions[newly_created_fast_retrieve_key] = compatible_functions_definitions.front();
     return compatible_functions_definitions.front();
 } 
 
@@ -141,10 +140,10 @@ ProgramRepresentation::check_function_definition_compatibility(
     if (!all_arguments_types_are_compatible) {
         return std::nullopt;
     }
-    if (substitution_rules.size() == 0) {
+    if (substitution_rules.empty()) {
         substitution_rules = type_checker.get_generic_substitution_rules();    
     }
-    if (substitution_rules.size() == 0) {
+    if (substitution_rules.empty()) {
         return function_definition_ref;
     }
     FunctionDefinitionRef instantiated_func = std::make_shared<FunctionDefinition>(*function_definition_ref);
@@ -161,9 +160,9 @@ ProgramRepresentation::check_function_definition_compatibility(
     const std::vector<FunctionDefinition::Argument>& args = function_definition_ref->arguments;
     std::string function_fast_retrieve_key = package_name + namespace_concatenation + func_name + "(";
     for (const FunctionDefinition::Argument& arg : args) {
-        function_fast_retrieve_key += get_fully_quilified_typesignature_name(arg.arg_type) + ",";
+        function_fast_retrieve_key += get_fully_qualified_typesignature_name(arg.arg_type) + ",";
     }
-    if (args.size() > 0) {
+    if (!args.empty()) {
         function_fast_retrieve_key.back() = ')';
     }
     return function_fast_retrieve_key;
@@ -177,9 +176,9 @@ ProgramRepresentation::check_function_definition_compatibility(
     const std::vector<TypeSignature>& arg_types = precompiled_function_call.arguments_types;
     std::string function_fast_retrieve_key = package_name + namespace_concatenation + func_name + "(";
     for (const TypeSignature& arg_type : arg_types) {
-        function_fast_retrieve_key += get_fully_quilified_typesignature_name(arg_type) + ",";
+        function_fast_retrieve_key += get_fully_qualified_typesignature_name(arg_type) + ",";
     }
-    if (arg_types.size() > 0) {
+    if (!arg_types.empty()) {
         function_fast_retrieve_key.back() = ')';
     }
     return function_fast_retrieve_key;
@@ -213,8 +212,8 @@ ProgramRepresentation::check_function_definition_compatibility(
 ) {
     const std::string& function_name = precompiled_function_call.original_function_call.function_name;
     const std::vector<TypeSignature>& arguments_types = precompiled_function_call.arguments_types;
-    const std::vector<TypeSignature>& genenerics = precompiled_function_call.original_function_call.instantiated_generics;
-    const std::string generics_string = "<" + std::to_string(genenerics.size()) + ">";
+    const std::vector<TypeSignature>& generics = precompiled_function_call.original_function_call.instantiated_generics;
+    const std::string generics_string = "<" + std::to_string(generics.size()) + ">";
     const std::string args_string = "(" + std::to_string(arguments_types.size()) + ")";
     std::string overload_set_id = package_name + namespace_concatenation + function_name + generics_string + args_string;
     return overload_set_id;

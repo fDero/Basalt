@@ -69,7 +69,7 @@ bool AssignmentTypeChecker::validate_assignment_to_array_type(const TypeSignatur
 
 bool AssignmentTypeChecker::validate_assignment_to_template_generic(const TypeSignature& source, const TemplateType& dest) {
     for (GenericSubstitutionRule& rule : generic_substitution_rules) {
-        if (rule.to_be_substituded == dest.type_name) {
+        if (rule.to_be_replaced == dest.type_name) {
             if (validate_assignment(rule.replacement, source)) {
                 rule.replacement = source;
                 return true;
@@ -217,45 +217,4 @@ bool AssignmentTypeChecker::validate_assignment_to_string(const TypeSignature& s
     else {
         return false;
     }
-}
-
-bool AssignmentTypeChecker::typesignatures_are_equal(const TypeSignature& t1, const TypeSignature& t2) {
-    if (type_alias_unaware_typesignatures_are_equal(t1, t2)) {
-        return true;
-    }
-    if (t1.is<CustomType>()) {
-        TypeDefinition t1_type_definition = program_representation.retrieve_type_definition(t1.get<CustomType>());
-        if (t1_type_definition.is<TypeAlias>()) {
-            return typesignatures_are_equal(t1_type_definition.get<TypeAlias>().aliased_type, t2);
-        }
-    }
-    if (t2.is<CustomType>()) {
-        TypeDefinition t2_type_definition = program_representation.retrieve_type_definition(t2.get<CustomType>());
-        if (t2_type_definition.is<TypeAlias>()) {
-            return typesignatures_are_equal(t1, t2_type_definition.get<TypeAlias>().aliased_type);
-        }
-    }
-    return false;
-}
-
-bool AssignmentTypeChecker::type_alias_unaware_typesignatures_are_equal(const TypeSignature& t1, const TypeSignature& t2) {
-    if (t1.is<PrimitiveType>() && t2.is<PrimitiveType>()) {
-        return t1.get<PrimitiveType>().type_name == t2.get<PrimitiveType>().type_name;
-    }
-    if (t1.is<PointerType>() && t2.is<PointerType>()) {
-        return typesignatures_are_equal(t1.get<PointerType>().pointed_type, t2.get<PointerType>().pointed_type);
-    }
-    if (t1.is<ArrayType>() && t2.is<ArrayType>()) {
-        return t1.get<ArrayType>().array_length == t2.get<ArrayType>().array_length &&
-            typesignatures_are_equal(t1.get<ArrayType>().stored_type, t2.get<ArrayType>().stored_type);
-    }
-    if (t1.is<SliceType>() && t2.is<SliceType>()) {
-        return typesignatures_are_equal(t1.get<SliceType>().stored_type, t2.get<SliceType>().stored_type);
-    }
-    if (t1.is<CustomType>() && t2.is<CustomType>()) {
-        const std::string t1_fully_qualified_name = program_representation.get_fully_quilified_typesignature_name(t1.get<CustomType>());
-        const std::string t2_fully_qualified_name = program_representation.get_fully_quilified_typesignature_name(t2.get<CustomType>());
-        return t1_fully_qualified_name == t2_fully_qualified_name;
-    }
-    return false;
 }

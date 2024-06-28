@@ -8,7 +8,7 @@
 #include "misc/forward_declarations.hpp"
 
 struct GenericSubstitutionRule {
-    std::string to_be_substituded;
+    std::string to_be_replaced;
     TypeSignature replacement;
 };
 

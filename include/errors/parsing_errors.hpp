@@ -76,43 +76,7 @@ void ensure_square_bracket_gets_closed_in_expression_wrapping(
 
 );
 
-void ensure_there_is_still_a_scope_in_wich_keep_searching_struct_definitions(
-    const std::map<std::string, std::string>::const_iterator& parent_scope_search_outcome,
-    const std::map<std::string, std::string>& struct_parents
-);
-
-void ensure_function_doesnt_already_exists(
-    const std::string& func_tag_name,
-    const FunctionDefinition& func_def,
-    const std::unordered_map<std::string, FunctionDefinition>& function_definitions_register
-);
-
-void ensure_overload_set_does_exist(
-    const std::unordered_map<std::string, std::vector<std::string>>::const_iterator overload_set, 
-    const std::string& func_name, 
-    const std::unordered_map<std::string, std::vector<std::string>> func_names_register
-);
-
-void ensure_a_valid_function_overload_was_actually_found(
-    const std::string& target_func_tag_name
-);
-
-void ensure_no_function_overload_was_found_before_this(
-    const std::string& previous_func_tag_name, const std::string& current_func_tag_name,
-    const std::unordered_map<std::string, FunctionDefinition>& function_definitions_register
-);
-
-void ensure_no_multiple_definition_of_the_same_function(
-    const std::pair<std::unordered_map<std::string, FunctionDefinition>::iterator, bool>& 
-        function_definition_insertion_outcome
-);
-
 void ensure_type_not_already_visited_hence_no_cyclic_dependency(
     const std::string& target_tag_name, 
     const std::unordered_set<std::string>& visited_definitions
-);
-
-void ensure_primitive_type_is_not_generic(
-    const Token& typesignature_token,
-    const std::vector<TypeSignature>& template_generics
 );

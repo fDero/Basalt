@@ -35,7 +35,7 @@ class PackageTypeConflictNavigator {
     
     public:
         PackageTypeConflictNavigator(ProgramRepresentation& program_representation);
-        void visit_file(const Filerepresentation& file_representation);
+        void visit_file(const FileRepresentation& file_representation);
         void visit_package(const std::string& package_name);
         
     private:
@@ -70,10 +70,6 @@ class AssignmentTypeChecker {
 
         bool validate_assignment_between_custom_types_generic_type_parameters(const TypeSignature& source, const TypeSignature& dest);
         bool validate_type_alias_unaware_assignment_between_custom_types_generic_type_parameters(const TypeSignature& source, const TypeSignature& dest);
-
-
-        bool typesignatures_are_equal(const TypeSignature& t1, const TypeSignature& t2);
-        bool type_alias_unaware_typesignatures_are_equal(const TypeSignature& t1, const TypeSignature& t2);
         
         ProgramRepresentation& program_representation;
         GenericSubstitutionRuleSet generic_substitution_rules;

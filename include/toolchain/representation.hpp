@@ -8,7 +8,7 @@
 #include <functional>
 #include <list>
 
-struct Filerepresentation {
+struct FileRepresentation {
 
     struct Metadata {
         std::string filename;
@@ -85,9 +85,9 @@ class FunctionSpecificityDescriptor {
         void compute_amount_of_strings_in_argument_types(ProgramRepresentation&, const FunctionDefinition&);
         void compute_amount_of_c_strings_in_argument_types(ProgramRepresentation&, const FunctionDefinition&);
 
-        [[nodiscard]] size_t count_recursivly_on_typesignature(
+        [[nodiscard]] size_t count_recursively_on_typesignature(
             const TypeSignature& type_signature,
-            std::function<size_t(const TypeSignature&)> count_function
+            const std::function<size_t(const TypeSignature&)>& count_function
         );
 };
 
@@ -95,7 +95,7 @@ struct ProgramRepresentation {
 
     public:
 
-        void store_definitions_from_file(const Filerepresentation& file_representation);
+        void store_definitions_from_file(const FileRepresentation& file_representation);
     
         void store_type_definition(const TypeDefinition& type_definition, const std::string& package_name);
         [[nodiscard]] TypeDefinition retrieve_type_definition(const CustomType& type_signature);
@@ -108,13 +108,13 @@ struct ProgramRepresentation {
     protected:
         
         std::unordered_map<std::string, std::string> package_name_by_file_name;
-        std::unordered_map<std::string, std::vector<Filerepresentation>> files_by_package;
+        std::unordered_map<std::string, std::vector<FileRepresentation>> files_by_package;
         std::unordered_map<std::string, std::vector<std::string>> imports_by_file;
 
         std::unordered_map<std::string, TypeDefinition> type_definitions;
          
-        [[nodiscard]] std::string get_fully_quilified_customtype_name(const CustomType& type_signature);
-        [[nodiscard]] std::string get_fully_quilified_typesignature_name(const TypeSignature& type_signature);
+        [[nodiscard]] std::string get_fully_qualified_customtype_name(const CustomType& type_signature);
+        [[nodiscard]] std::string get_fully_qualified_typesignature_name(const TypeSignature& type_signature);
         [[nodiscard]] std::optional<std::string> search_fully_qualified_typesignature_name(const CustomType&, const std::string&);
         [[nodiscard]] std::string get_type_definition_match_pattern(const std::string&, const TypeDefinition&);
         [[nodiscard]] std::string get_type_signature_match_pattern(const std::string&, const CustomType&);

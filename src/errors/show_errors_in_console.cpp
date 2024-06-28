@@ -14,11 +14,11 @@ void display_target_line(size_t char_pos, const std::string& line) {
     std::cout << "\n";
 }
 
-void display_error_context(const std::string& filename, int target_line_number, int char_pos) {
+void display_error_context(const std::string& filename, size_t target_line_number, size_t char_pos) {
     std::ifstream infile(filename);
     std::string line;
     int spread = 4;
-    for (int line_counter = 1; std::getline(infile, line); ++line_counter) {
+    for (size_t line_counter = 1; std::getline(infile, line); ++line_counter) {
         bool is_after_start = (line_counter > target_line_number - spread);
         bool is_before_finish = (line_counter < target_line_number + spread);
         bool is_at_target_spot = (line_counter == target_line_number);
@@ -30,7 +30,7 @@ void display_error_context(const std::string& filename, int target_line_number, 
 
 void display_commandline_error(const CommandLineError& err) {
     std::cout << std::endl << bold_red("COMMANDLINE ERROR: ") << red(err.error_message + "\n\n")
-    << purple("type 'basalt --help' in your console to get more informations\n\n");
+    << purple("type 'basalt --help' in your console to get more info\n\n");
 }
 
 void display_tokenization_error(const TokenizationError& err) {

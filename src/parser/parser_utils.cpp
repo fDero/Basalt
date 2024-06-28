@@ -10,8 +10,8 @@ Parser::Parser(const std::vector<Token>& tokens) {
     iterator = source_tokens.begin(); 
 }
 
-[[nodiscard]] Filerepresentation Parser::parse_everything() {
-    Filerepresentation output;
+[[nodiscard]] FileRepresentation Parser::parse_everything() {
+    FileRepresentation output;
     output.file_metadata.packagename = parse_package_name();
     parse_import_section(output);
     parse_alias_section(output);
@@ -19,7 +19,7 @@ Parser::Parser(const std::vector<Token>& tokens) {
     return output;
 }
 
-void Parser::parse_source_code(Filerepresentation& output) {
+void Parser::parse_source_code(FileRepresentation& output) {
     while (iterator != source_tokens.end()) {
         switch (iterator->type) {
             break; case Token::Type::func_keyword:    output.func_defs.push_back(parse_function_definition());
@@ -30,7 +30,7 @@ void Parser::parse_source_code(Filerepresentation& output) {
     }
 }
 
-void Parser::parse_alias_section(Filerepresentation& output) {
+void Parser::parse_alias_section(FileRepresentation& output) {
     while (iterator != source_tokens.end() && iterator->type == Token::Type::alias_keyword) {
         ensure_there_are_still_tokens(source_tokens, std::next(iterator));
         switch(std::next(iterator)->type) {
@@ -40,7 +40,7 @@ void Parser::parse_alias_section(Filerepresentation& output) {
     }
 }
 
-void Parser::parse_import_section(Filerepresentation& output) {
+void Parser::parse_import_section(FileRepresentation& output) {
     while (iterator != source_tokens.end() && iterator->type == Token::Type::import_keyword) {
         output.file_metadata.imports.push_back(parse_package_import());
     }

@@ -72,8 +72,8 @@ struct Conditional : public StatementBody {
 
     Conditional(
         const Expression& cond, 
-        const std::vector<Statement>& then_brench, 
-        const std::vector<Statement>& else_brench,
+        const std::vector<Statement>& then_branch,
+        const std::vector<Statement>& else_branch,
         const Token& if_token
     );
 };

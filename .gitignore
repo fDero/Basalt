@@ -1,5 +1,5 @@
 .vscode
-basalt
+.idea
 *.elf
 *.exe
 *.out
@@ -12,4 +12,6 @@ out/*
 out/bin/*
 out/lib/*
 basalt
+basalt.exe
 basalt_unit_tests
+basalt_unit_tests.exe

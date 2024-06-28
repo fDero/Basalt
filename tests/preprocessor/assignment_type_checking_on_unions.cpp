@@ -10,7 +10,7 @@
 TEST(Preprocessor, Number_Union_Is_Compatible_With_Itself) {
     ProgramRepresentation simple_union_definition_program;
     simple_union_definition_program.store_definitions_from_file(
-        Filerepresentation {
+            FileRepresentation {
             .file_metadata = {
                 .filename = "main.basalt",
                 .packagename = "testpackage",
@@ -37,7 +37,7 @@ TEST(Preprocessor, Number_Union_Is_Compatible_With_Itself) {
 TEST(Preprocessor, Int_Compatible_With_Number_Union) {
     ProgramRepresentation simple_union_definition_program;
     simple_union_definition_program.store_definitions_from_file(
-        Filerepresentation {
+            FileRepresentation {
             .file_metadata = {
                 .filename = "main.basalt",
                 .packagename = "testpackage",
@@ -66,7 +66,7 @@ TEST(Preprocessor, Int_Compatible_With_Number_Union) {
 TEST(Preprocessor, Number_Union_Compatible_With_Primitive_Union) {
     ProgramRepresentation simple_union_definition_program;
     simple_union_definition_program.store_definitions_from_file(
-        Filerepresentation {
+            FileRepresentation {
             .file_metadata = {
                 .filename = "main.basalt",
                 .packagename = "testpackage",
@@ -107,7 +107,7 @@ TEST(Preprocessor, Number_Union_Compatible_With_Primitive_Union) {
 TEST(Preprocessor, Int_Compatible_With_Primitive_When_Int_Implicitly_Named_Via_Number) {
     ProgramRepresentation simple_union_definition_program;
     simple_union_definition_program.store_definitions_from_file(
-        Filerepresentation {
+            FileRepresentation {
             .file_metadata = {
                 .filename = "main.basalt",
                 .packagename = "testpackage",
@@ -146,7 +146,7 @@ TEST(Preprocessor, Int_Compatible_With_Primitive_When_Int_Implicitly_Named_Via_N
 TEST(Preprocessor, Int_Compatible_With_Generic_Either_Union) {
     ProgramRepresentation simple_union_definition_program;
     simple_union_definition_program.store_definitions_from_file(
-        Filerepresentation {
+            FileRepresentation {
             .file_metadata = {
                 .filename = "main.basalt",
                 .packagename = "testpackage",

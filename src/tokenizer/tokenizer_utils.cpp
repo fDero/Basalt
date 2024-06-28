@@ -2,10 +2,7 @@
 #include "errors/tokenization_errors.hpp"
 #include "language/syntax.hpp"
 #include "toolchain/tokenizer.hpp"
-#include "errors/tokenization_errors.hpp"
-#include "errors/commandline_errors.hpp"
 #include "errors/internal_errors.hpp"
-#include "toolchain/tokenizer.hpp"
 
 Token::Token (
     const std::string& sourcetext,

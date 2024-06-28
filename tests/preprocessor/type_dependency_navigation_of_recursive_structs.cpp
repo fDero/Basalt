@@ -9,7 +9,7 @@
 
 TEST(Preprocessor, Recursive_Two_Struct_Dependency_Is_Cyclic_Dependency) {
     
-    Filerepresentation main_dot_basalt = {
+    FileRepresentation main_dot_basalt = {
         .file_metadata = {
             .filename = "main.basalt",
             .packagename = "testpackage",
@@ -45,7 +45,7 @@ TEST(Preprocessor, Recursive_Two_Struct_Dependency_Is_Cyclic_Dependency) {
 
 TEST(Preprocessor, Recursive_Two_Struct_Dependency_With_Pointer) {
     
-    Filerepresentation main_dot_basalt = {
+    FileRepresentation main_dot_basalt = {
         .file_metadata = {
             .filename = "main.basalt",
             .packagename = "testpackage",
@@ -81,7 +81,7 @@ TEST(Preprocessor, Recursive_Two_Struct_Dependency_With_Pointer) {
 
 TEST(Preprocessor, Recursive_Two_Struct_Dependency_With_Slices) {
     
-    Filerepresentation main_dot_basalt = {
+    FileRepresentation main_dot_basalt = {
         .file_metadata = {
             .filename = "main.basalt",
             .packagename = "testpackage",
@@ -117,7 +117,7 @@ TEST(Preprocessor, Recursive_Two_Struct_Dependency_With_Slices) {
 
 TEST(Preprocessor, Recursive_Two_Struct_Dependency_With_Array_Is_Cyclic_Dependency) {
     
-    Filerepresentation main_dot_basalt = {
+    FileRepresentation main_dot_basalt = {
         .file_metadata = {
             .filename = "main.basalt",
             .packagename = "testpackage",

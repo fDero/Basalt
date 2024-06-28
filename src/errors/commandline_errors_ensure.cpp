@@ -9,7 +9,7 @@ void avoid_conflicting_commandline_flags(
     if (previous != CommandLineController::Mode::unspecified) {
         throw CommandLineError {
             "conflicting compiler flags: the flags -v -h -r -c -d are mutually exclusive "
-            "(they cannot be used togheter)"
+            "(they cannot be used together)"
         };
     }
 }
@@ -19,7 +19,7 @@ void avoid_lack_of_input_files(const std::vector<std::string>& input_files) {
         throw CommandLineError {
             "no input files specified, don't know what to do \n"
             "(input files are supposed to be specified right after the -c/-r/-d flag \n"
-            "and tehir name should end with the .basalt file extension)"
+            "and their name should end with the .basalt file extension)"
         };
     }
 }

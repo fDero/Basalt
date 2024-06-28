@@ -11,7 +11,7 @@
 
 TEST(Representation, Retrieve_Generic_StructDefinition_From_TypeSignature_In_The_Same_File) {
     
-    Filerepresentation file {
+    FileRepresentation file {
         .file_metadata = { 
             .filename = "test.basalt",
             .packagename = "testpackage",
@@ -52,7 +52,7 @@ TEST(Representation, Retrieve_Generic_StructDefinition_From_TypeSignature_In_The
 
 TEST(Representation, Struct_Overloads_Are_Distinguished_By_Template_Generics_Count) {
     
-    Filerepresentation file {
+    FileRepresentation file {
         .file_metadata = { 
             .filename = "test.basalt",
             .packagename = "testpackage",

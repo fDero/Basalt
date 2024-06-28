@@ -72,7 +72,7 @@ inline const std::set<std::string> prefixes{
     "!","-","+","#",".","&"
 };
 
-inline const std::set<std::string> infixies{
+inline const std::set<std::string> infixies {
     "+","-","*","/","%","^",
     "<",">","<=",">=","==","!=",
     "&&","||","^^"

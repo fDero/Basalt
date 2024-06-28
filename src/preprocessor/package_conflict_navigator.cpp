@@ -6,7 +6,7 @@
 PackageTypeConflictNavigator::PackageTypeConflictNavigator(ProgramRepresentation& program_representation) 
     : program_representation(program_representation) {}
 
-void PackageTypeConflictNavigator::visit_file(const Filerepresentation& file_representation) {
+void PackageTypeConflictNavigator::visit_file(const FileRepresentation& file_representation) {
     if (visited_files.find(file_representation.file_metadata.filename) != visited_files.end()) {
         return;
     }
@@ -22,7 +22,7 @@ void PackageTypeConflictNavigator::visit_file(const Filerepresentation& file_rep
 }
 
 void PackageTypeConflictNavigator::visit_package(const std::string& package_name) {
-    for (const Filerepresentation& file : program_representation.files_by_package[package_name]) {
+    for (const FileRepresentation& file : program_representation.files_by_package[package_name]) {
         visit_file(file);
     }
 }

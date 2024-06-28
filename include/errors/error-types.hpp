@@ -11,7 +11,7 @@ struct CommandLineError : public std::exception {
     CommandLineError(const std::string& message) 
         : error_message(message) { }
     
-    const char* what() const noexcept override {
+    [[nodiscard]] const char* what() const noexcept override {
         return error_message.c_str();
     }
 };
@@ -37,7 +37,7 @@ struct TokenizationError : public std::exception {
         , tok_number(token), char_pos(position) 
     {}
 
-    const char* what() const noexcept override {
+    [[nodiscard]] const char* what() const noexcept override {
         return error_message.c_str();
     }
 };
@@ -69,7 +69,7 @@ struct ParsingError : public std::exception {
         , tok_number(token.tok_number), char_pos(token.char_pos) 
     {}
     
-    const char* what() const noexcept override {
+    [[nodiscard]] const char* what() const noexcept override {
         return error_message.c_str();
     }
 };
@@ -81,7 +81,7 @@ struct InternalError : public std::exception {
     InternalError(const std::string& message)
         : error_message(message) {}
 
-    const char* what() const noexcept override {
+    [[nodiscard]] const char* what() const noexcept override {
         return error_message.c_str();
     }
 };

@@ -18,7 +18,7 @@ class Parser {
 
     public:
         Parser(const std::vector<Token>& tokens);
-        [[nodiscard]] Filerepresentation parse_everything();
+        [[nodiscard]] FileRepresentation parse_everything();
 
         [[nodiscard]] Expression parse_array_literal();
         [[nodiscard]] Expression parse_expression();
@@ -70,12 +70,12 @@ class Parser {
         [[nodiscard]] std::string parse_package_name();
         [[nodiscard]] std::string parse_package_import();
         [[nodiscard]] TypeAlias parse_type_alias();
-        void parse_source_code(Filerepresentation& output);
-        void parse_alias_section(Filerepresentation& output);
-        void parse_import_section(Filerepresentation& output);
+        void parse_source_code(FileRepresentation& output);
+        void parse_alias_section(FileRepresentation& output);
+        void parse_import_section(FileRepresentation& output);
 
     private:
-        std::vector<std::string> template_generics;
+        std::vector<std::string> template_generics_encountered_so_far;
         std::vector<Token> source_tokens;
         std::vector<Token>::iterator iterator;
 

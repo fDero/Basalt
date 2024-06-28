@@ -11,7 +11,7 @@
 TEST(Preprocessor, Int_Is_Mutually_Compatible_With_AliasedInt) {
     ProgramRepresentation simple_alias_definition_program;
     simple_alias_definition_program.store_definitions_from_file(
-        Filerepresentation {
+            FileRepresentation {
             .file_metadata = {
                 .filename = "main.basalt",
                 .packagename = "testpackage",
@@ -36,7 +36,7 @@ TEST(Preprocessor, Int_Is_Mutually_Compatible_With_AliasedInt) {
 TEST(Preprocessor, Int_Is_Mutually_Compatible_With_Generic_Alias_Instantiated_With_Int) {
     ProgramRepresentation simple_alias_definition_program;
     simple_alias_definition_program.store_definitions_from_file(
-        Filerepresentation {
+            FileRepresentation {
             .file_metadata = {
                 .filename = "main.basalt",
                 .packagename = "testpackage",
@@ -61,7 +61,7 @@ TEST(Preprocessor, Int_Is_Mutually_Compatible_With_Generic_Alias_Instantiated_Wi
 TEST(Preprocessor, Pair_Of_Int_Int_Is_Compatible_With_Pair_Of_One_Generic_T_Via_Alias) {
     ProgramRepresentation simple_alias_definition_program;
     simple_alias_definition_program.store_definitions_from_file(
-        Filerepresentation {
+            FileRepresentation {
             .file_metadata = {
                 .filename = "main.basalt",
                 .packagename = "testpackage",
@@ -101,7 +101,7 @@ TEST(Preprocessor, Pair_Of_Int_Int_Is_Compatible_With_Pair_Of_One_Generic_T_Via_
     bool pair_int_int_compatible_with_pair_of_Ts = type_checker.validate_assignment(pair_int_int, pair_of_Ts);
     EXPECT_TRUE(pair_int_int_compatible_with_pair_of_Ts);
     EXPECT_EQ(type_checker.get_generic_substitution_rules().size(), 1);
-    EXPECT_EQ(type_checker.get_generic_substitution_rules().back().to_be_substituded, "T");
+    EXPECT_EQ(type_checker.get_generic_substitution_rules().back().to_be_replaced, "T");
     ASSERT_TRUE(type_checker.get_generic_substitution_rules().back().replacement.is<PrimitiveType>());
     EXPECT_EQ(type_checker.get_generic_substitution_rules().back().replacement.get<PrimitiveType>().type_name, "Int");
 }
@@ -109,7 +109,7 @@ TEST(Preprocessor, Pair_Of_Int_Int_Is_Compatible_With_Pair_Of_One_Generic_T_Via_
 TEST(Preprocessor, Pair_Of_Int_Is_Compatible_With_Pair_Of_T_U) {
     ProgramRepresentation simple_alias_definition_program;
     simple_alias_definition_program.store_definitions_from_file(
-        Filerepresentation {
+            FileRepresentation {
             .file_metadata = {
                 .filename = "main.basalt",
                 .packagename = "testpackage",
@@ -149,10 +149,10 @@ TEST(Preprocessor, Pair_Of_Int_Is_Compatible_With_Pair_Of_T_U) {
     bool pair_int_compatible_with_pair_of_T_U = type_checker.validate_assignment(pair_of_ints, pair_T_U);
     EXPECT_TRUE(pair_int_compatible_with_pair_of_T_U);
     EXPECT_EQ(type_checker.get_generic_substitution_rules().size(), 2);
-    EXPECT_EQ(type_checker.get_generic_substitution_rules().front().to_be_substituded, "T");
+    EXPECT_EQ(type_checker.get_generic_substitution_rules().front().to_be_replaced, "T");
     ASSERT_TRUE(type_checker.get_generic_substitution_rules().front().replacement.is<PrimitiveType>());
     EXPECT_EQ(type_checker.get_generic_substitution_rules().front().replacement.get<PrimitiveType>().type_name, "Int");
-    EXPECT_EQ(type_checker.get_generic_substitution_rules().back().to_be_substituded, "U");
+    EXPECT_EQ(type_checker.get_generic_substitution_rules().back().to_be_replaced, "U");
     ASSERT_TRUE(type_checker.get_generic_substitution_rules().back().replacement.is<PrimitiveType>());
     EXPECT_EQ(type_checker.get_generic_substitution_rules().back().replacement.get<PrimitiveType>().type_name, "Int");
 }
@@ -160,7 +160,7 @@ TEST(Preprocessor, Pair_Of_Int_Is_Compatible_With_Pair_Of_T_U) {
 TEST(Preprocessor, List_Of_Aliased_Ints_And_List_Of_Number_Are_Compatible_With_List_Of_T) {
     ProgramRepresentation simple_multi_definition_program;
     simple_multi_definition_program.store_definitions_from_file(
-        Filerepresentation {
+            FileRepresentation {
             .file_metadata = {
                 .filename = "main.basalt",
                 .packagename = "testpackage",
@@ -194,7 +194,7 @@ TEST(Preprocessor, List_Of_Aliased_Ints_And_List_Of_Number_Are_Compatible_With_L
     EXPECT_TRUE(list_of_numbers_compatible_with_list_of_Ts);
     EXPECT_TRUE(list_of_aliased_ints_compatible_with_list_of_Ts);
     EXPECT_EQ(type_checker.get_generic_substitution_rules().size(), 1);
-    EXPECT_EQ(type_checker.get_generic_substitution_rules().back().to_be_substituded, "T");
+    EXPECT_EQ(type_checker.get_generic_substitution_rules().back().to_be_replaced, "T");
     ASSERT_TRUE(type_checker.get_generic_substitution_rules().back().replacement.is<CustomType>());
     EXPECT_EQ(type_checker.get_generic_substitution_rules().back().replacement.get<CustomType>().type_name, "Number");
 }
@@ -202,7 +202,7 @@ TEST(Preprocessor, List_Of_Aliased_Ints_And_List_Of_Number_Are_Compatible_With_L
 TEST(Preprocessor, List_Of_Aliased_Ints_And_List_Of_Number_Are_Non_Mutually_Compatible_With_Each_Other) {
     ProgramRepresentation simple_multi_definition_program;
     simple_multi_definition_program.store_definitions_from_file(
-        Filerepresentation {
+            FileRepresentation {
             .file_metadata = {
                 .filename = "main.basalt",
                 .packagename = "testpackage",

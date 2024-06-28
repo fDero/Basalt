@@ -9,7 +9,7 @@
 
 TEST(Preprocessor, Recursive_Two_Struct_Dependency_With_Pointer_Accross_Different_Files_Of_The_Same_Package) {
     
-    Filerepresentation a_dot_basalt = {
+    FileRepresentation a_dot_basalt = {
         .file_metadata = {
             .filename = "a.basalt",
             .packagename = "testpackage",
@@ -28,7 +28,7 @@ TEST(Preprocessor, Recursive_Two_Struct_Dependency_With_Pointer_Accross_Differen
     };
 
     
-    Filerepresentation b_dot_basalt = {
+    FileRepresentation b_dot_basalt = {
         .file_metadata = {
             .filename = "b.basalt",
             .packagename = "testpackage",
@@ -58,7 +58,7 @@ TEST(Preprocessor, Recursive_Two_Struct_Dependency_With_Pointer_Accross_Differen
 
 TEST(Preprocessor, Simple_Two_Struct_Dependency_With_Pointer_Accross_Different_Packages_With_Import) {
     
-    Filerepresentation a_dot_basalt = {
+    FileRepresentation a_dot_basalt = {
         .file_metadata = {
             .filename = "a.basalt",
             .packagename = "importedpackage",
@@ -77,7 +77,7 @@ TEST(Preprocessor, Simple_Two_Struct_Dependency_With_Pointer_Accross_Different_P
     };
 
     
-    Filerepresentation b_dot_basalt = {
+    FileRepresentation b_dot_basalt = {
         .file_metadata = {
             .filename = "b.basalt",
             .packagename = "testpackage",
@@ -108,7 +108,7 @@ TEST(Preprocessor, Simple_Two_Struct_Dependency_With_Pointer_Accross_Different_P
 
 TEST(Preprocessor, Recursive_Two_Struct_Dependency_With_Pointer_Accross_Different_Packages_With_Recursive_Imports) {
     
-    Filerepresentation a_dot_basalt = {
+    FileRepresentation a_dot_basalt = {
         .file_metadata = {
             .filename = "a.basalt",
             .packagename = "apackage",
@@ -127,7 +127,7 @@ TEST(Preprocessor, Recursive_Two_Struct_Dependency_With_Pointer_Accross_Differen
     };
 
     
-    Filerepresentation b_dot_basalt = {
+    FileRepresentation b_dot_basalt = {
         .file_metadata = {
             .filename = "b.basalt",
             .packagename = "bpackage",
@@ -157,7 +157,7 @@ TEST(Preprocessor, Recursive_Two_Struct_Dependency_With_Pointer_Accross_Differen
 
 TEST(Preprocessor, Recursive_Two_Struct_Dependency_With_Pointer_Accross_Different_Packages_With_Direct_Path) {
     
-    Filerepresentation a_dot_basalt = {
+    FileRepresentation a_dot_basalt = {
         .file_metadata = {
             .filename = "a.basalt",
             .packagename = "apackage",
@@ -179,7 +179,7 @@ TEST(Preprocessor, Recursive_Two_Struct_Dependency_With_Pointer_Accross_Differen
     a_type_with_package_prefix.package_prefix = "apackage";
 
     
-    Filerepresentation b_dot_basalt = {
+    FileRepresentation b_dot_basalt = {
         .file_metadata = {
             .filename = "b.basalt",
             .packagename = "bpackage",

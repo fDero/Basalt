@@ -9,7 +9,7 @@
 
 TEST(Preprocessor, Detected_Type_Conflict_In_Two_File_Of_Different_Packages) {
     
-    Filerepresentation a1_dot_basalt = {
+    FileRepresentation a1_dot_basalt = {
         .file_metadata = {
             .filename = "a.basalt",
             .packagename = "a1package",
@@ -21,7 +21,7 @@ TEST(Preprocessor, Detected_Type_Conflict_In_Two_File_Of_Different_Packages) {
         .func_defs = { }
     };
 
-    Filerepresentation a2_dot_basalt = {
+    FileRepresentation a2_dot_basalt = {
         .file_metadata = {
             .filename = "b.basalt",
             .packagename = "a2package",
@@ -44,7 +44,7 @@ TEST(Preprocessor, Detected_Type_Conflict_In_Two_File_Of_Different_Packages) {
 
 TEST(Preprocessor, Detected_Type_Conflict_In_Three_Files_Of_Different_Packages) {
     
-    Filerepresentation a1_dot_basalt = {
+    FileRepresentation a1_dot_basalt = {
         .file_metadata = {
             .filename = "a.basalt",
             .packagename = "a1package",
@@ -56,7 +56,7 @@ TEST(Preprocessor, Detected_Type_Conflict_In_Three_Files_Of_Different_Packages) 
         .func_defs = { }
     };
 
-    Filerepresentation a2_dot_basalt = {
+    FileRepresentation a2_dot_basalt = {
         .file_metadata = {
             .filename = "b.basalt",
             .packagename = "a2package",
@@ -68,7 +68,7 @@ TEST(Preprocessor, Detected_Type_Conflict_In_Three_Files_Of_Different_Packages) 
         .func_defs = { }
     };
 
-    Filerepresentation main_dot_basalt = {
+    FileRepresentation main_dot_basalt = {
         .file_metadata = {
             .filename = "main.basalt",
             .packagename = "mainpackage",
@@ -90,7 +90,7 @@ TEST(Preprocessor, Detected_Type_Conflict_In_Three_Files_Of_Different_Packages) 
 
 TEST(Preprocessor, Detected_Type_Conflict_In_Three_Files_During_Chain_Import) {
     
-    Filerepresentation a1_dot_basalt = {
+    FileRepresentation a1_dot_basalt = {
         .file_metadata = {
             .filename = "a.basalt",
             .packagename = "a1package",
@@ -102,7 +102,7 @@ TEST(Preprocessor, Detected_Type_Conflict_In_Three_Files_During_Chain_Import) {
         .func_defs = { }
     };
 
-    Filerepresentation a2_dot_basalt = {
+    FileRepresentation a2_dot_basalt = {
         .file_metadata = {
             .filename = "b.basalt",
             .packagename = "a2package",
@@ -114,7 +114,7 @@ TEST(Preprocessor, Detected_Type_Conflict_In_Three_Files_During_Chain_Import) {
         .func_defs = { }
     };
 
-    Filerepresentation main_dot_basalt = {
+    FileRepresentation main_dot_basalt = {
         .file_metadata = {
             .filename = "main.basalt",
             .packagename = "mainpackage",

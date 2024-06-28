@@ -5,7 +5,7 @@
 void ensure_lack_of_input_files(const std::vector<std::string>& input_files) {
     if (!input_files.empty()) {
         throw CommandLineError {
-            "input files were given but they wheren't needed, \n"
+            "input files were given but they weren't needed, \n"
             "(please keep in mind that if you use version or help flag \n"
             "you are not expected to give any input file what so ever)"
         };
@@ -15,9 +15,9 @@ void ensure_lack_of_input_files(const std::vector<std::string>& input_files) {
 void ensure_lack_of_output_files(const std::vector<std::string>& output_files) {
     if (!output_files.empty()) {
         throw CommandLineError {
-           "output files were given but they wheren't needed, \n"
+           "output files were given but they weren't needed, \n"
             "(please keep in mind that you will get an output only \n"
-            "when compiling, wich means you only need to specify \n"
+            "when compiling, which means you only need to specify \n"
             "output files if you use the compilation flag)"
         };
     }

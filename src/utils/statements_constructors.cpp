@@ -37,14 +37,14 @@ Assignment::Assignment(
 
 Conditional::Conditional(
     const Expression& cond, 
-    const std::vector<Statement>& then_brench, 
-    const std::vector<Statement>& else_brench,
+    const std::vector<Statement>& then_branch,
+    const std::vector<Statement>& else_branch,
     const Token& if_token
 )
     : StatementBody(if_token)
     , condition(cond)
-    , then_brench(then_brench)
-    , else_brench(else_brench) 
+    , then_brench(then_branch)
+    , else_brench(else_branch)
 {}
 
 WhileLoop::WhileLoop(

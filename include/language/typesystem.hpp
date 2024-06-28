@@ -8,7 +8,7 @@
 
 struct TypeSignatureBody : public DebugInformationsAwareEntity {
 
-    TypeSignatureBody(const Token& token) 
+    TypeSignatureBody(const DebugInformationsAwareEntity& token)
         : DebugInformationsAwareEntity(token) {}
 
     [[nodiscard]] virtual bool is_generic(const std::vector<std::string>& generic_names) const = 0;

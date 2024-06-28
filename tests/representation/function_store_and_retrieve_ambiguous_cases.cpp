@@ -15,7 +15,7 @@ TEST(Representation, Retrieve_Function_Definition_From_Apparently_Ambiguous_Case
     
     TypeSignature number_type = CustomType { Token { "Number", "test.basalt", 1, 1, 1, Token::Type::type }, {} };
 
-    Filerepresentation file {
+    FileRepresentation file {
         .file_metadata = { 
             .filename = "test.basalt",
             .packagename = "testpackage",
@@ -100,7 +100,7 @@ TEST(Representation, Retrieve_Function_Definition_From_Apparently_Ambiguous_Case
         } }
     ;
 
-    Filerepresentation file {
+    FileRepresentation file {
         .file_metadata = { 
             .filename = "test.basalt",
             .packagename = "testpackage",
@@ -182,7 +182,7 @@ TEST(Representation, Retrieve_Function_Definition_From_Truly_Ambiguous_Case_Caus
         } }
     ;
 
-    Filerepresentation file {
+    FileRepresentation file {
         .file_metadata = { 
             .filename = "test.basalt",
             .packagename = "testpackage",

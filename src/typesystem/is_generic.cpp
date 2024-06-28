@@ -1,8 +1,6 @@
 
 #include "language/generics.hpp"
-#include "errors/internal_errors.hpp"
 #include <regex>
-#include <optional>
 
 [[nodiscard]] bool TypeSignature::is_generic(const std::vector<std::string>& generic_names) const {
     return ptr->is_generic(generic_names);

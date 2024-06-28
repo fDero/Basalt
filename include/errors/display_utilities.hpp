@@ -9,7 +9,7 @@
 
 void display_target_line(size_t char_pos, const std::string& line);
 
-void display_error_context(const std::string& filename, int target_line_number, int char_pos);
+void display_error_context(const std::string& filename, size_t target_line_number, size_t char_pos);
 
 void display_commandline_error(const CommandLineError& err);
 

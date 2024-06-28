@@ -10,7 +10,7 @@
 
 TEST(Representation, Retrieve_StructDefinition_From_TypeSignature_In_The_Same_File) {
     
-    Filerepresentation file {
+    FileRepresentation file {
         .file_metadata = { 
             .filename = "test.basalt",
             .packagename = "testpackage",
@@ -42,7 +42,7 @@ TEST(Representation, Retrieve_StructDefinition_From_TypeSignature_In_The_Same_Fi
 
 TEST(Representation, Retrieve_StructDefinition_From_TypeSignature_In_Different_Package_That_Was_Imported) {
 
-    Filerepresentation imported_dot_basalt {
+    FileRepresentation imported_dot_basalt {
         .file_metadata = { 
             .filename = "imported.basalt",
             .packagename = "importedpackage",
@@ -58,7 +58,7 @@ TEST(Representation, Retrieve_StructDefinition_From_TypeSignature_In_Different_P
         .func_defs = {}
     };
 
-    Filerepresentation main_dot_basalt {
+    FileRepresentation main_dot_basalt {
         .file_metadata = { 
             .filename = "main.basalt",
             .packagename = "testpackage",
@@ -85,7 +85,7 @@ TEST(Representation, Retrieve_StructDefinition_From_TypeSignature_In_Different_P
 
 TEST(Representation, Retrieve_StructDefinition_From_TypeSignature_In_Different_Files_Of_The_Same_Package) {
 
-    Filerepresentation imported_dot_basalt {
+    FileRepresentation imported_dot_basalt {
         .file_metadata = { 
             .filename = "imported.basalt",
             .packagename = "testpackage",
@@ -101,7 +101,7 @@ TEST(Representation, Retrieve_StructDefinition_From_TypeSignature_In_Different_F
         .func_defs = {}
     };
 
-    Filerepresentation main_dot_basalt {
+    FileRepresentation main_dot_basalt {
         .file_metadata = { 
             .filename = "main.basalt",
             .packagename = "testpackage",
@@ -129,7 +129,7 @@ TEST(Representation, Retrieve_StructDefinition_From_TypeSignature_In_Different_F
 
 TEST(Representation, Retrieve_StructDefinition_From_TypeSignature_In_Different_Packages_By_Direct_Path) {
 
-    Filerepresentation other_dot_basalt {
+    FileRepresentation other_dot_basalt {
         .file_metadata = { 
             .filename = "other.basalt",
             .packagename = "otherpackage",
@@ -145,7 +145,7 @@ TEST(Representation, Retrieve_StructDefinition_From_TypeSignature_In_Different_P
         .func_defs = {}
     };
 
-    Filerepresentation test_dot_basalt {
+    FileRepresentation test_dot_basalt {
         .file_metadata = { 
             .filename = "main.basalt",
             .packagename = "mainpackage",

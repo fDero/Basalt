@@ -5,28 +5,28 @@
 
 void CommandLineController::compiler_flag() {
     while (++arg_index < arg_counter && arg_values[arg_index][0] != '-')
-        inputs.push_back(arg_values[arg_index]);
+        inputs.emplace_back(arg_values[arg_index]);
     avoid_conflicting_commandline_flags(mode, Mode::compiler);
     mode = Mode::compiler;
 }
 
 void CommandLineController::interpreter_flag() {
     while (++arg_index < arg_counter && arg_values[arg_index][0] != '-') 
-        inputs.push_back(arg_values[arg_index]);
+        inputs.emplace_back(arg_values[arg_index]);
     avoid_conflicting_commandline_flags(mode, Mode::interpreter);
     mode = Mode::interpreter;
 }
 
 void CommandLineController::debugger_flag() {
     while (++arg_index < arg_counter && arg_values[arg_index][0] != '-')
-        inputs.push_back(arg_values[arg_index]);
+        inputs.emplace_back(arg_values[arg_index]);
     avoid_conflicting_commandline_flags(mode, Mode::debugger);
     mode = Mode::debugger;
 }
 
 void CommandLineController::output_flag() {
     while (++arg_index < arg_counter && arg_values[arg_index][0] != '-')
-        outputs.push_back(arg_values[arg_index]);
+        outputs.emplace_back(arg_values[arg_index]);
     avoid_lack_of_output_files(outputs);
 }
 

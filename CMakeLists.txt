@@ -63,6 +63,7 @@ target_compile_options(
   -Wall
   -Wpedantic
   -Wfloat-equal
+  -DDEBUG_BUILD
 )
 
 target_link_libraries(

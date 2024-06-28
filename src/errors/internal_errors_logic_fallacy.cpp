@@ -6,68 +6,6 @@
         "an execution path that should have been unreachable has been reached! (assert_unreachable)"
     };
 }
-
-[[noreturn]] void throw_unknown_token_type() {
-    throw InternalError{
-        "during tokenization, a token was found such that its type is unknown"
-    };
-}
-
-[[noreturn]] void throw_attempt_to_retrieve_struct_definition_from_primitive_type(const TypeSignature& type) {
-    throw InternalError {
-        "the type was expected to be a non-primitive-type type but it was primitive"
-    };
-}
-
-void assert_basetype_has_no_generics(const TypeSignature& typesignature) {
-    #ifdef DEBUG_BUILD
-    if (!typesignature.is<CustomType>()) {
-        throw InternalError {
-            "typesignature was expected to be a base type (non generic), but this wasn't the case"
-        };
-    }
-    if (!(typesignature.get<CustomType>().type_parameters.empty())) {
-        throw InternalError {
-            "base-type was expected to be non generic, but this wasn't the case"
-        };
-    }
-    #endif
-}
-
-void assert_type_is_non_primitive(const TypeSignature& type) {
-    #ifdef DEBUG_BUILD
-    if (type.is<CustomType>()) {
-        std::string type_name = type.get<CustomType>().type_name;
-        if (primitive_types.find(type_name) != primitive_types.end()) {
-            throw_attempt_to_retrieve_struct_definition_from_primitive_type(type);
-        }
-    }
-    #endif
-}
-
-void assert_token_sourcetext_non_empty(const std::string& sourcetext) {
-    #ifdef DEBUG_BUILD
-    if (sourcetext.empty()) {
-        throw InternalError {
-            "during tokenization, a token was found such that its sourcetext it's empty"
-        };
-    }
-    #endif
-}
-
-void assert_function_actually_retrieved(
-    const std::unordered_map<std::string, FunctionDefinition>::const_iterator iterator,
-    const std::unordered_map<std::string, FunctionDefinition>& function_definitions_register
-) {
-    #ifdef DEBUG_BUILD
-    if (iterator == function_definitions_register.end()) {
-        throw InternalError {
-            "such function doesn't exists in the given scope",
-        };
-    }
-    #endif
-}
-
 void assert_get_operation_is_possible(const char* wanted_type, const std::type_info& type_info) {
     #ifdef DEBUG_BUILD
     if (wanted_type != type_info.name()) {

@@ -12,7 +12,7 @@
 
 TEST(Representation, Simple_Function_Store_And_Retrieve) {
     
-    Filerepresentation file {
+    FileRepresentation file {
         .file_metadata = { 
             .filename = "test.basalt",
             .packagename = "testpackage",
@@ -55,7 +55,7 @@ TEST(Representation, Simple_Function_Store_And_Retrieve) {
 
 TEST(Representation, Generic_Function_Store_And_Retrieve_No_Type_Inference) {
     
-    Filerepresentation file {
+    FileRepresentation file {
         .file_metadata = { 
             .filename = "test.basalt",
             .packagename = "testpackage",
@@ -105,7 +105,7 @@ TEST(Representation, Generic_Function_Store_And_Retrieve_No_Type_Inference) {
 
 TEST(Representation, Generic_Function_Store_And_Retrieve_With_Type_Inference) {
     
-    Filerepresentation file {
+    FileRepresentation file {
         .file_metadata = { 
             .filename = "test.basalt",
             .packagename = "testpackage",
@@ -155,7 +155,7 @@ TEST(Representation, Generic_Function_Store_And_Retrieve_With_Type_Inference) {
 
 TEST(Representation, Generic_Function_Store_And_Retrieve_With_Bad_Concrete_Generics) {
     
-    Filerepresentation file {
+    FileRepresentation file {
         .file_metadata = { 
             .filename = "test.basalt",
             .packagename = "testpackage",
@@ -207,7 +207,7 @@ TEST(Representation, Generic_Function_Store_And_Retrieve_With_Bad_Concrete_Gener
 
 TEST(Representation, Generic_Function_Store_And_Retrieve_With_Bad_Arguments_And_Type_Inference) {
     
-    Filerepresentation file {
+    FileRepresentation file {
         .file_metadata = { 
             .filename = "test.basalt",
             .packagename = "testpackage",

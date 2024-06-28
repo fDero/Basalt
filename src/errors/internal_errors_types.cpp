@@ -80,20 +80,3 @@ void assert_token_is_text(const std::vector<Token>& source_tokens, const std::ve
     assert_token_is_of_given_type(source_tokens, iterator, "text", Token::Type::text);
     #endif
 }
-
-void assert_token_is_simple_type(const std::vector<Token>& source_tokens, const std::vector<Token>::iterator& iterator) {
-    #ifdef DEBUG_BUILD
-    assert_token_is_of_given_type(source_tokens, iterator, "type", Token::Type::type);
-    #endif
-}
-
-void assert_type_is_indeed_primitive_type(const std::string& type_name) {
-    #ifdef DEBUG_BUILD
-    if (primitive_types.find(type_name) == primitive_types.end()) {
-        throw InternalError {
-            "somehow the parser was expecting a primitive type, "
-            "but the type: " + type_name + " is not a primitive type"
-        };
-    }
-    #endif
-}

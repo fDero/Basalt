@@ -55,7 +55,7 @@ void assert_boolean_literal_properly_formatted(const std::vector<Token>::iterato
     #endif
 }
 
-void assert_string_literal_properly_fromatted(const std::vector<Token>::iterator& iterator) {
+void assert_string_literal_properly_formatted(const std::vector<Token>::iterator& iterator) {
     #ifdef DEBUG_BUILD
     if (iterator->sourcetext[0] != iterator->sourcetext.back()) {
         throw InternalError {
@@ -66,7 +66,7 @@ void assert_string_literal_properly_fromatted(const std::vector<Token>::iterator
     #endif
 }
 
-void assert_identifier_is_properly_fromatted(const std::vector<Token>::iterator& iterator) {
+void assert_identifier_is_properly_formatted(const std::vector<Token>::iterator& iterator) {
     #ifdef DEBUG_BUILD
     if (!islower(iterator->sourcetext[0])) {
         throw InternalError {
@@ -126,28 +126,6 @@ void assert_tokens_not_ended(const std::vector<Token>::iterator& iterator, const
     if (iterator == tokens.end()) {
         throw InternalError {
             "somehow the parser expected the token stream to be not yet ended, while instead every token already got processed"
-        };
-    }
-    #endif
-}
-
-void assert_current_token_is_function_keyword(const std::vector<Token>::iterator& iterator) {
-    #ifdef DEBUG_BUILD
-    if (iterator->sourcetext != "func") {
-        throw InternalError {
-            "during tokenization, a token was expected to be a 'func' keyword "
-            "for sure, instead it was : " + iterator->sourcetext
-        };
-    }
-    #endif
-}
-
-void assert_symbol_is_binary_operator(const std::string& symbol) {
-    #ifdef DEBUG_BUILD
-    if (infix_operators_priority.find(symbol) == infix_operators_priority.end()) {
-        throw InternalError {
-            "somehow the tokenizer categorized a token as a binary operator eventough "
-            "it clearly isn't, the token itself is: " + symbol
         };
     }
     #endif
