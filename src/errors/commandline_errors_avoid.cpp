@@ -2,16 +2,6 @@
 #include "errors/commandline_errors.hpp"
 #include <fstream>
 
-void ensure_lack_of_input_files(const std::vector<std::string>& input_files) {
-    if (!input_files.empty()) {
-        throw CommandLineError {
-            "input files were given but they weren't needed, \n"
-            "(please keep in mind that if you use version or help flag \n"
-            "you are not expected to give any input file what so ever)"
-        };
-    }
-}
-
 void ensure_lack_of_output_files(const std::vector<std::string>& output_files) {
     if (!output_files.empty()) {
         throw CommandLineError {

@@ -7,9 +7,9 @@
 Token::Token (
     const std::string& sourcetext,
     const std::string& filename,
-    unsigned long in_line_number,
-    unsigned int in_tok_number,
-    unsigned int in_char_pos,
+    size_t in_line_number,
+    size_t in_tok_number,
+    size_t in_char_pos,
     Type type
 )
     :  DebugInformationsAwareEntity(
@@ -21,14 +21,12 @@ Token::Token (
 {}
 
 Tokenizer::Tokenizer(const std::istringstream& inline_input)
-    : filename("inline input token stream"), line_number(0) {
-        token_input = std::make_unique<std::istringstream>(inline_input.str());  
-}
+    : token_input(std::make_unique<std::istringstream>(inline_input.str()))
+    , filename("inline input token stream") {}
 
 Tokenizer::Tokenizer(const std::filesystem::path& file_input) 
-    : filename(file_input.string()), line_number(0) {
-        token_input = std::make_unique<std::fstream>(filename, std::ios::in);  
-}
+    : token_input(std::make_unique<std::fstream>(filename, std::ios::in))
+    , filename(file_input.string()) {}
 
 void Tokenizer::inspect_for_unexpected_tokens() {
     std::string buffer;
@@ -88,14 +86,14 @@ void Tokenizer::ignore_discardable_characters() {
     return filename;
 }
 
-[[nodiscard]] unsigned long Tokenizer::get_line_number() const {
+[[nodiscard]] size_t Tokenizer::get_line_number() const {
     return line_number;
 }
 
-[[nodiscard]] unsigned int Tokenizer::get_tok_number() const {
+[[nodiscard]] size_t Tokenizer::get_tok_number() const {
     return tok_number;
 }
 
-[[nodiscard]] unsigned int Tokenizer::get_char_pos() const {
+[[nodiscard]] size_t Tokenizer::get_char_pos() const {
     return char_pos;
 }

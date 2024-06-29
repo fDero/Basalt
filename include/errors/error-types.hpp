@@ -20,21 +20,21 @@ struct TokenizationError : public std::exception {
     std::string error_message;
     std::string sourcetext;
     std::string filename;
-    unsigned long line_number;
-    unsigned int tok_number;
-    unsigned int char_pos;
+    size_t line_number;
+    size_t tok_number;
+    size_t char_pos;
 
     TokenizationError(
         const std::string& message,
         const std::string& source,
         const std::string& file,
-        unsigned long line,
-        unsigned int token,
-        unsigned int position
+        size_t in_line_number,
+        size_t in_token_number,
+        size_t in_char_pos
     )
         : error_message(message), sourcetext(source)
-        , filename(file), line_number(line)
-        , tok_number(token), char_pos(position) 
+        , filename(file), line_number(in_line_number)
+        , tok_number(in_token_number), char_pos(in_char_pos)
     {}
 
     [[nodiscard]] const char* what() const noexcept override {
@@ -46,21 +46,21 @@ struct ParsingError : public std::exception {
     std::string error_message;
     std::string sourcetext;
     std::string filename;
-    unsigned long line_number;
-    unsigned int tok_number;
-    unsigned int char_pos;
+    size_t line_number;
+    size_t tok_number;
+    size_t char_pos;
 
     ParsingError(
         const std::string& message,
         const std::string& source,
         const std::string& file,
-        unsigned long line,
-        unsigned int token,
-        unsigned int position
+        size_t in_line_number,
+        size_t in_token_number,
+        size_t in_char_pos
     )
         : error_message(message), sourcetext(source)
-        , filename(file), line_number(line)
-        , tok_number(token), char_pos(position) 
+        , filename(file), line_number(in_line_number)
+        , tok_number(in_token_number), char_pos(in_char_pos)
     {}
 
     ParsingError(const std::string& message, const Token& token)

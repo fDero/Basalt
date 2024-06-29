@@ -31,8 +31,6 @@ void avoid_duplicate_output_file_extensions(
     const CommandLineController::FileExtension file_ext
 );
 
-void ensure_lack_of_input_files(const std::vector<std::string>& input_files);
-
 void ensure_lack_of_output_files(const std::vector<std::string>& output_files);
 
 void ensure_source_file_is_open(const std::fstream& input_file, const std::string& file_name);

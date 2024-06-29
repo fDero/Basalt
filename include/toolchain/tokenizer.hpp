@@ -33,9 +33,9 @@ struct Token : public DebugInformationsAwareEntity {
     Token(
         const std::string& sourcetext,
         const std::string& filename,
-        unsigned long in_line_number,
-        unsigned int in_tok_number,
-        unsigned int in_char_pos,
+        size_t in_line_number,
+        size_t in_tok_number,
+        size_t in_char_pos,
         Type type
     );
 };
@@ -46,9 +46,9 @@ class Tokenizer {
         std::unique_ptr<std::istream> token_input;
         std::string filename;
         std::string current_line;
-        unsigned long line_number;
-        unsigned int tok_number;
-        unsigned int char_pos;
+        unsigned long line_number = 0;
+        unsigned int tok_number = 0;
+        unsigned int char_pos = 0;
 
         std::stack<Token> multiline_comments_tracker;
         void update_multiline_comments_tracker();
@@ -68,9 +68,9 @@ class Tokenizer {
         [[nodiscard]] std::vector<Token> tokenize();
         [[nodiscard]] std::string get_current_line() const;
         [[nodiscard]] std::string get_filename() const;
-        [[nodiscard]] unsigned long get_line_number() const;
-        [[nodiscard]] unsigned int get_tok_number() const;
-        [[nodiscard]] unsigned int get_char_pos() const;
+        [[nodiscard]] size_t get_line_number() const;
+        [[nodiscard]] size_t get_tok_number() const;
+        [[nodiscard]] size_t get_char_pos() const;
 
         [[nodiscard]] std::optional<Token> extract_number();
         [[nodiscard]] std::optional<Token> extract_text();

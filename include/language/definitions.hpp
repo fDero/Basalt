@@ -89,7 +89,6 @@ struct TypeDefinition
     using SmartVariant::get;
     using SmartVariant::is;
 
-    [[nodiscard]] std::string generate_id() const;
     [[nodiscard]] std::string get_simple_name() const;
     [[nodiscard]] size_t get_number_of_generics() const;
 

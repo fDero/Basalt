@@ -8,8 +8,9 @@ hidden
 *.basalt
 grammar/.antlr
 build
-out/*
-out/bin/*
+out
+cmake-build-debug
+out/bin/**
 out/lib/*
 basalt
 basalt.exe
