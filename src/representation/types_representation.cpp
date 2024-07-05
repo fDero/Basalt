@@ -4,6 +4,7 @@
 #include "errors/internal_errors.hpp"
 #include "language/generics.hpp"
 
+
 void ProgramRepresentation::store_type_definition(
     const TypeDefinition& type_def, 
     const std::string& package_name
@@ -15,7 +16,11 @@ void ProgramRepresentation::store_type_definition(
 
 [[nodiscard]] TypeDefinition ProgramRepresentation::retrieve_type_definition(const CustomType& type_signature) {
     const std::string& fully_qualified_name = get_fully_qualified_customtype_name(type_signature);
-    return type_definitions.at(fully_qualified_name);
+    auto search_outcome = type_definitions.find(fully_qualified_name);
+    if (search_outcome != type_definitions.end()) {
+        return search_outcome->second;
+    }
+    throw_no_type_definition_found(type_signature);
 }
 
 [[nodiscard]] TypeSignature ProgramRepresentation::unalias_type(const TypeSignature& type_signature) {

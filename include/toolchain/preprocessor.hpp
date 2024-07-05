@@ -67,6 +67,8 @@ class AssignmentTypeChecker {
         bool structural_equivalence_assignment_validation(const TypeSignature& source, const TypeSignature& dest);
         bool validate_assignment_to_string(const TypeSignature& source, const PrimitiveType& dest);
         bool validate_assignment_to_inline_union(const TypeSignature& source, const InlineUnion& inline_union);
+        bool validate_assignment_to_generic_type_parameter(const TypeSignature& source, const TemplateType& dest);
+        bool validate_assignment_very_strictly(const TypeSignature& source_generic, const TypeSignature& dest_generic);
 
         std::vector<TypeSignature> try_to_get_union_alternatives(const TypeSignature& maybe_union_type_signature);
         bool validate_assignment_to_union_alternatives(const TypeSignature& source, const std::vector<TypeSignature>& alternatives);

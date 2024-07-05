@@ -39,10 +39,10 @@ TEST(Preprocessor, IntOrFloat_Is_Mutually_Compatible_With_Number) {
             },
             .type_defs = {
                 UnionDefinitionFactory::make_union_definition(
-                        "Number", { }, {
-                                TypeSignatureFactory::Int,
-                                TypeSignatureFactory::Float
-                        }
+                    "Number", { }, {
+                        TypeSignatureFactory::Int,
+                        TypeSignatureFactory::Float
+                    }
                 )
             },
             .func_defs = { }
