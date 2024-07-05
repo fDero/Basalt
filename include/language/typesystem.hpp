@@ -42,7 +42,7 @@ struct CustomType : public TypeSignatureBody {
 
 struct InlineUnion : public TypeSignatureBody {
 
-    InlineUnion(const Token& typename_token, const std::vector<TypeSignature>& alternatives);
+    InlineUnion(const DebugInformationsAwareEntity& typename_token, const std::vector<TypeSignature>& alternatives);
 
     [[nodiscard]] bool is_generic() const override;
     void instantiate_generics(const GenericSubstitutionRuleSet&) override;

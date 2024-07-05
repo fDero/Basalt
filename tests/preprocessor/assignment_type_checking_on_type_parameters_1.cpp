@@ -77,15 +77,6 @@ TEST(Preprocessor, Number_And_Int_Are_Compatible_With_Template_T) {
     EXPECT_EQ(type_checker.get_generic_substitution_rules().back().replacement.get<CustomType>().type_name, "Number");
 }
 
-TEST(Preprocessor, String_And_Int_Cannot_Be_Compatible_With_T_Simultaneously) {
-    ProgramRepresentation empty_program;
-    AssignmentTypeChecker type_checker(empty_program);
-    bool string_is_compatible_with_T = type_checker.validate_assignment(TypeSignatureFactory::String, TypeSignatureFactory::T);
-    bool int_is_compatible_with_T_after_string_was_assigned_to_it = type_checker.validate_assignment(TypeSignatureFactory::Int, TypeSignatureFactory::T);
-    EXPECT_TRUE(string_is_compatible_with_T);
-    EXPECT_FALSE(int_is_compatible_with_T_after_string_was_assigned_to_it);
-}
-
 TEST(Preprocessor, List_Of_Ints_And_List_Of_Number_Are_Compatible_With_List_Of_T) {
     ProgramRepresentation simple_multi_definition_program;
     simple_multi_definition_program.store_definitions_from_file(

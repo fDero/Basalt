@@ -49,11 +49,17 @@ bool AssignmentTypeChecker::validate_assignment_to_template_generic(const TypeSi
         if (rule.to_be_replaced == dest.type_name) {
             if (validate_assignment(rule.replacement, source)) {
                 rule.replacement = source;
+            }
+            else if (validate_assignment(source, rule.replacement)) {
                 return true;
             }
-            else {
-                return validate_assignment(source, rule.replacement);
+            else if (rule.replacement.is<InlineUnion>()) {
+                rule.replacement.get<InlineUnion>().alternatives.push_back(source);
             }
+            else {
+                rule.replacement = InlineUnion { dest, { rule.replacement, source } };
+            }
+            return true;
         }
     }
     generic_substitution_rules.push_back({dest.type_name, source});

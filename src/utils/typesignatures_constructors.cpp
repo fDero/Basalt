@@ -13,7 +13,7 @@ CustomType::CustomType(
     , type_parameters(generics)
 {}
 
-InlineUnion::InlineUnion(const Token &first_type_token, const std::vector<TypeSignature> &alternatives)
+InlineUnion::InlineUnion(const DebugInformationsAwareEntity &first_type_token, const std::vector<TypeSignature> &alternatives)
     : TypeSignatureBody(first_type_token)
     , alternatives(alternatives)
 {}
