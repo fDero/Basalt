@@ -1,8 +1,5 @@
 
-#include "toolchain/representation.hpp"
 #include "language/definitions.hpp"
-#include "language/functions.hpp"
-#include "errors/parsing_errors.hpp"
 #include "language/syntax.hpp"
 
 [[nodiscard]] std::string TypeAlias::generate_alias_id() const {

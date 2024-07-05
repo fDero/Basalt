@@ -63,7 +63,6 @@ class FunctionSpecificityDescriptor {
         [[nodiscard]] ComparisonOutcome compare(const FunctionSpecificityDescriptor& other) const;
         [[nodiscard]] ComparisonOutcome compare(const std::optional<FunctionSpecificityDescriptor>& other) const;
         
-
     private:
         size_t number_of_generics = 0;
         size_t number_of_generic_parameters_usage_in_signature = 0;
@@ -119,7 +118,7 @@ struct ProgramRepresentation {
         [[nodiscard]] std::string get_type_definition_match_pattern(const std::string&, const TypeDefinition&);
         [[nodiscard]] std::string get_type_signature_match_pattern(const std::string&, const CustomType&);
         [[nodiscard]] std::string infer_possible_fully_qualified_typesignature_name(const std::string&, const TypeSignature&);
-        [[nodiscard]] std::string infer_possible_fully_qualified_typesignature_name_for_custom_type(const std::string&, const CustomType&);
+        [[nodiscard]] std::string infer_possible_fully_qualified_customtype_name(const std::string &packageName, const CustomType &custom_type);
 
         using FunctionDefinitionRef = std::shared_ptr<FunctionDefinition>;
         using FunctionOverloadSet = std::vector<FunctionDefinitionRef>;

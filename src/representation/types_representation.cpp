@@ -72,6 +72,16 @@ std::string ProgramRepresentation::get_fully_qualified_typesignature_name(const 
     else if (type_signature.is<PrimitiveType>()) {
         return type_signature.get<PrimitiveType>().type_name;
     }
+    else if (type_signature.is<InlineUnion>()) {
+        std::string inline_union_fully_qualified_name;
+        for (const TypeSignature& alternative : type_signature.get<InlineUnion>().alternatives){
+            inline_union_fully_qualified_name += get_fully_qualified_typesignature_name(alternative) + " | ";
+        }
+        inline_union_fully_qualified_name.pop_back();
+        inline_union_fully_qualified_name.pop_back();
+        inline_union_fully_qualified_name.pop_back();
+        return inline_union_fully_qualified_name;
+    }
     else if (type_signature.is<TemplateType>()) {
         return type_signature.get<TemplateType>().type_name;
     }
@@ -106,42 +116,52 @@ std::string ProgramRepresentation::get_fully_qualified_typesignature_name(const 
 }
 
 [[nodiscard]] std::string ProgramRepresentation::get_type_definition_match_pattern(
-    const std::string& packageName, 
+    const std::string& package_name,
     const TypeDefinition& type_definition
 ) {
-    std::string pattern_tag_name = packageName + namespace_concatenation + type_definition.get_simple_name();
+    std::string pattern_tag_name = package_name + namespace_concatenation + type_definition.get_simple_name();
     size_t number_of_generics = type_definition.get_number_of_generics();
     std::string generics_section = (number_of_generics > 0)? "<" + std::to_string(number_of_generics) + ">" : "";
     return pattern_tag_name + generics_section;
 }
 
 [[nodiscard]] std::string ProgramRepresentation::get_type_signature_match_pattern(
-    const std::string& packageName, 
+    const std::string& package_name,
     const CustomType& type_signature
 ) {
-    std::string pattern_tag_name = packageName + namespace_concatenation + type_signature.type_name;
+    std::string pattern_tag_name = package_name + namespace_concatenation + type_signature.type_name;
     size_t number_of_generics = type_signature.type_parameters.size();
     std::string generics_section = (number_of_generics > 0)? "<" + std::to_string(number_of_generics) + ">" : "";
     return pattern_tag_name + generics_section;
 }
 
 [[nodiscard]] std::string ProgramRepresentation::infer_possible_fully_qualified_typesignature_name(
-    const std::string& packageName, 
+    const std::string& package_name,
     const TypeSignature& type_signature
 ) {
     if (type_signature.is<SliceType>()) {
         const TypeSignature& stored_type = type_signature.get<SliceType>().stored_type;
-        return "$" + infer_possible_fully_qualified_typesignature_name(packageName, stored_type);
+        return "$" + infer_possible_fully_qualified_typesignature_name(package_name, stored_type);
     }
     else if (type_signature.is<PointerType>()) {
         const TypeSignature& pointed_type = type_signature.get<PointerType>().pointed_type;
-        return "#" + infer_possible_fully_qualified_typesignature_name(packageName, pointed_type);
+        return "#" + infer_possible_fully_qualified_typesignature_name(package_name, pointed_type);
     }
     else if (type_signature.is<ArrayType>()) {
         const TypeSignature& stored_type = type_signature.get<ArrayType>().stored_type;
         const ArrayType& array_type = type_signature.get<ArrayType>();
         std::string array_size_section = "[" + ((array_type.array_length == -1)? "" : std::to_string(array_type.array_length)) + "]";
-        return array_size_section + infer_possible_fully_qualified_typesignature_name(packageName, stored_type);
+        return array_size_section + infer_possible_fully_qualified_typesignature_name(package_name, stored_type);
+    }
+    else if (type_signature.is<InlineUnion>()) {
+        std::string inline_union_fully_qualified_name;
+        for (const TypeSignature& alternative : type_signature.get<InlineUnion>().alternatives){
+            inline_union_fully_qualified_name += infer_possible_fully_qualified_typesignature_name(package_name, alternative) + " | ";
+        }
+        inline_union_fully_qualified_name.pop_back();
+        inline_union_fully_qualified_name.pop_back();
+        inline_union_fully_qualified_name.pop_back();
+        return inline_union_fully_qualified_name;
     }
     else if (type_signature.is<PrimitiveType>()) {
         return type_signature.get<PrimitiveType>().type_name;
@@ -152,11 +172,11 @@ std::string ProgramRepresentation::get_fully_qualified_typesignature_name(const 
     else {
         assert_typesignature_is<CustomType>(type_signature);        
         const CustomType& custom_type = type_signature.get<CustomType>();
-        return infer_possible_fully_qualified_typesignature_name_for_custom_type(packageName, custom_type);
+        return infer_possible_fully_qualified_customtype_name(package_name, custom_type);
     }
 }
 
-[[nodiscard]] std::string ProgramRepresentation::infer_possible_fully_qualified_typesignature_name_for_custom_type(
+[[nodiscard]] std::string ProgramRepresentation::infer_possible_fully_qualified_customtype_name(
     const std::string& packageName, 
     const CustomType& custom_type
 ) {

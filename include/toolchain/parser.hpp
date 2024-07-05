@@ -45,6 +45,8 @@ class Parser {
         [[nodiscard]] Statement parse_non_keyword_initialized_statements();
 
         [[nodiscard]] TypeSignature parse_typesignature();
+        [[nodiscard]] TypeSignature parse_simple_typesignature();
+        [[nodiscard]] TypeSignature parse_inline_union(const Token& first_type_token, const TypeSignature& first_type);
         [[nodiscard]] TypeSignature parse_pointer_type();
         [[nodiscard]] TypeSignature parse_array_type();
         [[nodiscard]] TypeSignature parse_slice_type();

@@ -1,6 +1,5 @@
 
 #include <gtest/gtest.h>
-#include "language/generics.hpp"
 #include "errors/internal_errors.hpp"
 #include "toolchain/preprocessor.hpp"
 #include "../tests_utilities/union_definition_factory.hpp"
@@ -110,16 +109,19 @@ TEST(Preprocessor, List_Of_Ints_And_List_Of_Number_Are_Compatible_With_List_Of_T
             .func_defs = { }
         }
     );
+
     AssignmentTypeChecker type_checker(simple_multi_definition_program);
     TypeSignature number_type = CustomType { Token { "Number", "main.basalt", 1, 1, 1, Token::Type::type }, {} };
     TypeSignature list_of_ints = CustomType { Token { "List", "main.basalt", 1, 1, 1, Token::Type::type }, { TypeSignatureFactory::Int } };
     TypeSignature list_of_numbers = CustomType { Token { "List", "main.basalt", 1, 1, 1, Token::Type::type }, { number_type } };
     TypeSignature list_of_Ts = CustomType { Token { "List", "main.basalt", 1, 1, 1, Token::Type::type }, { TypeSignatureFactory::T } };
+
     bool list_of_numbers_compatible_with_list_of_Ts = type_checker.validate_assignment(list_of_numbers, list_of_Ts);
     bool list_of_ints_compatible_with_list_of_Ts = type_checker.validate_assignment(list_of_ints, list_of_Ts);
+
     EXPECT_TRUE(list_of_numbers_compatible_with_list_of_Ts);
     EXPECT_TRUE(list_of_ints_compatible_with_list_of_Ts);
-    EXPECT_EQ(type_checker.get_generic_substitution_rules().size(), 1);
+    ASSERT_EQ(type_checker.get_generic_substitution_rules().size(), 1);
     EXPECT_EQ(type_checker.get_generic_substitution_rules().back().to_be_replaced, "T");
     ASSERT_TRUE(type_checker.get_generic_substitution_rules().back().replacement.is<CustomType>());
     EXPECT_EQ(type_checker.get_generic_substitution_rules().back().replacement.get<CustomType>().type_name, "Number");
@@ -148,6 +150,7 @@ TEST(Preprocessor, List_Of_Ints_And_List_Of_Number_Are_Non_Mutually_Compatible_W
             .func_defs = { }
         }
     );
+
     AssignmentTypeChecker type_checker(simple_multi_definition_program);
     TypeSignature number_type = CustomType { Token { "Number", "main.basalt", 1, 1, 1, Token::Type::type }, {} };
     TypeSignature list_of_ints = CustomType { Token { "List", "main.basalt", 1, 1, 1, Token::Type::type }, { TypeSignatureFactory::Int } };

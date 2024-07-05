@@ -46,7 +46,7 @@ FunctionSpecificityDescriptor::compare(const FunctionSpecificityDescriptor& othe
         }
         else {
             return (std::get<1>(policy) > std::get<2>(policy))?
-                   ComparisonOutcome::MORE_SPECIFIC : ComparisonOutcome::LESS_SPECIFIC;
+                ComparisonOutcome::MORE_SPECIFIC : ComparisonOutcome::LESS_SPECIFIC;
         }
     }
     return ComparisonOutcome::EQUALLY_SPECIFIC;
@@ -73,7 +73,7 @@ void FunctionSpecificityDescriptor::compute_number_of_generic_parameters_usage_i
     };
     for (const FunctionDefinition::Argument& arg : func_definition.arguments) {
         number_of_generic_parameters_usage_in_signature +=
-                count_recursively_on_typesignature(arg.arg_type, count_function);
+            count_recursively_on_typesignature(arg.arg_type, count_function);
     }
 }
 
@@ -85,7 +85,7 @@ void FunctionSpecificityDescriptor::compute_argument_types_complexity_indicator(
     };
     for (const FunctionDefinition::Argument& arg : func_definition.arguments) {
         argument_types_complexity_indicator +=
-                count_recursively_on_typesignature(arg.arg_type, count_function);
+            count_recursively_on_typesignature(arg.arg_type, count_function);
     }
 }
 
@@ -94,15 +94,18 @@ void FunctionSpecificityDescriptor::compute_amount_of_unions_in_argument_types(
     const FunctionDefinition& func_definition
 ) {
     std::function<size_t(const TypeSignature&)> count_function = [&program_representation](const TypeSignature& type_signature) {
-        if (!type_signature.is<CustomType>()) {
-            return (size_t) 0;
+        if (type_signature.is<InlineUnion>()){
+            return (size_t) 1;
         }
-        TypeDefinition def = program_representation.retrieve_type_definition(type_signature.get<CustomType>());
-        return (size_t) def.is<UnionDefinition>();
+        if (type_signature.is<CustomType>()) {
+            TypeDefinition def = program_representation.retrieve_type_definition(type_signature.get<CustomType>());
+            return (size_t) def.is<UnionDefinition>();
+        }
+        return (size_t) 0;
     };
     for (const FunctionDefinition::Argument& arg : func_definition.arguments) {
         amount_of_unions_in_argument_types +=
-                count_recursively_on_typesignature(arg.arg_type, count_function);
+            count_recursively_on_typesignature(arg.arg_type, count_function);
     }
 }
 
@@ -111,21 +114,27 @@ void FunctionSpecificityDescriptor::compute_amount_of_cases_covered_by_argument_
     const FunctionDefinition& func_definition
 ) {
     std::function<size_t(const TypeSignature&)> count_function = [this, &program_representation, &count_function](const TypeSignature& type_signature) {
-        if (!type_signature.is<CustomType>()) {
-            return (size_t) 0;
-        }
-        TypeDefinition def = program_representation.retrieve_type_definition(type_signature.get<CustomType>());
         size_t count = 1;
-        if (def.is<UnionDefinition>()) {
-            for (const TypeSignature& alternative : def.get<UnionDefinition>().types) {
+        if (type_signature.is<InlineUnion>()) {
+            for (const TypeSignature& alternative : type_signature.get<InlineUnion>().alternatives) {
                 count += this->count_recursively_on_typesignature(alternative, count_function);
             }
+            return count;
         }
-        return count;
+        if (type_signature.is<CustomType>()) {
+            TypeDefinition def = program_representation.retrieve_type_definition(type_signature.get<CustomType>());
+            if (def.is<UnionDefinition>()) {
+                for (const TypeSignature &alternative: def.get<UnionDefinition>().types) {
+                    count += this->count_recursively_on_typesignature(alternative, count_function);
+                }
+            }
+            return count;
+        }
+        return (size_t) 0;
     };
     for (const FunctionDefinition::Argument& arg : func_definition.arguments) {
         amount_of_unions_in_argument_types +=
-                count_recursively_on_typesignature(arg.arg_type, count_function);
+            count_recursively_on_typesignature(arg.arg_type, count_function);
     }
 }
 
@@ -137,7 +146,7 @@ void FunctionSpecificityDescriptor::compute_amount_of_slices_in_argument_types(
     };
     for (const FunctionDefinition::Argument& arg : func_definition.arguments) {
         amount_of_slices_in_argument_types +=
-                count_recursively_on_typesignature(arg.arg_type, count_function);
+            count_recursively_on_typesignature(arg.arg_type, count_function);
     }
 }
 
@@ -149,7 +158,7 @@ void FunctionSpecificityDescriptor::compute_amount_of_arrays_in_argument_types(
     };
     for (const FunctionDefinition::Argument& arg : func_definition.arguments) {
         amount_of_arrays_in_argument_types +=
-                count_recursively_on_typesignature(arg.arg_type, count_function);
+            count_recursively_on_typesignature(arg.arg_type, count_function);
     }
 }
 
@@ -161,7 +170,7 @@ void FunctionSpecificityDescriptor::compute_amount_of_strings_in_argument_types(
     };
     for (const FunctionDefinition::Argument& arg : func_definition.arguments) {
         amount_of_strings_in_argument_types +=
-                count_recursively_on_typesignature(arg.arg_type, count_function);
+            count_recursively_on_typesignature(arg.arg_type, count_function);
     }
 }
 
@@ -173,11 +182,9 @@ void FunctionSpecificityDescriptor::compute_amount_of_c_strings_in_argument_type
     };
     for (const FunctionDefinition::Argument& arg : func_definition.arguments) {
         amount_of_c_strings_in_argument_types +=
-                count_recursively_on_typesignature(arg.arg_type, count_function);
+            count_recursively_on_typesignature(arg.arg_type, count_function);
     }
 }
-
-
 
 [[nodiscard]] size_t FunctionSpecificityDescriptor::count_recursively_on_typesignature(
     const TypeSignature& type_signature,
@@ -189,20 +196,20 @@ void FunctionSpecificityDescriptor::compute_amount_of_c_strings_in_argument_type
     }
     if (type_signature.is<ArrayType>()) {
         return current_count + count_recursively_on_typesignature(
-                type_signature.get<ArrayType>().stored_type,
-                count_function
+            type_signature.get<ArrayType>().stored_type,
+            count_function
         );
     }
     if (type_signature.is<SliceType>()) {
         return current_count + count_recursively_on_typesignature(
-                type_signature.get<SliceType>().stored_type,
-                count_function
+            type_signature.get<SliceType>().stored_type,
+            count_function
         );
     }
     if (type_signature.is<PointerType>()) {
         return current_count + count_recursively_on_typesignature(
-                type_signature.get<PointerType>().pointed_type,
-                count_function
+            type_signature.get<PointerType>().pointed_type,
+            count_function
         );
     }
     if (type_signature.is<CustomType>()) {

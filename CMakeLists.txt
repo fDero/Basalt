@@ -39,12 +39,14 @@ add_executable(
   ${MAIN_BINARY}
   ${MAIN_FILE}
   ${SOURCE_FILES}
+        src/preprocessor/assignment_type_checker_for_complex_types.cpp
 )
 
 add_executable(
   ${TEST_BINARY}
   ${SOURCE_FILES}
   ${TEST_FILES}
+        tests/preprocessor/assignment_type_checker_on_inline_unions.cpp
 )
 
 target_compile_options(

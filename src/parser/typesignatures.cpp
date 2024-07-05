@@ -6,19 +6,34 @@
 #include "language/expressions.hpp"
 #include <assert.h>
 
-[[nodiscard]] TypeSignature Parser::parse_typesignature() {
+[[nodiscard]] TypeSignature Parser::parse_simple_typesignature() {
     if (iterator->sourcetext == pointer_type_symbol) return parse_pointer_type();
     if (iterator->sourcetext == array_type_first_symbol) return parse_array_type();
     if (iterator->sourcetext == slice_type_symbol) return parse_slice_type();
     if (primitive_types.find(iterator->sourcetext) != primitive_types.end()) {
         return parse_primitive_type();
     }
-    if (is_template_type(iterator->sourcetext)) {
-        return parse_template_type();
+    return (is_template_type(iterator->sourcetext))
+        ? parse_template_type()
+        : parse_custom_type();
+}
+
+[[nodiscard]] TypeSignature Parser::parse_typesignature(){
+    ensure_there_are_still_tokens(source_tokens, iterator);
+    const Token& first_type_token = *iterator;
+    TypeSignature type_signature = parse_simple_typesignature();
+    return (iterator == source_tokens.end() || iterator->sourcetext != "|")
+        ? type_signature
+        : parse_inline_union(first_type_token, type_signature);
+}
+
+[[nodiscard]] TypeSignature Parser::parse_inline_union(const Token& first_type_token, const TypeSignature& first_type){
+    std::vector<TypeSignature> alternatives { first_type };
+    while (iterator != source_tokens.end() && iterator->sourcetext == "|"){
+        assert_token_matches(source_tokens, iterator++, "|");
+        alternatives.push_back(parse_typesignature());
     }
-    else {
-        return parse_custom_type();
-    }
+    return InlineUnion(first_type_token, alternatives);
 }
 
 [[nodiscard]] bool Parser::is_template_type(const std::string& type_name) {

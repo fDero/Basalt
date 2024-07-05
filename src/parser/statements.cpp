@@ -10,9 +10,9 @@
 [[nodiscard]] Statement Parser::parse_non_keyword_initialized_statements() {
     Expression expression = parse_expression();
     if (expression.is<FunctionCall>()) {
-        FunctionCall fcall = expression.get<FunctionCall>();
+        FunctionCall function_call = expression.get<FunctionCall>();
         ensure_token_matches(source_tokens, iterator++, ";");
-        return fcall;
+        return function_call;
     }
     ensure_there_are_still_tokens(source_tokens, iterator);
     const Token& assignment_token = *iterator;

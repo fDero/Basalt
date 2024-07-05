@@ -101,6 +101,12 @@ void CustomType::instantiate_generics(const GenericSubstitutionRuleSet& generic_
     }
 }
 
+void InlineUnion::instantiate_generics(const GenericSubstitutionRuleSet& generic_substitution_rules) {
+    for (TypeSignature& alternative : alternatives) {
+        alternative.instantiate_generics(generic_substitution_rules);
+    }
+}
+
 void PointerType::instantiate_generics(const GenericSubstitutionRuleSet& generic_substitution_rules) {
     pointed_type.instantiate_generics(generic_substitution_rules);
 }

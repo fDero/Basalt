@@ -63,14 +63,16 @@ class AssignmentTypeChecker {
         bool validate_assignment_to_primitive_type(const TypeSignature& source, const PrimitiveType& dest);
         bool validate_assignment_to_custom_type(const TypeSignature& source, const CustomType& dest);
         bool validate_assignment_to_template_generic(const TypeSignature& source, const TemplateType& dest);
-        bool validate_assignment_between_custom_types(const CustomType& source, const CustomType& dest);
-        bool validate_complex_assignment(const TypeSignature& source, const CustomType& dest);
+        bool name_equivalence_assignment_validation(const CustomType& source, const CustomType& dest);
+        bool structural_equivalence_assignment_validation(const TypeSignature& source, const TypeSignature& dest);
         bool validate_assignment_to_string(const TypeSignature& source, const PrimitiveType& dest);
-        bool validate_assignment_to_union(const TypeSignature& source, const UnionDefinition& union_def);
+        bool validate_assignment_to_inline_union(const TypeSignature& source, const InlineUnion& inline_union);
 
-        bool validate_assignment_between_custom_types_generic_type_parameters(const TypeSignature& source, const TypeSignature& dest);
-        bool validate_type_alias_unaware_assignment_between_custom_types_generic_type_parameters(const TypeSignature& source, const TypeSignature& dest);
-        
+        std::vector<TypeSignature> try_to_get_union_alternatives(const TypeSignature& maybe_union_type_signature);
+        bool validate_assignment_to_union_alternatives(const TypeSignature& source, const std::vector<TypeSignature>& alternatives);
+
         ProgramRepresentation& program_representation;
         GenericSubstitutionRuleSet generic_substitution_rules;
+
+        bool type_parameters_assignment_validation(const CustomType &source, const CustomType &dest);
 };
