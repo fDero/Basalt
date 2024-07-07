@@ -27,3 +27,16 @@ TEST(Preprocessor, Type_Inference_Algorithm_Finds_SuperType_Of_Int_Float_And_Flo
     EXPECT_TRUE(type_checker.get_generic_substitution_rules().back().replacement.is<InlineUnion>());
     EXPECT_EQ(type_checker.get_generic_substitution_rules().back().replacement.get<InlineUnion>().alternatives.size(), 3);
 }
+
+TEST(Preprocessor, Type_Inference_Algorithm_Finds_SuperType_Of_IntOrFloat_And_String_As_IntOrFloatOrString) {
+    ProgramRepresentation empty_program;
+    AssignmentTypeChecker type_checker(empty_program);
+    TypeSignature IntOrFloat = InlineUnion { Token { "Int", "main.basalt", 1, 1, 1, Token::Type::type }, {
+        TypeSignatureFactory::Int, TypeSignatureFactory::Float
+    } };
+    EXPECT_TRUE(type_checker.validate_assignment(IntOrFloat, TypeSignatureFactory::T));
+    EXPECT_TRUE(type_checker.validate_assignment(TypeSignatureFactory::String, TypeSignatureFactory::T));
+    ASSERT_EQ(type_checker.get_generic_substitution_rules().size(), 1);
+    EXPECT_TRUE(type_checker.get_generic_substitution_rules().back().replacement.is<InlineUnion>());
+    EXPECT_EQ(type_checker.get_generic_substitution_rules().back().replacement.get<InlineUnion>().alternatives.size(), 3);
+}
