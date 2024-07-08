@@ -24,6 +24,9 @@
 }
 
 [[nodiscard]] std::string Parser::parse_package_prefix() {
+    if (iterator == source_tokens.end() || std::next(iterator) == source_tokens.end()) {
+        return "";
+    }
     if (std::next(iterator)->sourcetext != namespace_concatenation) {
         return "";
     }
