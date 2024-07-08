@@ -26,10 +26,11 @@ TEST(Representation, Retrieve_StructDefinition_From_TypeSignature_In_The_Same_Fi
         .func_defs = {}
     };
 
-    ProgramRepresentation program;
-    program.store_definitions_from_file(file);
+    ProjectFileStructure project;
+    project.store_file_representation(file);
+    TypeDefinitionsRegister type_register(project);
 
-    TypeDefinition type_def =  program.retrieve_type_definition(
+    TypeDefinition type_def =  type_register.retrieve_type_definition(
         CustomType { Token { "MyStruct", "test.basalt", 1, 1, 1, Token::Type::type }, {} }
     );
 
@@ -68,11 +69,12 @@ TEST(Representation, Retrieve_StructDefinition_From_TypeSignature_In_Different_P
         .func_defs = {}
     };
 
-    ProgramRepresentation program;
-    program.store_definitions_from_file(main_dot_basalt);
-    program.store_definitions_from_file(imported_dot_basalt);
+    ProjectFileStructure project;
+    project.store_file_representation(imported_dot_basalt);
+    project.store_file_representation(main_dot_basalt);
+    TypeDefinitionsRegister type_register(project);
 
-    TypeDefinition type_def =  program.retrieve_type_definition(
+    TypeDefinition type_def =  type_register.retrieve_type_definition(
         CustomType { Token { "MyStruct", "main.basalt", 1, 1, 1, Token::Type::type }, {} }
     );
 
@@ -111,11 +113,12 @@ TEST(Representation, Retrieve_StructDefinition_From_TypeSignature_In_Different_F
         .func_defs = {}
     };
 
-    ProgramRepresentation program;
-    program.store_definitions_from_file(main_dot_basalt);
-    program.store_definitions_from_file(imported_dot_basalt);
+    ProjectFileStructure project;
+    project.store_file_representation(imported_dot_basalt);
+    project.store_file_representation(main_dot_basalt);
+    TypeDefinitionsRegister type_register(project);
 
-    TypeDefinition type_def =  program.retrieve_type_definition(
+    TypeDefinition type_def =  type_register.retrieve_type_definition(
         CustomType { Token { "MyStruct", "main.basalt", 1, 1, 1, Token::Type::type }, {} }
     );
 
@@ -155,13 +158,14 @@ TEST(Representation, Retrieve_StructDefinition_From_TypeSignature_In_Different_P
         .func_defs = {}
     };
 
-    ProgramRepresentation program;
-    program.store_definitions_from_file(test_dot_basalt);
-    program.store_definitions_from_file(other_dot_basalt);
+    ProjectFileStructure project;
+    project.store_file_representation(other_dot_basalt);
+    project.store_file_representation(test_dot_basalt);
+    TypeDefinitionsRegister type_register(project);
 
     CustomType type_signature = { Token { "MyStruct", "main.basalt", 1, 1, 1, Token::Type::type }, {} };
     type_signature.package_prefix = "otherpackage";
-    TypeDefinition type_def =  program.retrieve_type_definition(type_signature);
+    TypeDefinition type_def = type_register.retrieve_type_definition(type_signature);
 
     ASSERT_TRUE(type_def.is<StructDefinition>());
     StructDefinition struct_def = type_def.get<StructDefinition>();

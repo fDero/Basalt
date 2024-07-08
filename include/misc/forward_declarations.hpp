@@ -3,7 +3,7 @@
 #include <vector>
 #include <typeinfo>
 
-struct ProgramRepresentation;
+struct TypeDefinitionsRegister;
 struct GenericSubstitutionRuleSet;
 struct TypeSignature;
 

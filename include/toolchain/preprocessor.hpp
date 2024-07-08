@@ -12,7 +12,7 @@
 class TypeDependencyNavigator {
 
     public:
-        TypeDependencyNavigator(ProgramRepresentation& program_representation);
+        TypeDependencyNavigator(TypeDefinitionsRegister& program_representation);
         void visit_struct_definition(const StructDefinition& struct_definition);
         void visit_union_definition(const UnionDefinition& union_definition);
         
@@ -27,19 +27,19 @@ class TypeDependencyNavigator {
         void visit_typesignature(const TypeSignature& typesignature, const std::vector<std::string>& union_def_generics);
         void verify_that_the_type_exists(const TypeSignature& type_signature);
 
-        ProgramRepresentation& program_representation;
+        TypeDefinitionsRegister& program_representation;
         std::unordered_set<std::string> visited_definitions;
 };
 
 class PackageTypeConflictNavigator {
     
     public:
-        PackageTypeConflictNavigator(ProgramRepresentation& program_representation);
+        PackageTypeConflictNavigator(ProjectFileStructure& project_file_structure);
         void visit_file(const FileRepresentation& file_representation);
         void visit_package(const std::string& package_name);
         
     private:
-        ProgramRepresentation& program_representation;
+        ProjectFileStructure& project_file_structure;
         std::unordered_set<std::string> visited_files;
         std::unordered_set<std::string> type_definition_conflict_detection_patterns;
 
@@ -51,7 +51,7 @@ class PackageTypeConflictNavigator {
 class AssignmentTypeChecker {
 
     public:
-        AssignmentTypeChecker(ProgramRepresentation& program_representation);
+        AssignmentTypeChecker(TypeDefinitionsRegister& program_representation, ProjectFileStructure& project_file_structure);
         bool validate_assignment(const TypeSignature& source, const TypeSignature& dest);
         GenericSubstitutionRuleSet& get_generic_substitution_rules(); 
 
@@ -73,7 +73,8 @@ class AssignmentTypeChecker {
         std::vector<TypeSignature> try_to_get_union_alternatives(const TypeSignature& maybe_union_type_signature);
         bool validate_assignment_to_union_alternatives(const TypeSignature& source, const std::vector<TypeSignature>& alternatives);
 
-        ProgramRepresentation& program_representation;
+        TypeDefinitionsRegister& type_definitions_register;
+        ProjectFileStructure& project_file_structure;
         GenericSubstitutionRuleSet generic_substitution_rules;
 
         bool type_parameters_assignment_validation(const CustomType &source, const CustomType &dest);

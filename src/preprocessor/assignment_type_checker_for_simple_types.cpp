@@ -4,18 +4,21 @@
 #include "errors/preprocessing_errors.hpp"
 #include "errors/internal_errors.hpp"
 
-#include <iostream>
-
-AssignmentTypeChecker::AssignmentTypeChecker(ProgramRepresentation& program_representation)
-    : program_representation(program_representation) {}
+AssignmentTypeChecker::AssignmentTypeChecker(
+    TypeDefinitionsRegister& type_definitions_register, 
+    ProjectFileStructure& project_file_structure
+)
+    : type_definitions_register(type_definitions_register), 
+    project_file_structure(project_file_structure) 
+{}
 
 GenericSubstitutionRuleSet& AssignmentTypeChecker::get_generic_substitution_rules() {
     return generic_substitution_rules;
 }
 
 bool AssignmentTypeChecker::validate_assignment(const TypeSignature& source, const TypeSignature& dest) {
-    const TypeSignature unaliased_source_type = program_representation.unalias_type(source);
-    const TypeSignature unaliased_dest_type = program_representation.unalias_type(dest);
+    const TypeSignature unaliased_source_type = type_definitions_register.unalias_type(source);
+    const TypeSignature unaliased_dest_type = type_definitions_register.unalias_type(dest);
     return validate_type_alias_unaware_assignment(unaliased_source_type, unaliased_dest_type);
 }
 

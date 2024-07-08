@@ -7,9 +7,8 @@
 #include "../tests_utilities/struct_definition_factory.hpp"
 #include "../tests_utilities/typesignature_factory.hpp"
 
-TEST(Preprocessor, Dependency_Navigation_Works_Fine_With_Multiple_Fields_Of_Same_Type) {
-    
-    FileRepresentation main_dot_basalt = {
+ProjectFileStructure single_file_project_with_multiple_fields_of_same_type({
+    FileRepresentation {
         .file_metadata = {
             .filename = "main.basalt",
             .packagename = "testpackage",
@@ -31,17 +30,11 @@ TEST(Preprocessor, Dependency_Navigation_Works_Fine_With_Multiple_Fields_Of_Same
             ),
             },
         .func_defs = { }
-    };   
-    ProgramRepresentation representation;
-    representation.store_definitions_from_file(main_dot_basalt);
-    const StructDefinition& B = main_dot_basalt.type_defs[1].get<StructDefinition>();
-    TypeDependencyNavigator navigator(representation);
-    navigator.visit_struct_definition(B);
-}
+    }
+});
 
-TEST(Preprocessor, Dependency_Navigation_Works_Fine_With_Multiple_Fields_Of_Different_Instantiations_Of_Same_Generic_Type) {
-    
-    FileRepresentation main_dot_basalt = {
+ProjectFileStructure single_file_project_with_multiple_fields_of_same_type_but_different_concrete_type_parameters({
+    FileRepresentation {
         .file_metadata = {
             .filename = "main.basalt",
             .packagename = "testpackage",
@@ -71,11 +64,25 @@ TEST(Preprocessor, Dependency_Navigation_Works_Fine_With_Multiple_Fields_Of_Diff
             ),
         },
         .func_defs = { }
-    };   
-    ProgramRepresentation representation;
-    representation.store_definitions_from_file(main_dot_basalt);
-    const StructDefinition& A = main_dot_basalt.type_defs[0].get<StructDefinition>();
-    TypeDependencyNavigator navigator(representation);
+    }
+});
+
+TEST(Preprocessor, Dependency_Navigation_Works_Fine_With_Multiple_Fields_Of_Same_Type) {
+    TypeDefinitionsRegister type_register(single_file_project_with_multiple_fields_of_same_type);
+    const FileRepresentation& main_dot_basalt = single_file_project_with_multiple_fields_of_same_type.get_files_by_package("testpackage").front();
+    const StructDefinition& B = main_dot_basalt.type_defs.back().get<StructDefinition>();
+    TypeDependencyNavigator navigator(type_register);
+    ASSERT_EQ(B.struct_name, "B");
+    navigator.visit_struct_definition(B);
+}
+
+
+TEST(Preprocessor, Dependency_Navigation_Works_Fine_With_Multiple_Fields_Of_Different_Instantiations_Of_Same_Generic_Type) {
+    TypeDefinitionsRegister type_register(single_file_project_with_multiple_fields_of_same_type_but_different_concrete_type_parameters);
+    const FileRepresentation& main_dot_basalt = single_file_project_with_multiple_fields_of_same_type_but_different_concrete_type_parameters.get_files_by_package("testpackage").front();
+    const StructDefinition& A = main_dot_basalt.type_defs.front().get<StructDefinition>();
+    TypeDependencyNavigator navigator(type_register);
+    ASSERT_EQ(A.struct_name, "A");
     EXPECT_ANY_THROW({
         navigator.visit_struct_definition(A);
     });

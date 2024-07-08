@@ -7,24 +7,51 @@
 #include "../tests_utilities/typesignature_factory.hpp"
 #include "../tests_utilities/type_alias_factory.hpp"
 
+ProjectFileStructure single_file_project_with_aliasedint_number_list_pair_aliasedpair_sameas_defs ({
+    FileRepresentation {
+        .file_metadata = {
+            .filename = "main.basalt",
+            .packagename = "testpackage",
+            .imports = { }
+        },
+        .type_defs = { 
+            StructDefinitionFactory::make_struct_definition(
+                "List", { "T" }, { StructDefinitionFactory::no_fields }
+            ),
+            TypeAliasFactory::make_type_alias(
+                "AliasedInt", { }, TypeSignatureFactory::Int
+            ),
+            UnionDefinitionFactory::make_union_definition(
+                "Number", { }, {
+                    TypeSignatureFactory::Int,
+                    TypeSignatureFactory::Float
+                }
+            ),
+            TypeAliasFactory::make_type_alias(
+                "SameAs", { "T" }, TypeSignatureFactory::T
+            ),
+            StructDefinitionFactory::make_struct_definition(
+                "Pair", { "T", "U" }, {
+                    StructDefinition::Field { "first", TypeSignatureFactory::T },
+                    StructDefinition::Field { "second", TypeSignatureFactory::U }
+                }
+            ),
+            TypeAliasFactory::make_type_alias(
+                "Pair", { "T" }, TypeSignature {
+                    CustomType { Token { "Pair", "main.basalt", 1, 1, 1, Token::Type::type }, { 
+                        TypeSignatureFactory::T, 
+                        TypeSignatureFactory::T 
+                    } }
+                }
+            )
+        },
+        .func_defs = { }
+    }
+});
+
 TEST(Preprocessor, Int_Is_Mutually_Compatible_With_AliasedInt) {
-    ProgramRepresentation simple_alias_definition_program;
-    simple_alias_definition_program.store_definitions_from_file(
-            FileRepresentation {
-            .file_metadata = {
-                .filename = "main.basalt",
-                .packagename = "testpackage",
-                .imports = { }
-            },
-            .type_defs = { 
-                TypeAliasFactory::make_type_alias(
-                    "AliasedInt", { }, TypeSignatureFactory::Int
-                )
-            },
-            .func_defs = { }
-        }
-    );
-    AssignmentTypeChecker type_checker(simple_alias_definition_program);
+    TypeDefinitionsRegister type_register(single_file_project_with_aliasedint_number_list_pair_aliasedpair_sameas_defs);
+    AssignmentTypeChecker type_checker(type_register, single_file_project_with_aliasedint_number_list_pair_aliasedpair_sameas_defs);
     TypeSignature aliased_int = CustomType { Token { "AliasedInt", "main.basalt", 1, 1, 1, Token::Type::type }, {} };
     bool aliased_int_is_compatible_with_int = type_checker.validate_assignment(aliased_int, TypeSignatureFactory::Int);
     bool int_is_compatible_with_aliased_int = type_checker.validate_assignment(TypeSignatureFactory::Int, aliased_int);
@@ -33,23 +60,8 @@ TEST(Preprocessor, Int_Is_Mutually_Compatible_With_AliasedInt) {
 }
 
 TEST(Preprocessor, Int_Is_Mutually_Compatible_With_Generic_Alias_Instantiated_With_Int) {
-    ProgramRepresentation simple_alias_definition_program;
-    simple_alias_definition_program.store_definitions_from_file(
-            FileRepresentation {
-            .file_metadata = {
-                .filename = "main.basalt",
-                .packagename = "testpackage",
-                .imports = { }
-            },
-            .type_defs = { 
-                TypeAliasFactory::make_type_alias(
-                    "SameAs", { "T" }, TypeSignatureFactory::T
-                )
-            },
-            .func_defs = { }
-        }
-    );
-    AssignmentTypeChecker type_checker(simple_alias_definition_program);
+    TypeDefinitionsRegister type_register(single_file_project_with_aliasedint_number_list_pair_aliasedpair_sameas_defs);
+    AssignmentTypeChecker type_checker(type_register, single_file_project_with_aliasedint_number_list_pair_aliasedpair_sameas_defs);
     TypeSignature aliased_int = CustomType { Token { "SameAs", "main.basalt", 1, 1, 1, Token::Type::type }, { TypeSignatureFactory::Int } };
     bool aliased_int_is_compatible_with_int = type_checker.validate_assignment(aliased_int, TypeSignatureFactory::Int);
     bool int_is_compatible_with_aliased_int = type_checker.validate_assignment(TypeSignatureFactory::Int, aliased_int);
@@ -58,34 +70,8 @@ TEST(Preprocessor, Int_Is_Mutually_Compatible_With_Generic_Alias_Instantiated_Wi
 }
 
 TEST(Preprocessor, Pair_Of_Int_Int_Is_Compatible_With_Pair_Of_One_Generic_T_Via_Alias) {
-    ProgramRepresentation simple_alias_definition_program;
-    simple_alias_definition_program.store_definitions_from_file(
-            FileRepresentation {
-            .file_metadata = {
-                .filename = "main.basalt",
-                .packagename = "testpackage",
-                .imports = { }
-            },
-            .type_defs = {
-                StructDefinitionFactory::make_struct_definition(
-                    "Pair", { "T", "U" }, {
-                        StructDefinition::Field { "first", TypeSignatureFactory::T },
-                        StructDefinition::Field { "second", TypeSignatureFactory::U }
-                    }
-                ),
-                TypeAliasFactory::make_type_alias(
-                    "Pair", { "T" }, TypeSignature {
-                        CustomType { Token { "Pair", "main.basalt", 1, 1, 1, Token::Type::type }, { 
-                            TypeSignatureFactory::T, 
-                            TypeSignatureFactory::T 
-                        } }
-                    }
-                )
-            },
-            .func_defs = { }
-        }
-    );
-    AssignmentTypeChecker type_checker(simple_alias_definition_program);
+    TypeDefinitionsRegister type_register(single_file_project_with_aliasedint_number_list_pair_aliasedpair_sameas_defs);
+    AssignmentTypeChecker type_checker(type_register, single_file_project_with_aliasedint_number_list_pair_aliasedpair_sameas_defs);
     TypeSignature pair_int_int = CustomType { 
         Token { "Pair", "main.basalt", 1, 1, 1, Token::Type::type }, { 
             TypeSignatureFactory::Int, 
@@ -106,34 +92,8 @@ TEST(Preprocessor, Pair_Of_Int_Int_Is_Compatible_With_Pair_Of_One_Generic_T_Via_
 }
 
 TEST(Preprocessor, Pair_Of_Int_Is_Compatible_With_Pair_Of_T_U) {
-    ProgramRepresentation simple_alias_definition_program;
-    simple_alias_definition_program.store_definitions_from_file(
-            FileRepresentation {
-            .file_metadata = {
-                .filename = "main.basalt",
-                .packagename = "testpackage",
-                .imports = { }
-            },
-            .type_defs = {
-                StructDefinitionFactory::make_struct_definition(
-                    "Pair", { "T", "U" }, {
-                        StructDefinition::Field { "first", TypeSignatureFactory::T },
-                        StructDefinition::Field { "second", TypeSignatureFactory::U }
-                    }
-                ),
-                TypeAliasFactory::make_type_alias(
-                    "Pair", { "T" }, TypeSignature {
-                        CustomType { Token { "Pair", "main.basalt", 1, 1, 1, Token::Type::type }, { 
-                            TypeSignatureFactory::T, 
-                            TypeSignatureFactory::T 
-                        } }
-                    }
-                )
-            },
-            .func_defs = { }
-        }
-    );
-    AssignmentTypeChecker type_checker(simple_alias_definition_program);
+    TypeDefinitionsRegister type_register(single_file_project_with_aliasedint_number_list_pair_aliasedpair_sameas_defs);
+    AssignmentTypeChecker type_checker(type_register, single_file_project_with_aliasedint_number_list_pair_aliasedpair_sameas_defs);
     TypeSignature pair_T_U = CustomType { 
         Token { "Pair", "main.basalt", 1, 1, 1, Token::Type::type }, { 
             TypeSignatureFactory::T, 
@@ -157,32 +117,8 @@ TEST(Preprocessor, Pair_Of_Int_Is_Compatible_With_Pair_Of_T_U) {
 }
 
 TEST(Preprocessor, List_Of_Aliased_Ints_And_List_Of_Number_Are_Compatible_With_List_Of_T) {
-    ProgramRepresentation simple_multi_definition_program;
-    simple_multi_definition_program.store_definitions_from_file(
-            FileRepresentation {
-            .file_metadata = {
-                .filename = "main.basalt",
-                .packagename = "testpackage",
-                .imports = { }
-            },
-            .type_defs = { 
-                StructDefinitionFactory::make_struct_definition(
-                    "List", { "T "}, { StructDefinitionFactory::no_fields }
-                ),
-                TypeAliasFactory::make_type_alias(
-                    "AliasedInt", { }, TypeSignatureFactory::Int
-                ),
-                UnionDefinitionFactory::make_union_definition(
-                    "Number", { }, {
-                        TypeSignatureFactory::Int,
-                        TypeSignatureFactory::Float
-                    }
-                )
-            },
-            .func_defs = { }
-        }
-    );
-    AssignmentTypeChecker type_checker(simple_multi_definition_program);
+    TypeDefinitionsRegister type_register(single_file_project_with_aliasedint_number_list_pair_aliasedpair_sameas_defs);
+    AssignmentTypeChecker type_checker(type_register, single_file_project_with_aliasedint_number_list_pair_aliasedpair_sameas_defs);
     TypeSignature aliased_int = CustomType { Token { "AliasedInt", "main.basalt", 1, 1, 1, Token::Type::type }, {} };
     TypeSignature number_type = CustomType { Token { "Number", "main.basalt", 1, 1, 1, Token::Type::type }, {} };
     TypeSignature list_of_aliased_ints = CustomType { Token { "List", "main.basalt", 1, 1, 1, Token::Type::type }, { aliased_int } };
@@ -198,32 +134,8 @@ TEST(Preprocessor, List_Of_Aliased_Ints_And_List_Of_Number_Are_Compatible_With_L
 }
 
 TEST(Preprocessor, List_Of_Aliased_Ints_And_List_Of_Number_Are_Non_Mutually_Compatible_With_Each_Other) {
-    ProgramRepresentation simple_multi_definition_program;
-    simple_multi_definition_program.store_definitions_from_file(
-            FileRepresentation {
-            .file_metadata = {
-                .filename = "main.basalt",
-                .packagename = "testpackage",
-                .imports = { }
-            },
-            .type_defs = { 
-                StructDefinitionFactory::make_struct_definition(
-                    "List", { "T" }, { StructDefinitionFactory::no_fields }
-                ),
-                TypeAliasFactory::make_type_alias(
-                    "AliasedInt", { }, TypeSignatureFactory::Int
-                ),
-                UnionDefinitionFactory::make_union_definition(
-                    "Number", { }, {
-                        TypeSignatureFactory::Int,
-                        TypeSignatureFactory::Float
-                    }
-                )
-            },
-            .func_defs = { }
-        }
-    );
-    AssignmentTypeChecker type_checker(simple_multi_definition_program);
+    TypeDefinitionsRegister type_register(single_file_project_with_aliasedint_number_list_pair_aliasedpair_sameas_defs);
+    AssignmentTypeChecker type_checker(type_register, single_file_project_with_aliasedint_number_list_pair_aliasedpair_sameas_defs);
     TypeSignature aliased_int = CustomType { Token { "AliasedInt", "main.basalt", 1, 1, 1, Token::Type::type }, {} };
     TypeSignature number_type = CustomType { Token { "Number", "main.basalt", 1, 1, 1, Token::Type::type }, {} };
     TypeSignature list_of_aliased_ints = CustomType { Token { "List", "main.basalt", 1, 1, 1, Token::Type::type }, { aliased_int } };

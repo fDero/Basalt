@@ -7,20 +7,29 @@
 #include "../tests_utilities/typesignature_factory.hpp"
 #include "../tests_utilities/type_alias_factory.hpp"
 
-TEST(Preprocessor, IntOrFloat_Is_Compatible_With_Itself) {
-    ProgramRepresentation empty_program;
-    empty_program.store_definitions_from_file(
+ProjectFileStructure single_file_project_with_number_def({
         FileRepresentation {
-            .file_metadata = {
-                .filename = "main.basalt",
-                .packagename = "testpackage",
-                .imports = { }
-            },
-            .type_defs = { },
-            .func_defs = { }
-        }
-    );
-    AssignmentTypeChecker type_checker(empty_program);
+        .file_metadata = {
+            .filename = "main.basalt",
+            .packagename = "testpackage",
+            .imports = { }
+        },
+        .type_defs = { 
+            UnionDefinitionFactory::make_union_definition(
+                "Number", { }, {
+                    TypeSignatureFactory::Int,
+                    TypeSignatureFactory::Float
+                }
+            )
+        },
+        .func_defs = { }
+    }
+});
+
+TEST(Preprocessor, IntOrFloat_Is_Compatible_With_Itself) {
+    ProjectFileStructure empty_project;
+    TypeDefinitionsRegister type_register(empty_project); 
+    AssignmentTypeChecker type_checker(type_register, empty_project);
     TypeSignature IntOrFloat = InlineUnion { Token { "Int", "main.basalt", 1, 1, 1, Token::Type::type }, {
         TypeSignatureFactory::Int, TypeSignatureFactory::Float
     } };
@@ -29,26 +38,8 @@ TEST(Preprocessor, IntOrFloat_Is_Compatible_With_Itself) {
 }
 
 TEST(Preprocessor, IntOrFloat_Is_Mutually_Compatible_With_Number) {
-    ProgramRepresentation simple_union_definition_program;
-    simple_union_definition_program.store_definitions_from_file(
-        FileRepresentation {
-            .file_metadata = {
-                .filename = "main.basalt",
-                .packagename = "testpackage",
-                .imports = { }
-            },
-            .type_defs = {
-                UnionDefinitionFactory::make_union_definition(
-                    "Number", { }, {
-                        TypeSignatureFactory::Int,
-                        TypeSignatureFactory::Float
-                    }
-                )
-            },
-            .func_defs = { }
-        }
-    );
-    AssignmentTypeChecker type_checker(simple_union_definition_program);
+    TypeDefinitionsRegister type_register(single_file_project_with_number_def); 
+    AssignmentTypeChecker type_checker(type_register, single_file_project_with_number_def);
     TypeSignature IntOrFloat = InlineUnion { Token { "Int", "main.basalt", 1, 1, 1, Token::Type::type }, {
         TypeSignatureFactory::Int, TypeSignatureFactory::Float
     } };
@@ -60,19 +51,9 @@ TEST(Preprocessor, IntOrFloat_Is_Mutually_Compatible_With_Number) {
 }
 
 TEST(Preprocessor, Int_And_Float_Are_Compatible_With_IntOrFloat) {
-    ProgramRepresentation empty_program;
-    empty_program.store_definitions_from_file(
-        FileRepresentation {
-            .file_metadata = {
-                .filename = "main.basalt",
-                .packagename = "testpackage",
-                .imports = { }
-            },
-            .type_defs = { },
-            .func_defs = { }
-        }
-    );
-    AssignmentTypeChecker type_checker(empty_program);
+    ProjectFileStructure empty_project;
+    TypeDefinitionsRegister type_register(empty_project); 
+    AssignmentTypeChecker type_checker(type_register, empty_project);
     TypeSignature IntOrFloat = InlineUnion { Token { "Int", "main.basalt", 1, 1, 1, Token::Type::type }, {
         TypeSignatureFactory::Int, TypeSignatureFactory::Float
     } };

@@ -7,9 +7,8 @@
 #include "../tests_utilities/struct_definition_factory.hpp"
 #include "../tests_utilities/typesignature_factory.hpp"
 
-TEST(Preprocessor, No_Type_Conflict_In_Same_File) {
-    
-    FileRepresentation main_dot_basalt = {
+ProjectFileStructure simple_multifile_project_with_harmless_typedefs({
+    FileRepresentation {
         .file_metadata = {
             .filename = "main.basalt",
             .packagename = "testpackage",
@@ -20,50 +19,30 @@ TEST(Preprocessor, No_Type_Conflict_In_Same_File) {
             StructDefinitionFactory::make_struct_definition("B", { }, { })
         },
         .func_defs = { }
-    };
-    
-    ProgramRepresentation representation;
-    representation.store_definitions_from_file(main_dot_basalt);
-    PackageTypeConflictNavigator navigator(representation);
-    navigator.visit_package("testpackage");
-}
-
-TEST(Preprocessor, No_Type_Conflict_In_Two_File_Of_Same_Package) {
-    
-    FileRepresentation a_dot_basalt = {
+    },
+    FileRepresentation {
         .file_metadata = {
             .filename = "a.basalt",
-            .packagename = "testpackage",
+            .packagename = "testpackage2",
             .imports = { }
         },
         .type_defs = { 
             StructDefinitionFactory::make_struct_definition("A", { }, { }),
         },
         .func_defs = { }
-    };
-
-    FileRepresentation b_dot_basalt = {
+    },
+    FileRepresentation {
         .file_metadata = {
             .filename = "b.basalt",
-            .packagename = "testpackage",
+            .packagename = "testpackage2",
             .imports = { }
         },
         .type_defs = { 
             StructDefinitionFactory::make_struct_definition("B", { }, { }),
         },
         .func_defs = { }
-    };
-    
-    ProgramRepresentation representation;
-    representation.store_definitions_from_file(a_dot_basalt);
-    representation.store_definitions_from_file(b_dot_basalt);
-    PackageTypeConflictNavigator navigator(representation);
-    navigator.visit_package("testpackage");
-}
-
-TEST(Preprocessor, No_Type_Conflict_In_Two_File_Of_Different_Packages) {
-    
-    FileRepresentation a_dot_basalt = {
+    },
+    FileRepresentation {
         .file_metadata = {
             .filename = "a.basalt",
             .packagename = "apackage",
@@ -73,9 +52,8 @@ TEST(Preprocessor, No_Type_Conflict_In_Two_File_Of_Different_Packages) {
             StructDefinitionFactory::make_struct_definition("A", { }, { }),
         },
         .func_defs = { }
-    };
-
-    FileRepresentation b_dot_basalt = {
+    },
+    FileRepresentation {
         .file_metadata = {
             .filename = "b.basalt",
             .packagename = "bpackage",
@@ -85,11 +63,20 @@ TEST(Preprocessor, No_Type_Conflict_In_Two_File_Of_Different_Packages) {
             StructDefinitionFactory::make_struct_definition("B", { }, { }),
         },
         .func_defs = { }
-    };
-    
-    ProgramRepresentation representation;
-    representation.store_definitions_from_file(a_dot_basalt);
-    representation.store_definitions_from_file(b_dot_basalt);
-    PackageTypeConflictNavigator navigator(representation);
+    }
+});
+
+TEST(Preprocessor, No_Type_Conflict_In_Same_File) {
+    PackageTypeConflictNavigator navigator(simple_multifile_project_with_harmless_typedefs);
+    navigator.visit_package("testpackage");
+}
+
+TEST(Preprocessor, No_Type_Conflict_In_Two_File_Of_Same_Package) {
+    PackageTypeConflictNavigator navigator(simple_multifile_project_with_harmless_typedefs);
+    navigator.visit_package("testpackage2");
+}
+
+TEST(Preprocessor, No_Type_Conflict_In_Two_File_Of_Different_Packages) {
+    PackageTypeConflictNavigator navigator(simple_multifile_project_with_harmless_typedefs);
     navigator.visit_package("apackage");
 }

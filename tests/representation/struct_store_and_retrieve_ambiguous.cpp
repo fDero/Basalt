@@ -57,10 +57,12 @@ TEST(Representation, Ambiguous_Instantiated_Generic_Struct_Retrieval) {
         .func_defs = {}
     };
 
-    ProgramRepresentation program;
-    program.store_definitions_from_file(wrapper_file);
-    program.store_definitions_from_file(employee_file_of_x_package);
-    program.store_definitions_from_file(employee_file_of_y_package);
+    ProjectFileStructure project;
+    project.store_file_representation(wrapper_file);
+    project.store_file_representation(employee_file_of_x_package);
+    project.store_file_representation(employee_file_of_y_package);
+
+    TypeDefinitionsRegister type_register(project);
 
     CustomType xemployee = CustomType { Token { "Employee", "test.basalt", 1, 1, 1, Token::Type::type }, { } };
     xemployee.package_prefix = "xpackage";
@@ -68,11 +70,11 @@ TEST(Representation, Ambiguous_Instantiated_Generic_Struct_Retrieval) {
     CustomType yemployee = CustomType { Token { "Employee", "test.basalt", 1, 1, 1, Token::Type::type }, { } };
     yemployee.package_prefix = "ypackage";
 
-    TypeDefinition wrapper_of_xpackage_employee =  program.retrieve_type_definition(
+    TypeDefinition wrapper_of_xpackage_employee =  type_register.retrieve_type_definition(
         CustomType { Token { "Wrapper", "test.basalt", 1, 1, 1, Token::Type::type }, { xemployee } }
     );
 
-    TypeDefinition wrapper_of_ypackage_employee =  program.retrieve_type_definition(
+    TypeDefinition wrapper_of_ypackage_employee =  type_register.retrieve_type_definition(
         CustomType { Token { "Wrapper", "test.basalt", 1, 1, 1, Token::Type::type }, { yemployee } }
     );
     

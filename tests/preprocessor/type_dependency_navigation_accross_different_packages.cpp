@@ -1,0 +1,109 @@
+
+#include <gtest/gtest.h>
+#include "language/generics.hpp"
+#include "errors/internal_errors.hpp"
+#include "toolchain/preprocessor.hpp"
+#include "../tests_utilities/union_definition_factory.hpp"
+#include "../tests_utilities/struct_definition_factory.hpp"
+#include "../tests_utilities/typesignature_factory.hpp"
+
+ProjectFileStructure indirectly_recursive_structs_in_different_files_of_different_packages({
+    FileRepresentation {
+        .file_metadata = {
+            .filename = "a.basalt",
+            .packagename = "apackage",
+            .imports = { "bpackage" }
+        },
+        .type_defs = { 
+            StructDefinitionFactory::make_struct_definition(
+                "A", { }, {
+                    StructDefinition::Field { "b",
+                        PrimitiveType { Token { "B", "a.basalt", 1, 1, 1, Token::Type::type } } 
+                    }
+                }
+            )
+        },
+        .func_defs = { }
+    },
+    FileRepresentation {
+        .file_metadata = {
+            .filename = "b.basalt",
+            .packagename = "bpackage",
+            .imports = { "apackage" }
+        },
+        .type_defs = { 
+            StructDefinitionFactory::make_struct_definition(
+                "B", { }, {
+                    StructDefinition::Field { "ptr",
+                        PointerType { Token { "#", "b.basalt", 1, 1, 1, Token::Type::symbol },
+                            CustomType { Token { "A", "b.basalt", 1, 1, 1, Token::Type::type }, {} } 
+                        }
+                    },
+                    StructDefinition::Field { "slice",
+                        SliceType { Token { "$", "b.basalt", 1, 1, 1, Token::Type::symbol },
+                            CustomType { Token { "A", "b.basalt", 1, 1, 1, Token::Type::type }, {} } 
+                        }
+                    }
+                }
+            )
+        },
+        .func_defs = { }
+    }
+});
+
+ProjectFileStructure directly_recursive_structs_in_different_files_of_different_packages({
+    FileRepresentation {
+        .file_metadata = {
+            .filename = "a.basalt",
+            .packagename = "apackage",
+            .imports = { "bpackage" }
+        },
+        .type_defs = { 
+            StructDefinitionFactory::make_struct_definition(
+                "A", { }, {
+                    StructDefinition::Field { "b",
+                        CustomType { Token { "B", "a.basalt", 1, 1, 1, Token::Type::type }, {} } 
+                    }
+                }
+            )
+        },
+        .func_defs = { }
+    },
+    FileRepresentation {
+        .file_metadata = {
+            .filename = "b.basalt",
+            .packagename = "bpackage",
+            .imports = { "apackage" }
+        },
+        .type_defs = { 
+            StructDefinitionFactory::make_struct_definition(
+                "B", { }, {
+                    StructDefinition::Field { "a",
+                        CustomType { Token { "A", "b.basalt", 1, 1, 1, Token::Type::type }, {} } 
+                    }
+                }
+            )
+        },
+        .func_defs = { }
+    }
+});
+
+TEST(Preprocessor, Recursive_Two_Struct_Dependency_With_Pointer_Accross_Different_Packages_With_Recursive_Imports_Without_Allucinating_Errors) {
+    TypeDefinitionsRegister type_register(indirectly_recursive_structs_in_different_files_of_different_packages);
+    const FileRepresentation file_with_struct_A = indirectly_recursive_structs_in_different_files_of_different_packages.get_files_by_package("apackage")[0];
+    const StructDefinition& A = file_with_struct_A.type_defs[0].get<StructDefinition>();
+    TypeDependencyNavigator navigator(type_register);
+    ASSERT_EQ(A.struct_name, "A");
+    navigator.visit_struct_definition(A);
+}
+
+TEST(Preprocessor, Recursive_Two_Struct_Dependency_With_Pointer_Accross_Different_Packages_With_Recursive_Imports_Spotting_Real_Errors) {
+    TypeDefinitionsRegister type_register(directly_recursive_structs_in_different_files_of_different_packages);
+    const FileRepresentation file_with_struct_A = directly_recursive_structs_in_different_files_of_different_packages.get_files_by_package("apackage")[0];
+    const StructDefinition& A = file_with_struct_A.type_defs[0].get<StructDefinition>();
+    TypeDependencyNavigator navigator(type_register);
+    ASSERT_EQ(A.struct_name, "A");
+    EXPECT_ANY_THROW({
+        navigator.visit_struct_definition(A);
+    });
+}

@@ -32,7 +32,7 @@ std::vector<TypeSignature> AssignmentTypeChecker::try_to_get_union_alternatives(
         return {};
     }
     const CustomType& custom_type = maybe_union_type_signature.get<CustomType>();
-    const TypeDefinition& type_definition = program_representation.retrieve_type_definition(custom_type);
+    const TypeDefinition& type_definition = type_definitions_register.retrieve_type_definition(custom_type);
     return (type_definition.is<UnionDefinition>())
         ? type_definition.get<UnionDefinition>().types
         : std::vector<TypeSignature>();
@@ -63,9 +63,10 @@ bool AssignmentTypeChecker::name_equivalence_assignment_validation(const CustomT
         return false;
     }
     if (source.package_prefix != dest.package_prefix) {
-        std::unordered_map<std::string, std::string>& package_by_file_name = program_representation.package_name_by_file_name;
-        std::string source_package_name = (!source.package_prefix.empty())? source.package_prefix : package_by_file_name[source.filename];
-        std::string dest_package_name = (!dest.package_prefix.empty())? dest.package_prefix : package_by_file_name[dest.filename];
+        std::string source_package_name = (!source.package_prefix.empty())? 
+            source.package_prefix : project_file_structure.get_package_name_by_file_name(source.filename);
+        std::string dest_package_name = (!dest.package_prefix.empty())? 
+            dest.package_prefix : project_file_structure.get_package_name_by_file_name(dest.filename);
         if (source_package_name != dest_package_name) {
             return false;
         }

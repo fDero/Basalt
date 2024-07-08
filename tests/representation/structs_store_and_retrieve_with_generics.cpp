@@ -30,10 +30,11 @@ TEST(Representation, Retrieve_Generic_StructDefinition_From_TypeSignature_In_The
         .func_defs = {}
     };
 
-    ProgramRepresentation program;
-    program.store_definitions_from_file(file);
+    ProjectFileStructure project;
+    project.store_file_representation(file);
+    TypeDefinitionsRegister type_register(project);
 
-    TypeDefinition type_def =  program.retrieve_type_definition(
+    TypeDefinition type_def =  type_register.retrieve_type_definition(
         CustomType { Token { "Pair", "test.basalt", 1, 1, 1, Token::Type::type }, {
             PrimitiveType { Token { "Int", "test.basalt", 1, 1, 1, Token::Type::type } },
             PrimitiveType { Token { "String", "test.basalt", 1, 1, 1, Token::Type::type } },
@@ -79,15 +80,18 @@ TEST(Representation, Struct_Overloads_Are_Distinguished_By_Template_Generics_Cou
         },
         .func_defs = {}
     };
-    ProgramRepresentation program;
-    program.store_definitions_from_file(file);
-    TypeDefinition heterogeneous_pair =  program.retrieve_type_definition(
+
+    ProjectFileStructure project;
+    project.store_file_representation(file);
+    TypeDefinitionsRegister type_register(project);
+
+    TypeDefinition heterogeneous_pair =  type_register.retrieve_type_definition(
         CustomType { Token { "Pair", "test.basalt", 1, 1, 1, Token::Type::type }, {
             PrimitiveType { Token { "Int", "test.basalt", 1, 1, 1, Token::Type::type } },
             PrimitiveType { Token { "String", "test.basalt", 1, 1, 1, Token::Type::type } },
         } }
     );
-    TypeDefinition homogeneous_pair =  program.retrieve_type_definition(
+    TypeDefinition homogeneous_pair =  type_register.retrieve_type_definition(
         CustomType { Token { "Pair", "test.basalt", 1, 1, 1, Token::Type::type }, {
             PrimitiveType { Token { "Int", "test.basalt", 1, 1, 1, Token::Type::type } }
         } }

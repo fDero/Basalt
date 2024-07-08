@@ -4,7 +4,7 @@
 #include "errors/parsing_errors.hpp"
 
 TypeDependencyNavigator::TypeDependencyNavigator(
-    ProgramRepresentation& program_representation
+    TypeDefinitionsRegister& program_representation
 ) : program_representation(program_representation) {}
 
 void TypeDependencyNavigator::verify_that_the_type_exists(const TypeSignature& type_signature) {

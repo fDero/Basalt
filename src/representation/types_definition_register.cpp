@@ -4,8 +4,19 @@
 #include "errors/internal_errors.hpp"
 #include "language/generics.hpp"
 
+TypeDefinitionsRegister::TypeDefinitionsRegister(ProjectFileStructure& project_file_structure) 
+    : project_file_structure(project_file_structure) 
+{ 
+    for (const auto& [package_name, files] : project_file_structure.get_all_files_grouped_by_package()) {
+        for (const auto& file : files) {
+            for (const auto& type_definition : file.type_defs) {
+                store_type_definition(type_definition, package_name);
+            }
+        }
+    }
+}
 
-void ProgramRepresentation::store_type_definition(
+void TypeDefinitionsRegister::store_type_definition(
     const TypeDefinition& type_def, 
     const std::string& package_name
 ) {
@@ -14,7 +25,7 @@ void ProgramRepresentation::store_type_definition(
     ensure_no_multiple_definition_of_the_same_type(insertion_outcome);
 }
 
-[[nodiscard]] TypeDefinition ProgramRepresentation::retrieve_type_definition(const CustomType& type_signature) {
+[[nodiscard]] TypeDefinition TypeDefinitionsRegister::retrieve_type_definition(const CustomType& type_signature) {
     const std::string& fully_qualified_name = get_fully_qualified_customtype_name(type_signature);
     auto search_outcome = type_definitions.find(fully_qualified_name);
     if (search_outcome != type_definitions.end()) {
@@ -23,7 +34,7 @@ void ProgramRepresentation::store_type_definition(
     throw_no_type_definition_found(type_signature);
 }
 
-[[nodiscard]] TypeSignature ProgramRepresentation::unalias_type(const TypeSignature& type_signature) {
+[[nodiscard]] TypeSignature TypeDefinitionsRegister::unalias_type(const TypeSignature& type_signature) {
     if (!type_signature.is<CustomType>()) {
         return type_signature;
     }
@@ -38,19 +49,19 @@ void ProgramRepresentation::store_type_definition(
     }
 }
 
-std::string ProgramRepresentation::get_fully_qualified_customtype_name(const CustomType& type_signature) {
+std::string TypeDefinitionsRegister::get_fully_qualified_customtype_name(const CustomType& type_signature) {
     if (!type_signature.package_prefix.empty()) {
         const std::string& package = type_signature.package_prefix;
         std::optional<std::string> retrieved = search_fully_qualified_typesignature_name(type_signature, package);
         ensure_type_was_successfully_retrieved(retrieved);
         return retrieved.value();
     }
-    const std::string& target_package_name = package_name_by_file_name.at(type_signature.filename);
+    const std::string& target_package_name = project_file_structure.get_package_name_by_file_name(type_signature.filename);
     std::optional<std::string> retrieved = search_fully_qualified_typesignature_name(type_signature, target_package_name);
     if (retrieved.has_value()) {
         return retrieved.value();
     }
-    for (const std::string& package : imports_by_file.at(type_signature.filename)) {
+    for (const std::string& package : project_file_structure.get_imports_by_file(type_signature.filename)) {
         retrieved = search_fully_qualified_typesignature_name(type_signature, package);
         if (retrieved.has_value()) {
             return retrieved.value();
@@ -59,7 +70,7 @@ std::string ProgramRepresentation::get_fully_qualified_customtype_name(const Cus
     throw_no_type_definition_found(type_signature);
 }
 
-std::string ProgramRepresentation::get_fully_qualified_typesignature_name(const TypeSignature& type_signature) {
+std::string TypeDefinitionsRegister::get_fully_qualified_typesignature_name(const TypeSignature& type_signature) {
     if (type_signature.is<SliceType>()) {
         const TypeSignature& stored_type = type_signature.get<SliceType>().stored_type;
         return "$" + get_fully_qualified_typesignature_name(stored_type);
@@ -97,7 +108,7 @@ std::string ProgramRepresentation::get_fully_qualified_typesignature_name(const 
     }
 }
 
-[[nodiscard]] std::optional<std::string> ProgramRepresentation::search_fully_qualified_typesignature_name(
+[[nodiscard]] std::optional<std::string> TypeDefinitionsRegister::search_fully_qualified_typesignature_name(
     const CustomType& type_signature, 
     const std::string& package_name
 ) {
@@ -120,7 +131,7 @@ std::string ProgramRepresentation::get_fully_qualified_typesignature_name(const 
     }
 }
 
-[[nodiscard]] std::string ProgramRepresentation::get_type_definition_match_pattern(
+[[nodiscard]] std::string TypeDefinitionsRegister::get_type_definition_match_pattern(
     const std::string& package_name,
     const TypeDefinition& type_definition
 ) {
@@ -130,7 +141,7 @@ std::string ProgramRepresentation::get_fully_qualified_typesignature_name(const 
     return pattern_tag_name + generics_section;
 }
 
-[[nodiscard]] std::string ProgramRepresentation::get_type_signature_match_pattern(
+[[nodiscard]] std::string TypeDefinitionsRegister::get_type_signature_match_pattern(
     const std::string& package_name,
     const CustomType& type_signature
 ) {
@@ -140,7 +151,7 @@ std::string ProgramRepresentation::get_fully_qualified_typesignature_name(const 
     return pattern_tag_name + generics_section;
 }
 
-[[nodiscard]] std::string ProgramRepresentation::infer_possible_fully_qualified_typesignature_name(
+[[nodiscard]] std::string TypeDefinitionsRegister::infer_possible_fully_qualified_typesignature_name(
     const std::string& package_name,
     const TypeSignature& type_signature
 ) {
@@ -181,7 +192,7 @@ std::string ProgramRepresentation::get_fully_qualified_typesignature_name(const 
     }
 }
 
-[[nodiscard]] std::string ProgramRepresentation::infer_possible_fully_qualified_customtype_name(
+[[nodiscard]] std::string TypeDefinitionsRegister::infer_possible_fully_qualified_customtype_name(
     const std::string& packageName, 
     const CustomType& custom_type
 ) {
