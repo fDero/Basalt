@@ -84,9 +84,3 @@ void ensure_object_is_mutable(
         };
     }
 }
-
-[[noreturn]] void throw_no_function_definition_found(
-    const PrecompiledFunctionCall& function_call
-) {
-    throw std::runtime_error("no function defintion found!");
-}

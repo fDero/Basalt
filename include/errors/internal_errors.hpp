@@ -92,8 +92,6 @@ void assert_vectors_have_same_size_hence_they_can_be_zipped(
     const std::vector<TypeSignature>& type_parameters
 );
 
-void assert_type_is_indeed_primitive_type(const std::string& type_name);
-
 void assert_instantiation_struct_is_compatible_with_template_struct(
     const CustomType& concrete_type,
     const StructDefinition& template_struct
@@ -122,4 +120,9 @@ void assert_files_vector_is_found(
 void assert_imports_vector_is_found(
     const std::unordered_map<std::string, std::vector<std::string>>::const_iterator& search_outcome,
     const std::unordered_map<std::string, std::vector<std::string>>::const_iterator& end
+);
+
+void assert_overload_set_exists(
+    const std::unordered_map<std::string, std::vector<FunctionDefinition>>::const_iterator& search_outcome,
+    const std::unordered_map<std::string, std::vector<FunctionDefinition>>::const_iterator& end
 );

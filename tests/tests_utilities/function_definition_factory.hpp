@@ -5,7 +5,7 @@
 struct FunctionDefinitionFactory {
 
     inline static const std::vector<std::string> no_generics = {};
-    inline static const std::vector<StructDefinition::Field> no_fields = {}; 
+    inline static const std::vector<FunctionDefinition::Argument > no_args = {}; 
 
     static FunctionDefinition make_void_function_definition(
         const std::string& function_name, 

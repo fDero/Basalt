@@ -18,18 +18,8 @@ struct FunctionCall
 	std::string function_name;
 	std::vector<TypeSignature> instantiated_generics;
 	std::vector<Expression> arguments;
-};
 
-struct PrecompiledFunctionCall {
-
-	PrecompiledFunctionCall(
-	    const FunctionCall& original_function_call, 
-	    const std::vector<TypeSignature>& arguments_types,
-		const std::string& filename
-	);
-
-	std::string filename;
-	std::string package_prefix;
-	const FunctionCall& original_function_call;	
-	std::vector<TypeSignature> arguments_types;
+	const DebugInformationsAwareEntity& as_debug_informations_aware_entity() const {
+		return (const ExpressionBody&) *this;		
+	};
 };

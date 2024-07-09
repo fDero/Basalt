@@ -39,3 +39,16 @@ void assert_imports_vector_is_found(
     }
     #endif
 }
+
+void assert_overload_set_exists(
+    const std::unordered_map<std::string, std::vector<FunctionDefinition>>::const_iterator& search_outcome,
+    const std::unordered_map<std::string, std::vector<FunctionDefinition>>::const_iterator& end
+){
+    #ifdef DEBUG_BUILD
+    if (search_outcome == end) {
+        throw InternalError {
+            "overload set was not found in the map of overload sets by overload ids"
+        };
+    }
+    #endif
+}

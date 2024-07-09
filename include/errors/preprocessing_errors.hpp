@@ -34,18 +34,3 @@ void ensure_parent_scope_exists_for_further_local_object_search(
 );
 
 void ensure_object_is_mutable(bool is_const);
-
-inline void ensure_no_ambiguous_function_definition_found(
-    const std::list<std::shared_ptr<FunctionDefinition>>& compatible_defs,
-    const PrecompiledFunctionCall& precompiled_function_call
-) {
-    if (compatible_defs.size() > 1) {
-        throw std::runtime_error {
-            "Ambiguous function definition found for function call " + precompiled_function_call.original_function_call.function_name + "\n"
-        };
-    }
-}
-
-[[noreturn]] void throw_no_function_definition_found(
-    const PrecompiledFunctionCall& function_call
-);

@@ -70,7 +70,6 @@ BoolLiteral::BoolLiteral(const Token& bool_literal_token)
     , value(bool_literal_token.sourcetext == "true") 
 { }
 
-
 CharLiteral::CharLiteral(const Token& char_literal_token)
     : ExpressionBody(char_literal_token)
     , value(char_literal_token.sourcetext[1]) 
@@ -85,14 +84,5 @@ FunctionCall::FunctionCall(
     , StatementBody(function_call_token)
     , function_name(function_call_token.sourcetext)
     , instantiated_generics(instantiated_generics)
-    , arguments(args) {}
-
-PrecompiledFunctionCall::PrecompiledFunctionCall(
-    const FunctionCall& original_function_call, 
-    const std::vector<TypeSignature>& arguments_types,
-    const std::string& filename
-)
-    : filename(filename)
-    , original_function_call(original_function_call)
-    , arguments_types(arguments_types) 
+    , arguments(args) 
 { }
