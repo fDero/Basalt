@@ -138,3 +138,43 @@ class ScopeContext {
         std::vector<ObjectDescriptor> local_objects;
         ScopeContext* parent_scope = nullptr;
 };
+
+class FunctionSpecificityDescriptor {
+
+    public:
+
+        FunctionSpecificityDescriptor(
+            const FunctionDefinition& function_definition,
+            TypeDefinitionsRegister& type_definitions_register
+        );
+
+        enum class ComparisonResult {
+            less_specific,
+            equally_specific,
+            more_specific
+        };
+
+        ComparisonResult compare_with(const FunctionSpecificityDescriptor& other) const;
+
+    protected:
+
+        void update_indices_based_on_argument_type(
+            const TypeSignature& arg_type, 
+            TypeDefinitionsRegister& type_definitions_register,
+            bool current_type_is_fixed_and_cannot_be_an_upcasting_target
+        );
+
+        void update_union_covered_cases(
+            const std::vector<TypeSignature>& alternatives, 
+            TypeDefinitionsRegister& type_definitions_register
+        );
+
+    private:
+
+        bool   is_generic = false;
+        size_t number_of_uses_of_its_generic_parameters = 0;
+        size_t arguments_types_complexity_score = 0;
+        size_t number_of_unions_in_arguments_types = 0;
+        size_t number_of_cases_covered_by_unions_in_arguments_types = 0;
+        size_t number_of_possible_type_conversions = 0;
+};

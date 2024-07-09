@@ -46,6 +46,24 @@ struct TypeSignatureFactory {
         { TypeSignatureFactory::Int, TypeSignatureFactory::Float }
     };
 
+    inline static const TypeSignature PrimitiveTypesUnion = InlineUnion {
+        Token { "Int", "test.basalt", 1, 1, 1, Token::Type::type },
+        { 
+            TypeSignatureFactory::Int, 
+            TypeSignatureFactory::Float, 
+            TypeSignatureFactory::String,  
+            TypeSignatureFactory::RawString,
+            TypeSignatureFactory::Bool, 
+            TypeSignatureFactory::Char, 
+            TypeSignatureFactory::Byte,
+        }
+    };
+
+    inline static const TypeSignature TorU = InlineUnion {
+        Token { "T", "test.basalt", 1, 1, 1, Token::Type::type },
+        { TypeSignatureFactory::T, TypeSignatureFactory::U }
+    };
+
 
     static TypeSignature make_custom_type(const std::string& type_name, const std::vector<TypeSignature>& generics) {
         return CustomType{ 
