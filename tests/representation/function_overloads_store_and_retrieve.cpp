@@ -99,6 +99,9 @@ TEST(Representation, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_Fr
     std::vector<std::string> overload_sets_ids = function_register.retrieve_overload_sets_ids(function_call);
     
     ASSERT_EQ(overload_sets_ids.size(), 3);
+    EXPECT_EQ(function_register.retrieve_specific_overload_set(overload_sets_ids[0]).size(), 2);
+    EXPECT_EQ(function_register.retrieve_specific_overload_set(overload_sets_ids[1]).size(), 1);
+    EXPECT_EQ(function_register.retrieve_specific_overload_set(overload_sets_ids[2]).size(), 1);
 }
 
 TEST(Representation, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_From_B_Dot_Basalt_Without_Explicit_Generics) {
@@ -119,6 +122,7 @@ TEST(Representation, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_Fr
     std::vector<std::string> overload_sets_ids = function_register.retrieve_overload_sets_ids(function_call);
 
     ASSERT_EQ(overload_sets_ids.size(), 1);
+    EXPECT_EQ(function_register.retrieve_specific_overload_set(overload_sets_ids[0]).size(), 1);
 }
 
 TEST(Representation, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_From_C_Dot_Basalt_Without_Explicit_Generics) {
@@ -139,6 +143,7 @@ TEST(Representation, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_Fr
     std::vector<std::string> overload_sets_ids = function_register.retrieve_overload_sets_ids(function_call);
     
     ASSERT_EQ(overload_sets_ids.size(), 1);
+    EXPECT_EQ(function_register.retrieve_specific_overload_set(overload_sets_ids[0]).size(), 1);
 }
 
 TEST(Representation, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_From_A_Dot_Basalt_With_Explicit_Generics) {
@@ -159,6 +164,7 @@ TEST(Representation, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_Fr
     std::vector<std::string> overload_sets_ids = function_register.retrieve_overload_sets_ids(function_call);
     
     ASSERT_EQ(overload_sets_ids.size(), 1);
+    EXPECT_EQ(function_register.retrieve_specific_overload_set(overload_sets_ids[0]).size(), 1);
 }
 
 TEST(Representation, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_From_B_Dot_Basalt_With_Explicit_Generics) {
@@ -179,6 +185,7 @@ TEST(Representation, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_Fr
     std::vector<std::string> overload_sets_ids = function_register.retrieve_overload_sets_ids(function_call);
 
     ASSERT_EQ(overload_sets_ids.size(), 1);
+    EXPECT_EQ(function_register.retrieve_specific_overload_set(overload_sets_ids[0]).size(), 1);
 }
 
 TEST(Representation, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_From_C_Dot_Basalt_With_Explicit_Generics) {
@@ -198,5 +205,5 @@ TEST(Representation, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_Fr
 
     std::vector<std::string> overload_sets_ids = function_register.retrieve_overload_sets_ids(function_call);
     
-    ASSERT_EQ(overload_sets_ids.size(), 0);
+    EXPECT_TRUE(overload_sets_ids.empty());
 }
