@@ -18,11 +18,11 @@ class Polymorph {
                 cpp_type_info_str = typeid(Implementation).name();
         }
 
-	Polymorph& operator=(const Polymorph& other){
-		ptr = other.ptr;
-		cpp_type_info_str = other.cpp_type_info_str;
-		return *this;
-	}
+        Polymorph& operator=(const Polymorph& other){
+            ptr = other.ptr;
+            cpp_type_info_str = other.cpp_type_info_str;
+            return *this;
+        }
 
         template<typename Implementation>
         bool is() const
