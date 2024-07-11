@@ -92,7 +92,7 @@ bool AssignmentTypeChecker::validate_assignment_to_array_type(const TypeSignatur
 
 bool AssignmentTypeChecker::validate_assignment_to_pointer_type(const TypeSignature& source, const PointerType& dest) {
     if (source.is<PointerType>()) {
-        return validate_assignment(source.get<PointerType>().pointed_type, dest.pointed_type);
+        return validate_assignment_very_strictly(source.get<PointerType>().pointed_type, dest.pointed_type);
     }
     else {
         return false;
@@ -104,7 +104,7 @@ bool AssignmentTypeChecker::validate_assignment_to_slice_type(const TypeSignatur
         return validate_assignment(source.get<ArrayType>().stored_type, dest.stored_type);
     }
     else if (source.is<SliceType>()) {
-        return validate_assignment(source.get<SliceType>().stored_type, dest.stored_type);
+        return validate_assignment_very_strictly(source.get<SliceType>().stored_type, dest.stored_type);
     }
     return false;
 }

@@ -46,6 +46,16 @@ struct TypeSignatureFactory {
         { TypeSignatureFactory::Int, TypeSignatureFactory::Float }
     };
 
+    inline static const TypeSignature PointerToIntOrFloat = PointerType {
+        Token { "#", "test.basalt", 1, 1, 1, Token::Type::type },
+        IntOrFloat
+    };
+
+    inline static const TypeSignature SliceOfIntsOrFloats = SliceType {
+        Token { "$", "test.basalt", 1, 1, 1, Token::Type::type },
+        IntOrFloat
+    };
+
     inline static const TypeSignature PrimitiveTypesUnion = InlineUnion {
         Token { "Int", "test.basalt", 1, 1, 1, Token::Type::type },
         { 

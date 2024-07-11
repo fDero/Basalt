@@ -56,9 +56,9 @@ TEST(Preprocessor, Inferred_Generics_Do_Not_Allow_Too_Much_Flexibility_On_Type_P
     TypeSignature list_of_Int = CustomType { Token { "List", "main.basalt", 1, 1, 1, Token::Type::type }, { TypeSignatureFactory::Int } };
 
     bool IntOrFloat_is_compatible_with_T = type_checker.validate_assignment(IntOrFloat, TypeSignatureFactory::T);
-    bool List_Of_IntOrFloat_is_compatible_with_list_of_T = type_checker.validate_assignment(list_of_Int, list_of_T);
+    bool List_Of_Int_is_compatible_with_list_of_T = type_checker.validate_assignment(list_of_Int, list_of_T);
     EXPECT_TRUE(IntOrFloat_is_compatible_with_T);
-    EXPECT_FALSE(List_Of_IntOrFloat_is_compatible_with_list_of_T);
+    EXPECT_FALSE(List_Of_Int_is_compatible_with_list_of_T);
 }
 
 TEST(Preprocessor, Inferred_Generics_Works_Just_Fine_Nested_Type_Parameters) {
