@@ -14,6 +14,8 @@ struct GenericSubstitutionRule {
 
 struct GenericSubstitutionRuleSet : public std::vector<GenericSubstitutionRule> {
     
+    using Ref = std::shared_ptr<GenericSubstitutionRuleSet>;
+
     using vector<GenericSubstitutionRule>::vector;
     using vector<GenericSubstitutionRule>::operator=;
     using vector<GenericSubstitutionRule>::operator[];

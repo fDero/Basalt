@@ -3,8 +3,6 @@
 #include "toolchain/preprocessor.hpp"
 #include "errors/preprocessing_errors.hpp"
 
-#include <iostream>
-
 bool AssignmentTypeChecker::validate_assignment_to_custom_type(const TypeSignature& source, const CustomType& dest) {
     bool direct_assignment = (source.is<CustomType>() && name_equivalence_assignment_validation(source.get<CustomType>(), dest));
     return direct_assignment || structural_equivalence_assignment_validation(source, dest);
@@ -107,12 +105,12 @@ bool AssignmentTypeChecker::validate_assignment_very_strictly(const TypeSignatur
 }
 
 bool AssignmentTypeChecker::validate_assignment_to_generic_type_parameter(const TypeSignature& source, const TemplateType& dest) {
-    for (GenericSubstitutionRule& rule : generic_substitution_rules) {
+    for (GenericSubstitutionRule& rule : *generic_substitution_rules) {
         if (rule.to_be_replaced == dest.type_name) {
             return validate_assignment_very_strictly(source, rule.replacement);
         }
     }
-    generic_substitution_rules.push_back({dest.type_name, source});
+    generic_substitution_rules->push_back({dest.type_name, source});
     return true;
 }
 

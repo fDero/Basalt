@@ -34,3 +34,20 @@ void ensure_parent_scope_exists_for_further_local_object_search(
 );
 
 void ensure_object_is_mutable(bool is_const);
+
+inline void ensure_no_multiple_ambiguous_candidate_function_overloads_have_been_found(
+    const std::vector<std::pair<FunctionDefinition::Ref, GenericSubstitutionRuleSet::Ref>>& best_maches_so_far
+){
+    if (best_maches_so_far.size() > 1) {
+        throw std::runtime_error("ambiguous function call");
+    }
+}
+
+inline void assert_number_of_arguments_match(
+    FunctionDefinition::Ref function_definition,
+    const std::vector<TypeSignature>& arg_types
+){
+    if (function_definition->arguments.size() != arg_types.size()) {
+        throw InternalError("number of arguments does not match");
+    }
+}

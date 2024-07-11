@@ -4,8 +4,6 @@
 #include "errors/internal_errors.hpp"
 #include "language/generics.hpp"
 
-#include <iostream>
-
 FunctionSpecificityDescriptor::FunctionSpecificityDescriptor(
     const FunctionDefinition& function_definition,
     TypeDefinitionsRegister& type_definitions_register
@@ -15,6 +13,33 @@ FunctionSpecificityDescriptor::FunctionSpecificityDescriptor(
     for (const auto& arg : function_definition.arguments) {
         update_indices_based_on_argument_type(arg.arg_type, type_definitions_register, false);
     }
+}
+
+FunctionSpecificityDescriptor::FunctionSpecificityDescriptor(
+    bool is_generic, 
+    size_t number_of_uses_of_its_generic_parameters,
+    size_t arguments_types_complexity_score,
+    size_t number_of_unions_in_arguments_types,
+    size_t number_of_cases_covered_by_unions_in_arguments_types,
+    size_t number_of_possible_type_conversions
+)
+    : is_generic(is_generic)
+    , number_of_uses_of_its_generic_parameters(number_of_uses_of_its_generic_parameters)
+    , arguments_types_complexity_score(arguments_types_complexity_score)
+    , number_of_unions_in_arguments_types(number_of_unions_in_arguments_types)
+    , number_of_cases_covered_by_unions_in_arguments_types(number_of_cases_covered_by_unions_in_arguments_types)
+    , number_of_possible_type_conversions(number_of_possible_type_conversions)
+{ }
+
+FunctionSpecificityDescriptor FunctionSpecificityDescriptor::worst_possible_specificity() {
+    return FunctionSpecificityDescriptor(
+        true, 
+        std::numeric_limits<size_t>::max(),
+        std::numeric_limits<size_t>::min(),
+        std::numeric_limits<size_t>::max(),
+        std::numeric_limits<size_t>::max(),
+        std::numeric_limits<size_t>::max()
+    );
 }
 
 void FunctionSpecificityDescriptor::update_indices_based_on_argument_type(

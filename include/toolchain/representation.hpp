@@ -7,6 +7,7 @@
 #include <map>
 #include <functional>
 #include <list>
+#include "language/generics.hpp"
 
 struct FileRepresentation {
 
@@ -87,18 +88,19 @@ class FunctionOverloadsRegister {
         void store_function_definition(const FunctionDefinition& function_definition, const std::string& package_name);
         
         [[nodiscard]] std::vector<std::string> retrieve_overload_sets_ids(const FunctionCall& function_call);
-        [[nodiscard]] std::vector<FunctionDefinition>& retrieve_specific_overload_set(const std::string& overload_set_id);
+        [[nodiscard]] std::vector<FunctionDefinition::Ref>& retrieve_specific_overload_set(const std::string& overload_set_id);
+        [[nodiscard]] std::string get_function_default_search_key(const FunctionCall& function_call);
 
     protected:
 
         [[nodiscard]] std::string get_function_definition_overload_set_id(
             const std::string& package_name, 
-            const FunctionDefinition& function_definition
+            const FunctionDefinition::Ref function_definition
         );
 
         [[nodiscard]] std::string get_generics_unaware_function_definition_overload_set_id(
             const std::string& package_name, 
-            const FunctionDefinition& function_definition
+            const FunctionDefinition::Ref function_definition
         );
 
         [[nodiscard]] std::string get_function_call_overload_set_id(
@@ -110,7 +112,7 @@ class FunctionOverloadsRegister {
 
         ProjectFileStructure& project_file_structure;
         
-        using FunctionOverloadSet = std::vector<FunctionDefinition>;
+        using FunctionOverloadSet = std::vector<FunctionDefinition::Ref>;
         std::unordered_map<std::string, FunctionOverloadSet> function_definitions_overload_sets;
 };
 
@@ -118,6 +120,7 @@ class FunctionOverloadsRegister {
 class ScopeContext {
 
     public:
+
         void store_local_variable(const VariableDeclaration& var_declaration);
         void store_local_constant(const ConstDeclaration& const_declaration);
         
@@ -127,6 +130,7 @@ class ScopeContext {
         [[nodiscard]] ScopeContext   create_nested_scope();
 
     private:
+    
         struct ObjectDescriptor {
             std::string identifier;
             TypeSignature type_signature;
@@ -148,6 +152,15 @@ class FunctionSpecificityDescriptor {
             TypeDefinitionsRegister& type_definitions_register
         );
 
+        FunctionSpecificityDescriptor(
+            bool is_generic, 
+            size_t number_of_uses_of_its_generic_parameters,
+            size_t arguments_types_complexity_score,
+            size_t number_of_unions_in_arguments_types,
+            size_t number_of_cases_covered_by_unions_in_arguments_types,
+            size_t number_of_possible_type_conversions
+        );
+
         enum class ComparisonResult {
             less_specific,
             equally_specific,
@@ -155,6 +168,8 @@ class FunctionSpecificityDescriptor {
         };
 
         ComparisonResult compare_with(const FunctionSpecificityDescriptor& other) const;
+
+        static FunctionSpecificityDescriptor worst_possible_specificity();
 
     protected:
 
@@ -177,4 +192,39 @@ class FunctionSpecificityDescriptor {
         size_t number_of_unions_in_arguments_types = 0;
         size_t number_of_cases_covered_by_unions_in_arguments_types = 0;
         size_t number_of_possible_type_conversions = 0;
+};
+
+class OverloadingResolutionEngine {
+
+    public:
+
+        OverloadingResolutionEngine(
+            FunctionOverloadsRegister& function_overloads_register, 
+            TypeDefinitionsRegister& type_definitions_register,
+            ProjectFileStructure& project_file_structure
+        );
+
+        FunctionDefinition::Ref retrieve_function_definition(
+            const FunctionCall& function_call, 
+            const std::vector<TypeSignature>& arg_types
+        );
+
+        GenericSubstitutionRuleSet::Ref check_function_compatibility(
+            const FunctionDefinition::Ref func_def_ref,
+            const FunctionCall& func_call,
+            const std::vector<TypeSignature>& arg_types
+        );
+
+    protected:
+        
+        FunctionDefinition::Ref cache_unaware_function_definition_retrieval(
+            const FunctionCall& function_call, 
+            const std::vector<TypeSignature>& arg_types
+        );
+
+    private:
+        FunctionOverloadsRegister& function_overloads_register;
+        TypeDefinitionsRegister& type_definitions_register;
+        ProjectFileStructure& project_file_structure;
+        std::unordered_map<std::string, FunctionDefinition::Ref> fast_retrieve_cache;
 };

@@ -13,6 +13,8 @@
 
 struct FunctionDefinition : public DebugInformationsAwareEntity {
     
+    using Ref = std::shared_ptr<FunctionDefinition>;
+
     FunctionDefinition(const Token& func_token);
 
     struct Argument {
@@ -32,7 +34,6 @@ struct FunctionDefinition : public DebugInformationsAwareEntity {
         }
     }
 };
-
 
 struct StructDefinition : public DebugInformationsAwareEntity  {
 

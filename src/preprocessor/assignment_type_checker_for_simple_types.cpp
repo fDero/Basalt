@@ -12,7 +12,7 @@ AssignmentTypeChecker::AssignmentTypeChecker(
     project_file_structure(project_file_structure) 
 {}
 
-GenericSubstitutionRuleSet& AssignmentTypeChecker::get_generic_substitution_rules() {
+GenericSubstitutionRuleSet::Ref AssignmentTypeChecker::get_generic_substitution_rules() {
     return generic_substitution_rules;
 }
 
@@ -48,7 +48,7 @@ bool AssignmentTypeChecker::validate_type_alias_unaware_assignment(const TypeSig
 }
 
 bool AssignmentTypeChecker::validate_assignment_to_template_generic(const TypeSignature& source, const TemplateType& dest) {
-    for (GenericSubstitutionRule& rule : generic_substitution_rules) {
+    for (GenericSubstitutionRule& rule : *generic_substitution_rules) {
         if (rule.to_be_replaced == dest.type_name) {
             if (validate_assignment(rule.replacement, source)) {
                 rule.replacement = source;
@@ -65,7 +65,7 @@ bool AssignmentTypeChecker::validate_assignment_to_template_generic(const TypeSi
             return true;
         }
     }
-    generic_substitution_rules.push_back({dest.type_name, source});
+    generic_substitution_rules->push_back({dest.type_name, source});
     return true;
 }
 

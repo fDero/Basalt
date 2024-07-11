@@ -123,6 +123,6 @@ void assert_imports_vector_is_found(
 );
 
 void assert_overload_set_exists(
-    const std::unordered_map<std::string, std::vector<FunctionDefinition>>::const_iterator& search_outcome,
-    const std::unordered_map<std::string, std::vector<FunctionDefinition>>::const_iterator& end
+    const std::unordered_map<std::string, std::vector<FunctionDefinition::Ref>>::const_iterator& search_outcome,
+    const std::unordered_map<std::string, std::vector<FunctionDefinition::Ref>>::const_iterator& end
 );

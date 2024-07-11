@@ -53,7 +53,7 @@ class AssignmentTypeChecker {
     public:
         AssignmentTypeChecker(TypeDefinitionsRegister& program_representation, ProjectFileStructure& project_file_structure);
         bool validate_assignment(const TypeSignature& source, const TypeSignature& dest);
-        GenericSubstitutionRuleSet& get_generic_substitution_rules(); 
+        GenericSubstitutionRuleSet::Ref get_generic_substitution_rules(); 
 
     private:
         bool validate_type_alias_unaware_assignment(const TypeSignature& source, const TypeSignature& dest);
@@ -75,7 +75,7 @@ class AssignmentTypeChecker {
 
         TypeDefinitionsRegister& type_definitions_register;
         ProjectFileStructure& project_file_structure;
-        GenericSubstitutionRuleSet generic_substitution_rules;
+        GenericSubstitutionRuleSet::Ref generic_substitution_rules = std::make_shared<GenericSubstitutionRuleSet>();
 
         bool type_parameters_assignment_validation(const CustomType &source, const CustomType &dest);
 };
