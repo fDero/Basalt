@@ -92,21 +92,6 @@ void assert_vectors_have_same_size_hence_they_can_be_zipped(
     const std::vector<TypeSignature>& type_parameters
 );
 
-void assert_instantiation_struct_is_compatible_with_template_struct(
-    const CustomType& concrete_type,
-    const StructDefinition& template_struct
-);
-
-void assert_instantiation_union_is_compatible_with_template_union(
-    const CustomType& concrete_type,
-    const UnionDefinition& template_union
-);
-
-void assert_instantiation_union_is_compatible_with_template_alias(
-    const CustomType& concrete_type,
-    const TypeAlias& template_alias
-);
-
 void assert_packagename_is_found(
     const std::unordered_map<std::string, std::string>::const_iterator& search_outcome,
     const std::unordered_map<std::string, std::string>::const_iterator& end

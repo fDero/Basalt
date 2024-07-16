@@ -123,8 +123,13 @@ std::string TypeDefinitionsRegister::get_fully_qualified_typesignature_name(cons
         return std::nullopt;
     }
     else {
-        TypeDefinition instantiated = retrieved->second;
-        instantiated.instantiate_generics(type_signature);
+        TypeDefinition& to_be_instantiated = retrieved->second;
+        GenericSubstitutionRuleSet rules = GenericSubstitutionRuleSet::zip_components_vectors(
+            to_be_instantiated.get_template_generics(), 
+            type_signature.type_parameters
+        );
+        GenericsInstantiationEngine generic_instantiation_engine(rules);
+        TypeDefinition instantiated = generic_instantiation_engine.instantiate_generic_typedefinition(to_be_instantiated);
         instantiated.set_name(instantiated_concrete_type_key);
         type_definitions.insert({instantiated_concrete_type_key, instantiated});
         return instantiated_concrete_type_key;

@@ -15,14 +15,11 @@ TEST(TypeSystem, Generic_Struct_With_CustomType_Fields_Instantiation) {
             StructDefinition::Field { "second", TypeSignatureFactory::U }
         }
     );
-    StructDefinition instantiated_struct_definition = generic_struct_definition;
-    instantiated_struct_definition.instantiate_generics(
-        TypeSignatureFactory::make_custom_type("Pair", { 
-            TypeSignatureFactory::Int, 
-            TypeSignatureFactory::ListOfStrings 
-        })
-            .get<CustomType>()
-    );
+    GenericsInstantiationEngine engine({
+        GenericSubstitutionRule { "T", TypeSignatureFactory::Int },
+        GenericSubstitutionRule { "U", TypeSignatureFactory::ListOfStrings }
+    });
+    StructDefinition instantiated_struct_definition = engine.instantiate_generic_struct(generic_struct_definition);
     ASSERT_EQ(instantiated_struct_definition.fields.size(), 2);
     EXPECT_EQ(instantiated_struct_definition.fields[0].field_name, "first");
     EXPECT_EQ(instantiated_struct_definition.fields[1].field_name, "second");
@@ -40,11 +37,8 @@ TEST(TypeSystem, Generic_Struct_With_PointerType_Field_Instantiation) {
             }
         }
     );
-    StructDefinition instantiated_struct_definition = generic_struct_definition;
-    instantiated_struct_definition.instantiate_generics(
-        TypeSignatureFactory::make_custom_type("PointerWrapper", { TypeSignatureFactory::Int })
-            .get<CustomType>()
-    );
+    GenericsInstantiationEngine engine({ GenericSubstitutionRule { "T", TypeSignatureFactory::Int } });
+    StructDefinition instantiated_struct_definition = engine.instantiate_generic_struct(generic_struct_definition);
     ASSERT_EQ(instantiated_struct_definition.fields.size(), 1);
     EXPECT_EQ(instantiated_struct_definition.fields[0].field_name, "poited_object");
     ASSERT_TRUE(instantiated_struct_definition.fields[0].field_type.is<PointerType>());
@@ -63,11 +57,8 @@ TEST(TypeSystem, Generic_Struct_With_Slice_Type_Field_Instantiation) {
             }
         }
     );
-    StructDefinition instantiated_struct_definition = generic_struct_definition;
-    instantiated_struct_definition.instantiate_generics(
-        TypeSignatureFactory::make_custom_type("SliceWrapper", { TypeSignatureFactory::Int })
-            .get<CustomType>()
-    );
+    GenericsInstantiationEngine engine({ GenericSubstitutionRule { "T", TypeSignatureFactory::Int } });
+    StructDefinition instantiated_struct_definition = engine.instantiate_generic_struct(generic_struct_definition);
     ASSERT_EQ(instantiated_struct_definition.fields.size(), 1);
     EXPECT_EQ(instantiated_struct_definition.fields[0].field_name, "slice_object");
     ASSERT_TRUE(instantiated_struct_definition.fields[0].field_type.is<SliceType>());
@@ -86,11 +77,8 @@ TEST(TypeSystem, Generic_Struct_With_Array_Type_Field_Instantiation) {
             }
         }
     );
-    StructDefinition instantiated_struct_definition = generic_struct_definition;
-    instantiated_struct_definition.instantiate_generics(
-        TypeSignatureFactory::make_custom_type("ArrayWrapper", { TypeSignatureFactory::Int })
-            .get<CustomType>()
-    );
+    GenericsInstantiationEngine engine({ GenericSubstitutionRule { "T", TypeSignatureFactory::Int } });
+    StructDefinition instantiated_struct_definition = engine.instantiate_generic_struct(generic_struct_definition);
     ASSERT_EQ(instantiated_struct_definition.fields.size(), 1);
     EXPECT_EQ(instantiated_struct_definition.fields[0].field_name, "array_object");
     ASSERT_TRUE(instantiated_struct_definition.fields[0].field_type.is<ArrayType>());

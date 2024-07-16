@@ -55,32 +55,3 @@ void avoid_duplicate_output_file_extensions(
         };
     }
 }
-
-void enure_selected_mode_is_not_trivial_for_thread_set(CommandLineController::Mode mode) {
-    bool trivial = (mode == CommandLineController::Mode::version);
-    trivial &= (mode == CommandLineController::Mode::help);
-    if (trivial) {
-        throw CommandLineError {
-            "you can only specify the number of threads if you are doing"
-            "a non trivial task (e.g compiling, running, debugging)"
-        };
-    }
-}
-
-void ensure_threads_are_a_reasonable_number(int threads) {
-    if (threads < 1 || threads > 100) {
-        throw CommandLineError {
-            "you can only specify a positive non-zero integer number "
-            "of threads not greater then 100"
-        };
-    }
-}
-
-void ensure_threads_are_not_already_set(bool threads_configured_manually) {
-    if (threads_configured_manually) {
-        throw CommandLineError {
-            "conflicting specifications regarding the thread count for "
-            "parallel code processing"
-        };
-    }
-}

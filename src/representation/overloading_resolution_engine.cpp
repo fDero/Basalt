@@ -85,10 +85,11 @@ GenericSubstitutionRuleSet::Ref OverloadingResolutionEngine::check_function_comp
             func_call.instantiated_generics
         );
     }
+    GenericsInstantiationEngine generics_instantiation_engine(explicit_generics_substitution_rules);
     for (size_t i = 0; i < number_of_arguments; i++) {
-        FunctionDefinition::Argument arg = func_def_ref->arguments[i];
-        arg.arg_type.instantiate_generics(explicit_generics_substitution_rules);
-        TypeSignature declered_arg_type = arg.arg_type;
+        TypeSignature declered_arg_type = generics_instantiation_engine.instantiate_generic_typesignature(
+            func_def_ref->arguments[i].arg_type
+        );
         const TypeSignature& provided_arg_type = arg_types[i];
         if (!type_checker.validate_assignment(provided_arg_type, declered_arg_type)) {
             return nullptr;

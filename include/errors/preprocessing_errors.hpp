@@ -36,9 +36,9 @@ void ensure_parent_scope_exists_for_further_local_object_search(
 void ensure_object_is_mutable(bool is_const);
 
 inline void ensure_no_multiple_ambiguous_candidate_function_overloads_have_been_found(
-    const std::vector<std::pair<FunctionDefinition::Ref, GenericSubstitutionRuleSet::Ref>>& best_maches_so_far
+    const std::vector<std::pair<FunctionDefinition::Ref, GenericSubstitutionRuleSet::Ref>>& best_matches_so_far
 ){
-    if (best_maches_so_far.size() > 1) {
+    if (best_matches_so_far.size() > 1) {
         throw std::runtime_error("ambiguous function call");
     }
 }
