@@ -40,3 +40,18 @@ TypeDefinition GenericsInstantiationEngine::instantiate_generic_typedefinition(c
     }
     assert_unreachable();
 }
+
+[[nodiscard]] FunctionDefinition::Ref GenericsInstantiationEngine::instantiate_generic_function(const FunctionDefinition& function_definition) const {
+    FunctionDefinition::Ref instantiated_function = std::make_shared<FunctionDefinition>(function_definition);
+    instantiated_function->template_generics_names.clear();
+    if (function_definition.return_type.has_value()) {
+        instantiated_function->return_type = instantiate_generic_typesignature(*function_definition.return_type);
+    }
+    for (const auto& arg : function_definition.arguments) {
+        instantiated_function->arguments.push_back({ arg.arg_name, instantiate_generic_typesignature(arg.arg_type) });
+    }
+    for (const auto& statement : function_definition.code) {
+        instantiated_function->code.push_back(instantiate_generic_statement(statement));
+    }
+    return instantiated_function;
+};

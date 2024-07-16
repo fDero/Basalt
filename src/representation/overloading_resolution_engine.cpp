@@ -59,8 +59,10 @@ FunctionDefinition::Ref OverloadingResolutionEngine::cache_unaware_function_defi
     if (best_maches_so_far.empty()){
         return nullptr;
     }
-    FunctionDefinition::Ref instanitated_func_def_ref = std::make_shared<FunctionDefinition>(*best_maches_so_far[0].first); 
-    instanitated_func_def_ref->instantiate_generics(*best_maches_so_far[0].second);
+    const FunctionDefinition& best_match = *best_maches_so_far[0].first; 
+    GenericsInstantiationEngine generics_instantiation_engine(*best_maches_so_far[0].second);
+    FunctionDefinition::Ref instanitated_func_def_ref = 
+        generics_instantiation_engine.instantiate_generic_function(best_match);
     return instanitated_func_def_ref;
 }
 

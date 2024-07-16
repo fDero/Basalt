@@ -8,7 +8,7 @@
 #include <vector>
 
 struct StatementBody : public DebugInformationsAwareEntity {
-    
+
     virtual ~StatementBody() = default;
     StatementBody(const DebugInformationsAwareEntity& debug_info)
         : DebugInformationsAwareEntity(debug_info) { }
@@ -66,16 +66,17 @@ struct Assignment : public StatementBody {
 
 struct Conditional : public StatementBody {
     
-    Expression condition;
-    std::vector<Statement> then_brench;
-    std::vector<Statement> else_brench;
-
+    virtual ~Conditional() = default;
     Conditional(
         const Expression& cond, 
         const std::vector<Statement>& then_branch,
         const std::vector<Statement>& else_branch,
         const Token& if_token
     );
+
+    Expression condition;
+    std::vector<Statement> then_brench;
+    std::vector<Statement> else_brench;
 };
 
 struct WhileLoop : public StatementBody {
@@ -113,17 +114,6 @@ struct Return : public StatementBody {
     );
 
     std::optional<Expression> return_value;
-};
-
-struct Defer : public StatementBody {
-
-    virtual ~Defer() = default;
-    Defer(
-        const Statement& statement,
-        const Token& defer_token
-    );
-
-    Statement deferred_statement;    
 };
 
 struct Continue : public StatementBody {

@@ -79,7 +79,6 @@ TEST(Representation, Simple_Overloading_Resolution_Of_Generic_Vs_Non_Generic_Fun
     FunctionDefinition::Ref func_def_ref = overoad_resolver.retrieve_function_definition(func_call, arg_types);
     ASSERT_NE(func_def_ref, nullptr);
     EXPECT_EQ(func_def_ref->function_name, "add");
-    EXPECT_FALSE(func_def_ref->template_generics_names.empty());
 }
 
 TEST(Representation, Simple_Overloading_Of_Non_Existing_Function){

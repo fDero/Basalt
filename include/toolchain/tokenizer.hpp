@@ -15,7 +15,7 @@ struct Token : public DebugInformationsAwareEntity {
     enum class Type {
         symbol, text, type, integer_literal, floating_literal, 
         string_literal, character_literal, boolean_literal, 
-        return_keyword, break_keyword, continue_keyword, defer_keyword, throw_keyword, try_keyword, 
+        return_keyword, break_keyword, continue_keyword, throw_keyword, try_keyword, 
         catch_keyword, attempt_keyword, multiline_comment, if_keyword, else_keyword,
         while_keyword, until_keyword, var_keyword, const_keyword, 
         func_keyword, struct_keyword, union_keyword, enum_keyword,

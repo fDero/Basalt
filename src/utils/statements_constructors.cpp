@@ -75,14 +75,6 @@ Return::Return(
     , return_value(value) 
 {}
 
-Defer::Defer(
-    const Statement& statement,
-    const Token& defer_token
-)
-    : StatementBody(defer_token)
-    , deferred_statement(statement) 
-{}
-
 Continue::Continue(
     const Token& continue_token
 ) : StatementBody(continue_token) {}
