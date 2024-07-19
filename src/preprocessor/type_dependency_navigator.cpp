@@ -8,23 +8,18 @@ TypeDependencyNavigator::TypeDependencyNavigator(
 ) : program_representation(program_representation) {}
 
 void TypeDependencyNavigator::verify_that_the_type_exists(const TypeSignature& type_signature) {
-    if (type_signature.is<PointerType>()) {
-        verify_that_the_type_exists(type_signature.get<PointerType>().pointed_type);
-    }
-    else if (type_signature.is<ArrayType>()) {
-        verify_that_the_type_exists(type_signature.get<ArrayType>().stored_type);
-    }
-    else if (type_signature.is<SliceType>()) {
-        verify_that_the_type_exists(type_signature.get<SliceType>().stored_type);
-    }
-    else if (type_signature.is<InlineUnion>()) {
-        for (const TypeSignature& alternative : type_signature.get<InlineUnion>().alternatives){
-            verify_that_the_type_exists(alternative);
+    switch (type_signature.typesiganture_kind()) {
+        break; case TypeSignatureBody::Kind::pointer_type:   verify_that_the_type_exists(type_signature.get<PointerType>().pointed_type);
+        break; case TypeSignatureBody::Kind::array_type:     verify_that_the_type_exists(type_signature.get<ArrayType>().stored_type);
+        break; case TypeSignatureBody::Kind::slice_type:     verify_that_the_type_exists(type_signature.get<SliceType>().stored_type);
+        break; case TypeSignatureBody::Kind::custom_type:    std::ignore = program_representation.retrieve_type_definition(type_signature.get<CustomType>());
+        break; case TypeSignatureBody::Kind::template_type:  return;
+        break; case TypeSignatureBody::Kind::primitive_type: return;
+        break; case TypeSignatureBody::Kind::inline_union: {    
+            for (const TypeSignature& alternative : type_signature.get<InlineUnion>().alternatives){
+                verify_that_the_type_exists(alternative);
+            }
         }
-    }
-    else if (type_signature.is<CustomType>()) {
-        const CustomType& custom_type = type_signature.get<CustomType>();
-        std::ignore = program_representation.retrieve_type_definition(custom_type);
     }
 }
 
@@ -32,24 +27,22 @@ void TypeDependencyNavigator::visit_typesignature(const TypeSignature& typesigna
     if (typesignature.is_generic()) {
         return;
     }
-    else if (typesignature.is<PointerType>()) {
-        verify_that_the_type_exists(typesignature.get<PointerType>().pointed_type);
-    }
-    else if (typesignature.is<ArrayType>()) {
-        visit_typesignature(typesignature.get<ArrayType>().stored_type, generics);
-    }
-    else if (typesignature.is<SliceType>()) {
-        verify_that_the_type_exists(typesignature.get<SliceType>().stored_type);
-    }
-    else if (typesignature.is<InlineUnion>()){
-        for (const TypeSignature& alternative : typesignature.get<InlineUnion>().alternatives){
-            visit_typesignature(alternative, generics);
+    switch (typesignature.typesiganture_kind()) {
+        break; case TypeSignatureBody::Kind::template_type:  return;
+        break; case TypeSignatureBody::Kind::primitive_type: return;
+        break; case TypeSignatureBody::Kind::pointer_type:   verify_that_the_type_exists(typesignature.get<PointerType>().pointed_type);
+        break; case TypeSignatureBody::Kind::array_type:     visit_typesignature(typesignature.get<ArrayType>().stored_type, generics);
+        break; case TypeSignatureBody::Kind::slice_type:     verify_that_the_type_exists(typesignature.get<SliceType>().stored_type);
+        break; case TypeSignatureBody::Kind::inline_union: {
+            for (const TypeSignature& alternative : typesignature.get<InlineUnion>().alternatives){
+                visit_typesignature(alternative, generics);
+            }
         }
-    }
-    else if (typesignature.is<CustomType>()) {
-        const CustomType& custom_type = typesignature.get<CustomType>();
-        TypeDefinition type_definition = program_representation.retrieve_type_definition(custom_type);
-        visit_type_definition(typesignature, type_definition, generics);
+        break; case TypeSignatureBody::Kind::custom_type: {
+            const CustomType& custom_type = typesignature.get<CustomType>();
+            TypeDefinition type_definition = program_representation.retrieve_type_definition(custom_type);
+            visit_type_definition(typesignature, type_definition, generics);
+        }
     }
 }
 

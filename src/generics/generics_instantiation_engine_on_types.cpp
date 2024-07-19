@@ -5,26 +5,14 @@
 #include "errors/internal_errors.hpp"
 
 [[nodiscard]] TypeSignature GenericsInstantiationEngine::instantiate_generic_typesignature(const TypeSignature& type_signature) const {
-    if (type_signature.is<TemplateType>()) {
-        return instantiate_template_type(type_signature.get<TemplateType>());
-    }
-    if (type_signature.is<CustomType>()) {
-        return instantiate_custom_type(type_signature.get<CustomType>());
-    }
-    if (type_signature.is<PointerType>()) {
-        return instantiate_pointer_type(type_signature.get<PointerType>());
-    }
-    if (type_signature.is<ArrayType>()) {
-        return instantiate_array_type(type_signature.get<ArrayType>());
-    }
-    if (type_signature.is<SliceType>()) {
-        return instantiate_slice_type(type_signature.get<SliceType>());
-    }
-    if (type_signature.is<InlineUnion>()){
-        return instantiate_inline_union(type_signature.get<InlineUnion>());    
-    }
-    if (type_signature.is<PrimitiveType>()) {
-        return type_signature;
+    switch (type_signature.typesiganture_kind()) {
+        case TypeSignatureBody::Kind::template_type:  return instantiate_template_type(type_signature.get<TemplateType>());
+        case TypeSignatureBody::Kind::custom_type:    return instantiate_custom_type(type_signature.get<CustomType>());
+        case TypeSignatureBody::Kind::pointer_type:   return instantiate_pointer_type(type_signature.get<PointerType>());
+        case TypeSignatureBody::Kind::array_type:     return instantiate_array_type(type_signature.get<ArrayType>());
+        case TypeSignatureBody::Kind::slice_type:     return instantiate_slice_type(type_signature.get<SliceType>());
+        case TypeSignatureBody::Kind::inline_union:   return instantiate_inline_union(type_signature.get<InlineUnion>());    
+        case TypeSignatureBody::Kind::primitive_type: return type_signature;
     }
     assert_unreachable();
 }

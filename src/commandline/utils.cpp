@@ -59,12 +59,12 @@ bool CommandLineController::check_for_specific_file_extension(const std::string&
 
 CommandLineController::Flag CommandLineController::detect_flag() {
     std::string text = std::string(arg_values[arg_index]);
-    if (text == "-h" || text == "--help") return Flag::help;
+    if (text == "-h" || text == "--help")    return Flag::help;
     if (text == "-v" || text == "--version") return Flag::version;
-    if (text == "-d" || text == "--debug") return Flag::debugger;
+    if (text == "-d" || text == "--debug")   return Flag::debugger;
     if (text == "-c" || text == "--compile") return Flag::compiler;
-    if (text == "-r" || text == "--run") return Flag::interpreter;
-    if (text == "-o" || text == "--output") return Flag::output;
+    if (text == "-r" || text == "--run")     return Flag::interpreter;
+    if (text == "-o" || text == "--output")  return Flag::output;
     return Flag::unspecified;
 }
 

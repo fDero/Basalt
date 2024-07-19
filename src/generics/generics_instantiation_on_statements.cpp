@@ -4,35 +4,17 @@
 #include "errors/internal_errors.hpp"
 
 [[nodiscard]] Statement GenericsInstantiationEngine::instantiate_generic_statement(const Statement& statement) const {
-    if (statement.is<FunctionCall>()) {
-        return instantiate_generic_function_call(statement.get<FunctionCall>());
-    }
-    if (statement.is<VariableDeclaration>()) {
-        return instantiate_generic_variable_declaration(statement.get<VariableDeclaration>());        
-    }
-    if (statement.is<ConstDeclaration>()) {
-        return instantiate_generic_const_declaration(statement.get<ConstDeclaration>());
-    }
-    if (statement.is<Assignment>()) {
-        return instantiate_generic_assignment(statement.get<Assignment>());
-    }
-    if (statement.is<Conditional>()) {
-        return instantiate_generic_conditional(statement.get<Conditional>());
-    }
-    if (statement.is<WhileLoop>()) {
-        return instantiate_generic_while_loop(statement.get<WhileLoop>());
-    }
-    if (statement.is<UntilLoop>()) {
-        return instantiate_generic_until_loop(statement.get<UntilLoop>());
-    }
-    if (statement.is<Return>()) {
-        return instantiate_generic_return_statement(statement.get<Return>());
-    }
-    if (statement.is<Continue>()) {
-        return statement;
-    }
-    if (statement.is<Break>()) {
-        return statement;
+    switch (statement.statement_kind()) {
+        case StatementBody::Kind::function_call: return instantiate_generic_function_call(statement.get<FunctionCall>());
+        case StatementBody::Kind::variable_declaration: return instantiate_generic_variable_declaration(statement.get<VariableDeclaration>()); 
+        case StatementBody::Kind::const_declaration: return instantiate_generic_const_declaration(statement.get<ConstDeclaration>());
+        case StatementBody::Kind::assignment: return instantiate_generic_assignment(statement.get<Assignment>());
+        case StatementBody::Kind::conditional: return instantiate_generic_conditional(statement.get<Conditional>());
+        case StatementBody::Kind::while_loop: return instantiate_generic_while_loop(statement.get<WhileLoop>());
+        case StatementBody::Kind::until_loop: return instantiate_generic_until_loop(statement.get<UntilLoop>());
+        case StatementBody::Kind::return_statement: return statement;
+        case StatementBody::Kind::continue_statement: return statement;
+        case StatementBody::Kind::break_statement: return statement;
     }
     assert_unreachable();
 }

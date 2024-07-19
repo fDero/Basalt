@@ -71,41 +71,34 @@ std::string TypeDefinitionsRegister::get_fully_qualified_customtype_name(const C
 }
 
 std::string TypeDefinitionsRegister::get_fully_qualified_typesignature_name(const TypeSignature& type_signature) {
-    if (type_signature.is<SliceType>()) {
-        const TypeSignature& stored_type = type_signature.get<SliceType>().stored_type;
-        return "$" + get_fully_qualified_typesignature_name(stored_type);
-    }
-    else if (type_signature.is<PointerType>()) {
-        const TypeSignature& pointed_type = type_signature.get<PointerType>().pointed_type;
-        return "#" + get_fully_qualified_typesignature_name(pointed_type);
-    }
-    else if (type_signature.is<ArrayType>()) {
-        const TypeSignature& stored_type = type_signature.get<ArrayType>().stored_type;
-        const ArrayType& array_type = type_signature.get<ArrayType>();
-        std::string array_size_section = "[" + ((array_type.array_length == -1)? "" : std::to_string(array_type.array_length)) + "]";
-        return array_size_section + get_fully_qualified_typesignature_name(stored_type);
-    }
-    else if (type_signature.is<PrimitiveType>()) {
-        return type_signature.get<PrimitiveType>().type_name;
-    }
-    else if (type_signature.is<InlineUnion>()) {
-        std::string inline_union_fully_qualified_name;
-        for (const TypeSignature& alternative : type_signature.get<InlineUnion>().alternatives){
-            inline_union_fully_qualified_name += get_fully_qualified_typesignature_name(alternative) + " | ";
+    switch (type_signature.typesiganture_kind()) {
+        case TypeSignatureBody::Kind::slice_type: {
+            return "$" + get_fully_qualified_typesignature_name(type_signature.get<SliceType>().stored_type);
         }
-        inline_union_fully_qualified_name.pop_back();
-        inline_union_fully_qualified_name.pop_back();
-        inline_union_fully_qualified_name.pop_back();
-        return inline_union_fully_qualified_name;
+        case TypeSignatureBody::Kind::pointer_type: {
+            return "#" + get_fully_qualified_typesignature_name(type_signature.get<PointerType>().pointed_type);
+        }
+        case TypeSignatureBody::Kind::array_type: {
+            const TypeSignature& stored_type = type_signature.get<ArrayType>().stored_type;
+            const ArrayType& array_type = type_signature.get<ArrayType>();
+            std::string array_size_section = "[" + ((array_type.array_length == -1)? "" : std::to_string(array_type.array_length)) + "]";
+            return array_size_section + get_fully_qualified_typesignature_name(stored_type);
+        }
+        case TypeSignatureBody::Kind::primitive_type: return type_signature.get<PrimitiveType>().type_name;
+        case TypeSignatureBody::Kind::template_type: return type_signature.get<TemplateType>().type_name;
+        case TypeSignatureBody::Kind::custom_type: return get_fully_qualified_customtype_name(type_signature.get<CustomType>());    
+        case TypeSignatureBody::Kind::inline_union: {
+            std::string inline_union_fully_qualified_name;
+            for (const TypeSignature& alternative : type_signature.get<InlineUnion>().alternatives){
+                inline_union_fully_qualified_name += get_fully_qualified_typesignature_name(alternative) + " | ";
+            }
+            inline_union_fully_qualified_name.pop_back();
+            inline_union_fully_qualified_name.pop_back();
+            inline_union_fully_qualified_name.pop_back();
+            return inline_union_fully_qualified_name;
+        }
     }
-    else if (type_signature.is<TemplateType>()) {
-        return type_signature.get<TemplateType>().type_name;
-    }
-    else {
-        assert_typesignature_is<CustomType>(type_signature);        
-        const CustomType& custom_type = type_signature.get<CustomType>();
-        return get_fully_qualified_customtype_name(custom_type);
-    }
+    assert_unreachable();
 }
 
 [[nodiscard]] std::optional<std::string> TypeDefinitionsRegister::search_fully_qualified_typesignature_name(
@@ -160,41 +153,36 @@ std::string TypeDefinitionsRegister::get_fully_qualified_typesignature_name(cons
     const std::string& package_name,
     const TypeSignature& type_signature
 ) {
-    if (type_signature.is<SliceType>()) {
-        const TypeSignature& stored_type = type_signature.get<SliceType>().stored_type;
-        return "$" + infer_possible_fully_qualified_typesignature_name(package_name, stored_type);
-    }
-    else if (type_signature.is<PointerType>()) {
-        const TypeSignature& pointed_type = type_signature.get<PointerType>().pointed_type;
-        return "#" + infer_possible_fully_qualified_typesignature_name(package_name, pointed_type);
-    }
-    else if (type_signature.is<ArrayType>()) {
-        const TypeSignature& stored_type = type_signature.get<ArrayType>().stored_type;
-        const ArrayType& array_type = type_signature.get<ArrayType>();
-        std::string array_size_section = "[" + ((array_type.array_length == -1)? "" : std::to_string(array_type.array_length)) + "]";
-        return array_size_section + infer_possible_fully_qualified_typesignature_name(package_name, stored_type);
-    }
-    else if (type_signature.is<InlineUnion>()) {
-        std::string inline_union_fully_qualified_name;
-        for (const TypeSignature& alternative : type_signature.get<InlineUnion>().alternatives){
-            inline_union_fully_qualified_name += infer_possible_fully_qualified_typesignature_name(package_name, alternative) + " | ";
+    switch (type_signature.typesiganture_kind()) {
+        case TypeSignatureBody::Kind::slice_type: {
+            return "$" + infer_possible_fully_qualified_typesignature_name(package_name, type_signature.get<SliceType>().stored_type);
         }
-        inline_union_fully_qualified_name.pop_back();
-        inline_union_fully_qualified_name.pop_back();
-        inline_union_fully_qualified_name.pop_back();
-        return inline_union_fully_qualified_name;
+        case TypeSignatureBody::Kind::pointer_type: {
+            return "#" + infer_possible_fully_qualified_typesignature_name(package_name, type_signature.get<PointerType>().pointed_type);
+        }
+        case TypeSignatureBody::Kind::array_type: {
+            const TypeSignature& stored_type = type_signature.get<ArrayType>().stored_type;
+            const ArrayType& array_type = type_signature.get<ArrayType>();
+            std::string array_size_section = "[" + ((array_type.array_length == -1)? "" : std::to_string(array_type.array_length)) + "]";
+            return array_size_section + infer_possible_fully_qualified_typesignature_name(package_name, stored_type);
+        }
+        case TypeSignatureBody::Kind::primitive_type: return type_signature.get<PrimitiveType>().type_name;
+        case TypeSignatureBody::Kind::template_type: return type_signature.get<TemplateType>().type_name;
+        case TypeSignatureBody::Kind::custom_type: {
+            return infer_possible_fully_qualified_customtype_name(package_name, type_signature.get<CustomType>());    
+        }
+        case TypeSignatureBody::Kind::inline_union: {
+            std::string inline_union_fully_qualified_name;
+            for (const TypeSignature& alternative : type_signature.get<InlineUnion>().alternatives){
+                inline_union_fully_qualified_name += infer_possible_fully_qualified_typesignature_name(package_name, alternative) + " | ";
+            }
+            inline_union_fully_qualified_name.pop_back();
+            inline_union_fully_qualified_name.pop_back();
+            inline_union_fully_qualified_name.pop_back();
+            return inline_union_fully_qualified_name;
+        }
     }
-    else if (type_signature.is<PrimitiveType>()) {
-        return type_signature.get<PrimitiveType>().type_name;
-    }
-    else if (type_signature.is<TemplateType>()) {
-        return type_signature.get<TemplateType>().type_name;
-    }
-    else {
-        assert_typesignature_is<CustomType>(type_signature);        
-        const CustomType& custom_type = type_signature.get<CustomType>();
-        return infer_possible_fully_qualified_customtype_name(package_name, custom_type);
-    }
+    assert_unreachable();
 }
 
 [[nodiscard]] std::string TypeDefinitionsRegister::infer_possible_fully_qualified_customtype_name(

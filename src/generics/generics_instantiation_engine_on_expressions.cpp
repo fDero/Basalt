@@ -3,22 +3,20 @@
 #include "errors/internal_errors.hpp"
 
 Expression GenericsInstantiationEngine::instantiate_generic_expression(const Expression& expression) const {
-    if (expression.is<FunctionCall>()) {
-        return instantiate_generic_function_call(expression.get<FunctionCall>());
+    switch (expression.expression_kind()) {
+        case ExpressionBody::Kind::function_call:   return instantiate_generic_function_call(expression.get<FunctionCall>());
+        case ExpressionBody::Kind::binary_operator: return instantiate_generic_binary_operator(expression.get<BinaryOperator>());
+        case ExpressionBody::Kind::unary_operator:  return instantiate_generic_unary_operator(expression.get<UnaryOperator>());
+        case ExpressionBody::Kind::array_literal:   return instantiate_generic_array_literal(expression.get<ArrayLiteral>());
+        case ExpressionBody::Kind::type_operator:   return instantiate_generic_type_operator(expression.get<TypeOperator>());
+        case ExpressionBody::Kind::int_literal:     return expression;
+        case ExpressionBody::Kind::float_literal:   return expression;
+        case ExpressionBody::Kind::char_literal:    return expression;
+        case ExpressionBody::Kind::bool_literal:    return expression;
+        case ExpressionBody::Kind::string_literal:  return expression;
+        case ExpressionBody::Kind::identifier:      return expression;
     }
-    if (expression.is<BinaryOperator>()) {
-        return instantiate_generic_binary_operator(expression.get<BinaryOperator>());
-    }
-    if (expression.is<UnaryOperator>()) {
-        return instantiate_generic_unary_operator(expression.get<UnaryOperator>());
-    }
-    if (expression.is<ArrayLiteral>()) {
-        return instantiate_generic_array_literal(expression.get<ArrayLiteral>());
-    }
-    if (expression.is<TypeOperator>()) {
-        return instantiate_generic_type_operator(expression.get<TypeOperator>());
-    }
-    return expression;
+    assert_unreachable();
 }
 
 FunctionCall GenericsInstantiationEngine::instantiate_generic_function_call(const FunctionCall& expression) const {

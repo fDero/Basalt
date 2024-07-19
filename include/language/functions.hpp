@@ -15,6 +15,14 @@ struct FunctionCall
 	    const std::vector<TypeSignature>& instantiated_generics
 	);
 
+	[[nodiscard]] ExpressionBody::Kind expression_kind() const override {
+		return ExpressionBody::Kind::function_call;
+	}
+
+	[[nodiscard]] StatementBody::Kind statement_kind() const override {
+		return StatementBody::Kind::function_call;
+	}
+
 	std::string function_name;
 	std::vector<TypeSignature> instantiated_generics;
 	std::vector<Expression> arguments;

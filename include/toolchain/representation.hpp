@@ -179,6 +179,42 @@ class FunctionSpecificityDescriptor {
             bool current_type_is_fixed_and_cannot_be_an_upcasting_target
         );
 
+        void update_indicies_based_on_primitive_type(
+            const TypeSignature& arg_type, 
+            TypeDefinitionsRegister& type_definitions_register,
+            bool current_type_is_fixed_and_cannot_be_an_upcasting_target
+        );
+
+        void update_indicies_based_on_pointer_type(
+            const TypeSignature& arg_type, 
+            TypeDefinitionsRegister& type_definitions_register,
+            bool current_type_is_fixed_and_cannot_be_an_upcasting_target
+        );
+
+        void update_indicies_based_on_array_type(
+            const TypeSignature& arg_type, 
+            TypeDefinitionsRegister& type_definitions_register,
+            bool current_type_is_fixed_and_cannot_be_an_upcasting_target
+        );
+        
+        void update_indicies_based_on_slice_type(
+            const TypeSignature& arg_type, 
+            TypeDefinitionsRegister& type_definitions_register,
+            bool current_type_is_fixed_and_cannot_be_an_upcasting_target
+        );
+
+        void update_indicies_based_on_inline_union_type(
+            const TypeSignature& arg_type, 
+            TypeDefinitionsRegister& type_definitions_register,
+            bool current_type_is_fixed_and_cannot_be_an_upcasting_target
+        );
+
+        void update_indicies_based_on_custom_type(
+            const TypeSignature& arg_type, 
+            TypeDefinitionsRegister& type_definitions_register,
+            bool current_type_is_fixed_and_cannot_be_an_upcasting_target
+        );
+
         void update_union_covered_cases(
             const std::vector<TypeSignature>& alternatives, 
             TypeDefinitionsRegister& type_definitions_register
