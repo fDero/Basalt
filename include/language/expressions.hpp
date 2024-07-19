@@ -22,6 +22,8 @@ struct ExpressionBody : public DebugInformationsAwareEntity {
 
     virtual Kind expression_kind() const = 0;
 
+    virtual ~ExpressionBody() = default;
+
     ExpressionBody(const DebugInformationsAwareEntity& debug_info)
         : DebugInformationsAwareEntity(debug_info) { }
 };
@@ -36,16 +38,15 @@ class Expression : public Polymorph<ExpressionBody> {
 
         [[nodiscard]] bool is_wrapped_in_in_parenthesis() const { return wrapped_in_parenthesis; }
         void wrap_in_parenthesis() { wrapped_in_parenthesis = true; }
-
-        [[nodiscard]] ExpressionBody::Kind expression_kind() const {
-            return ptr->expression_kind();
-        }
+        [[nodiscard]] ExpressionBody::Kind expression_kind() const;
 
     private:
         bool wrapped_in_parenthesis = false;
 };
 
 struct ArrayLiteral : public ExpressionBody {
+
+    virtual ~ArrayLiteral() = default;
 
     ArrayLiteral(
         int length,
@@ -54,9 +55,7 @@ struct ArrayLiteral : public ExpressionBody {
         const DebugInformationsAwareEntity& debug_info
     );
 
-    [[nodiscard]] ExpressionBody::Kind expression_kind() const override {
-        return ExpressionBody::Kind::array_literal;
-    }
+    [[nodiscard]] ExpressionBody::Kind expression_kind() const override;
 
     int array_length;
     TypeSignature stored_type;
@@ -66,26 +65,26 @@ struct ArrayLiteral : public ExpressionBody {
 
 struct TypeOperator : public ExpressionBody {
 
+    virtual ~TypeOperator() = default;
+
     TypeOperator(
         const Token& operator_token,
         const Expression& expression, 
         const TypeSignature& typesignature
     );
 
-    
-    [[nodiscard]] ExpressionBody::Kind expression_kind() const override {
-        return ExpressionBody::Kind::type_operator;
-    }
+    [[nodiscard]] Token as_token() const;
+    [[nodiscard]] ExpressionBody::Kind expression_kind() const override;
 
     std::string operator_text;
     Expression expression;
     TypeSignature typesignature;
-
-    [[nodiscard]] Token as_token() const;
 };
 
 
 struct BinaryOperator : public ExpressionBody {
+
+    virtual ~BinaryOperator() = default;
 
     BinaryOperator(
         const Token& operator_token, 
@@ -97,85 +96,88 @@ struct BinaryOperator : public ExpressionBody {
     Expression left_operand;
     Expression right_operand;
 
-    [[nodiscard]] ExpressionBody::Kind expression_kind() const override {
-        return ExpressionBody::Kind::binary_operator;
-    }
-
     [[nodiscard]] Token as_token() const;
+    [[nodiscard]] ExpressionBody::Kind expression_kind() const override;
 };
 
 struct UnaryOperator : public ExpressionBody {
+
+    virtual ~UnaryOperator() = default;
 
     UnaryOperator(
         const Token& operator_token, 
         const Expression& expr
     );
 
-    [[nodiscard]] ExpressionBody::Kind expression_kind() const override {
-        return ExpressionBody::Kind::unary_operator;
-    }
+    [[nodiscard]] Token as_token() const;
+    [[nodiscard]] ExpressionBody::Kind expression_kind() const override;
     
     std::string operator_text;
     Expression operand;
-    [[nodiscard]] Token as_token() const;
 };
 
 struct Identifier : public ExpressionBody {
+
+    virtual ~Identifier() = default;
+
     Identifier(const Token& identifier_token);
     
-    [[nodiscard]] ExpressionBody::Kind expression_kind() const override {
-        return ExpressionBody::Kind::identifier;
-    }
+    [[nodiscard]] ExpressionBody::Kind expression_kind() const override;
 
     std::string name;
 };
 
 struct StringLiteral : public ExpressionBody {
+
+    virtual ~StringLiteral() = default;
+
     StringLiteral(const Token& string_literal_token);
     
-    [[nodiscard]] ExpressionBody::Kind expression_kind() const override {
-        return ExpressionBody::Kind::string_literal;
-    }
+    [[nodiscard]] ExpressionBody::Kind expression_kind() const override;
 
     std::string value;
 };
 
 struct IntLiteral : public ExpressionBody {
+
+    virtual ~IntLiteral() = default;
+
     IntLiteral(const Token& int_literal_token);
     
-    [[nodiscard]] ExpressionBody::Kind expression_kind() const override {
-        return ExpressionBody::Kind::int_literal;
-    }
+    [[nodiscard]] ExpressionBody::Kind expression_kind() const override;
     
     int value;
 };
 
 struct FloatLiteral : public ExpressionBody {
+
+    virtual ~FloatLiteral() = default;
+
     FloatLiteral(const Token& float_literal_token);
     
-    [[nodiscard]] ExpressionBody::Kind expression_kind() const override {
-        return ExpressionBody::Kind::float_literal;
-    }
+    [[nodiscard]] ExpressionBody::Kind expression_kind() const override;
     
     double value;
 };
 
 struct BoolLiteral : public ExpressionBody {
+
+    virtual ~BoolLiteral() = default;
+
     BoolLiteral(const Token& bool_literal_token);
     
-    [[nodiscard]] ExpressionBody::Kind expression_kind() const override {
-        return ExpressionBody::Kind::bool_literal;
-    }
+    [[nodiscard]] ExpressionBody::Kind expression_kind() const override;
     
     bool value;
 };
 
 struct CharLiteral : public ExpressionBody {
+
+    virtual ~CharLiteral() = default;
+
     CharLiteral(const Token& char_literal_token);
     
-    [[nodiscard]] ExpressionBody::Kind expression_kind() const override {
-        return ExpressionBody::Kind::char_literal;
-    }
+    [[nodiscard]] ExpressionBody::Kind expression_kind() const override;
 
     char value;
 };

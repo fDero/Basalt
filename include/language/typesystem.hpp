@@ -7,9 +7,6 @@
 
 struct TypeSignatureBody : public DebugInformationsAwareEntity {
 
-    TypeSignatureBody(const DebugInformationsAwareEntity& token)
-        : DebugInformationsAwareEntity(token) {}
-
     enum class Kind {
         custom_type,
         inline_union,
@@ -19,6 +16,11 @@ struct TypeSignatureBody : public DebugInformationsAwareEntity {
         array_type,
         slice_type
     };
+
+    virtual ~TypeSignatureBody() = default;
+
+    TypeSignatureBody(const DebugInformationsAwareEntity& token)
+        : DebugInformationsAwareEntity(token) {}
 
     [[nodiscard]] virtual Kind typesiganture_kind() const = 0;
     [[nodiscard]] virtual bool is_generic() const = 0;
@@ -30,22 +32,18 @@ struct TypeSignature : public Polymorph<TypeSignatureBody> {
     using Polymorph<TypeSignatureBody>::get;
     using Polymorph<TypeSignatureBody>::Polymorph;
 
-    [[nodiscard]] virtual TypeSignatureBody::Kind typesiganture_kind() const {
-        return Polymorph::ptr->typesiganture_kind();
-    };
-
+    [[nodiscard]] virtual TypeSignatureBody::Kind typesiganture_kind() const ;
     [[nodiscard]] bool is_generic() const;
 };
 
 struct CustomType : public TypeSignatureBody {
- 
+
+    virtual ~CustomType() = default;
+
     CustomType(const Token& typename_token, const std::vector<TypeSignature>& generics);
 
     [[nodiscard]] bool is_generic() const override;
-
-    [[nodiscard]] virtual TypeSignatureBody::Kind typesiganture_kind() const {
-        return TypeSignatureBody::Kind::custom_type;
-    };
+    [[nodiscard]] virtual TypeSignatureBody::Kind typesiganture_kind() const;
     
     std::string type_name;
     std::vector<TypeSignature> type_parameters;
@@ -54,24 +52,23 @@ struct CustomType : public TypeSignatureBody {
 
 struct InlineUnion : public TypeSignatureBody {
 
+    virtual ~InlineUnion() = default;
+
     InlineUnion(const DebugInformationsAwareEntity& typename_token, const std::vector<TypeSignature>& alternatives);
 
-    [[nodiscard]] virtual TypeSignatureBody::Kind typesiganture_kind() const {
-        return TypeSignatureBody::Kind::inline_union;
-    };
-
+    [[nodiscard]] virtual TypeSignatureBody::Kind typesiganture_kind() const;
     [[nodiscard]] bool is_generic() const override;
+
     std::vector<TypeSignature> alternatives;
 };
 
 struct TemplateType : public TypeSignatureBody {
 
+    virtual ~TemplateType() = default;
+
     TemplateType(const Token& typename_token); 
 
-    [[nodiscard]] virtual TypeSignatureBody::Kind typesiganture_kind() const {
-        return TypeSignatureBody::Kind::template_type;
-    };
-
+    [[nodiscard]] virtual TypeSignatureBody::Kind typesiganture_kind() const;
     [[nodiscard]] bool is_generic() const override;
 
     std::string type_name;
@@ -79,12 +76,11 @@ struct TemplateType : public TypeSignatureBody {
 
 struct PrimitiveType : public TypeSignatureBody {
  
+    virtual ~PrimitiveType() = default;
+
     PrimitiveType(const Token& typename_token);
     
-    [[nodiscard]] virtual TypeSignatureBody::Kind typesiganture_kind() const {
-        return TypeSignatureBody::Kind::primitive_type;
-    };
-
+    [[nodiscard]] virtual TypeSignatureBody::Kind typesiganture_kind() const;
     [[nodiscard]] bool is_generic() const override;
 
     std::string type_name;
@@ -94,10 +90,7 @@ struct PointerType : public TypeSignatureBody {
     
     PointerType(const Token& pointer_symbol_token, const TypeSignature& pointed);
 
-    [[nodiscard]] virtual TypeSignatureBody::Kind typesiganture_kind() const {
-        return TypeSignatureBody::Kind::pointer_type;
-    };
-
+    [[nodiscard]] virtual TypeSignatureBody::Kind typesiganture_kind() const;
     [[nodiscard]] bool is_generic() const override;
 
     TypeSignature pointed_type;
@@ -107,10 +100,7 @@ struct ArrayType : public TypeSignatureBody {
     
     ArrayType(const Token& array_open_square_bracket_token, int length, const TypeSignature& stored);
 
-    [[nodiscard]] virtual TypeSignatureBody::Kind typesiganture_kind() const {
-        return TypeSignatureBody::Kind::array_type;
-    };
-
+    [[nodiscard]] virtual TypeSignatureBody::Kind typesiganture_kind() const;
     [[nodiscard]] bool is_generic() const override;
 
     int array_length;
@@ -121,10 +111,7 @@ struct SliceType : public TypeSignatureBody {
     
     SliceType(const Token& slice_symbol_token, const TypeSignature& stored);
 
-    [[nodiscard]] virtual TypeSignatureBody::Kind typesiganture_kind() const {
-        return TypeSignatureBody::Kind::slice_type;
-    };
-
+    [[nodiscard]] virtual TypeSignatureBody::Kind typesiganture_kind() const;
     [[nodiscard]] bool is_generic() const override;   
     
     TypeSignature stored_type;
