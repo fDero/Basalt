@@ -47,7 +47,6 @@ FunctionDefinition::Ref OverloadingResolutionEngine::cache_unaware_function_defi
             if (should_be_ignored) {
                 continue;
             }
-
             best_maches_so_far.push_back({ func_def_ref, generic_substitution_rules_ref });
             if (comparison_result == FunctionSpecificityDescriptor::ComparisonResult::more_specific) {
                 best_maches_so_far = { { func_def_ref, generic_substitution_rules_ref } };

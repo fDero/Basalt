@@ -7,6 +7,21 @@ TypeDependencyNavigator::TypeDependencyNavigator(
     TypeDefinitionsRegister& program_representation
 ) : program_representation(program_representation) {}
 
+void TypeDependencyNavigator::visit_type_definition(
+    const TypeDefinition& type_definition
+) {
+    if (type_definition.is<StructDefinition>()) {
+        visit_struct_definition(type_definition.get<StructDefinition>());
+    }
+    else if (type_definition.is<UnionDefinition>()) {
+        visit_union_definition(type_definition.get<UnionDefinition>());
+    }
+    else if (type_definition.is<TypeAlias>()) {
+        visit_typesignature(type_definition.get<TypeAlias>().aliased_type, {});
+    }
+}
+
+
 void TypeDependencyNavigator::verify_that_the_type_exists(const TypeSignature& type_signature) {
     switch (type_signature.typesiganture_kind()) {
         break; case TypeSignatureBody::Kind::pointer_type:   verify_that_the_type_exists(type_signature.get<PointerType>().pointed_type);

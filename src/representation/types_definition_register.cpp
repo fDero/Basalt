@@ -16,6 +16,11 @@ TypeDefinitionsRegister::TypeDefinitionsRegister(ProjectFileStructure& project_f
     }
 }
 
+std::unordered_map<std::string, TypeDefinition>& 
+TypeDefinitionsRegister::get_all_type_definitions() {
+    return type_definitions;
+}
+
 void TypeDefinitionsRegister::store_type_definition(
     const TypeDefinition& type_def, 
     const std::string& package_name

@@ -59,6 +59,7 @@ class TypeDefinitionsRegister {
         [[nodiscard]] TypeDefinition retrieve_type_definition(const CustomType& type_signature);
         [[nodiscard]] std::string get_fully_qualified_typesignature_name(const TypeSignature& type_signature);
         [[nodiscard]] TypeSignature unalias_type(const TypeSignature& type_signature);
+        [[nodiscard]] std::unordered_map<std::string, TypeDefinition>& get_all_type_definitions();
 
     protected:
          

@@ -15,7 +15,8 @@ class TypeDependencyNavigator {
         TypeDependencyNavigator(TypeDefinitionsRegister& program_representation);
         void visit_struct_definition(const StructDefinition& struct_definition);
         void visit_union_definition(const UnionDefinition& union_definition);
-        
+        void visit_type_definition(const TypeDefinition& type_definition);
+
     private:
 
         void visit_type_definition(
@@ -81,4 +82,24 @@ class AssignmentTypeChecker {
         GenericSubstitutionRuleSet::Ref generic_substitution_rules = std::make_shared<GenericSubstitutionRuleSet>();
 
         bool type_parameters_assignment_validation(const CustomType &source, const CustomType &dest);
+};
+
+class PreProcessor {
+
+    public:
+        PreProcessor(
+            ProjectFileStructure& project_file_structure,
+            TypeDefinitionsRegister& type_definitions_register,
+            FunctionOverloadsRegister& function_overloads_register,
+            OverloadingResolutionEngine& overloading_resolution_engine
+        );
+
+        void preprocess_packages_typename_conflicts();
+        void preprocess_type_definitions();
+    
+    private:
+        ProjectFileStructure& project_file_structure;
+        TypeDefinitionsRegister& type_definitions_register;
+        FunctionOverloadsRegister& function_overloads_register;
+        OverloadingResolutionEngine& overloading_resolution_engine;
 };
