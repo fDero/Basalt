@@ -4,7 +4,7 @@
 void assert_packagename_is_found(
     const std::unordered_map<std::string, std::string>::const_iterator& search_outcome,
     const std::unordered_map<std::string, std::string>::const_iterator& end
-){
+) {
     //#ifdef DEBUG_BUILD
     if (search_outcome == end) {
         throw InternalError {
@@ -17,7 +17,7 @@ void assert_packagename_is_found(
 void assert_files_vector_is_found(
     const std::unordered_map<std::string, std::vector<FileRepresentation>>::const_iterator& search_outcome,
     const std::unordered_map<std::string, std::vector<FileRepresentation>>::const_iterator& end
-){
+) {
     #ifdef DEBUG_BUILD
     if (search_outcome == end) {
         throw InternalError {
@@ -30,7 +30,7 @@ void assert_files_vector_is_found(
 void assert_imports_vector_is_found(
     const std::unordered_map<std::string, std::vector<std::string>>::const_iterator& search_outcome,
     const std::unordered_map<std::string, std::vector<std::string>>::const_iterator& end
-){
+) {
     #ifdef DEBUG_BUILD
     if (search_outcome == end) {
         throw InternalError {
@@ -43,7 +43,7 @@ void assert_imports_vector_is_found(
 void assert_overload_set_exists(
     const std::unordered_map<std::string, std::vector<FunctionDefinition::Ref>>::const_iterator& search_outcome,
     const std::unordered_map<std::string, std::vector<FunctionDefinition::Ref>>::const_iterator& end
-){
+) {
     #ifdef DEBUG_BUILD
     if (search_outcome == end) {
         throw InternalError {

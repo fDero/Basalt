@@ -64,7 +64,7 @@ FunctionDefinition f_wrapper_of_Ts = FunctionDefinitionFactory::make_void_functi
     }
 );
 
-TEST(Representation, Function_Specificiy_Descritor_Less_Covered_Cases_Is_More_Spcecific){
+TEST(Representation, Function_Specificiy_Descritor_Less_Covered_Cases_Is_More_Spcecific) {
     ProjectFileStructure empty_project;
     TypeDefinitionsRegister type_register(empty_project);
     FunctionSpecificityDescriptor print_PrimitiveTypesUnion_desc(print_PrimitiveTypesUnion, type_register);
@@ -79,7 +79,7 @@ TEST(Representation, Function_Specificiy_Descritor_Less_Covered_Cases_Is_More_Sp
     );
 }
 
-TEST(Representation, Function_Specificiy_Descritor_More_Complex_Is_More_Specific){
+TEST(Representation, Function_Specificiy_Descritor_More_Complex_Is_More_Specific) {
     ProjectFileStructure simple_project({wrapper_file});
     TypeDefinitionsRegister type_register(simple_project);
     FunctionSpecificityDescriptor f_wrapper_of_wrapper_of_Ts_desc(f_wrapper_of_wrapper_of_Ts, type_register);

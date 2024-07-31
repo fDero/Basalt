@@ -94,7 +94,7 @@ std::string TypeDefinitionsRegister::get_fully_qualified_typesignature_name(cons
         case TypeSignatureBody::Kind::custom_type: return get_fully_qualified_customtype_name(type_signature.get<CustomType>());    
         case TypeSignatureBody::Kind::inline_union: {
             std::string inline_union_fully_qualified_name;
-            for (const TypeSignature& alternative : type_signature.get<InlineUnion>().alternatives){
+            for (const TypeSignature& alternative : type_signature.get<InlineUnion>().alternatives) {
                 inline_union_fully_qualified_name += get_fully_qualified_typesignature_name(alternative) + " | ";
             }
             inline_union_fully_qualified_name.pop_back();
@@ -178,7 +178,7 @@ std::string TypeDefinitionsRegister::get_fully_qualified_typesignature_name(cons
         }
         case TypeSignatureBody::Kind::inline_union: {
             std::string inline_union_fully_qualified_name;
-            for (const TypeSignature& alternative : type_signature.get<InlineUnion>().alternatives){
+            for (const TypeSignature& alternative : type_signature.get<InlineUnion>().alternatives) {
                 inline_union_fully_qualified_name += infer_possible_fully_qualified_typesignature_name(package_name, alternative) + " | ";
             }
             inline_union_fully_qualified_name.pop_back();

@@ -1,6 +1,5 @@
 
-#include "toolchain/representation.hpp"
-#include "toolchain/preprocessor.hpp"
+#include "toolchain/typechecking.hpp"
 #include "errors/preprocessing_errors.hpp"
 #include "errors/internal_errors.hpp"
 

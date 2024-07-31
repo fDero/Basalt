@@ -58,7 +58,7 @@ FunctionDefinition add_int_IntOrFloat = FunctionDefinitionFactory::make_function
     TypeSignatureFactory::IntOrFloat
 );
 
-TEST(Representation, Function_Specificiy_Descritor_Non_Generic_Function_Is_More_Specific_Then_A_Generic_One){
+TEST(Representation, Function_Specificiy_Descritor_Non_Generic_Function_Is_More_Specific_Then_A_Generic_One) {
     ProjectFileStructure empty_project;
     TypeDefinitionsRegister type_register(empty_project);
     FunctionSpecificityDescriptor non_generic_func_desc(add_int_int, type_register);
@@ -73,7 +73,7 @@ TEST(Representation, Function_Specificiy_Descritor_Non_Generic_Function_Is_More_
     );
 }
 
-TEST(Representation, Function_Specificiy_Descritor_Same_Number_Of_Generics_Usages_Are_Equally_Specific_Even_With_Different_Number_Of_Generics){
+TEST(Representation, Function_Specificiy_Descritor_Same_Number_Of_Generics_Usages_Are_Equally_Specific_Even_With_Different_Number_Of_Generics) {
     ProjectFileStructure empty_project;
     TypeDefinitionsRegister type_register(empty_project);
     FunctionSpecificityDescriptor add_T_U_desc(add_T_U, type_register);
@@ -88,7 +88,7 @@ TEST(Representation, Function_Specificiy_Descritor_Same_Number_Of_Generics_Usage
     );
 }
 
-TEST(Representation, Function_Specificiy_Descritor_Only_One_Union_More_Specific_Then_Two){
+TEST(Representation, Function_Specificiy_Descritor_Only_One_Union_More_Specific_Then_Two) {
     ProjectFileStructure empty_project;
     TypeDefinitionsRegister type_register(empty_project);
     FunctionSpecificityDescriptor add_IntOrFloat_IntOrFloat_desc(add_IntOrFloat_IntOrFloat, type_register);

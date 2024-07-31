@@ -4,6 +4,7 @@
 #include "errors/internal_errors.hpp"
 #include "language/generics.hpp"
 #include "toolchain/preprocessor.hpp"
+#include "toolchain/typechecking.hpp"
 
 OverloadingResolutionEngine::OverloadingResolutionEngine(
     FunctionOverloadsRegister& function_overloads_register,
@@ -55,7 +56,7 @@ FunctionDefinition::Ref OverloadingResolutionEngine::cache_unaware_function_defi
         }
     }
     ensure_no_multiple_ambiguous_candidate_function_overloads_have_been_found(best_maches_so_far);
-    if (best_maches_so_far.empty()){
+    if (best_maches_so_far.empty()) {
         return nullptr;
     }
     const FunctionDefinition& best_match = *best_maches_so_far[0].first; 

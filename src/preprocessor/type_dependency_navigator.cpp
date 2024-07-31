@@ -6,8 +6,8 @@
 #include <iostream>
 
 TypeDependencyNavigator::TypeDependencyNavigator(
-    TypeDefinitionsRegister& program_representation
-) : program_representation(program_representation) {}
+    TypeDefinitionsRegister& type_definitions_register
+) : type_definitions_register(type_definitions_register) {}
 
 void TypeDependencyNavigator::visit_type_definition(
     const TypeDefinition& type_definition
@@ -29,11 +29,11 @@ void TypeDependencyNavigator::verify_that_the_type_exists(const TypeSignature& t
         break; case TypeSignatureBody::Kind::pointer_type:   verify_that_the_type_exists(type_signature.get<PointerType>().pointed_type);
         break; case TypeSignatureBody::Kind::array_type:     verify_that_the_type_exists(type_signature.get<ArrayType>().stored_type);
         break; case TypeSignatureBody::Kind::slice_type:     verify_that_the_type_exists(type_signature.get<SliceType>().stored_type);
-        break; case TypeSignatureBody::Kind::custom_type:    std::ignore = program_representation.retrieve_type_definition(type_signature.get<CustomType>());
+        break; case TypeSignatureBody::Kind::custom_type:    std::ignore = type_definitions_register.retrieve_type_definition(type_signature.get<CustomType>());
         break; case TypeSignatureBody::Kind::template_type:  return;
         break; case TypeSignatureBody::Kind::primitive_type: return;
         break; case TypeSignatureBody::Kind::inline_union: {    
-            for (const TypeSignature& alternative : type_signature.get<InlineUnion>().alternatives){
+            for (const TypeSignature& alternative : type_signature.get<InlineUnion>().alternatives) {
                 verify_that_the_type_exists(alternative);
             }
         }
@@ -51,13 +51,13 @@ void TypeDependencyNavigator::visit_typesignature(const TypeSignature& typesigna
         break; case TypeSignatureBody::Kind::array_type:     visit_typesignature(typesignature.get<ArrayType>().stored_type, generics);
         break; case TypeSignatureBody::Kind::slice_type:     verify_that_the_type_exists(typesignature.get<SliceType>().stored_type);
         break; case TypeSignatureBody::Kind::inline_union: {
-            for (const TypeSignature& alternative : typesignature.get<InlineUnion>().alternatives){
+            for (const TypeSignature& alternative : typesignature.get<InlineUnion>().alternatives) {
                 visit_typesignature(alternative, generics);
             }
         }
         break; case TypeSignatureBody::Kind::custom_type: {
             const CustomType& custom_type = typesignature.get<CustomType>();
-            TypeDefinition type_definition = program_representation.retrieve_type_definition(custom_type);
+            TypeDefinition type_definition = type_definitions_register.retrieve_type_definition(custom_type);
             visit_type_definition(typesignature, type_definition, generics);
         }
     }

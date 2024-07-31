@@ -18,7 +18,7 @@
         : parse_custom_type();
 }
 
-[[nodiscard]] TypeSignature Parser::parse_typesignature(){
+[[nodiscard]] TypeSignature Parser::parse_typesignature() {
     ensure_there_are_still_tokens(source_tokens, iterator);
     const Token& first_type_token = *iterator;
     TypeSignature type_signature = parse_simple_typesignature();
@@ -27,9 +27,9 @@
         : parse_inline_union(first_type_token, type_signature);
 }
 
-[[nodiscard]] TypeSignature Parser::parse_inline_union(const Token& first_type_token, const TypeSignature& first_type){
+[[nodiscard]] TypeSignature Parser::parse_inline_union(const Token& first_type_token, const TypeSignature& first_type) {
     std::vector<TypeSignature> alternatives { first_type };
-    while (iterator != source_tokens.end() && iterator->sourcetext == "|"){
+    while (iterator != source_tokens.end() && iterator->sourcetext == "|") {
         assert_token_matches(source_tokens, iterator++, "|");
         alternatives.push_back(parse_typesignature());
     }

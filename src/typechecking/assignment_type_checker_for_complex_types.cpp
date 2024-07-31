@@ -1,6 +1,6 @@
 
 #include <cassert>
-#include "toolchain/preprocessor.hpp"
+#include "toolchain/typechecking.hpp"
 #include "errors/preprocessing_errors.hpp"
 
 bool AssignmentTypeChecker::validate_assignment_to_custom_type(const TypeSignature& source, const CustomType& dest) {
@@ -23,10 +23,10 @@ bool AssignmentTypeChecker::validate_assignment_to_union_alternatives(const Type
 }
 
 std::vector<TypeSignature> AssignmentTypeChecker::try_to_get_union_alternatives(const TypeSignature& maybe_union_type_signature) {
-    if (maybe_union_type_signature.is<InlineUnion>()){
+    if (maybe_union_type_signature.is<InlineUnion>()) {
         return maybe_union_type_signature.get<InlineUnion>().alternatives;
     }
-    if (!maybe_union_type_signature.is<CustomType>()){
+    if (!maybe_union_type_signature.is<CustomType>()) {
         return {};
     }
     const CustomType& custom_type = maybe_union_type_signature.get<CustomType>();
@@ -38,18 +38,18 @@ std::vector<TypeSignature> AssignmentTypeChecker::try_to_get_union_alternatives(
 
 bool AssignmentTypeChecker::structural_equivalence_assignment_validation(const TypeSignature& source, const TypeSignature& dest) {
     std::vector<TypeSignature> dest_union_alternatives = try_to_get_union_alternatives(dest);
-    if (dest_union_alternatives.empty()){
+    if (dest_union_alternatives.empty()) {
         return false;
     }
     if (validate_assignment_to_union_alternatives(source, dest_union_alternatives)) {
         return true;
     }
     std::vector<TypeSignature> source_union_alternatives = try_to_get_union_alternatives(source);
-    if (source_union_alternatives.empty()){
+    if (source_union_alternatives.empty()) {
         return false;
     }
-    for (const TypeSignature& alternative : source_union_alternatives){
-        if (!validate_assignment_to_union_alternatives(alternative, dest_union_alternatives)){
+    for (const TypeSignature& alternative : source_union_alternatives) {
+        if (!validate_assignment_to_union_alternatives(alternative, dest_union_alternatives)) {
             return false;
         }
     }
@@ -79,7 +79,7 @@ bool AssignmentTypeChecker::type_parameters_assignment_validation(const CustomTy
         if (dest_generic.is<TemplateType>() && !validate_assignment_to_generic_type_parameter(source_generic, dest_generic.get<TemplateType>())) {
             return false;
         }
-        else if (!validate_assignment_very_strictly(source_generic, dest_generic)){
+        else if (!validate_assignment_very_strictly(source_generic, dest_generic)) {
             return false;
         }
     }

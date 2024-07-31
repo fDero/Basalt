@@ -18,7 +18,7 @@
 }
 
 [[nodiscard]] TypeSignature GenericsInstantiationEngine::instantiate_template_type(const TemplateType& template_type) const {
-    for (const GenericSubstitutionRule& rule : rules){
+    for (const GenericSubstitutionRule& rule : rules) {
         if (rule.to_be_replaced == template_type.type_name) {
             return rule.replacement;
         }

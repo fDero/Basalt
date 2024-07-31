@@ -12,7 +12,7 @@ void FunctionSpecificityDescriptor::update_indices_based_on_argument_type(
     TypeSignature arg_type = type_definitions_register.unalias_type(input_arg_type);
     TypeDefinitionsRegister& reg = type_definitions_register;
     const bool flag = current_type_is_fixed_and_cannot_be_an_upcasting_target; 
-    switch (arg_type.typesiganture_kind()){
+    switch (arg_type.typesiganture_kind()) {
         break; case TypeSignatureBody::Kind::primitive_type: update_indicies_based_on_primitive_type(input_arg_type, reg, flag);
         break; case TypeSignatureBody::Kind::pointer_type: update_indicies_based_on_pointer_type(input_arg_type, reg, flag);
         break; case TypeSignatureBody::Kind::array_type: update_indicies_based_on_array_type(input_arg_type, reg, flag);
@@ -27,7 +27,7 @@ void FunctionSpecificityDescriptor::update_indicies_based_on_primitive_type(
     const TypeSignature& typesignature, 
     TypeDefinitionsRegister& type_definitions_register,
     bool current_type_is_fixed_and_cannot_be_an_upcasting_target
-){
+) {
     assert_typesignature_is<PrimitiveType>(typesignature);
     const PrimitiveType& primitive_type = typesignature.get<PrimitiveType>();
     if (!current_type_is_fixed_and_cannot_be_an_upcasting_target) {
@@ -41,7 +41,7 @@ void FunctionSpecificityDescriptor::update_indicies_based_on_pointer_type(
     const TypeSignature& typesignature, 
     TypeDefinitionsRegister& type_definitions_register,
     bool current_type_is_fixed_and_cannot_be_an_upcasting_target
-){
+) {
     assert_typesignature_is<PointerType>(typesignature);
     const PointerType& inner_type = typesignature.get<PointerType>();
     current_type_is_fixed_and_cannot_be_an_upcasting_target = true;
@@ -56,7 +56,7 @@ void FunctionSpecificityDescriptor::update_indicies_based_on_array_type(
     const TypeSignature& typesignature, 
     TypeDefinitionsRegister& type_definitions_register,
     bool current_type_is_fixed_and_cannot_be_an_upcasting_target
-){
+) {
     assert_typesignature_is<ArrayType>(typesignature);
     const ArrayType& inner_type = typesignature.get<ArrayType>();
     current_type_is_fixed_and_cannot_be_an_upcasting_target = false;
@@ -71,7 +71,7 @@ void FunctionSpecificityDescriptor::update_indicies_based_on_slice_type(
     const TypeSignature& typesignature, 
     TypeDefinitionsRegister& type_definitions_register,
     bool current_type_is_fixed_and_cannot_be_an_upcasting_target
-){
+) {
     assert_typesignature_is<SliceType>(typesignature);
     const SliceType& slice_type = typesignature.get<SliceType>();
     arguments_types_complexity_score += !current_type_is_fixed_and_cannot_be_an_upcasting_target;
@@ -83,7 +83,7 @@ void FunctionSpecificityDescriptor::update_indicies_based_on_inline_union_type(
     const TypeSignature& typesignature, 
     TypeDefinitionsRegister& type_definitions_register,
     bool current_type_is_fixed_and_cannot_be_an_upcasting_target
-){
+) {
     assert_typesignature_is<InlineUnion>(typesignature);
     const InlineUnion& inline_union = typesignature.get<InlineUnion>();
     const std::vector<TypeSignature>& alternatives = inline_union.alternatives;
@@ -95,13 +95,13 @@ void FunctionSpecificityDescriptor::update_union_covered_cases(
     const std::vector<TypeSignature>& alternatives, 
     TypeDefinitionsRegister& type_definitions_register
 ) { 
-    for (const TypeSignature& alternative : alternatives){
-        if (alternative.is<InlineUnion>()){
+    for (const TypeSignature& alternative : alternatives) {
+        if (alternative.is<InlineUnion>()) {
             const std::vector<TypeSignature>& inner_alternatives = alternative.get<InlineUnion>().alternatives;
             update_union_covered_cases(inner_alternatives, type_definitions_register);
             continue;
         }
-        else if (alternative.is<CustomType>()){
+        else if (alternative.is<CustomType>()) {
             const CustomType& custom_type = alternative.get<CustomType>();
             TypeDefinition type_definition = type_definitions_register.retrieve_type_definition(custom_type);
             if (type_definition.is<UnionDefinition>()) {
