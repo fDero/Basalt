@@ -24,9 +24,9 @@ Tokenizer::Tokenizer(const std::istringstream& inline_input)
     : token_input(std::make_unique<std::istringstream>(inline_input.str()))
     , filename("inline input token stream") {}
 
-Tokenizer::Tokenizer(const std::filesystem::path& file_input) 
-    : token_input(std::make_unique<std::fstream>(filename, std::ios::in))
-    , filename(file_input.string()) {}
+Tokenizer::Tokenizer(const std::string& file_input) 
+    : token_input(std::make_unique<std::fstream>(file_input, std::ios::in))
+    , filename(file_input) {}
 
 void Tokenizer::inspect_for_unexpected_tokens() {
     std::string buffer;
@@ -61,8 +61,10 @@ void Tokenizer::ignore_discardable_characters() {
         keyword_search_outcome->second : Token::Type::text;
 }
 
-[[nodiscard]] std::vector<Token> Tokenizer::tokenize() {
-    std::vector<Token> tokens;
+[[nodiscard]] TokenizedFile Tokenizer::tokenize() {
+    TokenizedFile tokenized_file;
+    tokenized_file.filename = filename;
+    std::vector<Token>& tokens = tokenized_file.tokens;
     while (std::getline(*token_input, current_line)) {
         line_number = line_number + 1;
         tok_number = char_pos = 0;
@@ -75,7 +77,7 @@ void Tokenizer::ignore_discardable_characters() {
         }
     }
     ensure_multiline_comments_get_closed(multiline_comments_tracker, *this);
-    return tokens;
+    return tokenized_file;
 }
 
 [[nodiscard]] std::string Tokenizer::get_current_line() const {

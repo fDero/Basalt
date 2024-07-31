@@ -7,10 +7,14 @@
 #include "language/expressions.hpp"
 #include "language/functions.hpp"
 
+#include <iostream>
+
 [[nodiscard]] std::string Parser::parse_package_name() {
-    assert_token_matches(source_tokens, iterator++, "package");
+    ensure_token_matches(source_tokens, iterator++, "package");
+    ensure_there_are_still_tokens(source_tokens, iterator);
     std::string package_name = iterator->sourcetext;
     std::advance(iterator, 1);
+    ensure_there_are_still_tokens(source_tokens, iterator);
     ensure_token_matches(source_tokens, iterator++, ";");
     return package_name;
 }

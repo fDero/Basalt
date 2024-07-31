@@ -12,7 +12,7 @@ TEST(Parsing, Dot_Member_Access_nested_with_multiplication) {
         { ".", "test.basalt", 1, 4, 4, Token::Type::symbol },
         { "c", "test.basalt", 1, 5, 5, Token::Type::text },
     };
-    Parser parser = Parser(tokens);
+    Parser parser = Parser({ "inline-tests.basalt", tokens });
     Expression expr = parser.parse_expression();
     ASSERT_TRUE(expr.is<BinaryOperator>());
     ASSERT_TRUE(expr.get<BinaryOperator>().right_operand.is<BinaryOperator>());
@@ -40,7 +40,7 @@ TEST(Parsing, Dot_Member_Access_Array_Square_Brackets_Access_And_Pointer_Derefer
         { "k", "test.basalt", 1, 8, 8, Token::Type::text },
         { "]", "test.basalt", 1, 9, 9, Token::Type::symbol },
     };
-    Parser parser = Parser(tokens);
+    Parser parser = Parser({ "inline-tests.basalt", tokens });
     Expression expr = parser.parse_expression();
     ASSERT_TRUE(expr.is<BinaryOperator>());
     ASSERT_TRUE(expr.get<BinaryOperator>().right_operand.is<BinaryOperator>());
@@ -66,7 +66,7 @@ TEST(Parsing, Dot_Member_Access_Array_Square_Brackets_Access_And_Pointer_Derefer
         { "k", "test.basalt", 1, 8, 8, Token::Type::text },
         { "]", "test.basalt", 1, 9, 9, Token::Type::symbol },
     };
-    Parser parser = Parser(tokens);
+    Parser parser = Parser({ "inline-tests.basalt", tokens });
     Expression expr = parser.parse_expression();
     ASSERT_TRUE(expr.is<UnaryOperator>());
     ASSERT_TRUE(expr.get<UnaryOperator>().operand.is<BinaryOperator>());

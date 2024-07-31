@@ -44,6 +44,14 @@ void avoid_duplicate_input_files(std::vector<std::string>& input_files) {
     }
 }
 
+void ensure_input_files_exist(std::vector<std::string>& input_files) {
+    for (const std::string& input_file_name : input_files) {
+        std::fstream fstream_file_reader(input_file_name, std::ios::in);
+        ensure_source_file_is_open(fstream_file_reader, input_file_name);
+        fstream_file_reader.close();
+    }
+}
+
 void avoid_duplicate_output_file_extensions(
     const std::vector<CommandLineController::FileExtension>& already_encountered, 
     const CommandLineController::FileExtension file_ext

@@ -40,6 +40,11 @@ struct Token : public DebugInformationsAwareEntity {
     );
 };
 
+struct TokenizedFile {
+    std::string filename;
+    std::vector<Token> tokens;
+};
+
 class Tokenizer {
 
     private: 
@@ -63,9 +68,9 @@ class Tokenizer {
 
     public:
         Tokenizer(const std::istringstream& inline_input);
-        Tokenizer(const std::filesystem::path& file_input);
+        Tokenizer(const std::string& file_input);
 
-        [[nodiscard]] std::vector<Token> tokenize();
+        [[nodiscard]] TokenizedFile tokenize();
         [[nodiscard]] std::string get_current_line() const;
         [[nodiscard]] std::string get_filename() const;
         [[nodiscard]] size_t get_line_number() const;

@@ -51,7 +51,6 @@ class CommandLineController {
         FileExtension file_extension(const std::string& filename);
         void validate_output_files();
         void validate_input_files();
-        void ensure_existence_of_input_files();
 
         std::vector<std::string> inputs;
         std::vector<std::string> outputs;

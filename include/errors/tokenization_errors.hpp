@@ -2,6 +2,7 @@
 #pragma once
 #include "toolchain/tokenizer.hpp"
 #include "errors/error-types.hpp"
+#include <optional> 
 
 [[nodiscard]] std::string get_sourcetext_from_tokenizer(const Tokenizer& tokenizer);
 
@@ -15,3 +16,5 @@ void ensure_multiline_comments_get_closed(
     const std::stack<Token>& multiline_comments_tracker, 
     const Tokenizer& tokenizer
 );
+
+std::optional<Token> extract_last_token(const std::vector<Token>& source_tokens);

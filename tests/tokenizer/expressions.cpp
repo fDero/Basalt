@@ -7,7 +7,7 @@
 TEST(Tokenizing, Complex_Math_Expression) {
     std::string inline_input = "(16+17*19)/2;";
     Tokenizer tokenizer = Tokenizer(std::istringstream(inline_input));
-    std::vector<Token> tokens = tokenizer.tokenize();
+    std::vector<Token> tokens = tokenizer.tokenize().tokens;
     ASSERT_EQ(tokens.size(), 10);
     EXPECT_EQ(tokens[0].sourcetext, "(");
     EXPECT_EQ(tokens[1].sourcetext, "16");
@@ -24,7 +24,7 @@ TEST(Tokenizing, Complex_Math_Expression) {
 TEST(Tokenizing, Complex_Logical_Expression) {
     std::string inline_input = "!(a && b || !c);";
     Tokenizer tokenizer = Tokenizer(std::istringstream(inline_input));
-    std::vector<Token> tokens = tokenizer.tokenize();
+    std::vector<Token> tokens = tokenizer.tokenize().tokens;
     ASSERT_EQ(tokens.size(), 10);
     EXPECT_EQ(tokens[0].sourcetext, "!");
     EXPECT_EQ(tokens[1].sourcetext, "(");
@@ -41,7 +41,7 @@ TEST(Tokenizing, Complex_Logical_Expression) {
 TEST(Tokenizing, Expression_With_Comments) {
     std::string inline_input = "/*/**/*/(16+17* /*AA*/ 19)/2; // hello world";
     Tokenizer tokenizer = Tokenizer(std::istringstream(inline_input));
-    std::vector<Token> tokens = tokenizer.tokenize();
+    std::vector<Token> tokens = tokenizer.tokenize().tokens;
     ASSERT_EQ(tokens.size(), 10);
     EXPECT_EQ(tokens[0].sourcetext, "(");
     EXPECT_EQ(tokens[1].sourcetext, "16");

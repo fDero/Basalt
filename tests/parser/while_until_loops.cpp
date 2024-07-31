@@ -15,7 +15,7 @@ TEST(Parsing, Inline_While_Loop) {
         { ")", "test.basalt", 1, 4, 4, Token::Type::symbol },
         { ";", "test.basalt", 1, 3, 3, Token::Type::symbol },
     };
-    Parser parser = Parser(tokens);
+    Parser parser = Parser({ "inline-tests.basalt", tokens });
     Statement statement = parser.parse_statement();
     ASSERT_TRUE(statement.is<WhileLoop>());
     ASSERT_EQ(statement.get<WhileLoop>().loop_body.size(), 1);
@@ -35,7 +35,7 @@ TEST(Parsing, Block_While_Loop_Single_Instruction) {
         { ";", "test.basalt", 1, 3, 3, Token::Type::symbol },
         { "}", "test.basalt", 1, 2, 2, Token::Type::symbol },
     };
-    Parser parser = Parser(tokens);
+    Parser parser = Parser({ "inline-tests.basalt", tokens });
     Statement statement = parser.parse_statement();
     ASSERT_TRUE(statement.is<WhileLoop>());
     ASSERT_EQ(statement.get<WhileLoop>().loop_body.size(), 1);
@@ -63,7 +63,7 @@ TEST(Parsing, Block_While_Loop_Multiple_Instructions) {
         { ";", "test.basalt", 1, 3, 3, Token::Type::symbol },
         { "}", "test.basalt", 1, 2, 2, Token::Type::symbol },
     };
-    Parser parser = Parser(tokens);
+    Parser parser = Parser({ "inline-tests.basalt", tokens });
     Statement statement = parser.parse_statement();
     ASSERT_TRUE(statement.is<WhileLoop>());
     ASSERT_EQ(statement.get<WhileLoop>().loop_body.size(), 3);
@@ -83,7 +83,7 @@ TEST(Parsing, Inline_Until_Loop) {
         { ")", "test.basalt", 1, 4, 4, Token::Type::symbol },
         { ";", "test.basalt", 1, 3, 3, Token::Type::symbol },
     };
-    Parser parser = Parser(tokens);
+    Parser parser = Parser({ "inline-tests.basalt", tokens });
     Statement statement = parser.parse_statement();
     ASSERT_TRUE(statement.is<UntilLoop>());
     ASSERT_EQ(statement.get<UntilLoop>().loop_body.size(), 1);
@@ -103,7 +103,7 @@ TEST(Parsing, Block_Until_Loop_Single_Instruction) {
         { ";", "test.basalt", 1, 3, 3, Token::Type::symbol },
         { "}", "test.basalt", 1, 2, 2, Token::Type::symbol },
     };
-    Parser parser = Parser(tokens);
+    Parser parser = Parser({ "inline-tests.basalt", tokens });
     Statement statement = parser.parse_statement();
     ASSERT_TRUE(statement.is<UntilLoop>());
     ASSERT_EQ(statement.get<UntilLoop>().loop_body.size(), 1);
@@ -131,7 +131,7 @@ TEST(Parsing, Block_Until_Loop_Multiple_Instructions) {
         { ";", "test.basalt", 1, 3, 3, Token::Type::symbol },
         { "}", "test.basalt", 1, 2, 2, Token::Type::symbol },
     };
-    Parser parser = Parser(tokens);
+    Parser parser = Parser({ "inline-tests.basalt", tokens });
     Statement statement = parser.parse_statement();
     ASSERT_TRUE(statement.is<UntilLoop>());
     ASSERT_EQ(statement.get<UntilLoop>().loop_body.size(), 3);

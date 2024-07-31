@@ -26,6 +26,8 @@ void avoid_lack_of_output_files(const std::vector<std::string>& output_files);
 
 void avoid_duplicate_input_files(std::vector<std::string>& input_files);
 
+void ensure_input_files_exist(std::vector<std::string>& input_files);
+
 void avoid_duplicate_output_file_extensions(
     const std::vector<CommandLineController::FileExtension>& already_encountered, 
     const CommandLineController::FileExtension file_ext

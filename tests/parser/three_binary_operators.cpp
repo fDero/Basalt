@@ -14,7 +14,7 @@ TEST(Parsing, Three_Binary_Operators_two_rotations_needed) {
         { "^", "test.basalt", 1, 6, 6, Token::Type::symbol },
         { "4", "test.basalt", 1, 7, 7, Token::Type::integer_literal },
     };
-    Parser parser = Parser(tokens);
+    Parser parser = Parser({ "inline-tests.basalt", tokens });
     Expression expr = parser.parse_expression();
     ASSERT_TRUE(expr.is<BinaryOperator>());
     ASSERT_TRUE(expr.get<BinaryOperator>().right_operand.is<BinaryOperator>());

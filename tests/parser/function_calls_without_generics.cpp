@@ -5,14 +5,14 @@
 #include "errors/parsing_errors.hpp"
 
 TEST(Parsing, Function_Call_WithOut_generics_And_Only_One_Argument_As_Statement) {
-    std::vector<Token> function_call_tokens = {
+    std::vector<Token> tokens = {
         { "f", "test.basalt", 1, 1, 1, Token::Type::text   },
         { "(", "test.basalt", 1, 2, 2, Token::Type::symbol },
         { "x", "test.basalt", 1, 3, 3, Token::Type::text   },
         { ")", "test.basalt", 1, 4, 4, Token::Type::symbol },
         { ";", "test.basalt", 1, 5, 5, Token::Type::symbol }
     };
-    Parser parser = Parser(function_call_tokens);
+    Parser parser = Parser({ "inline-tests.basalt", tokens });
     Statement proc = parser.parse_statement();
     ASSERT_TRUE(proc.is<FunctionCall>());
     EXPECT_EQ(proc.get<FunctionCall>().function_name, "f");
@@ -22,7 +22,7 @@ TEST(Parsing, Function_Call_WithOut_generics_And_Only_One_Argument_As_Statement)
 }
 
 TEST(Parsing, Function_Call_WithOut_generics_And_Two_Arguments_As_Statement) {
-    std::vector<Token> function_call_tokens = {
+    std::vector<Token> tokens = {
         { "f", "test.basalt", 1, 1, 1, Token::Type::text   },
         { "(", "test.basalt", 1, 2, 2, Token::Type::symbol },
         { "x", "test.basalt", 1, 3, 3, Token::Type::text   },
@@ -31,7 +31,7 @@ TEST(Parsing, Function_Call_WithOut_generics_And_Two_Arguments_As_Statement) {
         { ")", "test.basalt", 1, 6, 6, Token::Type::symbol },
         { ";", "test.basalt", 1, 7, 7, Token::Type::symbol }
     };
-    Parser parser = Parser(function_call_tokens);
+    Parser parser = Parser({ "inline-tests.basalt", tokens });
     Statement proc = parser.parse_statement();
     ASSERT_TRUE(proc.is<FunctionCall>());
     EXPECT_EQ(proc.get<FunctionCall>().function_name, "f");
@@ -43,13 +43,13 @@ TEST(Parsing, Function_Call_WithOut_generics_And_Two_Arguments_As_Statement) {
 }
 
 TEST(Parsing, Function_Call_WithOut_generics_And_Only_One_Argument_As_Expression) {
-    std::vector<Token> function_call_tokens = {
+    std::vector<Token> tokens = {
         { "f", "test.basalt", 1, 1, 1, Token::Type::text   },
         { "(", "test.basalt", 1, 2, 2, Token::Type::symbol },
         { "x", "test.basalt", 1, 3, 3, Token::Type::text   },
         { ")", "test.basalt", 1, 4, 4, Token::Type::symbol },
     };
-    Parser parser = Parser(function_call_tokens);
+    Parser parser = Parser({ "inline-tests.basalt", tokens });
     Expression expr = parser.parse_expression();
     ASSERT_TRUE(expr.is<FunctionCall>());
     EXPECT_EQ(expr.get<FunctionCall>().function_name, "f");
@@ -59,7 +59,7 @@ TEST(Parsing, Function_Call_WithOut_generics_And_Only_One_Argument_As_Expression
 }
 
 TEST(Parsing, Function_Call_WithOut_generics_And_Two_Arguments_As_Expression) {
-    std::vector<Token> function_call_tokens = {
+    std::vector<Token> tokens = {
         { "f", "test.basalt", 1, 1, 1, Token::Type::text   },
         { "(", "test.basalt", 1, 2, 2, Token::Type::symbol },
         { "x", "test.basalt", 1, 3, 3, Token::Type::text   },
@@ -67,7 +67,7 @@ TEST(Parsing, Function_Call_WithOut_generics_And_Two_Arguments_As_Expression) {
         { "y", "test.basalt", 1, 5, 5, Token::Type::text   },
         { ")", "test.basalt", 1, 6, 6, Token::Type::symbol },
     };
-    Parser parser = Parser(function_call_tokens);
+    Parser parser = Parser({ "inline-tests.basalt", tokens });
     Expression expr = parser.parse_expression();    
     ASSERT_TRUE(expr.is<FunctionCall>());
     EXPECT_EQ(expr.get<FunctionCall>().function_name, "f");

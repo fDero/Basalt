@@ -11,7 +11,7 @@ TEST(Parsing, Operators_Combinations_minus_and_power) {
         { "^", "test.basalt", 1, 3, 3, Token::Type::symbol },
         { "5", "test.basalt", 1, 4, 4, Token::Type::integer_literal }
     };
-    Parser parser = Parser(tokens);
+    Parser parser = Parser({ "inline-tests.basalt", tokens });
     Expression expr = parser.parse_expression();
     ASSERT_TRUE(expr.is<UnaryOperator>());
     ASSERT_TRUE(expr.get<UnaryOperator>().operand.is<BinaryOperator>());
@@ -29,7 +29,7 @@ TEST(Parsing, Operators_Combinations_double_minus_and_power) {
         { "^", "test.basalt", 0, 4, 4, Token::Type::symbol },
         { "5", "test.basalt", 0, 5, 5, Token::Type::integer_literal }
     };
-    Parser parser = Parser(tokens);
+    Parser parser = Parser({ "inline-tests.basalt", tokens });
     Expression expr = parser.parse_expression();
     ASSERT_TRUE(expr.is<UnaryOperator>());
     ASSERT_TRUE(expr.get<UnaryOperator>().operand.is<UnaryOperator>());
@@ -49,7 +49,7 @@ TEST(Parsing, Operators_Combinations_double_minus_and_power_with_parenthesis) {
         { "^", "test.basalt", 0, 6, 6, Token::Type::symbol },
         { "5", "test.basalt", 0, 7, 7, Token::Type::integer_literal }
     };
-    Parser parser = Parser(tokens);
+    Parser parser = Parser({ "inline-tests.basalt", tokens });
     Expression expr = parser.parse_expression();
     ASSERT_TRUE(expr.is<UnaryOperator>());
     ASSERT_TRUE(expr.get<UnaryOperator>().operand.is<BinaryOperator>());

@@ -13,7 +13,7 @@ TEST(Parsing, Package_Prefixed_Concrete_Generic_CustomType) {
         { "Int",         "test.basalt", 1, 5, 21, Token::Type::type   },
         { ">",           "test.basalt", 1, 6, 22, Token::Type::symbol },
     };
-    Parser parser = Parser(tokens);
+    Parser parser = Parser({ "inline-tests.basalt", tokens });
     TypeSignature typesignature = parser.parse_typesignature();
     ASSERT_TRUE(typesignature.is<CustomType>());
     CustomType basetype = typesignature.get<CustomType>();
@@ -31,7 +31,7 @@ TEST(Parsing, Package_Prefixed_Non_Generic_CustomType) {
         { "::",        "test.basalt", 1, 2, 13, Token::Type::symbol },
         { "Texture",   "test.basalt", 1, 3, 17, Token::Type::type   }
     };
-    Parser parser = Parser(tokens);
+    Parser parser = Parser({ "inline-tests.basalt", tokens });
     TypeSignature typesignature = parser.parse_typesignature();
     ASSERT_TRUE(typesignature.is<CustomType>());
     CustomType basetype = typesignature.get<CustomType>();

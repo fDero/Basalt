@@ -5,7 +5,7 @@
 #include "errors/parsing_errors.hpp"
 
 TEST(Parsing, Function_Definition_WithOut_generics_And_No_Arguments_And_NON_Empty_Body) {
-    std::vector<Token> function_def_tokens = {
+    std::vector<Token> tokens = {
         { "func", "test.basalt", 1,  1,  1,   Token::Type::func_keyword },
         { "f",    "test.basalt", 1,  2,  5,   Token::Type::text   },
         { "(",    "test.basalt", 1,  3,  6,   Token::Type::symbol },
@@ -18,7 +18,7 @@ TEST(Parsing, Function_Definition_WithOut_generics_And_No_Arguments_And_NON_Empt
         { ";",    "test.basalt", 1,  8,  14,  Token::Type::symbol },
         { "}",    "test.basalt", 1,  6,  9,   Token::Type::symbol }
     };
-    Parser parser = Parser(function_def_tokens);
+    Parser parser = Parser({ "inline-tests.basalt", tokens });
     FunctionDefinition funcdef = parser.parse_function_definition();
     EXPECT_EQ(funcdef.function_name, "f");    
     EXPECT_TRUE(funcdef.arguments.empty());
@@ -28,7 +28,7 @@ TEST(Parsing, Function_Definition_WithOut_generics_And_No_Arguments_And_NON_Empt
 }
 
 TEST(Parsing, Function_Definition_WithOut_generics_And_Only_One_Argument_And_NON_Empty_Body) {
-    std::vector<Token> function_def_tokens = {
+    std::vector<Token> tokens = {
         { "func",    "test.basalt", 1,  1,  1,   Token::Type::func_keyword },
         { "f",       "test.basalt", 1,  2,  5,   Token::Type::text   },
         { "(",       "test.basalt", 1,  3,  6,   Token::Type::symbol },
@@ -46,7 +46,7 @@ TEST(Parsing, Function_Definition_WithOut_generics_And_Only_One_Argument_And_NON
         { ";",       "test.basalt", 1, 14,  24,  Token::Type::symbol },
         { "}",       "test.basalt", 1,  9,  15,  Token::Type::symbol }
     };
-    Parser parser = Parser(function_def_tokens);
+    Parser parser = Parser({ "inline-tests.basalt", tokens });
     FunctionDefinition funcdef = parser.parse_function_definition();
     EXPECT_EQ(funcdef.function_name, "f");
     EXPECT_EQ(funcdef.filename, "test.basalt");
@@ -61,7 +61,7 @@ TEST(Parsing, Function_Definition_WithOut_generics_And_Only_One_Argument_And_NON
 }
 
 TEST(Parsing, Function_Definition_WithOut_generics_And_Two_Arguments_And_NON_Empty_Body) {
-    std::vector<Token> function_def_tokens = {
+    std::vector<Token> tokens = {
         { "func",    "test.basalt", 1, 1,  1,   Token::Type::func_keyword },
         { "f",       "test.basalt", 1, 2,  5,   Token::Type::text   },
         { "(",       "test.basalt", 1, 3,  6,   Token::Type::symbol },
@@ -78,7 +78,7 @@ TEST(Parsing, Function_Definition_WithOut_generics_And_Two_Arguments_And_NON_Emp
         { ";",       "test.basalt", 1, 14, 24,  Token::Type::symbol },
         { "}",       "test.basalt", 1, 15, 25,  Token::Type::symbol }
     };
-    Parser parser = Parser(function_def_tokens);
+    Parser parser = Parser({ "inline-tests.basalt", tokens });
     FunctionDefinition funcdef = parser.parse_function_definition();
     EXPECT_EQ(funcdef.function_name, "f");    
     EXPECT_EQ(funcdef.filename, "test.basalt");

@@ -39,8 +39,21 @@ void CommandLineController::instantiation_and_run_compiler() {
 
 void CommandLineController::instantiation_and_run_interpreter() {
     avoid_lack_of_input_files(inputs);
-    ensure_lack_of_output_files(outputs);
     avoid_duplicate_input_files(inputs);
+    ensure_lack_of_output_files(outputs);
+    ProjectFileStructure project_file_structure;
+    for (const std::string& input_file_name : inputs) {
+        Tokenizer tokenizer(input_file_name);
+        Parser parser(tokenizer.tokenize());
+        FileRepresentation file_representation = parser.parse_everything();
+        project_file_structure.store_file_representation(file_representation);
+    }
+    TypeDefinitionsRegister type_definitions_register(project_file_structure);
+    FunctionOverloadsRegister function_overloads_register(project_file_structure);
+    OverloadingResolutionEngine overloading_resolution_engine(function_overloads_register, type_definitions_register, project_file_structure);
+    PreProcessor preprocessor(project_file_structure, type_definitions_register, function_overloads_register, overloading_resolution_engine);
+    preprocessor.preprocess_packages_typename_conflicts();
+    preprocessor.preprocess_type_definitions();
 }
 
 void CommandLineController::instantiation_and_run_debugger() {

@@ -68,6 +68,19 @@ struct ParsingError : public std::exception {
         , filename(token.filename), line_number(token.line_number)
         , tok_number(token.tok_number), char_pos(token.char_pos) 
     {}
+
+    ParsingError(const std::string& message, const std::optional<Token>& token_opt)
+        : error_message(message) 
+    {
+        if (token_opt.has_value()) {
+            const Token& token = token_opt.value();
+            sourcetext = token.sourcetext;
+            filename = token.filename; 
+            line_number = token.line_number;
+            tok_number = token.tok_number;
+            char_pos = token.char_pos;
+        } 
+    }
     
     [[nodiscard]] const char* what() const noexcept override {
         return error_message.c_str();

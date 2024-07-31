@@ -11,7 +11,7 @@ TEST(Parsing, Trivial_Assignment) {
         { "6", "test.basalt", 1, 3, 3, Token::Type::integer_literal },
         { ";", "test.basalt", 1, 4, 4, Token::Type::symbol }
     };
-    Parser parser = Parser(tokens);
+    Parser parser = Parser({ "inline-tests.basalt", tokens });
     Statement statement = parser.parse_statement();
     ASSERT_TRUE(statement.is<Assignment>());
     EXPECT_TRUE(statement.get<Assignment>().assigned_value.is<IntLiteral>());
@@ -28,7 +28,7 @@ TEST(Parsing, Assignment_Of_Expression_To_Pointer_Dereference) {
         { "2", "test.basalt", 1, 6, 6, Token::Type::integer_literal },
         { ";", "test.basalt", 1, 7, 7, Token::Type::symbol }
     };
-    Parser parser = Parser(tokens);
+    Parser parser = Parser({ "inline-tests.basalt", tokens });
     Statement statement = parser.parse_statement();
     ASSERT_TRUE(statement.is<Assignment>());
     EXPECT_TRUE(statement.get<Assignment>().assigned_value.is<BinaryOperator>());

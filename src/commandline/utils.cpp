@@ -20,7 +20,6 @@ CommandLineController::CommandLineController(int argc, char** argv)
     }
     validate_input_files();
     validate_output_files();
-    ensure_existence_of_input_files();
 }
 
 void CommandLineController::validate_input_files() {
@@ -29,6 +28,7 @@ void CommandLineController::validate_input_files() {
             throw_invalid_input_file_format(in);
         }
     }
+    ensure_input_files_exist(inputs);
 }
 
 void CommandLineController::validate_output_files() {
@@ -39,14 +39,6 @@ void CommandLineController::validate_output_files() {
             file_extension(out) != FileExtension::exe
         ) 
         throw_invalid_output_file_format(out);
-    }
-}
-
-void CommandLineController::ensure_existence_of_input_files() {
-    for (const std::string& input_file_name : inputs) {
-        std::fstream fstream_file_reader(input_file_name, std::ios::in);
-        ensure_source_file_is_open(fstream_file_reader, input_file_name);
-        fstream_file_reader.close();
     }
 }
 

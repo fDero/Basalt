@@ -3,6 +3,8 @@
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 
+#include <iostream>
+
 PreProcessor::PreProcessor(
     ProjectFileStructure& project_file_structure,
     TypeDefinitionsRegister& type_definitions_register,

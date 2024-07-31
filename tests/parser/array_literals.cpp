@@ -5,14 +5,14 @@
 #include "errors/parsing_errors.hpp"
 
 TEST(Parsing, Array_Literal_Without_Explicit_Size) {
-    std::vector<Token> arraytokens = {
+    std::vector<Token> tokens = {
         { "[",   "test.basalt",  1, 1, 1, Token::Type::symbol  },
         { "]",   "test.basalt",  1, 2, 2, Token::Type::symbol  },
         { "Ent", "test.basalt",  1, 3, 3, Token::Type::type    },
         { "{",   "test.basalt",  1, 4, 5, Token::Type::symbol  },
         { "}",   "test.basalt",  1, 5, 6, Token::Type::symbol  },
     };
-    Parser parser = Parser(arraytokens);
+    Parser parser = Parser({ "inline-tests.basalt", tokens });
     Expression expr = parser.parse_expression();
     ASSERT_TRUE(expr.is<ArrayLiteral>());
     EXPECT_EQ(expr.get<ArrayLiteral>().array_length, -1);
@@ -23,7 +23,7 @@ TEST(Parsing, Array_Literal_Without_Explicit_Size) {
 }
 
 TEST(Parsing, Array_Literal_Of_Generic_StoredType_Without_Explicit_Size) {
-    std::vector<Token> arraytokens = {
+    std::vector<Token> tokens = {
         { "[",    "test.basalt",  1, 1, 1, Token::Type::symbol  },
         { "]",    "test.basalt",  1, 2, 2, Token::Type::symbol  },
         { "Pair", "test.basalt",  1, 3, 3, Token::Type::type    },
@@ -35,7 +35,7 @@ TEST(Parsing, Array_Literal_Of_Generic_StoredType_Without_Explicit_Size) {
         { "{",    "test.basalt",  1, 4, 5, Token::Type::symbol  },
         { "}",    "test.basalt",  1, 5, 6, Token::Type::symbol  },
     };
-    Parser parser = Parser(arraytokens);
+    Parser parser = Parser({ "inline-tests.basalt", tokens });
     Expression expr = parser.parse_expression();
     ASSERT_TRUE(expr.is<ArrayLiteral>());
     EXPECT_EQ(expr.get<ArrayLiteral>().array_length, -1);
@@ -46,7 +46,7 @@ TEST(Parsing, Array_Literal_Of_Generic_StoredType_Without_Explicit_Size) {
 }
 
 TEST(Parsing, Nested_Array_Literals_Without_Explicit_Size_And_Incorrect_Type) {
-    std::vector<Token> arraytokens = {
+    std::vector<Token> tokens = {
         { "[",   "test.basalt",  1,  1,  1, Token::Type::symbol  },
         { "]",   "test.basalt",  1,  2,  2, Token::Type::symbol  },
         { "Int", "test.basalt",  1,  3,  3, Token::Type::type    },
@@ -67,7 +67,7 @@ TEST(Parsing, Nested_Array_Literals_Without_Explicit_Size_And_Incorrect_Type) {
         
         { "}",   "test.basalt",  1, 15, 20, Token::Type::symbol  },
     };
-    Parser parser = Parser(arraytokens);
+    Parser parser = Parser({ "inline-tests.basalt", tokens });
     Expression expr = parser.parse_expression();
     ASSERT_TRUE(expr.is<ArrayLiteral>());
     EXPECT_EQ(expr.get<ArrayLiteral>().array_length, -1);
@@ -85,7 +85,7 @@ TEST(Parsing, Nested_Array_Literals_Without_Explicit_Size_And_Incorrect_Type) {
 }
 
 TEST(Parsing, Nested_Array_Literals_With_Explicit_Size_And_Correct_Type) {
-    std::vector<Token> arraytokens = {
+    std::vector<Token> tokens = {
         { "[",   "test.basalt",  1,  1,  1, Token::Type::symbol  },
         { "2",   "test.basalt",  1,  1,  1, Token::Type::integer_literal  },
         { "]",   "test.basalt",  1,  2,  2, Token::Type::symbol  },
@@ -107,7 +107,7 @@ TEST(Parsing, Nested_Array_Literals_With_Explicit_Size_And_Correct_Type) {
         { "}",   "test.basalt",  1, 14, 19, Token::Type::symbol  },
         { "}",   "test.basalt",  1, 15, 20, Token::Type::symbol  },
     };
-    Parser parser = Parser(arraytokens);
+    Parser parser = Parser({ "inline-tests.basalt", tokens });
     Expression expr = parser.parse_expression();
     ASSERT_TRUE(expr.is<ArrayLiteral>());
     EXPECT_EQ(expr.get<ArrayLiteral>().array_length, 2);
@@ -124,7 +124,7 @@ TEST(Parsing, Nested_Array_Literals_With_Explicit_Size_And_Correct_Type) {
 }
 
 TEST(Parsing, Square_Bracket_Access_On_Array_Literal) {
-    std::vector<Token> arraytokens = {
+    std::vector<Token> tokens = {
         { "[",   "test.basalt",  1,  1,  1, Token::Type::symbol  },
         { "]",   "test.basalt",  1,  2,  2, Token::Type::symbol  },
         { "Int", "test.basalt",  1,  3,  3, Token::Type::type    },
@@ -134,7 +134,7 @@ TEST(Parsing, Square_Bracket_Access_On_Array_Literal) {
         { "2",   "test.basalt",  1,  6,  9, Token::Type::integer_literal  },
         { "]",   "test.basalt",  1,  7, 10, Token::Type::symbol  },
     };
-    Parser parser = Parser(arraytokens);
+    Parser parser = Parser({ "inline-tests.basalt", tokens });
     Expression expr = parser.parse_expression();
     ASSERT_TRUE(expr.is<BinaryOperator>());
     ASSERT_EQ(expr.get<BinaryOperator>().operator_text, "[square-brackets-access]");

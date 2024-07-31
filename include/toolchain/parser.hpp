@@ -17,7 +17,7 @@
 class Parser {
 
     public:
-        Parser(const std::vector<Token>& tokens);
+        Parser(const TokenizedFile& tokens);
         [[nodiscard]] FileRepresentation parse_everything();
 
         [[nodiscard]] Expression parse_array_literal();
@@ -80,6 +80,7 @@ class Parser {
         std::vector<std::string> template_generics_encountered_so_far;
         std::vector<Token> source_tokens;
         std::vector<Token>::iterator iterator;
+        std::string filename;
 
         [[nodiscard]] std::vector<Statement> parse_code_block();
         [[nodiscard]] std::vector<Statement> parse_multiline_code_block();

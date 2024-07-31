@@ -5,11 +5,11 @@
 #include "errors/parsing_errors.hpp"
 
 TEST(Parsing, Simple_Slice) {
-    std::vector<Token> slicetokens = {
+    std::vector<Token> tokens = {
         { "$",   "test.basalt",   1, 1, 1, Token::Type::type     },
         { "Ent", "test.basalt",   1, 2, 2, Token::Type::type     },
     };
-    Parser parser = Parser(slicetokens);
+    Parser parser = Parser({ "inline-tests.basalt", tokens });
     TypeSignature type = parser.parse_typesignature();
     ASSERT_TRUE(type.is<SliceType>());
     SliceType inner_slice = type.get<SliceType>();
@@ -18,12 +18,12 @@ TEST(Parsing, Simple_Slice) {
 }
 
 TEST(Parsing, Nested_Slice_Types) {
-    std::vector<Token> slicetokens = {
+    std::vector<Token> tokens = {
         { "$",   "test.basalt",     1, 1, 1,  Token::Type::type      },
         { "$",   "test.basalt",     1, 2, 2,  Token::Type::symbol    },
         { "Int", "test.basalt",     1, 3, 3,  Token::Type::type      },
     };
-    Parser parser = Parser(slicetokens);
+    Parser parser = Parser({ "inline-tests.basalt", tokens });
     TypeSignature type = parser.parse_typesignature();
     ASSERT_TRUE(type.is<SliceType>());
     ASSERT_TRUE(type.get<SliceType>().stored_type.is<SliceType>());

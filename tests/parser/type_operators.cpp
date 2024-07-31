@@ -10,7 +10,7 @@ TEST(Parsing, Is_Operator_Expression_On_Variable) {
         { "is",          "test.basalt", 1, 2, 7, Token::Type::is_keyword },
         { "Int",         "test.basalt", 1, 3, 9, Token::Type::type       },
     };
-    Parser parser = Parser(tokens);
+    Parser parser = Parser({ "inline-tests.basalt", tokens });
     Expression expression = parser.parse_expression();
     ASSERT_TRUE(expression.is<TypeOperator>());
 }
@@ -25,7 +25,7 @@ TEST(Parsing, As_Cast_On_Complex_Expression_AST_Rotation_Needed) {
         { "as",     "test.basalt", 1, 6, 7, Token::Type::as_keyword },
         { "Int",    "test.basalt", 1, 7, 9, Token::Type::type       },
     };
-    Parser parser = Parser(tokens);
+    Parser parser = Parser({ "inline-tests.basalt", tokens });
     Expression expression = parser.parse_expression();
     ASSERT_TRUE(expression.is<BinaryOperator>());
     BinaryOperator binary_operator = expression.get<BinaryOperator>();
@@ -44,7 +44,7 @@ TEST(Parsing, Is_Operator_Expression_Used_As_Operand) {
         { "&&",          "test.basalt", 1, 4, 12, Token::Type::symbol     },
         { "flag",        "test.basalt", 1, 5, 14, Token::Type::text       },
     };
-    Parser parser = Parser(tokens);
+    Parser parser = Parser({ "inline-tests.basalt", tokens });
     Expression expression = parser.parse_expression();
     ASSERT_TRUE(expression.is<BinaryOperator>());
     BinaryOperator binary_operator = expression.get<BinaryOperator>();

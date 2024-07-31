@@ -5,13 +5,13 @@
 #include "errors/parsing_errors.hpp"
 
 TEST(Parsing, CustomType_WithOut_Generics) {
-    std::vector<Token> typesignatures = {
+    std::vector<Token> tokens = {
         { "Person",   "test.basalt", 1, 1, 1,  Token::Type::type },
         { "Employee", "test.basalt", 1, 2, 9,  Token::Type::type },
         { "Manager",  "test.basalt", 1, 3, 17, Token::Type::type }
     };
-    Parser parser = Parser(typesignatures);
-    for (const auto& typesignature : typesignatures) {
+    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    for (const auto& typesignature : tokens) {
         TypeSignature type = parser.parse_typesignature();
         ASSERT_TRUE(type.is<CustomType>());
         ASSERT_EQ(type.get<CustomType>().type_name, typesignature.sourcetext);
@@ -20,13 +20,13 @@ TEST(Parsing, CustomType_WithOut_Generics) {
 }
 
 TEST(Parsing, Custom_Type_With_One_Generic) {
-    std::vector<Token> typesignature = {
+    std::vector<Token> tokens = {
         { "Wrapper", "test.basalt", 1, 1, 1, Token::Type::type },
         { "<", "test.basalt", 1, 2, 7, Token::Type::symbol     },
         { "String", "test.basalt", 1, 3, 13, Token::Type::type },
         { ">", "test.basalt", 1, 4, 14, Token::Type::symbol    }
     };
-    Parser parser = Parser(typesignature);
+    Parser parser = Parser({ "inline-tests.basalt", tokens });
     TypeSignature type = parser.parse_typesignature();
     ASSERT_TRUE(type.is<CustomType>());
     ASSERT_EQ(type.get<CustomType>().type_name, "Wrapper");
@@ -36,7 +36,7 @@ TEST(Parsing, Custom_Type_With_One_Generic) {
 }
 
 TEST(Parsing, CustomType_With_Multiple_Generic) {
-    std::vector<Token> typesignature = {
+    std::vector<Token> tokens = {
         { "MultiWrapper", "test.basalt", 1, 1, 1, Token::Type::type },
         { "<", "test.basalt", 1, 2, 13, Token::Type::symbol },
         { "String", "test.basalt", 1, 3, 14, Token::Type::type },
@@ -46,7 +46,7 @@ TEST(Parsing, CustomType_With_Multiple_Generic) {
         { "Bool", "test.basalt", 1, 7, 25, Token::Type::type },
         { ">", "test.basalt", 1, 8, 29, Token::Type::symbol }
     };
-    Parser parser = Parser(typesignature);
+    Parser parser = Parser({ "inline-tests.basalt", tokens });
     TypeSignature type = parser.parse_typesignature();
     ASSERT_TRUE(type.is<CustomType>());
     ASSERT_EQ(type.get<CustomType>().type_parameters.size(), 3);

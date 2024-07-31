@@ -5,13 +5,13 @@
 #include "errors/parsing_errors.hpp"
 
 TEST(Parsing, Struct_Definition_With_No_Fields_And_No_Nested_Structs) {
-    std::vector<Token> struct_def_tokens = {
+    std::vector<Token> tokens = {
         { "struct", "test.basalt", 1, 1, 1, Token::Type::struct_keyword },
         { "S",      "test.basalt", 1, 2, 7, Token::Type::type           },
         { "{",      "test.basalt", 1, 3, 8, Token::Type::symbol         },
         { "}",      "test.basalt", 1, 4, 9, Token::Type::symbol         }
     };
-    Parser parser = Parser(struct_def_tokens);
+    Parser parser = Parser({ "inline-tests.basalt", tokens });
     StructDefinition struct_def = parser.parse_struct_definition();
     EXPECT_EQ(struct_def.filename, "test.basalt");
     EXPECT_EQ(struct_def.struct_name, "S");
@@ -20,7 +20,7 @@ TEST(Parsing, Struct_Definition_With_No_Fields_And_No_Nested_Structs) {
 }
 
 TEST(Parsing, Struct_Definition_With_One_Field_And_No_Nested_Structs) {
-    std::vector<Token> struct_def_tokens = {
+    std::vector<Token> tokens = {
         { "struct", "test.basalt",  1,  1,   1,  Token::Type::struct_keyword },
         { "S",      "test.basalt",  1,  2,   7,  Token::Type::type           },
         { "{",      "test.basalt",  1,  3,   8,  Token::Type::symbol         },
@@ -30,7 +30,7 @@ TEST(Parsing, Struct_Definition_With_One_Field_And_No_Nested_Structs) {
         { ";",      "test.basalt",  1,  7,  12,  Token::Type::symbol         },
         { "}",      "test.basalt",  1,  8,  13,  Token::Type::symbol         }
     };
-    Parser parser = Parser(struct_def_tokens);
+    Parser parser = Parser({ "inline-tests.basalt", tokens });
     StructDefinition struct_def = parser.parse_struct_definition();
     EXPECT_EQ(struct_def.filename, "test.basalt");
     EXPECT_EQ(struct_def.struct_name, "S");
@@ -40,7 +40,7 @@ TEST(Parsing, Struct_Definition_With_One_Field_And_No_Nested_Structs) {
 }
 
 TEST(Parsing, Struct_Definition_With_Two_Fields_And_No_Nested_Structs) {
-    std::vector<Token> struct_def_tokens = {
+    std::vector<Token> tokens = {
         { "struct", "test.basalt",  1,   1,  1,   Token::Type::struct_keyword },
         { "S",      "test.basalt",  1,   2,  7,   Token::Type::type           },
         { "{",      "test.basalt",  1,   3,  8,   Token::Type::symbol         },
@@ -54,7 +54,7 @@ TEST(Parsing, Struct_Definition_With_Two_Fields_And_No_Nested_Structs) {
         { ";",      "test.basalt",  1,  11,  16,  Token::Type::symbol         },
         { "}",      "test.basalt",  1,  12,  17,  Token::Type::symbol         }
     };
-    Parser parser = Parser(struct_def_tokens);
+    Parser parser = Parser({ "inline-tests.basalt", tokens });
     StructDefinition struct_def = parser.parse_struct_definition();
     EXPECT_EQ(struct_def.filename, "test.basalt");
     EXPECT_EQ(struct_def.struct_name, "S");

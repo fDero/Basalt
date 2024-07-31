@@ -5,11 +5,11 @@
 #include "errors/parsing_errors.hpp"
 
 TEST(Parsing, Simple_Pointer) {
-    std::vector<Token> pointertokens = {
+    std::vector<Token> tokens = {
         { "#", "test.basalt",   1, 1, 1, Token::Type::symbol },
         { "Int", "test.basalt", 1, 2, 2, Token::Type::type   },
     };
-    Parser parser = Parser(pointertokens);
+    Parser parser = Parser({ "inline-tests.basalt", tokens });
     TypeSignature type = parser.parse_typesignature();
     ASSERT_TRUE(type.is<PointerType>());
     ASSERT_TRUE(type.get<PointerType>().pointed_type.is<PrimitiveType>());
@@ -17,12 +17,12 @@ TEST(Parsing, Simple_Pointer) {
 }
 
 TEST(Parsing, Pointer_To_Pointer) {
-    std::vector<Token> pointertokens = {
+    std::vector<Token> tokens = {
         { "#", "test.basalt",   1, 1, 1, Token::Type::symbol },
         { "#", "test.basalt",   1, 2, 2, Token::Type::symbol },
         { "Int", "test.basalt", 1, 3, 3, Token::Type::type   },
     };
-    Parser parser = Parser(pointertokens);
+    Parser parser = Parser({ "inline-tests.basalt", tokens });
     TypeSignature type = parser.parse_typesignature();
     ASSERT_TRUE(type.is<PointerType>());
     ASSERT_TRUE(type.get<PointerType>().pointed_type.is<PointerType>());

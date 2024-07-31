@@ -1,6 +1,12 @@
 
 #include "errors/parsing_errors.hpp"
 
+std::optional<Token> extract_last_token(const std::vector<Token>& source_tokens) {
+    return source_tokens.empty()
+        ? std::nullopt 
+        : std::optional<Token>(source_tokens.back());
+}
+
 void ensure_there_are_still_tokens(
     const std::vector<Token>& source_tokens,
     const std::vector<Token>::iterator& iterator
@@ -8,7 +14,7 @@ void ensure_there_are_still_tokens(
     if (iterator == source_tokens.end()) {
         throw ParsingError {
             "an expression was expected, instead got END-OF-FILE",
-            source_tokens.back()
+            extract_last_token(source_tokens)
         };
     }
 }
@@ -61,13 +67,13 @@ void ensure_token_matches(
 ) {
     if (iterator == source_tokens.end()) {
         throw ParsingError {
-            "token " + text_to_match + " was expected, instead got END-OF-FILE",
-            source_tokens.back()
+            text_to_match + " was expected, expected, instead got END-OF-FILE", 
+            extract_last_token(source_tokens)
         };
     }
     if (iterator->sourcetext != text_to_match) {
         throw ParsingError {
-            text_to_match + "was expected, instead got: " + iterator->sourcetext,
+            text_to_match + " was expected, instead got: " + iterator->sourcetext,
             *iterator
         };
     } 
@@ -79,7 +85,7 @@ void ensure_token_is_identifier(
 ) {
     if (iterator == source_tokens.end()) {
         throw ParsingError {
-            "an identifier was expected, instead got END-OF-FILE", source_tokens.back()
+            "an identifier was expected, instead got END-OF-FILE", extract_last_token(source_tokens)
         };
     }
     if (!islower(iterator->sourcetext[0])) {
@@ -95,7 +101,7 @@ void ensure_token_is_struct_name(
 ) {
     if (iterator == source_tokens.end()) {
         throw ParsingError {
-            "an identifier was expected, instead got END-OF-FILE", source_tokens.back()
+            "an identifier was expected, instead got END-OF-FILE", extract_last_token(source_tokens)
         };
     }
     if (!isupper(iterator->sourcetext[0])) {
@@ -124,7 +130,7 @@ void ensure_token_is_fixed_array_length(
     if (iterator == source_tokens.end()) {
         throw ParsingError {
             "the length of an array was expected, instead got END-OF-FILE",
-            source_tokens.back()
+            extract_last_token(source_tokens)
         };
     }
     if (iterator->type != Token::Type::integer_literal) {
@@ -143,7 +149,7 @@ void ensure_token_is_typesignature(
     if (iterator == source_tokens.end()) {
         throw ParsingError {
             "a type was expected, instead got END-OF-FILE",
-            source_tokens.back()
+            extract_last_token(source_tokens)
         };
     }
     if (iterator->type != Token::Type::type) {

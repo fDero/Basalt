@@ -9,7 +9,7 @@ TEST(Parsing, Return_Nothing) {
         { "return", "test.basalt", 1, 1, 1, Token::Type::return_keyword },
         { ";",      "test.basalt", 1, 4, 4, Token::Type::symbol }
     };
-    Parser parser = Parser(tokens);
+    Parser parser = Parser({ "inline-tests.basalt", tokens });
     Statement statement = parser.parse_statement();
     ASSERT_TRUE(statement.is<Return>());
     EXPECT_FALSE(statement.get<Return>().return_value.has_value());
@@ -21,7 +21,7 @@ TEST(Parsing, Return_Integer) {
         { "6",      "test.basalt", 1, 4, 4, Token::Type::integer_literal },
         { ";",      "test.basalt", 1, 4, 4, Token::Type::symbol }
     };
-    Parser parser = Parser(tokens);
+    Parser parser = Parser({ "inline-tests.basalt", tokens });
     Statement statement = parser.parse_statement();
     ASSERT_TRUE(statement.is<Return>());
     ASSERT_TRUE(statement.get<Return>().return_value.has_value());
@@ -37,7 +37,7 @@ TEST(Parsing, Return_Expression) {
         { "7",      "test.basalt", 1, 4, 4, Token::Type::integer_literal },
         { ";",      "test.basalt", 1, 4, 4, Token::Type::symbol }
     };
-    Parser parser = Parser(tokens);
+    Parser parser = Parser({ "inline-tests.basalt", tokens });
     Statement statement = parser.parse_statement();
     ASSERT_TRUE(statement.is<Return>());
     ASSERT_TRUE(statement.get<Return>().return_value.has_value());

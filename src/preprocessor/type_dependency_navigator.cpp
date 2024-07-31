@@ -3,6 +3,8 @@
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 
+#include <iostream>
+
 TypeDependencyNavigator::TypeDependencyNavigator(
     TypeDefinitionsRegister& program_representation
 ) : program_representation(program_representation) {}

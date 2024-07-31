@@ -5,13 +5,17 @@
 #include "language/definitions.hpp"
 #include "language/expressions.hpp"
 
-Parser::Parser(const std::vector<Token>& tokens) {
-    source_tokens = tokens; 
-    iterator = source_tokens.begin(); 
+#include <iostream>
+
+Parser::Parser(const TokenizedFile& tokenized_file) {
+    source_tokens = tokenized_file.tokens; 
+    iterator = source_tokens.begin();
+    filename = tokenized_file.filename; 
 }
 
 [[nodiscard]] FileRepresentation Parser::parse_everything() {
     FileRepresentation output;
+    output.file_metadata.filename = filename;
     output.file_metadata.packagename = parse_package_name();
     parse_import_section(output);
     parse_alias_section(output);
