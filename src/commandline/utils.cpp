@@ -3,6 +3,8 @@
 #include "toolchain/tokenizer.hpp"
 #include "toolchain/commandline.hpp"
 
+#include <iostream>
+
 CommandLineController::CommandLineController(int argc, char** argv)
     : arg_counter(argc), arg_values(argv), arg_index(1)
 {
@@ -24,7 +26,7 @@ CommandLineController::CommandLineController(int argc, char** argv)
 
 void CommandLineController::validate_input_files() {
     for(const std::string& in : inputs) {
-        if (file_extension(in) != FileExtension::basalt) { 
+        if (extract_file_extension(in) != FileExtension::basalt) { 
             throw_invalid_input_file_format(in);
         }
     }
@@ -33,20 +35,15 @@ void CommandLineController::validate_input_files() {
 
 void CommandLineController::validate_output_files() {
     for(const std::string& out : outputs) {
+        FileExtension file_ext = extract_file_extension(out);
         if (
-            file_extension(out) != FileExtension::nasm &&
-            file_extension(out) != FileExtension::elf  &&
-            file_extension(out) != FileExtension::exe
-        ) 
-        throw_invalid_output_file_format(out);
+            file_ext != FileExtension::ll  &&
+            file_ext != FileExtension::elf &&
+            file_ext != FileExtension::exe
+        ) {
+            throw_invalid_output_file_format(out);
+        }
     }
-}
-
-bool CommandLineController::check_for_specific_file_extension(const std::string& filename, const std::string& extension) {
-    const int size = filename.size();
-    const int extension_size = extension.size();
-    const int prefix_size = size - extension_size;
-    return (filename.substr(prefix_size, extension_size) == extension);
 }
 
 CommandLineController::Flag CommandLineController::detect_flag() {
@@ -58,13 +55,4 @@ CommandLineController::Flag CommandLineController::detect_flag() {
     if (text == "-r" || text == "--run")     return Flag::interpreter;
     if (text == "-o" || text == "--output")  return Flag::output;
     return Flag::unspecified;
-}
-
-CommandLineController::FileExtension CommandLineController::file_extension(const std::string& filename) {
-    if (check_for_specific_file_extension(filename, ".basalt")) return FileExtension::basalt;
-    if (check_for_specific_file_extension(filename, ".bt"))     return FileExtension::basalt;
-    if (check_for_specific_file_extension(filename, ".elf"))    return FileExtension::elf;
-    if (check_for_specific_file_extension(filename, ".nasm"))   return FileExtension::nasm;
-    if (check_for_specific_file_extension(filename, ".exe"))    return FileExtension::exe;
-    throw_unrecognized_file_extension(filename);
 }

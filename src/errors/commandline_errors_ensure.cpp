@@ -53,8 +53,8 @@ void ensure_input_files_exist(std::vector<std::string>& input_files) {
 }
 
 void avoid_duplicate_output_file_extensions(
-    const std::vector<CommandLineController::FileExtension>& already_encountered, 
-    const CommandLineController::FileExtension file_ext
+    const std::vector<FileExtension>& already_encountered, 
+    const FileExtension file_ext
 ) {
     if (std::find(already_encountered.begin(), already_encountered.end(), file_ext) != already_encountered.end()) {
         throw CommandLineError {

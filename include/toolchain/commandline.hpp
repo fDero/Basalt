@@ -2,6 +2,7 @@
 #pragma once
 #include <vector>
 #include <string>
+#include "toolchain/file_extensions.hpp"
 
 class CommandLineController {
 
@@ -12,11 +13,6 @@ class CommandLineController {
         enum class Mode {
             unspecified, version, help,
             compiler, interpreter, debugger
-        };
-
-        enum class FileExtension {
-            basalt, nasm,
-            elf, exe
         };
 
     private:
@@ -46,9 +42,7 @@ class CommandLineController {
             compiler, interpreter, debugger
         };
 
-        bool check_for_specific_file_extension(const std::string& filename, const std::string& extension);
         Flag detect_flag();
-        FileExtension file_extension(const std::string& filename);
         void validate_output_files();
         void validate_input_files();
 

@@ -3,6 +3,7 @@
 #include "toolchain/commandline.hpp"
 #include "toolchain/parser.hpp"
 #include "toolchain/preprocessor.hpp"
+#include "toolchain/compiler.hpp"
 #include "errors/commandline_errors.hpp"
 #include <iostream>
 #include <cassert>
@@ -23,37 +24,15 @@ void CommandLineController::instantiation_and_run_compiler() {
     avoid_lack_of_input_files(inputs);
     avoid_lack_of_output_files(outputs);
     avoid_duplicate_input_files(inputs);
-    std::vector<FileExtension> already_encountered_file_extensions;
-    for (const std::string& out : outputs) {
-        FileExtension file_ext = file_extension(out);
-        avoid_duplicate_output_file_extensions(already_encountered_file_extensions, file_ext);
-        already_encountered_file_extensions.push_back(file_ext);
-        switch (file_ext) {
-            break; case FileExtension::nasm:  /* WORK IN PROGRESS */;
-            break; case FileExtension::exe:   /* WORK IN PROGRESS */;
-            break; case FileExtension::elf:   /* WORK IN PROGRESS */; 
-            break; case FileExtension::basalt: throw_basalt_used_as_output(out);       
-        }
-    }
+    Compiler compiler(inputs, outputs);
+    compiler.perform_static_analysis();
+    compiler.perform_code_generation();
+    compiler.output_the_required_files();
 }
 
 void CommandLineController::instantiation_and_run_interpreter() {
-    avoid_lack_of_input_files(inputs);
-    avoid_duplicate_input_files(inputs);
-    ensure_lack_of_output_files(outputs);
-    ProjectFileStructure project_file_structure;
-    for (const std::string& input_file_name : inputs) {
-        Tokenizer tokenizer(input_file_name);
-        Parser parser(tokenizer.tokenize());
-        FileRepresentation file_representation = parser.parse_everything();
-        project_file_structure.store_file_representation(file_representation);
-    }
-    TypeDefinitionsRegister type_definitions_register(project_file_structure);
-    FunctionOverloadsRegister function_overloads_register(project_file_structure);
-    OverloadingResolutionEngine overloading_resolution_engine(function_overloads_register, type_definitions_register, project_file_structure);
-    PreProcessor preprocessor(project_file_structure, type_definitions_register, function_overloads_register, overloading_resolution_engine);
-    preprocessor.preprocess_packages_typename_conflicts();
-    preprocessor.preprocess_type_definitions();
+    std::cout << "the basalt interpreter is not yet implemented\n";
+    std::cout << "check for updates at https://www.github.com/fDero/Basalt\n\n";
 }
 
 void CommandLineController::instantiation_and_run_debugger() {

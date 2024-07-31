@@ -4,8 +4,6 @@
 #include "errors/internal_errors.hpp"
 #include "language/generics.hpp"
 
-#include <iostream>
-
 TypeDefinitionsRegister::TypeDefinitionsRegister(ProjectFileStructure& project_file_structure) 
     : project_file_structure(project_file_structure) 
 { 
