@@ -106,40 +106,6 @@ void ensure_numeric_types_are_equal(
     }
 }
 
-void assert_number_of_arguments_match(
-    FunctionDefinition::Ref function_definition,
-    const std::vector<TypeSignature>& arg_types
-) {
-    #ifdef DEBUG
-    if (function_definition->arguments.size() != arg_types.size()) {
-        throw InternalError("number of arguments does not match");
-    }
-    #endif
-}
-
-[[noreturn]] void throw_no_type_definition_found(
-    const CustomType& type_signature
-) {
-    throw std::runtime_error {
-        "No type definition found for type " + type_signature.type_name + "\n"
-    };
-}
-
-[[noreturn]] void throw_cannot_access_square_brackets_on_type(
-    const TypeSignature& left_operand_type,
-    const BinaryOperator& expression
-) {
-    throw InternalError("cannot access square brackets on type");
-}
-
-[[noreturn]] void throw_no_such_struct_field(
-    const std::string& member_name,
-    const StructDefinition& struct_type_definition,
-    const BinaryOperator& expression
-) {
-    throw InternalError("no such struct field");
-}
-
 void ensure_typesignature_is_boolean(const TypeSignature& type_signature) {
     if (!type_signature.is<PrimitiveType>() || type_signature.get<PrimitiveType>().type_name != "Bool") {
         throw InternalError("type must be Bool");
