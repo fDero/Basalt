@@ -87,6 +87,57 @@ inline void assert_typesignature_is(const TypeSignature& typesignature) {
     #endif
 }
 
+template<typename T>
+inline void assert_expression_is(const Expression& expression) {
+    #ifdef DEBUG_BUILD
+    if (!expression.is<T>()) {
+        std::string T_type_converted_to_string = typeid(T).name();
+        throw InternalError {
+            "somehow a typesignature was expected to be a " + 
+            T_type_converted_to_string + " instead it wasn't"    
+        };
+    }
+    #endif
+}
+
+template<typename T>
+inline void assert_statement_is(const Statement& statement) {
+    #ifdef DEBUG_BUILD
+    if (!statement.is<T>()) {
+        std::string T_type_converted_to_string = typeid(T).name();
+        throw InternalError {
+            "somehow a typesignature was expected to be a " + 
+            T_type_converted_to_string + " instead it wasn't"    
+        };
+    }
+    #endif
+}
+
+inline void assert_unary_operator_is(const UnaryOperator& expression, const std::string& operator_text) {
+    #ifdef DEBUG_BUILD
+    if (expression.operator_text != operator_text) {
+        throw InternalError("expected unary operator to be " + operator_text);
+    }
+    #endif
+}
+
+inline void assert_binary_operator_is(const BinaryOperator& expression, const std::string& operator_text) {
+    #ifdef DEBUG_BUILD
+    if (expression.operator_text != operator_text) {
+        throw InternalError("expected unary operator to be " + operator_text);
+    }
+    #endif
+}
+
+inline void assert_operator_kind_was_found(
+    const std::map<std::string, OperatorKind>::const_iterator& operator_kind_search_outcome,
+    const std::map<std::string, OperatorKind>& operator_kinds
+) {
+    if (operator_kind_search_outcome == operator_kinds.end()) {
+        throw InternalError("operator kind not found");
+    }
+}
+
 void assert_vectors_have_same_size_hence_they_can_be_zipped(
     const std::vector<std::string>& template_generics,
     const std::vector<TypeSignature>& type_parameters

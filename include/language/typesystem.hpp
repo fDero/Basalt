@@ -79,7 +79,8 @@ struct PrimitiveType : public TypeSignatureBody {
     virtual ~PrimitiveType() = default;
 
     PrimitiveType(const Token& typename_token);
-    
+    PrimitiveType(const std::string& type_name, const DebugInformationsAwareEntity& debug_info);
+
     [[nodiscard]] virtual TypeSignatureBody::Kind typesiganture_kind() const;
     [[nodiscard]] bool is_generic() const override;
 
@@ -88,7 +89,7 @@ struct PrimitiveType : public TypeSignatureBody {
 
 struct PointerType : public TypeSignatureBody {
     
-    PointerType(const Token& pointer_symbol_token, const TypeSignature& pointed);
+    PointerType(const DebugInformationsAwareEntity& pointer_symbol_token, const TypeSignature& pointed);
 
     [[nodiscard]] virtual TypeSignatureBody::Kind typesiganture_kind() const;
     [[nodiscard]] bool is_generic() const override;

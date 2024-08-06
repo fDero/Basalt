@@ -30,7 +30,7 @@ ProjectFileStructure single_file_project_with_list_and_number_defs2({
     }
 });
 
-TEST(Preprocessor, Inferred_Generics_Do_Not_Allow_Too_Much_Flexibility_On_Type_Parameters) {
+TEST(TypeChecking, Inferred_Generics_Do_Not_Allow_Too_Much_Flexibility_On_Type_Parameters) {
     TypeDefinitionsRegister type_register(single_file_project_with_list_and_number_defs2);
     AssignmentTypeChecker type_checker(type_register, single_file_project_with_list_and_number_defs2);
     TypeSignature IntOrFloat = InlineUnion { Token { "Int", "main.basalt", 1, 1, 1, Token::Type::type }, {
@@ -46,7 +46,7 @@ TEST(Preprocessor, Inferred_Generics_Do_Not_Allow_Too_Much_Flexibility_On_Type_P
     EXPECT_FALSE(List_Of_IntOrFloat_is_compatible_with_list_of_T);
 }
 
-TEST(Preprocessor, Inferred_Generics_Do_Not_Allow_Too_Much_Flexibility_On_Type_Parameters_Inverse) {
+TEST(TypeChecking, Inferred_Generics_Do_Not_Allow_Too_Much_Flexibility_On_Type_Parameters_Inverse) {
     TypeDefinitionsRegister type_register(single_file_project_with_list_and_number_defs2);
     AssignmentTypeChecker type_checker(type_register, single_file_project_with_list_and_number_defs2);
     TypeSignature IntOrFloat = InlineUnion { Token { "Int", "main.basalt", 1, 1, 1, Token::Type::type }, {
@@ -62,7 +62,7 @@ TEST(Preprocessor, Inferred_Generics_Do_Not_Allow_Too_Much_Flexibility_On_Type_P
     EXPECT_FALSE(List_Of_Int_is_compatible_with_list_of_T);
 }
 
-TEST(Preprocessor, Inferred_Generics_Works_Just_Fine_Nested_Type_Parameters) {
+TEST(TypeChecking, Inferred_Generics_Works_Just_Fine_Nested_Type_Parameters) {
     TypeDefinitionsRegister type_register(single_file_project_with_list_and_number_defs2);
     AssignmentTypeChecker type_checker(type_register, single_file_project_with_list_and_number_defs2);
 
@@ -94,7 +94,7 @@ TEST(Preprocessor, Inferred_Generics_Works_Just_Fine_Nested_Type_Parameters) {
     EXPECT_TRUE(type_checker.validate_assignment(TypeSignatureFactory::Int, TypeSignatureFactory::T));
 }
 
-TEST(Preprocessor, Inferred_Generics_Works_Just_Fine_Nested_Type_Parameters_Not_Quite_The_Same) {
+TEST(TypeChecking, Inferred_Generics_Works_Just_Fine_Nested_Type_Parameters_Not_Quite_The_Same) {
     TypeDefinitionsRegister type_register(single_file_project_with_list_and_number_defs2);
     AssignmentTypeChecker type_checker(type_register, single_file_project_with_list_and_number_defs2);
 

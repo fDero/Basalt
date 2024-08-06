@@ -7,8 +7,6 @@
 #include "../tests_utilities/struct_definition_factory.hpp"
 #include "../tests_utilities/typesignature_factory.hpp"
 
-ProjectFileStructure empty_project;
-
 ProjectFileStructure single_file_project_with_list_and_number_defs({
         FileRepresentation {
         .file_metadata = {
@@ -60,14 +58,15 @@ ProjectFileStructure multi_file_project_with_ambiguous_list_defs({
     }
 });
 
-TEST(Preprocessor, Int_Is_Compatible_With_Template_T) {
+TEST(TypeChecking, Int_Is_Compatible_With_Template_T) {
+    ProjectFileStructure empty_project;
     TypeDefinitionsRegister empty_type_register(empty_project);
     AssignmentTypeChecker type_checker(empty_type_register, empty_project);
     bool int_is_compatible_with_template_t = type_checker.validate_assignment(TypeSignatureFactory::Int, TypeSignatureFactory::T);
     EXPECT_TRUE(int_is_compatible_with_template_t);
 }
 
-TEST(Preprocessor, Int_And_Number_Are_Compatible_With_Template_T) {
+TEST(TypeChecking, Int_And_Number_Are_Compatible_With_Template_T) {
     TypeDefinitionsRegister type_register(single_file_project_with_list_and_number_defs);
     AssignmentTypeChecker type_checker(type_register, single_file_project_with_list_and_number_defs);
     TypeSignature number_type = CustomType { Token { "Number", "main.basalt", 1, 1, 1, Token::Type::type }, {} };
@@ -81,7 +80,7 @@ TEST(Preprocessor, Int_And_Number_Are_Compatible_With_Template_T) {
     EXPECT_EQ(type_checker.get_generic_substitution_rules()->back().replacement.get<CustomType>().type_name, "Number");
 }
 
-TEST(Preprocessor, Number_And_Int_Are_Compatible_With_Template_T) {
+TEST(TypeChecking, Number_And_Int_Are_Compatible_With_Template_T) {
     TypeDefinitionsRegister type_register(single_file_project_with_list_and_number_defs);
     AssignmentTypeChecker type_checker(type_register, single_file_project_with_list_and_number_defs);
     TypeSignature number_type = CustomType { Token { "Number", "main.basalt", 1, 1, 1, Token::Type::type }, {} };
@@ -95,7 +94,7 @@ TEST(Preprocessor, Number_And_Int_Are_Compatible_With_Template_T) {
     EXPECT_EQ(type_checker.get_generic_substitution_rules()->back().replacement.get<CustomType>().type_name, "Number");
 }
 
-TEST(Preprocessor, List_Of_Ints_And_List_Of_Number_Are_Compatible_With_List_Of_T) {
+TEST(TypeChecking, List_Of_Ints_And_List_Of_Number_Are_Compatible_With_List_Of_T) {
     TypeDefinitionsRegister type_register(single_file_project_with_list_and_number_defs);
     AssignmentTypeChecker type_checker(type_register, single_file_project_with_list_and_number_defs);
     TypeSignature number_type = CustomType { Token { "Number", "main.basalt", 1, 1, 1, Token::Type::type }, {} };
@@ -112,7 +111,7 @@ TEST(Preprocessor, List_Of_Ints_And_List_Of_Number_Are_Compatible_With_List_Of_T
     ASSERT_EQ(type_checker.get_generic_substitution_rules()->size(), 2);
 }
 
-TEST(Preprocessor, List_Of_Ints_And_List_Of_Number_Are_Non_Mutually_Compatible_With_Each_Other) {
+TEST(TypeChecking, List_Of_Ints_And_List_Of_Number_Are_Non_Mutually_Compatible_With_Each_Other) {
     TypeDefinitionsRegister type_register(single_file_project_with_list_and_number_defs);
     AssignmentTypeChecker type_checker(type_register, single_file_project_with_list_and_number_defs);
     TypeSignature number_type = CustomType { Token { "Number", "main.basalt", 1, 1, 1, Token::Type::type }, {} };
@@ -125,7 +124,7 @@ TEST(Preprocessor, List_Of_Ints_And_List_Of_Number_Are_Non_Mutually_Compatible_W
 }
 
 
-TEST(Preprocessor, List_Of_List_Of_Ints_Is_Compatible_With_List_Of_List_Of_T) {
+TEST(TypeChecking, List_Of_List_Of_Ints_Is_Compatible_With_List_Of_List_Of_T) {
     TypeDefinitionsRegister type_register(single_file_project_with_list_and_number_defs);
     AssignmentTypeChecker type_checker(type_register, single_file_project_with_list_and_number_defs);
     TypeSignature list_of_list_of_Ts = CustomType { Token { "List", "main.basalt", 1, 1, 1, Token::Type::type }, {
@@ -139,7 +138,7 @@ TEST(Preprocessor, List_Of_List_Of_Ints_Is_Compatible_With_List_Of_List_Of_T) {
     EXPECT_TRUE(list_of_list_of_ints_compatible_with_list_of_list_of_Ts);
 }
 
-TEST(Preprocessor, List_Of_Ints_is_not_compatible_with_List_Of_Ints_When_Symbols_Are_From_Different_Packages) {
+TEST(TypeChecking, List_Of_Ints_is_not_compatible_with_List_Of_Ints_When_Symbols_Are_From_Different_Packages) {
     TypeDefinitionsRegister type_register(multi_file_project_with_ambiguous_list_defs);
     AssignmentTypeChecker type_checker(type_register, multi_file_project_with_ambiguous_list_defs);
     CustomType list_of_list_of_ints1 = CustomType { Token { "List", "a.basalt", 1, 1, 1, Token::Type::type }, {

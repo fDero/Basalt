@@ -32,8 +32,16 @@ PrimitiveType::PrimitiveType(
     , type_name(typename_token.sourcetext) 
 {}
 
+PrimitiveType::PrimitiveType(
+    const std::string& type_name,
+    const DebugInformationsAwareEntity& debug_info
+) 
+    : TypeSignatureBody(debug_info) 
+    , type_name(type_name) 
+{}
+
 PointerType::PointerType(
-    const Token& pointer_symbol_token,
+    const DebugInformationsAwareEntity& pointer_symbol_token,
     const TypeSignature& pointed
 ) 
     : TypeSignatureBody(pointer_symbol_token) 

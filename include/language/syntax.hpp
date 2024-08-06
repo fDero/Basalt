@@ -21,33 +21,6 @@ inline const std::string array_type_example = "[SIZE] Type";
 inline const std::string array_literal_first_symbol = array_literal_example.substr(0, 1);
 inline const std::string array_type_first_symbol = array_type_example.substr(0, 1);
 
-inline const std::string boolean_not_operator = "!";
-inline const std::string minus_sign_prefix = "-";
-inline const std::string plus_sign_prefix = "+";
-inline const std::string math_decrement_operator = "--";
-inline const std::string math_increment_operator = "++";
-
-inline const std::string boolean_and_operator = "&&";
-inline const std::string boolean_or_operator = "||";
-inline const std::string boolean_xor_operator = "^^";
-
-inline const std::string string_soft_concatenation_operator = "+";
-inline const std::string string_hard_concatenation_operator = "*";
-
-inline const std::string math_add_operator = "+";
-inline const std::string math_sub_operator = "-";
-inline const std::string math_mul_operator = "*";
-inline const std::string math_div_operator = "/";
-inline const std::string math_mod_operator = "%";
-inline const std::string math_pow_operator = "^";
-
-inline const std::string boolean_less_than_operator = "<";
-inline const std::string boolean_greater_than_operator = ">";
-inline const std::string boolean_less_than_or_equal_operator = "<=";
-inline const std::string boolean_greater_than_or_equal_operator = ">=";
-inline const std::string boolean_equal_operator = "==";
-inline const std::string boolean_not_equal_operator = "!=";
-
 inline const std::string boolean_true_literal = "true";
 inline const std::string boolean_false_literal = "false";
 
@@ -78,7 +51,63 @@ inline const std::set<std::string> infixies {
     "&&","||","^^"
 };
 
-inline const std::set<std::string> type_operators { "is", "as" };
+enum class OperatorKind {
+    less_then,
+    greater_then,
+    less_then_or_equal,
+    greater_then_or_equal,
+    equal,
+    not_equal,
+    dot_member_access,
+    square_brackets_access_op,
+    address_op,
+    pointer_dereference_op,
+    boolean_not,
+    math_increment,
+    math_decrement,
+    and_operator,
+    or_operator,
+    xor_operator,
+    plus_operator,
+    minus_operator,
+    mul_operator,
+    div_operator,
+    mod_operator,
+    pow_operator,
+    is_operator,
+    as_operator
+};
+
+inline const std::map<std::string, OperatorKind> operator_kinds {
+    { "<" ,                         OperatorKind::less_then                 },
+    { ">" ,                         OperatorKind::greater_then              },
+    { "<=" ,                        OperatorKind::less_then_or_equal        },
+    { ">= ",                        OperatorKind::greater_then_or_equal     },
+    { "==",                         OperatorKind::equal                     },
+    { "!=",                         OperatorKind::not_equal                 },
+    { ".",                          OperatorKind::dot_member_access         },
+    { square_brackets_access,       OperatorKind::square_brackets_access_op },
+    { address_operator,             OperatorKind::address_op                },
+    { pointer_dereference_operator, OperatorKind::pointer_dereference_op    },
+    { "!",                          OperatorKind::boolean_not               },
+    { "++",                         OperatorKind::math_increment            },
+    { "--",                         OperatorKind::math_decrement            },
+    { "&&",                         OperatorKind::and_operator              },
+    { "||",                         OperatorKind::or_operator               },
+    { "^^",                         OperatorKind::xor_operator              },
+    { "+",                          OperatorKind::plus_operator             },
+    { "-",                          OperatorKind::minus_operator            },
+    { "*",                          OperatorKind::mul_operator              },
+    { "/",                          OperatorKind::div_operator              },
+    { "%",                          OperatorKind::mod_operator              },
+    { "^",                          OperatorKind::pow_operator              },
+    { "is",                         OperatorKind::is_operator               },
+    { "as",                         OperatorKind::as_operator               }
+};
+
+inline const std::set<std::string> type_operators { 
+    "is", "as" 
+};
 
 inline const std::map<std::string, short> infix_operators_priority {
     { "||", 1 }, { "&&", 1 }, { "^^", 1 }, { "<", 2 }, { ">", 2 }, { "<=", 2 }, { ">=", 2 }, 
@@ -87,7 +116,8 @@ inline const std::map<std::string, short> infix_operators_priority {
 };
 
 inline const std::map<std::string, short> prefix_operators_priority {
-    { "!", 5 }, { "-", 5 }, { "+", 5 }, { pointer_dereference_operator, 7 }, { address_operator, 7 }
+    { "!", 5 }, { "-", 5 }, { "+", 5 }, { "++", 5 }, { "--", 5 },
+    { pointer_dereference_operator, 7 }, { address_operator, 7 }
 };
 
 inline const std::map<std::string, Token::Type> keywords {

@@ -1,6 +1,7 @@
 
 #pragma once
 #include "language/typesystem.hpp"
+#include "language/syntax.hpp"
 #include <vector>
 #include <string>
 
@@ -36,9 +37,13 @@ class Expression : public Polymorph<ExpressionBody> {
         using Polymorph<ExpressionBody>::get;
         using Polymorph<ExpressionBody>::Polymorph;
 
-        [[nodiscard]] bool is_wrapped_in_in_parenthesis() const { return wrapped_in_parenthesis; }
         void wrap_in_parenthesis() { wrapped_in_parenthesis = true; }
+        [[nodiscard]] bool is_wrapped_in_in_parenthesis() const { return wrapped_in_parenthesis; }
         [[nodiscard]] ExpressionBody::Kind expression_kind() const;
+
+        const DebugInformationsAwareEntity& as_debug_informations_aware_entity() const {
+            return ptr->as_debug_informations_aware_entity();
+        }
 
     private:
         bool wrapped_in_parenthesis = false;

@@ -6,6 +6,7 @@
 struct TypeDefinitionsRegister;
 struct GenericSubstitutionRuleSet;
 struct TypeSignature;
+struct Expression;
 
 void assert_get_operation_is_possible(
     const char* wanted_type, 

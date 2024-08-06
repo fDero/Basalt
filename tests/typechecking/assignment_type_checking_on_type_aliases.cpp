@@ -50,7 +50,7 @@ ProjectFileStructure single_file_project_with_aliasedint_number_list_pair_aliase
     }
 });
 
-TEST(Preprocessor, Int_Is_Mutually_Compatible_With_AliasedInt) {
+TEST(TypeChecking, Int_Is_Mutually_Compatible_With_AliasedInt) {
     TypeDefinitionsRegister type_register(single_file_project_with_aliasedint_number_list_pair_aliasedpair_sameas_defs);
     AssignmentTypeChecker type_checker(type_register, single_file_project_with_aliasedint_number_list_pair_aliasedpair_sameas_defs);
     TypeSignature aliased_int = CustomType { Token { "AliasedInt", "main.basalt", 1, 1, 1, Token::Type::type }, {} };
@@ -60,7 +60,7 @@ TEST(Preprocessor, Int_Is_Mutually_Compatible_With_AliasedInt) {
     EXPECT_TRUE(int_is_compatible_with_aliased_int);
 }
 
-TEST(Preprocessor, Int_Is_Mutually_Compatible_With_Generic_Alias_Instantiated_With_Int) {
+TEST(TypeChecking, Int_Is_Mutually_Compatible_With_Generic_Alias_Instantiated_With_Int) {
     TypeDefinitionsRegister type_register(single_file_project_with_aliasedint_number_list_pair_aliasedpair_sameas_defs);
     AssignmentTypeChecker type_checker(type_register, single_file_project_with_aliasedint_number_list_pair_aliasedpair_sameas_defs);
     TypeSignature aliased_int = CustomType { Token { "SameAs", "main.basalt", 1, 1, 1, Token::Type::type }, { TypeSignatureFactory::Int } };
@@ -70,7 +70,7 @@ TEST(Preprocessor, Int_Is_Mutually_Compatible_With_Generic_Alias_Instantiated_Wi
     EXPECT_TRUE(int_is_compatible_with_aliased_int);
 }
 
-TEST(Preprocessor, Pair_Of_Int_Int_Is_Compatible_With_Pair_Of_One_Generic_T_Via_Alias) {
+TEST(TypeChecking, Pair_Of_Int_Int_Is_Compatible_With_Pair_Of_One_Generic_T_Via_Alias) {
     TypeDefinitionsRegister type_register(single_file_project_with_aliasedint_number_list_pair_aliasedpair_sameas_defs);
     AssignmentTypeChecker type_checker(type_register, single_file_project_with_aliasedint_number_list_pair_aliasedpair_sameas_defs);
     TypeSignature pair_int_int = CustomType { 
@@ -92,7 +92,7 @@ TEST(Preprocessor, Pair_Of_Int_Int_Is_Compatible_With_Pair_Of_One_Generic_T_Via_
     EXPECT_EQ(type_checker.get_generic_substitution_rules()->back().replacement.get<PrimitiveType>().type_name, "Int");
 }
 
-TEST(Preprocessor, Pair_Of_Int_Is_Compatible_With_Pair_Of_T_U) {
+TEST(TypeChecking, Pair_Of_Int_Is_Compatible_With_Pair_Of_T_U) {
     TypeDefinitionsRegister type_register(single_file_project_with_aliasedint_number_list_pair_aliasedpair_sameas_defs);
     AssignmentTypeChecker type_checker(type_register, single_file_project_with_aliasedint_number_list_pair_aliasedpair_sameas_defs);
     TypeSignature pair_T_U = CustomType { 
@@ -117,7 +117,7 @@ TEST(Preprocessor, Pair_Of_Int_Is_Compatible_With_Pair_Of_T_U) {
     EXPECT_EQ(type_checker.get_generic_substitution_rules()->back().replacement.get<PrimitiveType>().type_name, "Int");
 }
 
-TEST(Preprocessor, List_Of_Aliased_Ints_And_List_Of_Number_Are_Compatible_With_List_Of_T) {
+TEST(TypeChecking, List_Of_Aliased_Ints_And_List_Of_Number_Are_Compatible_With_List_Of_T) {
     TypeDefinitionsRegister type_register(single_file_project_with_aliasedint_number_list_pair_aliasedpair_sameas_defs);
     AssignmentTypeChecker type_checker(type_register, single_file_project_with_aliasedint_number_list_pair_aliasedpair_sameas_defs);
     TypeSignature aliased_int = CustomType { Token { "AliasedInt", "main.basalt", 1, 1, 1, Token::Type::type }, {} };
@@ -134,7 +134,7 @@ TEST(Preprocessor, List_Of_Aliased_Ints_And_List_Of_Number_Are_Compatible_With_L
     ASSERT_EQ(type_checker.get_generic_substitution_rules()->size(), 2);
 }
 
-TEST(Preprocessor, List_Of_Aliased_Ints_And_List_Of_Number_Are_Non_Mutually_Compatible_With_Each_Other) {
+TEST(TypeChecking, List_Of_Aliased_Ints_And_List_Of_Number_Are_Non_Mutually_Compatible_With_Each_Other) {
     TypeDefinitionsRegister type_register(single_file_project_with_aliasedint_number_list_pair_aliasedpair_sameas_defs);
     AssignmentTypeChecker type_checker(type_register, single_file_project_with_aliasedint_number_list_pair_aliasedpair_sameas_defs);
     TypeSignature aliased_int = CustomType { Token { "AliasedInt", "main.basalt", 1, 1, 1, Token::Type::type }, {} };

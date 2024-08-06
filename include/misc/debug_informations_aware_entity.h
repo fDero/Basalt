@@ -8,6 +8,8 @@ struct DebugInformationsAwareEntity {
     size_t tok_number;
     size_t char_pos;
 
+    virtual ~DebugInformationsAwareEntity() = default;
+
     DebugInformationsAwareEntity(
         const std::string& filename,
         size_t line_number,
@@ -25,4 +27,6 @@ struct DebugInformationsAwareEntity {
 
     DebugInformationsAwareEntity(DebugInformationsAwareEntity&& other) = default;
     DebugInformationsAwareEntity& operator=(DebugInformationsAwareEntity&& other) = default;
+
+    const DebugInformationsAwareEntity& as_debug_informations_aware_entity() const { return *this; }
 };

@@ -38,3 +38,38 @@ class AssignmentTypeChecker {
 
         bool type_parameters_assignment_validation(const CustomType &source, const CustomType &dest);
 };
+
+class ExpressionTypeDeducer {
+
+    public:
+        ExpressionTypeDeducer(
+            TypeDefinitionsRegister& program_representation,
+            OverloadingResolutionEngine& overloading_resolution_engine,
+            ProjectFileStructure& project_file_structure,
+            ScopeContext& scope_context
+        );
+
+        [[nodiscard]] TypeSignature deduce_expression_type(const Expression& expression);
+        [[nodiscard]] TypeSignature deduce_primtive_type(const std::string& type_name, const Expression& expression);
+        [[nodiscard]] TypeSignature deduce_type_from_identifier(const Expression& expression);
+        [[nodiscard]] TypeSignature deduce_type_from_function_call(const Expression& expression);
+        [[nodiscard]] TypeSignature deduce_type_from_type_operator(const Expression& expression);
+        [[nodiscard]] TypeSignature deduce_type_from_binary_operator(const Expression& expression);
+        [[nodiscard]] TypeSignature deduce_type_from_unary_operator(const Expression& expression);
+
+        [[nodiscard]] TypeSignature deduce_address_operator_type(const UnaryOperator& unary_op);
+        [[nodiscard]] TypeSignature deduce_pointer_dereference_operator_type(const UnaryOperator& unary_op);
+        [[nodiscard]] TypeSignature deduce_boolean_not_operator_type(const UnaryOperator& unary_op);
+        [[nodiscard]] TypeSignature deduce_math_prefix_operator_type(const UnaryOperator& unary_op);
+
+        [[nodiscard]] TypeSignature deduce_type_from_comparison_operator(const BinaryOperator& unary_op);
+        [[nodiscard]] TypeSignature deduce_type_from_square_brackets_access_operator(const BinaryOperator& unary_op);
+        [[nodiscard]] TypeSignature deduce_type_from_dot_member_access_operator(const BinaryOperator& unary_op);
+        [[nodiscard]] TypeSignature deduce_type_from_math_binary_operator(const BinaryOperator& unary_op);        
+
+    private:
+        TypeDefinitionsRegister& type_definitions_register;
+        OverloadingResolutionEngine& overloading_resolution_engine;
+        ProjectFileStructure& project_file_structure;
+        ScopeContext& scope_context;
+};

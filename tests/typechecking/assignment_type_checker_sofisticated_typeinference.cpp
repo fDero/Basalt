@@ -8,7 +8,7 @@
 #include "../tests_utilities/struct_definition_factory.hpp"
 #include "../tests_utilities/typesignature_factory.hpp"
 
-TEST(Preprocessor, Type_Inference_Algorithm_Finds_SuperType_Of_Int_And_Float_As_Their_Inline_Union) {
+TEST(TypeChecking, Type_Inference_Algorithm_Finds_SuperType_Of_Int_And_Float_As_Their_Inline_Union) {
     ProjectFileStructure empty_project;
     TypeDefinitionsRegister type_register(empty_project);
     AssignmentTypeChecker type_checker(type_register, empty_project);
@@ -19,7 +19,7 @@ TEST(Preprocessor, Type_Inference_Algorithm_Finds_SuperType_Of_Int_And_Float_As_
     EXPECT_EQ(type_checker.get_generic_substitution_rules()->back().replacement.get<InlineUnion>().alternatives.size(), 2);
 }
 
-TEST(Preprocessor, Type_Inference_Algorithm_Finds_SuperType_Of_Int_Float_And_Float_As_Their_Inline_Union) {
+TEST(TypeChecking, Type_Inference_Algorithm_Finds_SuperType_Of_Int_Float_And_Float_As_Their_Inline_Union) {
     ProjectFileStructure empty_project;
     TypeDefinitionsRegister type_register(empty_project);
     AssignmentTypeChecker type_checker(type_register, empty_project);
@@ -31,7 +31,7 @@ TEST(Preprocessor, Type_Inference_Algorithm_Finds_SuperType_Of_Int_Float_And_Flo
     EXPECT_EQ(type_checker.get_generic_substitution_rules()->back().replacement.get<InlineUnion>().alternatives.size(), 3);
 }
 
-TEST(Preprocessor, Type_Inference_Algorithm_Finds_SuperType_Of_IntOrFloat_And_String_As_IntOrFloatOrString) {
+TEST(TypeChecking, Type_Inference_Algorithm_Finds_SuperType_Of_IntOrFloat_And_String_As_IntOrFloatOrString) {
     ProjectFileStructure empty_project;
     TypeDefinitionsRegister type_register(empty_project);
     AssignmentTypeChecker type_checker(type_register, empty_project);
