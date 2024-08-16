@@ -16,6 +16,11 @@ FunctionOverloadsRegister::FunctionOverloadsRegister(ProjectFileStructure& proje
     }
 }
 
+const std::unordered_map<std::string, FunctionDefinition::OverloadSet>& 
+FunctionOverloadsRegister::get_all_function_overload_sets() const {
+    return function_definitions_overload_sets;
+}
+
 void FunctionOverloadsRegister::store_function_definition(
     const FunctionDefinition& func_def,
     const std::string& package_name

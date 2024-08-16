@@ -40,34 +40,36 @@
     return deduce_primtive_type("Bool", expression);
 }
 
-[[nodiscard]] TypeSignature ExpressionTypeDeducer::deduce_type_from_square_brackets_access_operator(const BinaryOperator& expression) {
-    const TypeSignature& left_operand_type = deduce_expression_type(expression.left_operand);
-    const TypeSignature& right_operand_type = deduce_expression_type(expression.right_operand);
+[[nodiscard]] TypeSignature ExpressionTypeDeducer::deduce_type_from_square_brackets_access(const Expression& square_brackets_access_expr) {
+    assert_expression_is<SquareBracketsAccess>(square_brackets_access_expr);
+    const SquareBracketsAccess& square_brackets_access = square_brackets_access_expr.get<SquareBracketsAccess>();
+    const TypeSignature& left_operand_type = deduce_expression_type(square_brackets_access.storage);
+    const TypeSignature& right_operand_type = deduce_expression_type(square_brackets_access.index);
     ensure_typesignature_is_int(right_operand_type);
     switch(left_operand_type.typesiganture_kind()) {
         case TypeSignatureBody::Kind::array_type: return left_operand_type.get<ArrayType>().stored_type;
         case TypeSignatureBody::Kind::slice_type: return left_operand_type.get<SliceType>().stored_type;
-        default: throw_cannot_access_square_brackets_on_type(left_operand_type, expression);
+        default: throw_cannot_access_square_brackets_on_type(left_operand_type, square_brackets_access);
     }
 }
 
-[[nodiscard]] TypeSignature ExpressionTypeDeducer::deduce_type_from_dot_member_access_operator(const BinaryOperator& expression) {
-    TypeSignature left_operand_type = deduce_expression_type(expression.left_operand);
+[[nodiscard]] TypeSignature ExpressionTypeDeducer::deduce_type_from_dot_member_access(const Expression& dot_member_access_expr) {
+    assert_expression_is<DotMemberAccess>(dot_member_access_expr);
+    const DotMemberAccess& dot_member_access = dot_member_access_expr.get<DotMemberAccess>();
+    TypeSignature left_operand_type = deduce_expression_type(dot_member_access.struct_value);
     left_operand_type = type_definitions_register.unalias_type(left_operand_type);
     ensure_typesignature_is<CustomType>(left_operand_type);
     const CustomType& custom_type = left_operand_type.get<CustomType>();
     TypeDefinition type_definition = type_definitions_register.retrieve_type_definition(custom_type);
     ensure_type_definition_is<StructDefinition>(type_definition);
     const StructDefinition& struct_type_definition = type_definition.get<StructDefinition>();
-    ensure_expression_is<Identifier>(expression.right_operand);
-    const Identifier& member_identifier = expression.right_operand.get<Identifier>();
-    const std::string& member_name = member_identifier.name;
+    const std::string& member_name = dot_member_access.member_name;
     for (const auto& member : struct_type_definition.fields) {
         if (member.field_name == member_name) {
             return member.field_type;
         }
     }
-    throw_no_such_struct_field(member_name, struct_type_definition, expression);
+    throw_no_such_struct_field(member_name, struct_type_definition, dot_member_access);
 }
 
 [[nodiscard]] TypeSignature ExpressionTypeDeducer::deduce_type_from_math_binary_operator(const BinaryOperator& expression) {

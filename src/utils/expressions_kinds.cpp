@@ -5,6 +5,14 @@
     return ptr->expression_kind();
 }
 
+[[nodiscard]] ExpressionBody::Kind SquareBracketsAccess::expression_kind() const {
+    return ExpressionBody::Kind::square_bracket_access;
+}
+
+[[nodiscard]] ExpressionBody::Kind DotMemberAccess::expression_kind() const {
+    return ExpressionBody::Kind::dot_member_access;
+}
+
 [[nodiscard]] ExpressionBody::Kind ArrayLiteral::expression_kind() const {
     return ExpressionBody::Kind::array_literal;
 }

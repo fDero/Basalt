@@ -70,7 +70,9 @@ void Tokenizer::ignore_discardable_characters() {
         tok_number = char_pos = 0;
         while (char_pos < current_line.size()) {
             std::optional<Token> token = extract();
-            if (token.has_value()) tokens.push_back(*token);
+            if (token.has_value()) {
+                tokens.push_back(*token);
+            }
             tok_number += (token.has_value() && token->type != Token::Type::multiline_comment);
             char_pos += ( (token.has_value())? token->sourcetext.size() : 0 );
             ignore_discardable_characters();

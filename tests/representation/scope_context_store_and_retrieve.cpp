@@ -43,7 +43,7 @@ ConstDeclaration c_const_of_type_int = ConstDeclaration(
 );
 
 TEST(Representation, Scope_Context_Store_A_Bunch_Of_Local_Objects) {
-    ScopeContext scope_context;
+    ScopeContext scope_context(ScopeContext::ScopeKind::function_scope);
     scope_context.store_local_variable(x_variable_of_type_int);
     scope_context.store_local_variable(y_variable_of_type_int);
     scope_context.store_local_variable(z_variable_of_type_int);
@@ -56,7 +56,7 @@ TEST(Representation, Scope_Context_Store_A_Bunch_Of_Local_Objects) {
 }
 
 TEST(Representation, Scope_Context_Store_A_Bunch_Of_Local_Objects_And_Check_Theri_Types) {
-    ScopeContext scope_context;
+    ScopeContext scope_context(ScopeContext::ScopeKind::function_scope);
     scope_context.store_local_variable(x_variable_of_type_int);
     scope_context.store_local_variable(y_variable_of_type_int);
     EXPECT_TRUE(is_int(scope_context.get_local_object_type("x")));
@@ -64,7 +64,7 @@ TEST(Representation, Scope_Context_Store_A_Bunch_Of_Local_Objects_And_Check_Ther
 }
 
 TEST(Representation, Scope_Context_Store_A_Bunch_Of_Local_Objects_And_Check_Their_Types_One_Is_Constant) {
-    ScopeContext scope_context;
+    ScopeContext scope_context(ScopeContext::ScopeKind::function_scope);
     scope_context.store_local_variable(x_variable_of_type_int);
     scope_context.store_local_constant(a_const_of_type_int);
     EXPECT_TRUE(is_int(scope_context.get_local_object_type("a")));
@@ -72,7 +72,7 @@ TEST(Representation, Scope_Context_Store_A_Bunch_Of_Local_Objects_And_Check_Thei
 }
 
 TEST(Representation, Scope_Context_Contants_Are_Not_Mutable) {
-    ScopeContext scope_context;
+    ScopeContext scope_context(ScopeContext::ScopeKind::function_scope);
     scope_context.store_local_constant(a_const_of_type_int);
     EXPECT_TRUE(is_int(scope_context.get_local_object_type("a")));
     EXPECT_ANY_THROW({

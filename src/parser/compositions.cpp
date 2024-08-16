@@ -5,6 +5,17 @@
 #include "toolchain/parser.hpp"
 #include "language/expressions.hpp"
 
+[[nodiscard]] Expression Parser::compose_dot_member_access(const Expression& left_operand) {
+    assert_token_matches(source_tokens, iterator, ".");
+    const Token& operator_token = *(iterator++);
+    assert_token_is_text(source_tokens, iterator);
+    assert_identifier_is_properly_formatted(iterator);
+    const std::string& member_name = iterator->sourcetext;
+    std::advance(iterator, 1);
+    DotMemberAccess dot_member_access { operator_token, left_operand, member_name };
+    return rotate_to_match_dot_member_access_priority(dot_member_access);
+}
+
 [[nodiscard]] Expression Parser::compose_binary_operator(const Expression& left_operand) {
     assert_token_is_binary_operator(iterator);
     const Token& operator_token = *(iterator++);
@@ -17,9 +28,8 @@
     assert_token_matches(source_tokens, iterator, "[");
     const Token& open_bracket_token = *iterator;
     Expression index_expression = parse_expression_wrapped_in_square_brackets();
-    BinaryOperator binary_operator{ open_bracket_token, left_operand, index_expression };
-    binary_operator.operator_text = square_brackets_access;
-    return rotate_binary_operator_to_match_operators_priority(binary_operator);
+    SquareBracketsAccess square_brackets_access { open_bracket_token, left_operand, index_expression };
+    return rotate_to_match_square_brackets_access_priority(square_brackets_access);
 }
 
 [[nodiscard]] Expression Parser::compose_type_operator(const Expression& expression) {
@@ -28,5 +38,5 @@
     std::advance(iterator, 1);
     TypeSignature typesignature = parse_typesignature();
     TypeOperator is_operator { operator_token, expression, typesignature };
-    return rotate_to_match_is_operator_priority(is_operator);
+    return rotate_to_match_type_operator_priority(is_operator);
 }

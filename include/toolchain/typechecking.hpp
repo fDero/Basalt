@@ -63,8 +63,8 @@ class ExpressionTypeDeducer {
         [[nodiscard]] TypeSignature deduce_math_prefix_operator_type(const UnaryOperator& unary_op);
 
         [[nodiscard]] TypeSignature deduce_type_from_comparison_operator(const BinaryOperator& unary_op);
-        [[nodiscard]] TypeSignature deduce_type_from_square_brackets_access_operator(const BinaryOperator& unary_op);
-        [[nodiscard]] TypeSignature deduce_type_from_dot_member_access_operator(const BinaryOperator& unary_op);
+        [[nodiscard]] TypeSignature deduce_type_from_square_brackets_access(const Expression& square_brackets_access);
+        [[nodiscard]] TypeSignature deduce_type_from_dot_member_access(const Expression& dot_member_access);
         [[nodiscard]] TypeSignature deduce_type_from_math_binary_operator(const BinaryOperator& unary_op);        
 
     private:

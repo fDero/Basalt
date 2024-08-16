@@ -2,6 +2,27 @@
 #include "toolchain/representation.hpp"
 #include "errors/preprocessing_errors.hpp"
 
+ScopeContext::ScopeContext(const ScopeKind& scope_kind) 
+    : scope_kind(scope_kind) { }
+
+ScopeContext::ScopeKind ScopeContext::get_scope_kind() const {
+    return scope_kind;
+}
+
+ScopeContext::ScopeContext(const std::vector<FunctionDefinition::Argument>& arguments) {
+    scope_kind = ScopeKind::function_scope;
+    for (const FunctionDefinition::Argument& argument : arguments) {
+        local_objects.push_back({
+            .identifier = argument.arg_name,
+            .type_signature = argument.arg_type,
+            .is_const = false,
+            .is_arg = true,
+            .gets_modified = false,
+            .gets_accessed = false
+        });
+    }
+}
+
 void ScopeContext::store_local_variable(const VariableDeclaration& var_declaration) {
     bool search_outcome = contains(var_declaration.identifier_name);
     ensure_identifier_not_ambiguous_in_given_scope(var_declaration.identifier_name, search_outcome);
@@ -9,6 +30,7 @@ void ScopeContext::store_local_variable(const VariableDeclaration& var_declarati
         .identifier = var_declaration.identifier_name,
         .type_signature = var_declaration.typesignature,
         .is_const = false,
+        .is_arg = false,
         .gets_modified = false,
         .gets_accessed = false
     });
@@ -21,6 +43,7 @@ void ScopeContext::store_local_constant(const ConstDeclaration& const_declaratio
         .identifier = const_declaration.identifier_name,
         .type_signature = const_declaration.typesignature,
         .is_const = true,
+        .is_arg = false,
         .gets_modified = false,
         .gets_accessed = false
     });
@@ -60,8 +83,8 @@ TypeSignature& ScopeContext::get_local_mutable_object_type(const std::string& id
     return parent_scope->get_local_object_type(identifier);
 }
 
-ScopeContext ScopeContext::create_nested_scope() {
-    ScopeContext nested_scope;
+ScopeContext ScopeContext::create_nested_scope(const ScopeKind& scope_kind) {
+    ScopeContext nested_scope(scope_kind);
     nested_scope.parent_scope = this;
     return nested_scope;
 }

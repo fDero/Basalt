@@ -7,6 +7,28 @@
 #include <unordered_map>
 #include <unordered_set>
 
+inline void ensure_assignment_is_valid(
+    bool assignment_is_valid,
+    const TypeSignature& dest_type,
+    const Expression& dest_expression,
+    const TypeSignature& source_type,
+    const Expression& source_expression
+) {
+    if (!assignment_is_valid) {
+        throw std::runtime_error("assignment is invalid");
+    }
+}
+
+inline void ensure_in_loop_scope(
+    const Statement& statement,
+    const ScopeContext& scope_context
+) {
+    if (scope_context.get_scope_kind() != ScopeContext::ScopeKind::loop_scope) {
+        throw std::runtime_error("statement is not in loop scope");
+    }
+}
+
+
 void ensure_no_multiple_definition_of_the_same_type(
     const std::pair<std::unordered_map<std::string, TypeDefinition>::iterator, bool>& 
         type_definition_insertion_outcome
@@ -90,14 +112,16 @@ void ensure_typesignature_is_boolean(const TypeSignature& type_signature);
 
 [[noreturn]] void throw_cannot_access_square_brackets_on_type(
     const TypeSignature& left_operand_type,
-    const BinaryOperator& expression
+    const SquareBracketsAccess& expression
 );
 
 [[noreturn]] void throw_no_such_struct_field(
     const std::string& member_name,
     const StructDefinition& struct_type_definition,
-    const BinaryOperator& expression
+    const DotMemberAccess& expression
 );
+
+[[noreturn]] void throw_bad_assignment_target(const Expression& expression);
 
 void ensure_typesignature_is_int(const TypeSignature& type_signature);
 
@@ -116,3 +140,21 @@ void assert_number_of_arguments_match(
     FunctionDefinition::Ref function_definition,
     const std::vector<TypeSignature>& arg_types
 );
+
+inline void ensure_return_statement_is_congruent_to_function_definition(
+    bool return_value_is_expected,
+    bool return_value_is_provided
+) {
+    if (return_value_is_expected != return_value_is_provided) {
+        throw std::runtime_error("return statement is not congruent to function definition");
+    }
+}
+
+inline void ensure_return_value_type_is_congruent_to_function_definition(
+    bool assignment_is_valid,
+    const TypeSignature& return_value_type,
+    const FunctionDefinition& function_definition,
+    const Statement& return_statement
+) {
+
+}

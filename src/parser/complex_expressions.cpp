@@ -84,10 +84,11 @@
 [[nodiscard]] Expression Parser::parse_expression() {
     Expression expression = parse_terminal_expression();
     while(!expression_ended()) {
-        if (is_binary_operator()) expression = compose_binary_operator(expression);
-        else if (is_square_bracket()) expression = compose_square_bracket_access(expression);
-        else if (is_type_operator()) expression = compose_type_operator(expression);
-        else throw_expression_expected_got_unrecognized(iterator);
+        if (is_dot_member_access())    expression = compose_dot_member_access(expression);
+        else if (is_binary_operator()) expression = compose_binary_operator(expression);
+        else if (is_square_bracket())  expression = compose_square_bracket_access(expression);
+        else if (is_type_operator())   expression = compose_type_operator(expression);
+        else                           throw_expression_expected_got_unrecognized(iterator);
     }
     return expression;
 }
@@ -104,6 +105,11 @@
     auto binary_operator_search_outcome =  infix_operators_priority.find(iterator->sourcetext);
     auto not_found = infix_operators_priority.end();
     return (binary_operator_search_outcome != not_found);
+}
+
+[[nodiscard]] bool Parser::is_dot_member_access() {
+    if (iterator == source_tokens.end()) return false;
+    return (iterator->sourcetext == ".");
 }
 
 [[nodiscard]] bool Parser::is_square_bracket() {

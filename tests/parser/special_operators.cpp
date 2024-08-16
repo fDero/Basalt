@@ -15,17 +15,12 @@ TEST(Parsing, Dot_Member_Access_nested_with_multiplication) {
     Parser parser = Parser({ "inline-tests.basalt", tokens });
     Expression expr = parser.parse_expression();
     ASSERT_TRUE(expr.is<BinaryOperator>());
-    ASSERT_TRUE(expr.get<BinaryOperator>().right_operand.is<BinaryOperator>());
-    BinaryOperator parent = expr.get<BinaryOperator>();
-    BinaryOperator rxop = parent.right_operand.get<BinaryOperator>();
-    ASSERT_TRUE(parent.left_operand.is<Identifier>());
-    ASSERT_TRUE(rxop.left_operand.is<Identifier>());
-    ASSERT_TRUE(rxop.right_operand.is<Identifier>());
-    EXPECT_EQ(parent.operator_text, "*");
-    EXPECT_EQ(rxop.operator_text, ".");
-    EXPECT_EQ(parent.left_operand.get<Identifier>().name, "a");
-    EXPECT_EQ(rxop.left_operand.get<Identifier>().name, "b");
-    EXPECT_EQ(rxop.right_operand.get<Identifier>().name, "c");
+    const BinaryOperator& binary_operator = expr.get<BinaryOperator>();
+    EXPECT_TRUE(binary_operator.left_operand.is<Identifier>());
+    ASSERT_TRUE(binary_operator.right_operand.is<DotMemberAccess>());
+    const DotMemberAccess& dot_member_access = binary_operator.right_operand.get<DotMemberAccess>();
+    EXPECT_TRUE(dot_member_access.struct_value.is<Identifier>());
+    EXPECT_EQ(dot_member_access.member_name, "c");
 }
 
 TEST(Parsing, Dot_Member_Access_Array_Square_Brackets_Access_And_Pointer_Dereference_non_trivial_composition) {
@@ -43,17 +38,17 @@ TEST(Parsing, Dot_Member_Access_Array_Square_Brackets_Access_And_Pointer_Derefer
     Parser parser = Parser({ "inline-tests.basalt", tokens });
     Expression expr = parser.parse_expression();
     ASSERT_TRUE(expr.is<BinaryOperator>());
-    ASSERT_TRUE(expr.get<BinaryOperator>().right_operand.is<BinaryOperator>());
-    ASSERT_TRUE(expr.get<BinaryOperator>().left_operand.is<UnaryOperator>());
-    BinaryOperator parent = expr.get<BinaryOperator>();
-    BinaryOperator rightop = parent.right_operand.get<BinaryOperator>();
-    UnaryOperator leftop = parent.left_operand.get<UnaryOperator>();
-    ASSERT_TRUE(rightop.left_operand.is<BinaryOperator>());
-    BinaryOperator dotop = rightop.left_operand.get<BinaryOperator>();
-    EXPECT_EQ(parent.operator_text, "*");
-    EXPECT_EQ(leftop.operator_text, "#");
-    EXPECT_EQ(rightop.operator_text, "[square-brackets-access]");
-    EXPECT_EQ(dotop.operator_text, ".");
+    const BinaryOperator& binary_operator = expr.get<BinaryOperator>();
+    ASSERT_TRUE(binary_operator.left_operand.is<UnaryOperator>());
+    const UnaryOperator& unary_operator = binary_operator.left_operand.get<UnaryOperator>();
+    EXPECT_TRUE(unary_operator.operand.is<Identifier>());
+    EXPECT_EQ(unary_operator.operator_text, "#");
+    ASSERT_TRUE(binary_operator.right_operand.is<SquareBracketsAccess>());
+    const SquareBracketsAccess& square_brackets_access = binary_operator.right_operand.get<SquareBracketsAccess>();
+    EXPECT_TRUE(square_brackets_access.storage.is<DotMemberAccess>());
+    const DotMemberAccess& dot_member_access = square_brackets_access.storage.get<DotMemberAccess>();
+    EXPECT_TRUE(dot_member_access.struct_value.is<Identifier>());
+    EXPECT_EQ(dot_member_access.member_name, "c");
 }
 
 TEST(Parsing, Dot_Member_Access_Array_Square_Brackets_Access_And_Pointer_Dereference_trivial_composition) {
@@ -69,12 +64,11 @@ TEST(Parsing, Dot_Member_Access_Array_Square_Brackets_Access_And_Pointer_Derefer
     Parser parser = Parser({ "inline-tests.basalt", tokens });
     Expression expr = parser.parse_expression();
     ASSERT_TRUE(expr.is<UnaryOperator>());
-    ASSERT_TRUE(expr.get<UnaryOperator>().operand.is<BinaryOperator>());
-    ASSERT_TRUE(expr.get<UnaryOperator>().operand.get<BinaryOperator>().left_operand.is<BinaryOperator>());
-    UnaryOperator parent = expr.get<UnaryOperator>();
-    BinaryOperator sqop = parent.operand.get<BinaryOperator>();
-    BinaryOperator dotop = sqop.left_operand.get<BinaryOperator>();
-    EXPECT_EQ(parent.operator_text, "#");
-    EXPECT_EQ(sqop.operator_text, "[square-brackets-access]");
-    EXPECT_EQ(dotop.operator_text, ".");
+    const UnaryOperator& unary_operator = expr.get<UnaryOperator>();
+    EXPECT_TRUE(unary_operator.operand.is<SquareBracketsAccess>());
+    const SquareBracketsAccess& square_brackets_access = unary_operator.operand.get<SquareBracketsAccess>();
+    EXPECT_TRUE(square_brackets_access.storage.is<DotMemberAccess>());
+    const DotMemberAccess& dot_member_access = square_brackets_access.storage.get<DotMemberAccess>();
+    EXPECT_TRUE(dot_member_access.struct_value.is<Identifier>());
+    EXPECT_EQ(dot_member_access.member_name, "b");
 }

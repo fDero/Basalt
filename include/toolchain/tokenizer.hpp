@@ -23,6 +23,7 @@ struct Token : public DebugInformationsAwareEntity {
         is_keyword, as_keyword
     };
 
+    using DebugInformationsAwareEntity::filename;
     using DebugInformationsAwareEntity::line_number;
     using DebugInformationsAwareEntity::tok_number;
     using DebugInformationsAwareEntity::char_pos;
@@ -38,6 +39,8 @@ struct Token : public DebugInformationsAwareEntity {
         size_t in_char_pos,
         Type type
     );
+
+    virtual ~Token() = default;
 };
 
 struct TokenizedFile {

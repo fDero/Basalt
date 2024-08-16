@@ -14,7 +14,7 @@
 
 [[noreturn]] void throw_cannot_access_square_brackets_on_type(
     const TypeSignature& left_operand_type,
-    const BinaryOperator& expression
+    const SquareBracketsAccess& expression
 ) {
     throw InternalError("cannot access square brackets on type");
 }
@@ -22,7 +22,13 @@
 [[noreturn]] void throw_no_such_struct_field(
     const std::string& member_name,
     const StructDefinition& struct_type_definition,
-    const BinaryOperator& expression
+    const DotMemberAccess& expression
 ) {
     throw InternalError("no such struct field");
+}
+
+[[noreturn]] void throw_bad_assignment_target(
+    const Expression& expression
+) {
+    throw InternalError("bad assignment target");
 }

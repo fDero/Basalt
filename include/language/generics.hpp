@@ -59,6 +59,8 @@ class GenericsInstantiationEngine {
         [[nodiscard]] UnaryOperator instantiate_generic_unary_operator(const UnaryOperator& expression) const;
         [[nodiscard]] ArrayLiteral instantiate_generic_array_literal(const ArrayLiteral& expression) const;
         [[nodiscard]] TypeOperator instantiate_generic_type_operator(const TypeOperator& expression) const;
+        [[nodiscard]] DotMemberAccess instantiate_generic_dot_member_access(const DotMemberAccess& expression) const;
+        [[nodiscard]] SquareBracketsAccess instantiate_generic_square_bracket_access(const SquareBracketsAccess& expression) const;
 
         [[nodiscard]] TypeDefinition instantiate_generic_typedefinition(const TypeDefinition& type_signature) const;
         [[nodiscard]] UnionDefinition instantiate_generic_union(const UnionDefinition& type_signature) const;

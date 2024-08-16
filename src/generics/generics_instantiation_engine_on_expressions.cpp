@@ -4,17 +4,19 @@
 
 Expression GenericsInstantiationEngine::instantiate_generic_expression(const Expression& expression) const {
     switch (expression.expression_kind()) {
-        case ExpressionBody::Kind::function_call:   return instantiate_generic_function_call(expression.get<FunctionCall>());
-        case ExpressionBody::Kind::binary_operator: return instantiate_generic_binary_operator(expression.get<BinaryOperator>());
-        case ExpressionBody::Kind::unary_operator:  return instantiate_generic_unary_operator(expression.get<UnaryOperator>());
-        case ExpressionBody::Kind::array_literal:   return instantiate_generic_array_literal(expression.get<ArrayLiteral>());
-        case ExpressionBody::Kind::type_operator:   return instantiate_generic_type_operator(expression.get<TypeOperator>());
-        case ExpressionBody::Kind::int_literal:     return expression;
-        case ExpressionBody::Kind::float_literal:   return expression;
-        case ExpressionBody::Kind::char_literal:    return expression;
-        case ExpressionBody::Kind::bool_literal:    return expression;
-        case ExpressionBody::Kind::string_literal:  return expression;
-        case ExpressionBody::Kind::identifier:      return expression;
+        case ExpressionBody::Kind::function_call:         return instantiate_generic_function_call(expression.get<FunctionCall>());
+        case ExpressionBody::Kind::binary_operator:       return instantiate_generic_binary_operator(expression.get<BinaryOperator>());
+        case ExpressionBody::Kind::unary_operator:        return instantiate_generic_unary_operator(expression.get<UnaryOperator>());
+        case ExpressionBody::Kind::array_literal:         return instantiate_generic_array_literal(expression.get<ArrayLiteral>());
+        case ExpressionBody::Kind::type_operator:         return instantiate_generic_type_operator(expression.get<TypeOperator>());
+        case ExpressionBody::Kind::dot_member_access:     return instantiate_generic_dot_member_access(expression.get<DotMemberAccess>());
+        case ExpressionBody::Kind::square_bracket_access: return instantiate_generic_square_bracket_access(expression.get<SquareBracketsAccess>());
+        case ExpressionBody::Kind::int_literal:           return expression;
+        case ExpressionBody::Kind::float_literal:         return expression;
+        case ExpressionBody::Kind::char_literal:          return expression;
+        case ExpressionBody::Kind::bool_literal:          return expression;
+        case ExpressionBody::Kind::string_literal:        return expression;
+        case ExpressionBody::Kind::identifier:            return expression;
     }
     assert_unreachable();
 }
@@ -58,4 +60,17 @@ TypeOperator GenericsInstantiationEngine::instantiate_generic_type_operator(cons
     instantiated_type_operator.expression = instantiate_generic_expression(expression.expression);
     instantiated_type_operator.typesignature = instantiate_generic_typesignature(expression.typesignature);
     return instantiated_type_operator;
+}
+
+DotMemberAccess GenericsInstantiationEngine::instantiate_generic_dot_member_access(const DotMemberAccess& expression) const {
+    DotMemberAccess instantiated_dot_member_access = expression;
+    instantiated_dot_member_access.struct_value = instantiate_generic_expression(expression.struct_value);
+    return instantiated_dot_member_access;
+}
+
+SquareBracketsAccess GenericsInstantiationEngine::instantiate_generic_square_bracket_access(const SquareBracketsAccess& expression) const {
+    SquareBracketsAccess instantiated_square_brackets_access = expression;
+    instantiated_square_brackets_access.storage = instantiate_generic_expression(expression.storage);
+    instantiated_square_brackets_access.index = instantiate_generic_expression(expression.index);
+    return instantiated_square_brackets_access;
 }

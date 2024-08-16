@@ -17,17 +17,19 @@ ExpressionTypeDeducer::ExpressionTypeDeducer(
 
 [[nodiscard]] TypeSignature ExpressionTypeDeducer::deduce_expression_type(const Expression& expression) {    
     switch (expression.expression_kind()) {
-        case ExpressionBody::Kind::bool_literal:    return deduce_primtive_type("Bool", expression);
-        case ExpressionBody::Kind::int_literal:     return deduce_primtive_type("Int", expression);
-        case ExpressionBody::Kind::float_literal:   return deduce_primtive_type("Float", expression);
-        case ExpressionBody::Kind::char_literal:    return deduce_primtive_type("Char", expression);
-        case ExpressionBody::Kind::string_literal:  return deduce_primtive_type("String", expression);
-        case ExpressionBody::Kind::identifier:      return deduce_type_from_identifier(expression);
-        case ExpressionBody::Kind::function_call:   return deduce_type_from_function_call(expression);
-        case ExpressionBody::Kind::array_literal:   return expression.get<ArrayLiteral>().stored_type;
-        case ExpressionBody::Kind::type_operator:   return deduce_type_from_type_operator(expression);
-        case ExpressionBody::Kind::binary_operator: return deduce_type_from_binary_operator(expression);
-        case ExpressionBody::Kind::unary_operator:  return deduce_type_from_unary_operator(expression);
+        case ExpressionBody::Kind::bool_literal:          return deduce_primtive_type("Bool", expression);
+        case ExpressionBody::Kind::int_literal:           return deduce_primtive_type("Int", expression);
+        case ExpressionBody::Kind::float_literal:         return deduce_primtive_type("Float", expression);
+        case ExpressionBody::Kind::char_literal:          return deduce_primtive_type("Char", expression);
+        case ExpressionBody::Kind::string_literal:        return deduce_primtive_type("String", expression);
+        case ExpressionBody::Kind::dot_member_access:     return deduce_type_from_dot_member_access(expression);
+        case ExpressionBody::Kind::square_bracket_access: return deduce_type_from_square_brackets_access(expression);
+        case ExpressionBody::Kind::identifier:            return deduce_type_from_identifier(expression);
+        case ExpressionBody::Kind::function_call:         return deduce_type_from_function_call(expression);
+        case ExpressionBody::Kind::array_literal:         return expression.get<ArrayLiteral>().stored_type;
+        case ExpressionBody::Kind::type_operator:         return deduce_type_from_type_operator(expression);
+        case ExpressionBody::Kind::binary_operator:       return deduce_type_from_binary_operator(expression);
+        case ExpressionBody::Kind::unary_operator:        return deduce_type_from_unary_operator(expression);
     }
     assert_unreachable();
 }
@@ -89,8 +91,6 @@ ExpressionTypeDeducer::ExpressionTypeDeducer(
         case OperatorKind::greater_then:              return deduce_type_from_comparison_operator(binary_operator);
         case OperatorKind::less_then_or_equal:        return deduce_type_from_comparison_operator(binary_operator);
         case OperatorKind::greater_then_or_equal:     return deduce_type_from_comparison_operator(binary_operator);
-        case OperatorKind::square_brackets_access_op: return deduce_type_from_square_brackets_access_operator(binary_operator);
-        case OperatorKind::dot_member_access:         return deduce_type_from_dot_member_access_operator(binary_operator);
         case OperatorKind::plus_operator:             return deduce_type_from_math_binary_operator(binary_operator);
         case OperatorKind::minus_operator:            return deduce_type_from_math_binary_operator(binary_operator);
         case OperatorKind::mul_operator:              return deduce_type_from_math_binary_operator(binary_operator);

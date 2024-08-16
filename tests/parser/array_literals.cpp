@@ -136,10 +136,10 @@ TEST(Parsing, Square_Bracket_Access_On_Array_Literal) {
     };
     Parser parser = Parser({ "inline-tests.basalt", tokens });
     Expression expr = parser.parse_expression();
-    ASSERT_TRUE(expr.is<BinaryOperator>());
-    ASSERT_EQ(expr.get<BinaryOperator>().operator_text, "[square-brackets-access]");
-    Expression array_literal = expr.get<BinaryOperator>().left_operand;
-    Expression index = expr.get<BinaryOperator>().right_operand;
+    ASSERT_TRUE(expr.is<SquareBracketsAccess>());
+    
+    Expression array_literal = expr.get<SquareBracketsAccess>().storage;
+    Expression index = expr.get<SquareBracketsAccess>().index;
 
     ASSERT_TRUE(array_literal.is<ArrayLiteral>());
     EXPECT_EQ(array_literal.get<ArrayLiteral>().array_length, -1);

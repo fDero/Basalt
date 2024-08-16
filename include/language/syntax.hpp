@@ -58,8 +58,6 @@ enum class OperatorKind {
     greater_then_or_equal,
     equal,
     not_equal,
-    dot_member_access,
-    square_brackets_access_op,
     address_op,
     pointer_dereference_op,
     boolean_not,
@@ -85,8 +83,6 @@ inline const std::map<std::string, OperatorKind> operator_kinds {
     { ">= ",                        OperatorKind::greater_then_or_equal     },
     { "==",                         OperatorKind::equal                     },
     { "!=",                         OperatorKind::not_equal                 },
-    { ".",                          OperatorKind::dot_member_access         },
-    { square_brackets_access,       OperatorKind::square_brackets_access_op },
     { address_operator,             OperatorKind::address_op                },
     { pointer_dereference_operator, OperatorKind::pointer_dereference_op    },
     { "!",                          OperatorKind::boolean_not               },
@@ -111,8 +107,7 @@ inline const std::set<std::string> type_operators {
 
 inline const std::map<std::string, short> infix_operators_priority {
     { "||", 1 }, { "&&", 1 }, { "^^", 1 }, { "<", 2 }, { ">", 2 }, { "<=", 2 }, { ">=", 2 }, 
-    { "!=", 2 }, { "==", 2 }, { "+", 3 }, { "-", 3 }, { "*", 4 }, { "/", 4 }, { "%", 4 }, 
-    { "^", 6 }, { square_brackets_access, 8}, { ".", 9 } 
+    { "!=", 2 }, { "==", 2 }, { "+", 3 }, { "-", 3 }, { "*", 4 }, { "/", 4 }, { "%", 4 }, { "^", 6 } 
 };
 
 inline const std::map<std::string, short> prefix_operators_priority {

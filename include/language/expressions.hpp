@@ -18,7 +18,9 @@ struct ExpressionBody : public DebugInformationsAwareEntity {
         float_literal,
         char_literal,
         int_literal,
-        bool_literal
+        bool_literal,
+        dot_member_access,
+        square_bracket_access
     };
 
     virtual Kind expression_kind() const = 0;
@@ -47,6 +49,38 @@ class Expression : public Polymorph<ExpressionBody> {
 
     private:
         bool wrapped_in_parenthesis = false;
+};
+
+struct DotMemberAccess : public ExpressionBody {
+
+    virtual ~DotMemberAccess() = default;
+
+    DotMemberAccess(
+        const DebugInformationsAwareEntity& debug_info,
+        const Expression& struct_value,
+        const std::string& member_name
+    );
+
+    [[nodiscard]] ExpressionBody::Kind expression_kind() const override;
+
+    Expression struct_value;
+    std::string member_name;
+};
+
+struct SquareBracketsAccess : public ExpressionBody {
+
+    virtual ~SquareBracketsAccess() = default;
+
+    SquareBracketsAccess(
+        const DebugInformationsAwareEntity& debug_info,
+        const Expression& storage,
+        const Expression& index
+    );
+
+    [[nodiscard]] ExpressionBody::Kind expression_kind() const override;
+
+    Expression storage;
+    Expression index;
 };
 
 struct ArrayLiteral : public ExpressionBody {

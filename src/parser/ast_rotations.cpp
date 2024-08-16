@@ -43,20 +43,58 @@
     };
 }
 
-[[nodiscard]] Expression Parser::rotate_to_match_is_operator_priority(const TypeOperator& type_operator) {
+[[nodiscard]] Expression Parser::rotate_to_match_type_operator_priority(const TypeOperator& type_operator) {
     if (type_operator.expression.is<BinaryOperator>()) {
         BinaryOperator rotated_expression = type_operator.expression.get<BinaryOperator>();
-        rotated_expression.right_operand = rotate_to_match_is_operator_priority (
+        rotated_expression.right_operand = rotate_to_match_type_operator_priority (
             TypeOperator { type_operator.as_token(), rotated_expression.right_operand, type_operator.typesignature }
         );
         return rotated_expression;
     }
     if (type_operator.expression.is<UnaryOperator>()) {
         UnaryOperator rotated_expression = type_operator.expression.get<UnaryOperator>();
-        rotated_expression.operand = rotate_to_match_is_operator_priority (
+        rotated_expression.operand = rotate_to_match_type_operator_priority (
             TypeOperator { type_operator.as_token(), rotated_expression.operand, type_operator.typesignature }
         );
         return rotated_expression;
     }
     return type_operator;
+}
+
+[[nodiscard]] Expression Parser::rotate_to_match_dot_member_access_priority(const DotMemberAccess& dot_member_access) {
+    const DebugInformationsAwareEntity& debug_info = dot_member_access.as_debug_informations_aware_entity();
+    if (dot_member_access.struct_value.is<BinaryOperator>()) {
+        BinaryOperator rotated_expression = dot_member_access.struct_value.get<BinaryOperator>();
+        rotated_expression.right_operand = rotate_to_match_dot_member_access_priority (
+            DotMemberAccess { debug_info, rotated_expression.right_operand, dot_member_access.member_name }
+        );
+        return rotated_expression;
+    }
+    if (dot_member_access.struct_value.is<UnaryOperator>()) {
+        UnaryOperator rotated_expression = dot_member_access.struct_value.get<UnaryOperator>();
+        rotated_expression.operand = rotate_to_match_dot_member_access_priority (
+            DotMemberAccess { debug_info, rotated_expression.operand, dot_member_access.member_name }
+        );
+        return rotated_expression;
+    }
+    return dot_member_access;
+}
+
+[[nodiscard]] Expression Parser::rotate_to_match_square_brackets_access_priority(const SquareBracketsAccess& square_brackets_access) {
+    const DebugInformationsAwareEntity& debug_info = square_brackets_access.as_debug_informations_aware_entity();
+    if (square_brackets_access.storage.is<BinaryOperator>()) {
+        BinaryOperator rotated_expression = square_brackets_access.storage.get<BinaryOperator>();
+        rotated_expression.right_operand = rotate_to_match_square_brackets_access_priority (
+            SquareBracketsAccess { debug_info, rotated_expression.right_operand, square_brackets_access.index }
+        );
+        return rotated_expression;
+    }
+    if (square_brackets_access.storage.is<UnaryOperator>()) {
+        UnaryOperator rotated_expression = square_brackets_access.storage.get<UnaryOperator>();
+        rotated_expression.operand = rotate_to_match_square_brackets_access_priority (
+            SquareBracketsAccess { debug_info, rotated_expression.operand, square_brackets_access.index }
+        );
+        return rotated_expression;
+    }
+    return square_brackets_access;
 }

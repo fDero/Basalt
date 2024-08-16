@@ -91,6 +91,7 @@ class FunctionOverloadsRegister {
         [[nodiscard]] std::vector<std::string> retrieve_overload_sets_ids(const FunctionCall& function_call);
         [[nodiscard]] std::vector<FunctionDefinition::Ref>& retrieve_specific_overload_set(const std::string& overload_set_id);
         [[nodiscard]] std::string get_function_default_search_key(const FunctionCall& function_call);
+        [[nodiscard]] const std::unordered_map<std::string, FunctionDefinition::OverloadSet>& get_all_function_overload_sets() const;
 
     protected:
 
@@ -112,9 +113,7 @@ class FunctionOverloadsRegister {
     private:
 
         ProjectFileStructure& project_file_structure;
-        
-        using FunctionOverloadSet = std::vector<FunctionDefinition::Ref>;
-        std::unordered_map<std::string, FunctionOverloadSet> function_definitions_overload_sets;
+        std::unordered_map<std::string, FunctionDefinition::OverloadSet> function_definitions_overload_sets;
 };
 
 
@@ -122,13 +121,24 @@ class ScopeContext {
 
     public:
 
+        enum class ScopeKind {
+            function_scope,
+            loop_scope,
+            conditional_scope
+        };
+
+        ScopeContext(const ScopeKind& scope_kind);
+        ScopeContext(const std::vector<FunctionDefinition::Argument>& arguments);
+
         void store_local_variable(const VariableDeclaration& var_declaration);
         void store_local_constant(const ConstDeclaration& const_declaration);
         
         [[nodiscard]] bool contains(const std::string& identifier);
         [[nodiscard]] TypeSignature& get_local_object_type(const std::string& identifier);
         [[nodiscard]] TypeSignature& get_local_mutable_object_type(const std::string& identifier);
-        [[nodiscard]] ScopeContext   create_nested_scope();
+        [[nodiscard]] ScopeContext   create_nested_scope(const ScopeKind& scope_kind);
+        
+        [[nodiscard]] ScopeKind get_scope_kind() const;
 
     private:
     
@@ -136,12 +146,14 @@ class ScopeContext {
             std::string identifier;
             TypeSignature type_signature;
             bool is_const = false; 
+            bool is_arg = false;
             bool gets_modified = false;
             bool gets_accessed = false;
         };
 
         std::vector<ObjectDescriptor> local_objects;
         ScopeContext* parent_scope = nullptr;
+        ScopeKind scope_kind;
 };
 
 class FunctionSpecificityDescriptor {

@@ -90,8 +90,10 @@ class Parser {
         [[nodiscard]] bool is_binary_operator();
         [[nodiscard]] bool is_square_bracket();
         [[nodiscard]] bool is_type_operator();
+        [[nodiscard]] bool is_dot_member_access();
         [[nodiscard]] bool expression_ended();
 
+        [[nodiscard]] Expression compose_dot_member_access(const Expression&);
         [[nodiscard]] Expression compose_binary_operator(const Expression&);
         [[nodiscard]] Expression compose_square_bracket_access(const Expression&);
         [[nodiscard]] Expression compose_type_operator(const Expression&);
@@ -99,7 +101,9 @@ class Parser {
         [[nodiscard]] Expression rotate_binary_operator_to_match_operators_priority(const BinaryOperator&);
         [[nodiscard]] Expression rotate_binary_operator_on_binary_operator_if_needed(const BinaryOperator&, const BinaryOperator&);
         [[nodiscard]] Expression rotate_binary_operator_on_unary_operator_if_needed(const BinaryOperator&, const UnaryOperator&);
-        [[nodiscard]] Expression rotate_to_match_is_operator_priority(const TypeOperator&);
+        [[nodiscard]] Expression rotate_to_match_type_operator_priority(const TypeOperator&);
+        [[nodiscard]] Expression rotate_to_match_dot_member_access_priority(const DotMemberAccess&);
+        [[nodiscard]] Expression rotate_to_match_square_brackets_access_priority(const SquareBracketsAccess&);
 
         [[nodiscard]] bool is_template_type(const std::string& type_name);
 };

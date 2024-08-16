@@ -2,6 +2,26 @@
 #include "language/expressions.hpp"
 #include "language/functions.hpp"
 
+SquareBracketsAccess::SquareBracketsAccess(
+    const DebugInformationsAwareEntity& square_brackets_token, 
+    const Expression& storage, 
+    const Expression& index
+)
+    : ExpressionBody(square_brackets_token)
+    , storage(storage)
+    , index(index) 
+{}
+
+DotMemberAccess::DotMemberAccess(
+    const DebugInformationsAwareEntity& dot_token, 
+    const Expression& struct_value, 
+    const std::string& member_name
+)
+    : ExpressionBody(dot_token)
+    , struct_value(struct_value)
+    , member_name(member_name) 
+{}
+
 ArrayLiteral::ArrayLiteral(
     int length,
     const TypeSignature& type,

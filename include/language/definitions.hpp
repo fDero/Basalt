@@ -14,6 +14,7 @@
 struct FunctionDefinition : public DebugInformationsAwareEntity {
     
     using Ref = std::shared_ptr<FunctionDefinition>;
+    using OverloadSet = std::vector<Ref>;
 
     FunctionDefinition(const Token& func_token);
 
