@@ -6,15 +6,12 @@
 #include <iostream>
 
 PreProcessor::PreProcessor(
-    ProjectFileStructure& project_file_structure,
-    TypeDefinitionsRegister& type_definitions_register,
-    FunctionOverloadsRegister& function_overloads_register,
-    OverloadingResolutionEngine& overloading_resolution_engine
+    ProgramRepresentation& program_representation
 )
-    : project_file_structure(project_file_structure)
-    , type_definitions_register(type_definitions_register)
-    , function_overloads_register(function_overloads_register)
-    , overloading_resolution_engine(overloading_resolution_engine)
+    : project_file_structure(program_representation.project_file_structure)
+    , type_definitions_register(program_representation.type_definitions_register)
+    , function_overloads_register(program_representation.function_overloads_register)
+    , overloading_resolution_engine(program_representation.overloading_resolution_engine)
 {}
 
 void PreProcessor::preprocess_packages_typename_conflicts() {

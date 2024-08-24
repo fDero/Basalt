@@ -4,18 +4,21 @@
 #include <iostream>
 
 Compiler::Compiler(const std::vector<std::string>& source_files, const std::vector<std::string>& output_files) 
-    : project_file_structure()
-    , type_definitions_register(project_file_structure)
-    , function_overloads_register(project_file_structure)
-    , overloading_resolution_engine(function_overloads_register, type_definitions_register, project_file_structure)
-    , preprocessor(project_file_structure, type_definitions_register, function_overloads_register, overloading_resolution_engine)
+    : program_representation()
+    , preprocessor(program_representation)
     , output_files(output_files)
 {
     for (const std::string& input_file_name : source_files) {
         Tokenizer tokenizer(input_file_name);
         Parser parser(tokenizer.tokenize());
         FileRepresentation file_representation = parser.parse_everything();
-        project_file_structure.store_file_representation(file_representation);
+        program_representation.project_file_structure.store_file_representation(file_representation);
+        for (const FunctionDefinition& function_definition : file_representation.func_defs) {
+            program_representation.function_overloads_register.store_function_definition(function_definition);
+        }
+        for (const TypeDefinition& type_definition : file_representation.type_defs) {
+            program_representation.type_definitions_register.store_type_definition(type_definition);
+        }
     }        
 }
 

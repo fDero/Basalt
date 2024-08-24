@@ -145,10 +145,7 @@ class PreProcessor {
 
     public:
         PreProcessor(
-            ProjectFileStructure& project_file_structure,
-            TypeDefinitionsRegister& type_definitions_register,
-            FunctionOverloadsRegister& function_overloads_register,
-            OverloadingResolutionEngine& overloading_resolution_engine
+            ProgramRepresentation& program_representation
         );
 
         void preprocess_packages_typename_conflicts();

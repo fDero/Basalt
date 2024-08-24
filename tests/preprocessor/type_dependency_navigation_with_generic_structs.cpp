@@ -1,4 +1,4 @@
-/*
+/* 
 #include <gtest/gtest.h>
 #include "language/generics.hpp"
 #include "errors/internal_errors.hpp"
@@ -110,12 +110,11 @@ TEST(Preprocessor, Type_Dependency_Spots_Cyclic_Dependency_Even_On_Generic_Struc
         .func_defs = { }
     };
     
-    TypeDefinitionsRegister representation;
+    FileRepresentation representation;
     representation.store_definitions_from_file(main_dot_basalt);
     const StructDefinition& B = main_dot_basalt.type_defs[1].get<StructDefinition>();
     TypeDependencyNavigator navigator(representation);
     EXPECT_ANY_THROW({
         navigator.visit_struct_definition(B);
     });
-}
-*/
+} */

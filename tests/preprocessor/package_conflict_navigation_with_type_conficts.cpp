@@ -15,7 +15,7 @@ ProjectFileStructure project_with_type_conflicts_in_two_files_in_different_packa
             .imports = { "a2package" }
         },
         .type_defs = { 
-            StructDefinitionFactory::make_struct_definition("A", { }, { }),
+            StructDefinitionFactory::make_struct_definition("A", "a.basalt", { }, { }),
         },
         .func_defs = { }
     },
@@ -26,7 +26,7 @@ ProjectFileStructure project_with_type_conflicts_in_two_files_in_different_packa
             .imports = { "a1package" }
         },
         .type_defs = { 
-            StructDefinitionFactory::make_struct_definition("A", { }, { }),
+            StructDefinitionFactory::make_struct_definition("A", "b.basalt", { }, { }),
         },
         .func_defs = { }
     }
@@ -40,7 +40,7 @@ ProjectFileStructure project_with_type_conflicts_in_two_files_in_different_packa
             .imports = { }
         },
         .type_defs = { 
-            StructDefinitionFactory::make_struct_definition("A", { }, { }),
+            StructDefinitionFactory::make_struct_definition("A", "a.basalt", { }, { }),
         },
         .func_defs = { }
     },
@@ -51,7 +51,7 @@ ProjectFileStructure project_with_type_conflicts_in_two_files_in_different_packa
             .imports = { }
         },
         .type_defs = { 
-            StructDefinitionFactory::make_struct_definition("A", { }, { }),
+            StructDefinitionFactory::make_struct_definition("A", "b.basalt", { }, { }),
         },
         .func_defs = { }
     },
@@ -74,7 +74,7 @@ ProjectFileStructure project_with_type_conflicts_in_tree_files_in_different_pack
             .imports = { }
         },
         .type_defs = { 
-            StructDefinitionFactory::make_struct_definition("A", { }, { }),
+            StructDefinitionFactory::make_struct_definition("A", "a.basalt", { }, { }),
         },
         .func_defs = { }
     },
@@ -85,7 +85,7 @@ ProjectFileStructure project_with_type_conflicts_in_tree_files_in_different_pack
             .imports = { "a1package" }
         },
         .type_defs = { 
-            StructDefinitionFactory::make_struct_definition("A", { }, { }),
+            StructDefinitionFactory::make_struct_definition("A", "b.basalt", { }, { }),
         },
         .func_defs = { }
     },

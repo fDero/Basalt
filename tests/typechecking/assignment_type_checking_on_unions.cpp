@@ -20,13 +20,13 @@ ProjectFileStructure single_file_project_with_multiple_union_defs({
         },
         .type_defs = { 
             UnionDefinitionFactory::make_union_definition(
-                "Number", { }, {
+                "Number", filename, { }, {
                     TypeSignatureFactory::Int,
                     TypeSignatureFactory::Float
                 }
             ),
             UnionDefinitionFactory::make_union_definition(
-                "Primitive", { }, {
+                "Primitive", filename, { }, {
                     TypeSignatureFactory::Int,
                     TypeSignatureFactory::Float,
                     TypeSignatureFactory::Bool,
@@ -37,7 +37,7 @@ ProjectFileStructure single_file_project_with_multiple_union_defs({
                 }
             ),
             UnionDefinitionFactory::make_union_definition(
-                "Either", { "T", "U" }, {
+                "Either", filename, { "T", "U" }, {
                     TypeSignatureFactory::T,
                     TypeSignatureFactory::U
                 }
@@ -47,9 +47,9 @@ ProjectFileStructure single_file_project_with_multiple_union_defs({
     }
 });
 
-TypeDefinitionsRegister type_register(single_file_project_with_multiple_union_defs);
 
 TEST(TypeChecking, Number_Union_Is_Compatible_With_Itself) {
+    TypeDefinitionsRegister type_register(single_file_project_with_multiple_union_defs);
     AssignmentTypeChecker type_checker(type_register, single_file_project_with_multiple_union_defs);
     TypeSignature number_type = CustomType { Token { "Number", filename, 1, 1, 1, Token::Type::type }, {} };
     bool number_is_compatible_with_itself = type_checker.validate_assignment(number_type, number_type);
@@ -57,6 +57,7 @@ TEST(TypeChecking, Number_Union_Is_Compatible_With_Itself) {
 }
 
 TEST(TypeChecking, Int_Compatible_With_Number_Union) {
+    TypeDefinitionsRegister type_register(single_file_project_with_multiple_union_defs);
     AssignmentTypeChecker type_checker(type_register, single_file_project_with_multiple_union_defs);
     TypeSignature number_type = CustomType { Token { "Number", filename, 1, 1, 1, Token::Type::type }, {} };
     bool int_compatible_with_number = type_checker.validate_assignment(TypeSignatureFactory::Int, number_type);
@@ -66,6 +67,7 @@ TEST(TypeChecking, Int_Compatible_With_Number_Union) {
 }
 
 TEST(TypeChecking, Number_Union_Compatible_With_Primitive_Union) {
+    TypeDefinitionsRegister type_register(single_file_project_with_multiple_union_defs);
     AssignmentTypeChecker type_checker(type_register, single_file_project_with_multiple_union_defs);
     TypeSignature number_type = CustomType { Token { "Number", filename, 1, 1, 1, Token::Type::type }, {} };
     TypeSignature primitive_type = CustomType { Token { "Primitive", filename, 1, 1, 1, Token::Type::type }, {} };
@@ -76,6 +78,7 @@ TEST(TypeChecking, Number_Union_Compatible_With_Primitive_Union) {
 }
 
 TEST(TypeChecking, Int_Compatible_With_Primitive_When_Int_Implicitly_Named_Via_Number) {
+    TypeDefinitionsRegister type_register(single_file_project_with_multiple_union_defs);
     AssignmentTypeChecker type_checker(type_register, single_file_project_with_multiple_union_defs);
     TypeSignature primitive_type = CustomType { Token { "Primitive", filename, 1, 1, 1, Token::Type::type }, {} };
     bool int_compatible_with_primitive = type_checker.validate_assignment(TypeSignatureFactory::Int, primitive_type);
@@ -83,15 +86,14 @@ TEST(TypeChecking, Int_Compatible_With_Primitive_When_Int_Implicitly_Named_Via_N
 }
 
 TEST(TypeChecking, Int_Compatible_With_Generic_Either_Union) {
+    TypeDefinitionsRegister type_register(single_file_project_with_multiple_union_defs);
     AssignmentTypeChecker type_checker(type_register, single_file_project_with_multiple_union_defs);
-
     TypeSignature either_int_or_float = CustomType { 
         Token { "Either", filename, 1, 1, 1, Token::Type::type }, {
             TypeSignatureFactory::Int,
             TypeSignatureFactory::Float
         } 
     };
-
     bool int_compatible_with_either_int_or_float = type_checker.validate_assignment(TypeSignatureFactory::Int, either_int_or_float);
     EXPECT_TRUE(int_compatible_with_either_int_or_float);
 }

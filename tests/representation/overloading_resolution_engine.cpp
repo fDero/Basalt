@@ -1,5 +1,4 @@
 
-
 #include <gtest/gtest.h>
 #include "toolchain/representation.hpp"
 #include "language/syntax.hpp"
@@ -21,6 +20,7 @@ ProjectFileStructure simple_project_with_both_generic_and_non_generic_func_overl
         .func_defs = {
             FunctionDefinitionFactory::make_function_definition(
                 "add", 
+                "main.basalt",
                 FunctionDefinitionFactory::no_generics, 
                 {
                     FunctionDefinition::Argument { "a", TypeSignatureFactory::Int },
@@ -29,7 +29,9 @@ ProjectFileStructure simple_project_with_both_generic_and_non_generic_func_overl
                 TypeSignatureFactory::Int
             ),
             FunctionDefinitionFactory::make_function_definition(
-                "add", { "T" }, 
+                "add", 
+                "main.basalt",
+                { "T" }, 
                 {
                     FunctionDefinition::Argument { "a", TypeSignatureFactory::T },
                     FunctionDefinition::Argument { "b", TypeSignatureFactory::T }
@@ -51,7 +53,7 @@ TEST(Representation, Simple_Overloading_Resolution_Of_Generic_Vs_Non_Generic_Fun
             IntLiteral { Token { "1", "main.basalt", 1, 2, 5, Token::Type::integer_literal } },
             IntLiteral { Token { "1", "main.basalt", 1, 2, 5, Token::Type::integer_literal } }
         },
-        { /* no type parameters */ }
+        {  }
     };
     std::vector<TypeSignature> arg_types = { TypeSignatureFactory::Int, TypeSignatureFactory::Int };
     FunctionDefinition::Ref func_def_ref = overoad_resolver.retrieve_function_definition(func_call, arg_types);

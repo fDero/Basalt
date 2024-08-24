@@ -10,7 +10,8 @@
 #include "../tests_utilities/type_alias_factory.hpp"
 
 FunctionDefinition add_int_int = FunctionDefinitionFactory::make_function_definition(
-    "add", 
+    "add",
+    "test.basalt", 
     FunctionDefinitionFactory::no_generics, 
     {
         FunctionDefinition::Argument { "a", TypeSignatureFactory::Int },
@@ -20,7 +21,9 @@ FunctionDefinition add_int_int = FunctionDefinitionFactory::make_function_defini
 );
 
 FunctionDefinition add_T_T = FunctionDefinitionFactory::make_function_definition(
-    "add", { "T" }, 
+    "add", 
+    "test.basalt",
+    { "T" }, 
     {
         FunctionDefinition::Argument { "a", TypeSignatureFactory::T },
         FunctionDefinition::Argument { "b", TypeSignatureFactory::T }
@@ -30,7 +33,9 @@ FunctionDefinition add_T_T = FunctionDefinitionFactory::make_function_definition
 
 
 FunctionDefinition add_T_U = FunctionDefinitionFactory::make_function_definition(
-    "add", { "T", "U" }, 
+    "add", 
+    "test.basalt",
+    { "T", "U" }, 
     {
         FunctionDefinition::Argument { "a", TypeSignatureFactory::T },
         FunctionDefinition::Argument { "b", TypeSignatureFactory::U }
@@ -40,6 +45,7 @@ FunctionDefinition add_T_U = FunctionDefinitionFactory::make_function_definition
 
 FunctionDefinition add_IntOrFloat_IntOrFloat = FunctionDefinitionFactory::make_function_definition(
     "add", 
+    "test.basalt",
     FunctionDefinitionFactory::no_generics, 
     {
         FunctionDefinition::Argument { "a", TypeSignatureFactory::IntOrFloat},
@@ -50,6 +56,7 @@ FunctionDefinition add_IntOrFloat_IntOrFloat = FunctionDefinitionFactory::make_f
 
 FunctionDefinition add_int_IntOrFloat = FunctionDefinitionFactory::make_function_definition(
     "add", 
+    "test.basalt",
     FunctionDefinitionFactory::no_generics, 
     {
         FunctionDefinition::Argument { "a", TypeSignatureFactory::Int},

@@ -1,4 +1,4 @@
-
+ 
 #include <gtest/gtest.h>
 #include "language/generics.hpp"
 #include "errors/internal_errors.hpp"
@@ -16,10 +16,10 @@ ProjectFileStructure single_file_project_with_multiple_fields_of_same_type({
         },
         .type_defs = { 
             StructDefinitionFactory::make_struct_definition(
-                "A", StructDefinitionFactory::no_generics, StructDefinitionFactory::no_fields
+                "A", "main.basalt", StructDefinitionFactory::no_generics, StructDefinitionFactory::no_fields
             ),
             StructDefinitionFactory::make_struct_definition(
-                "B", StructDefinitionFactory::no_generics, {
+                "B", "main.basalt", StructDefinitionFactory::no_generics, {
                     StructDefinition::Field { "a1",
                         CustomType { Token { "A", "main.basalt", 1, 1, 1, Token::Type::type }, {} } 
                     },
@@ -42,7 +42,7 @@ ProjectFileStructure single_file_project_with_multiple_fields_of_same_type_but_d
         },
         .type_defs = { 
             StructDefinitionFactory::make_struct_definition(
-                "A", StructDefinitionFactory::no_generics, {
+                "A", "main.basalt", StructDefinitionFactory::no_generics, {
                     StructDefinition::Field { "a1",
                         CustomType { Token { "Wrapper", "main.basalt", 1, 1, 1, Token::Type::type }, {
                             TypeSignatureFactory::Int
@@ -56,7 +56,7 @@ ProjectFileStructure single_file_project_with_multiple_fields_of_same_type_but_d
                 }
             ),
             StructDefinitionFactory::make_struct_definition(
-                "Wrapper", { "T" }, {
+                "Wrapper", "main.basalt", { "T" }, {
                     StructDefinition::Field { "wrapped",
                         TypeSignatureFactory::T
                     }
@@ -72,7 +72,7 @@ TEST(Preprocessor, Dependency_Navigation_Works_Fine_With_Multiple_Fields_Of_Same
     const FileRepresentation& main_dot_basalt = single_file_project_with_multiple_fields_of_same_type.get_files_by_package("testpackage").front();
     const StructDefinition& B = main_dot_basalt.type_defs.back().get<StructDefinition>();
     TypeDependencyNavigator navigator(type_register);
-    ASSERT_EQ(B.struct_name, "B");
+    ASSERT_EQ(B.def_name, "B");
     navigator.visit_struct_definition(B);
 }
 
@@ -82,7 +82,7 @@ TEST(Preprocessor, Dependency_Navigation_Works_Fine_With_Multiple_Fields_Of_Diff
     const FileRepresentation& main_dot_basalt = single_file_project_with_multiple_fields_of_same_type_but_different_concrete_type_parameters.get_files_by_package("testpackage").front();
     const StructDefinition& A = main_dot_basalt.type_defs.front().get<StructDefinition>();
     TypeDependencyNavigator navigator(type_register);
-    ASSERT_EQ(A.struct_name, "A");
+    ASSERT_EQ(A.def_name, "A");
     EXPECT_ANY_THROW({
         navigator.visit_struct_definition(A);
     });

@@ -10,7 +10,8 @@
 #include "../tests_utilities/type_alias_factory.hpp"
 
 FunctionDefinition print_IntOrFloat = FunctionDefinitionFactory::make_void_function_definition(
-    "print", 
+    "print",
+    "test.basalt", 
     FunctionDefinitionFactory::no_generics, 
     {
         FunctionDefinition::Argument { "x", TypeSignatureFactory::IntOrFloat }
@@ -19,6 +20,7 @@ FunctionDefinition print_IntOrFloat = FunctionDefinitionFactory::make_void_funct
 
 FunctionDefinition print_PrimitiveTypesUnion = FunctionDefinitionFactory::make_void_function_definition(
     "print", 
+    "test.basalt",
     FunctionDefinitionFactory::no_generics, 
     {
         FunctionDefinition::Argument { "x", TypeSignatureFactory::PrimitiveTypesUnion }
@@ -34,6 +36,7 @@ FileRepresentation wrapper_file {
     .type_defs = {
         StructDefinitionFactory::make_struct_definition(
             "Wrapper", 
+            "test.basalt",
             { "T" }, 
             { 
                 StructDefinition::Field { "wrapped", TypeSignatureFactory::T }
@@ -48,6 +51,7 @@ TypeSignature WrapperOfWrapperOfTs = CustomType { Token { "Wrapper", "test.basal
 
 FunctionDefinition f_wrapper_of_wrapper_of_Ts = FunctionDefinitionFactory::make_void_function_definition(
     "f", 
+    "test.basalt",
     FunctionDefinitionFactory::no_generics, 
     {
         FunctionDefinition::Argument { "list", WrapperOfWrapperOfTs },
@@ -57,6 +61,7 @@ FunctionDefinition f_wrapper_of_wrapper_of_Ts = FunctionDefinitionFactory::make_
 
 FunctionDefinition f_wrapper_of_Ts = FunctionDefinitionFactory::make_void_function_definition(
     "f", 
+    "test.basalt",
     FunctionDefinitionFactory::no_generics, 
     {
         FunctionDefinition::Argument { "list", WrapperOfTs },

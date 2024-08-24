@@ -18,10 +18,7 @@ class Compiler {
         void output_the_required_files();
 
     private:
-        ProjectFileStructure project_file_structure;
-        TypeDefinitionsRegister type_definitions_register;
-        FunctionOverloadsRegister function_overloads_register;
-        OverloadingResolutionEngine overloading_resolution_engine;
+        ProgramRepresentation program_representation;
         PreProcessor preprocessor;
         
         const std::vector<std::string>& output_files;

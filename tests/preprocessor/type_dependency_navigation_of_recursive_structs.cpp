@@ -16,14 +16,14 @@ ProjectFileStructure indirectly_recursive_structs_in_same_file({
         },
         .type_defs = { 
             StructDefinitionFactory::make_struct_definition(
-                "A", { }, {
+                "A", "main.basalt", { }, {
                     StructDefinition::Field { "b",
                         CustomType { Token { "B", "main.basalt", 1, 1, 1, Token::Type::type }, {} } 
                     }
                 }
             ),
             StructDefinitionFactory::make_struct_definition(
-                "B", { }, {
+                "B", "main.basalt", { }, {
                     StructDefinition::Field { "ptr",
                         PointerType { Token { "#", "main.basalt", 1, 1, 1, Token::Type::symbol },
                             CustomType { Token { "A", "main.basalt", 1, 1, 1, Token::Type::type }, {} } 
@@ -50,14 +50,14 @@ ProjectFileStructure directly_recursive_structs_in_same_file({
         },
         .type_defs = { 
             StructDefinitionFactory::make_struct_definition(
-                "A", { }, {
+                "A", "main.basalt", { }, {
                     StructDefinition::Field { "b",
                         CustomType { Token { "B", "main.basalt", 1, 1, 1, Token::Type::type }, {} } 
                     }
                 }
             ),
             StructDefinitionFactory::make_struct_definition(
-                "B", { }, {
+                "B", "main.basalt", { }, {
                     StructDefinition::Field { "a",
                         CustomType { Token { "A", "main.basalt", 1, 1, 1, Token::Type::type }, {} } 
                     }
@@ -73,7 +73,7 @@ TEST(Preprocessor, Non_Direct_Recursive_Two_Struct_Dependency_Is_Ok) {
     const FileRepresentation& main_dot_basalt = indirectly_recursive_structs_in_same_file.get_files_by_package("testpackage").back();
     const StructDefinition& A = main_dot_basalt.type_defs[0].get<StructDefinition>();
     TypeDependencyNavigator navigator(type_register);
-    ASSERT_EQ(A.struct_name, "A");
+    ASSERT_EQ(A.def_name, "A");
     navigator.visit_struct_definition(A);
 }
 
@@ -82,7 +82,7 @@ TEST(Preprocessor, Recursive_Two_Struct_Dependency_Is_Cyclic_Dependency) {
     const FileRepresentation& main_dot_basalt = directly_recursive_structs_in_same_file.get_files_by_package("testpackage").back();
     const StructDefinition& A = main_dot_basalt.type_defs[0].get<StructDefinition>();
     TypeDependencyNavigator navigator(type_register);
-    ASSERT_EQ(A.struct_name, "A");
+    ASSERT_EQ(A.def_name, "A");
     EXPECT_ANY_THROW({
         navigator.visit_struct_definition(A);
     });

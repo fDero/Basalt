@@ -16,7 +16,7 @@ ProjectFileStructure indirectly_recursive_structs_in_different_files_of_the_same
         },
         .type_defs = { 
             StructDefinitionFactory::make_struct_definition(
-                "A", { }, {
+                "A", "a.basalt", { }, {
                     StructDefinition::Field { "b",
                         CustomType { Token { "B", "a.basalt", 1, 1, 1, Token::Type::type }, {} } 
                     }
@@ -33,7 +33,7 @@ ProjectFileStructure indirectly_recursive_structs_in_different_files_of_the_same
         },
         .type_defs = { 
             StructDefinitionFactory::make_struct_definition(
-                "B", { }, {
+                "B", "b.basalt", { }, {
                     StructDefinition::Field { "ptr",
                         PointerType { Token { "#", "b.basalt", 1, 1, 1, Token::Type::symbol },
                             CustomType { Token { "A", "b.basalt", 1, 1, 1, Token::Type::type }, {} } 
@@ -60,7 +60,7 @@ ProjectFileStructure directly_recursive_structs_in_different_files_of_the_same_p
         },
         .type_defs = { 
             StructDefinitionFactory::make_struct_definition(
-                "A", { }, {
+                "A", "a.basalt", { }, {
                     StructDefinition::Field { "b",
                         CustomType { Token { "B", "a.basalt", 1, 1, 1, Token::Type::type }, {} } 
                     }
@@ -77,7 +77,7 @@ ProjectFileStructure directly_recursive_structs_in_different_files_of_the_same_p
         },
         .type_defs = { 
             StructDefinitionFactory::make_struct_definition(
-                "B", { }, {
+                "B", "b.basalt", { }, {
                     StructDefinition::Field { "a",
                         CustomType { Token { "A", "b.basalt", 1, 1, 1, Token::Type::type }, {} } 
                     }
@@ -93,7 +93,7 @@ TEST(Preprocessor, Preprocessor_Recursive_Two_Struct_Dependency_With_Pointer_Acc
     const FileRepresentation file_with_struct_A = indirectly_recursive_structs_in_different_files_of_the_same_package.get_files_by_package("testpackage")[0];
     const StructDefinition& A = file_with_struct_A.type_defs[0].get<StructDefinition>();
     TypeDependencyNavigator navigator(type_register);
-    ASSERT_EQ(A.struct_name, "A");
+    ASSERT_EQ(A.def_name, "A");
     navigator.visit_struct_definition(A);
 }
 
@@ -103,7 +103,7 @@ TEST(Preprocessor, Recursive_Two_Struct_Dependency_With_Pointer_Accross_Differen
     const FileRepresentation file_with_struct_A = directly_recursive_structs_in_different_files_of_the_same_packages.get_files_by_package("testpackage")[0];
     const StructDefinition& A = file_with_struct_A.type_defs[0].get<StructDefinition>();
     TypeDependencyNavigator navigator(type_register);
-    ASSERT_EQ(A.struct_name, "A");
+    ASSERT_EQ(A.def_name, "A");
     EXPECT_ANY_THROW({
         navigator.visit_struct_definition(A);
     });

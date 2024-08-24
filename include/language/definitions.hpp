@@ -39,7 +39,7 @@ struct StructDefinition : public DebugInformationsAwareEntity  {
         TypeSignature field_type;
     };
 
-    std::string struct_name;
+    std::string def_name;
     std::vector<Field> fields;
     std::vector<std::string> template_generics_names;
 
@@ -50,7 +50,7 @@ struct UnionDefinition : public DebugInformationsAwareEntity  {
 
     UnionDefinition(const Token& union_token);
 
-    std::string union_name;
+    std::string def_name;
     std::vector<TypeSignature> types;
     std::vector<std::string> template_generics_names;
 
@@ -65,7 +65,7 @@ struct TypeAlias : public DebugInformationsAwareEntity {
         const TypeSignature& aliased_type
     );
 
-    std::string alias_name;
+    std::string def_name;
     std::vector<std::string> template_generics_names;
     TypeSignature aliased_type;
 
@@ -84,6 +84,7 @@ struct TypeDefinition
 
     [[nodiscard]] std::string get_simple_name() const;
     [[nodiscard]] size_t get_number_of_generics() const;
+    [[nodiscard]] const std::string& get_filename() const;
 
     [[nodiscard]] const std::vector<std::string>& get_template_generics() const;
     void set_name(const std::string& name);

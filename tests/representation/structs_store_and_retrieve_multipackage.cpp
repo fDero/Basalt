@@ -19,6 +19,7 @@ TEST(Representation, Retrieve_StructDefinition_From_TypeSignature_In_The_Same_Fi
         .type_defs = {
             StructDefinitionFactory::make_struct_definition(
                 "MyStruct", 
+                "test.basalt",
                 StructDefinitionFactory::no_generics, 
                 StructDefinitionFactory::no_fields
             )
@@ -36,7 +37,7 @@ TEST(Representation, Retrieve_StructDefinition_From_TypeSignature_In_The_Same_Fi
 
     ASSERT_TRUE(type_def.is<StructDefinition>());
     StructDefinition struct_def = type_def.get<StructDefinition>();
-    EXPECT_EQ(struct_def.struct_name, "MyStruct");
+    EXPECT_EQ(struct_def.def_name, "MyStruct");
     EXPECT_TRUE(struct_def.fields.empty());
     EXPECT_TRUE(struct_def.template_generics_names.empty());
 }
@@ -52,6 +53,7 @@ TEST(Representation, Retrieve_StructDefinition_From_TypeSignature_In_Different_P
         .type_defs = {
             StructDefinitionFactory::make_struct_definition(
                 "MyStruct", 
+                "imported.basalt",
                 StructDefinitionFactory::no_generics, 
                 StructDefinitionFactory::no_fields
             )
@@ -80,7 +82,7 @@ TEST(Representation, Retrieve_StructDefinition_From_TypeSignature_In_Different_P
 
     ASSERT_TRUE(type_def.is<StructDefinition>());
     StructDefinition struct_def = type_def.get<StructDefinition>();
-    EXPECT_EQ(struct_def.struct_name, "MyStruct");
+    EXPECT_EQ(struct_def.def_name, "MyStruct");
     EXPECT_TRUE(struct_def.fields.empty());
     EXPECT_TRUE(struct_def.template_generics_names.empty());
 }
@@ -96,6 +98,7 @@ TEST(Representation, Retrieve_StructDefinition_From_TypeSignature_In_Different_F
         .type_defs = {
             StructDefinitionFactory::make_struct_definition(
                 "MyStruct", 
+                "imported.basalt",
                 StructDefinitionFactory::no_generics, 
                 StructDefinitionFactory::no_fields
             )
@@ -124,7 +127,7 @@ TEST(Representation, Retrieve_StructDefinition_From_TypeSignature_In_Different_F
 
     ASSERT_TRUE(type_def.is<StructDefinition>());
     StructDefinition struct_def = type_def.get<StructDefinition>();
-    EXPECT_EQ(struct_def.struct_name, "MyStruct");
+    EXPECT_EQ(struct_def.def_name, "MyStruct");
     EXPECT_TRUE(struct_def.fields.empty());
     EXPECT_TRUE(struct_def.template_generics_names.empty());
 }
@@ -141,6 +144,7 @@ TEST(Representation, Retrieve_StructDefinition_From_TypeSignature_In_Different_P
         .type_defs = {
             StructDefinitionFactory::make_struct_definition(
                 "MyStruct", 
+                "other.basalt",
                 StructDefinitionFactory::no_generics, 
                 StructDefinitionFactory::no_fields
             )
@@ -169,7 +173,7 @@ TEST(Representation, Retrieve_StructDefinition_From_TypeSignature_In_Different_P
 
     ASSERT_TRUE(type_def.is<StructDefinition>());
     StructDefinition struct_def = type_def.get<StructDefinition>();
-    EXPECT_EQ(struct_def.struct_name, "MyStruct");
+    EXPECT_EQ(struct_def.def_name, "MyStruct");
     EXPECT_TRUE(struct_def.fields.empty());
     EXPECT_TRUE(struct_def.template_generics_names.empty());
 }

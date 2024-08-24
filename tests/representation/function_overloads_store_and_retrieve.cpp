@@ -19,7 +19,8 @@ ProjectFileStructure multi_file_project_with_multiple_function_definitions ({
         .type_defs = {},
         .func_defs = {
             FunctionDefinitionFactory::make_function_definition(
-                "add", 
+                "add",
+                "a.basalt", 
                 FunctionDefinitionFactory::no_generics, 
                 {
                     FunctionDefinition::Argument { "a", TypeSignatureFactory::Int },
@@ -28,7 +29,8 @@ ProjectFileStructure multi_file_project_with_multiple_function_definitions ({
                 TypeSignatureFactory::Int
             ),
             FunctionDefinitionFactory::make_function_definition(
-                "add", 
+                "add",
+                "a.basalt", 
                 FunctionDefinitionFactory::no_generics, 
                 {
                     FunctionDefinition::Argument { "a", TypeSignatureFactory::Float },
@@ -49,7 +51,9 @@ ProjectFileStructure multi_file_project_with_multiple_function_definitions ({
         },
         .func_defs = {
             FunctionDefinitionFactory::make_function_definition(
-                "add", { "T" }, 
+                "add", 
+                "b.basalt",
+                { "T" }, 
                 {
                     FunctionDefinition::Argument { "a", TypeSignatureFactory::T },
                     FunctionDefinition::Argument { "b", TypeSignatureFactory::T }
@@ -69,7 +73,8 @@ ProjectFileStructure multi_file_project_with_multiple_function_definitions ({
         },
         .func_defs = {
             FunctionDefinitionFactory::make_function_definition(
-                "add", 
+                "add",
+                "c.basalt", 
                 FunctionDefinitionFactory::no_generics, 
                 {
                     FunctionDefinition::Argument { "a", TypeSignatureFactory::IntOrFloat},

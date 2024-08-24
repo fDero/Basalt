@@ -5,13 +5,13 @@ void assert_packagename_is_found(
     const std::unordered_map<std::string, std::string>::const_iterator& search_outcome,
     const std::unordered_map<std::string, std::string>::const_iterator& end
 ) {
-    //#ifdef DEBUG_BUILD
+    #ifdef DEBUG_BUILD
     if (search_outcome == end) {
         throw InternalError {
             "package name was not found in the map of package names by file names"
         };
     }
-    //#endif
+    #endif
 }
 
 void assert_files_vector_is_found(

@@ -55,7 +55,7 @@ class TypeDefinitionsRegister {
     
         TypeDefinitionsRegister(ProjectFileStructure& project_file_structure);
 
-        void store_type_definition(const TypeDefinition& type_definition, const std::string& package_name);
+        void store_type_definition(const TypeDefinition& type_definition);
         [[nodiscard]] TypeDefinition retrieve_type_definition(const CustomType& type_signature);
         [[nodiscard]] std::string get_fully_qualified_typesignature_name(const TypeSignature& type_signature);
         [[nodiscard]] TypeSignature unalias_type(const TypeSignature& type_signature);
@@ -86,7 +86,7 @@ class FunctionOverloadsRegister {
 
         FunctionOverloadsRegister(ProjectFileStructure& project_file_structure);
         
-        void store_function_definition(const FunctionDefinition& function_definition, const std::string& package_name);
+        void store_function_definition(const FunctionDefinition& function_definition);
         
         [[nodiscard]] std::vector<std::string> retrieve_overload_sets_ids(const FunctionCall& function_call);
         [[nodiscard]] std::vector<FunctionDefinition::Ref>& retrieve_specific_overload_set(const std::string& overload_set_id);
@@ -276,4 +276,14 @@ class OverloadingResolutionEngine {
         TypeDefinitionsRegister& type_definitions_register;
         ProjectFileStructure& project_file_structure;
         std::unordered_map<std::string, FunctionDefinition::Ref> fast_retrieve_cache;
+};
+
+struct ProgramRepresentation {
+        
+    ProjectFileStructure project_file_structure;
+    TypeDefinitionsRegister type_definitions_register;
+    FunctionOverloadsRegister function_overloads_register;
+    OverloadingResolutionEngine overloading_resolution_engine;
+
+    ProgramRepresentation();
 };

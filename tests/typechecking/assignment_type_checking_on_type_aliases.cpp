@@ -17,28 +17,28 @@ ProjectFileStructure single_file_project_with_aliasedint_number_list_pair_aliase
         },
         .type_defs = { 
             StructDefinitionFactory::make_struct_definition(
-                "List", { "T" }, { StructDefinitionFactory::no_fields }
+                "List", "main.basalt", { "T" }, { StructDefinitionFactory::no_fields }
             ),
             TypeAliasFactory::make_type_alias(
-                "AliasedInt", { }, TypeSignatureFactory::Int
+                "AliasedInt", "main.basalt", { }, TypeSignatureFactory::Int
             ),
             UnionDefinitionFactory::make_union_definition(
-                "Number", { }, {
+                "Number", "main.basalt", { }, {
                     TypeSignatureFactory::Int,
                     TypeSignatureFactory::Float
                 }
             ),
             TypeAliasFactory::make_type_alias(
-                "SameAs", { "T" }, TypeSignatureFactory::T
+                "SameAs", "main.basalt", { "T" }, TypeSignatureFactory::T
             ),
             StructDefinitionFactory::make_struct_definition(
-                "Pair", { "T", "U" }, {
+                "Pair", "main.basalt", { "T", "U" }, {
                     StructDefinition::Field { "first", TypeSignatureFactory::T },
                     StructDefinition::Field { "second", TypeSignatureFactory::U }
                 }
             ),
             TypeAliasFactory::make_type_alias(
-                "Pair", { "T" }, TypeSignature {
+                "Pair", "main.basalt", { "T" }, TypeSignature {
                     CustomType { Token { "Pair", "main.basalt", 1, 1, 1, Token::Type::type }, { 
                         TypeSignatureFactory::T, 
                         TypeSignatureFactory::T 

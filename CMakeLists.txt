@@ -72,4 +72,4 @@ target_link_libraries(
 )
 
 include(GoogleTest)
-gtest_discover_tests(${TEST_BINARY})
+gtest_discover_tests(${TEST_BINARY} DISCOVERY_MODE PRE_TEST)

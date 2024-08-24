@@ -17,7 +17,7 @@ ProjectFileStructure single_file_project_with_number_defy({
         },
         .type_defs = { 
             UnionDefinitionFactory::make_union_definition(
-                "Number", { }, {
+                "Number", "main.basalt", { }, {
                     TypeSignatureFactory::Int,
                     TypeSignatureFactory::Float
                 }

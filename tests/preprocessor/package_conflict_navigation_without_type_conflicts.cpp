@@ -15,8 +15,8 @@ ProjectFileStructure simple_multifile_project_with_harmless_typedefs({
             .imports = { }
         },
         .type_defs = { 
-            StructDefinitionFactory::make_struct_definition("A", { }, { }),
-            StructDefinitionFactory::make_struct_definition("B", { }, { })
+            StructDefinitionFactory::make_struct_definition("A", "main.basalt", { }, { }),
+            StructDefinitionFactory::make_struct_definition("B", "main.basalt", { }, { })
         },
         .func_defs = { }
     },
@@ -27,7 +27,7 @@ ProjectFileStructure simple_multifile_project_with_harmless_typedefs({
             .imports = { }
         },
         .type_defs = { 
-            StructDefinitionFactory::make_struct_definition("A", { }, { }),
+            StructDefinitionFactory::make_struct_definition("A", "a.basalt", { }, { }),
         },
         .func_defs = { }
     },
@@ -38,7 +38,7 @@ ProjectFileStructure simple_multifile_project_with_harmless_typedefs({
             .imports = { }
         },
         .type_defs = { 
-            StructDefinitionFactory::make_struct_definition("B", { }, { }),
+            StructDefinitionFactory::make_struct_definition("B", "b.basalt", { }, { }),
         },
         .func_defs = { }
     },
@@ -49,7 +49,7 @@ ProjectFileStructure simple_multifile_project_with_harmless_typedefs({
             .imports = { "bpackage" }
         },
         .type_defs = { 
-            StructDefinitionFactory::make_struct_definition("A", { }, { }),
+            StructDefinitionFactory::make_struct_definition("A", "a.basalt", { }, { }),
         },
         .func_defs = { }
     },
@@ -60,7 +60,7 @@ ProjectFileStructure simple_multifile_project_with_harmless_typedefs({
             .imports = { "apackage" }
         },
         .type_defs = { 
-            StructDefinitionFactory::make_struct_definition("B", { }, { }),
+            StructDefinitionFactory::make_struct_definition("B", "b.basalt", { }, { }),
         },
         .func_defs = { }
     }

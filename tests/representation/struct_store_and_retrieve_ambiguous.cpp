@@ -19,6 +19,7 @@ TEST(Representation, Ambiguous_Instantiated_Generic_Struct_Retrieval) {
         .type_defs = {
             StructDefinitionFactory::make_struct_definition(
                 "Wrapper", 
+                "test.basalt",
                 { "T" }, 
                 { 
                     StructDefinition::Field { "wrapped", TypeSignatureFactory::T }
@@ -36,7 +37,7 @@ TEST(Representation, Ambiguous_Instantiated_Generic_Struct_Retrieval) {
         },
         .type_defs = {
             StructDefinitionFactory::make_struct_definition(
-                "Employee", { }, { }
+                "Employee", "xemployee.basalt", { }, { }
             )
         },
         .func_defs = {}
@@ -51,7 +52,7 @@ TEST(Representation, Ambiguous_Instantiated_Generic_Struct_Retrieval) {
         },
         .type_defs = {
             StructDefinitionFactory::make_struct_definition(
-                "Employee", { }, { }
+                "Employee", "yemployee.basalt", { }, { }
             )
         },
         .func_defs = {}

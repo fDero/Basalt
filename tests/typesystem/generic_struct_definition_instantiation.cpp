@@ -8,7 +8,8 @@
 
 TEST(TypeSystem, Generic_Struct_With_CustomType_Fields_Instantiation) {
     StructDefinition generic_struct_definition = StructDefinitionFactory::make_struct_definition(
-        "Pair", 
+        "Pair",
+        "test.basalt",  
         { "T", "U" }, 
         { 
             StructDefinition::Field { "first",  TypeSignatureFactory::T },
@@ -29,7 +30,8 @@ TEST(TypeSystem, Generic_Struct_With_CustomType_Fields_Instantiation) {
 
 TEST(TypeSystem, Generic_Struct_With_PointerType_Field_Instantiation) {
     StructDefinition generic_struct_definition = StructDefinitionFactory::make_struct_definition(
-        "PointerWrapper", 
+        "PointerWrapper",
+        "test.basalt",   
         { "T" }, 
         { 
             StructDefinition::Field { "poited_object", 
@@ -50,6 +52,7 @@ TEST(TypeSystem, Generic_Struct_With_PointerType_Field_Instantiation) {
 TEST(TypeSystem, Generic_Struct_With_Slice_Type_Field_Instantiation) {
     StructDefinition generic_struct_definition = StructDefinitionFactory::make_struct_definition(
         "SliceWrapper", 
+        "test.basalt",  
         { "T" }, 
         { 
             StructDefinition::Field { "slice_object", 
@@ -70,6 +73,7 @@ TEST(TypeSystem, Generic_Struct_With_Slice_Type_Field_Instantiation) {
 TEST(TypeSystem, Generic_Struct_With_Array_Type_Field_Instantiation) {
     StructDefinition generic_struct_definition = StructDefinitionFactory::make_struct_definition(
         "ArrayWrapper", 
+        "test.basalt",  
         { "T" }, 
         { 
             StructDefinition::Field { "array_object", 

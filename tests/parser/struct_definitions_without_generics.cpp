@@ -14,7 +14,7 @@ TEST(Parsing, Struct_Definition_With_No_Fields_And_No_Nested_Structs) {
     Parser parser = Parser({ "inline-tests.basalt", tokens });
     StructDefinition struct_def = parser.parse_struct_definition();
     EXPECT_EQ(struct_def.filename, "test.basalt");
-    EXPECT_EQ(struct_def.struct_name, "S");
+    EXPECT_EQ(struct_def.def_name, "S");
     EXPECT_TRUE(struct_def.template_generics_names.empty());
     EXPECT_TRUE(struct_def.fields.empty());
 }
@@ -33,7 +33,7 @@ TEST(Parsing, Struct_Definition_With_One_Field_And_No_Nested_Structs) {
     Parser parser = Parser({ "inline-tests.basalt", tokens });
     StructDefinition struct_def = parser.parse_struct_definition();
     EXPECT_EQ(struct_def.filename, "test.basalt");
-    EXPECT_EQ(struct_def.struct_name, "S");
+    EXPECT_EQ(struct_def.def_name, "S");
     EXPECT_TRUE(struct_def.template_generics_names.empty());
     ASSERT_EQ(struct_def.fields.size(), 1);
     EXPECT_EQ(struct_def.fields.back().field_name, "x");
@@ -57,7 +57,7 @@ TEST(Parsing, Struct_Definition_With_Two_Fields_And_No_Nested_Structs) {
     Parser parser = Parser({ "inline-tests.basalt", tokens });
     StructDefinition struct_def = parser.parse_struct_definition();
     EXPECT_EQ(struct_def.filename, "test.basalt");
-    EXPECT_EQ(struct_def.struct_name, "S");
+    EXPECT_EQ(struct_def.def_name, "S");
     EXPECT_TRUE(struct_def.template_generics_names.empty());
     ASSERT_EQ(struct_def.fields.size(), 2);
     EXPECT_EQ(struct_def.fields.front().field_name, "x");

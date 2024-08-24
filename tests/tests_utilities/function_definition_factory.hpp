@@ -9,12 +9,13 @@ struct FunctionDefinitionFactory {
 
     static FunctionDefinition make_void_function_definition(
         const std::string& function_name, 
+        const std::string& filename,
         const std::vector<std::string> generics, 
         const std::vector<FunctionDefinition::Argument>& args
     ) {
         FunctionDefinition new_func_definition {
             Token {
-                function_name, "test.basalt", 1, 2, 5,
+                function_name, filename, 1, 2, 5,
                 Token::Type::text
             },
         };
@@ -24,14 +25,15 @@ struct FunctionDefinitionFactory {
     }
 
     static FunctionDefinition make_function_definition(
-        const std::string& function_name, 
+        const std::string& function_name,
+        const std::string& filename, 
         const std::vector<std::string> generics, 
         const std::vector<FunctionDefinition::Argument>& args,
         const std::optional<TypeSignature>& return_type
     ) {
         FunctionDefinition new_func_definition {
             Token {
-                function_name, "test.basalt", 1, 2, 5,
+                function_name, filename, 1, 2, 5,
                 Token::Type::text
             },
         };

@@ -19,7 +19,7 @@ TEST(Parsing, Struct_Generic_Definition_With_No_Fields) {
     Parser parser = Parser({ "inline-tests.basalt", tokens });
     StructDefinition struct_def = parser.parse_struct_definition();
     EXPECT_EQ(struct_def.filename, "test.basalt");
-    EXPECT_EQ(struct_def.struct_name, "S");
+    EXPECT_EQ(struct_def.def_name, "S");
     EXPECT_TRUE(struct_def.fields.empty());
     ASSERT_EQ(struct_def.template_generics_names.size(), 2);
     EXPECT_EQ(struct_def.template_generics_names.front(), "T");
@@ -43,7 +43,7 @@ TEST(Parsing, Struct_Generic_Definition_With_One_Field) {
     Parser parser = Parser({ "inline-tests.basalt", tokens });
     StructDefinition struct_def = parser.parse_struct_definition();
     EXPECT_EQ(struct_def.filename, "test.basalt");
-    EXPECT_EQ(struct_def.struct_name, "S");
+    EXPECT_EQ(struct_def.def_name, "S");
     ASSERT_EQ(struct_def.fields.size(), 1);
     EXPECT_EQ(struct_def.fields.back().field_name, "x");
     ASSERT_EQ(struct_def.template_generics_names.size(), 1);
@@ -74,7 +74,7 @@ TEST(Parsing, Struct_Generic_Definition_With_Two_Fields) {
     Parser parser = Parser({ "inline-tests.basalt", tokens });
     StructDefinition struct_def = parser.parse_struct_definition();
     EXPECT_EQ(struct_def.filename, "test.basalt");
-    EXPECT_EQ(struct_def.struct_name, "S");
+    EXPECT_EQ(struct_def.def_name, "S");
     ASSERT_EQ(struct_def.template_generics_names.size(), 2);
     EXPECT_EQ(struct_def.template_generics_names.front(), "T");
     EXPECT_EQ(struct_def.template_generics_names.back(), "U");

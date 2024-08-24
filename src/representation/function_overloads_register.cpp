@@ -10,7 +10,7 @@ FunctionOverloadsRegister::FunctionOverloadsRegister(ProjectFileStructure& proje
     for (const auto& [package_name, files] : project_file_structure.get_all_files_grouped_by_package()) {
         for (const auto& file : files) {
             for (const auto& func_def : file.func_defs) {
-                store_function_definition(func_def, package_name);
+                store_function_definition(func_def);
             }
         }
     }
@@ -22,9 +22,9 @@ FunctionOverloadsRegister::get_all_function_overload_sets() const {
 }
 
 void FunctionOverloadsRegister::store_function_definition(
-    const FunctionDefinition& func_def,
-    const std::string& package_name
+    const FunctionDefinition& func_def
 ) {
+    const std::string package_name = project_file_structure.get_package_name_by_file_name(func_def.filename);
     FunctionDefinition::Ref func_def_ref = std::make_shared<FunctionDefinition>(func_def);
     const std::string overload_set_id = get_function_definition_overload_set_id(package_name, func_def_ref);
     function_definitions_overload_sets[overload_set_id].push_back(func_def_ref);

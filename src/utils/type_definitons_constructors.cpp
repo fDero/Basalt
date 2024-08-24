@@ -8,12 +8,12 @@ FunctionDefinition::FunctionDefinition(const Token& func_token)
 
 StructDefinition::StructDefinition(const Token& struct_token)
     : DebugInformationsAwareEntity(struct_token)
-    , struct_name(struct_token.sourcetext)
+    , def_name(struct_token.sourcetext)
 {}
 
 UnionDefinition::UnionDefinition(const Token& union_token)
     : DebugInformationsAwareEntity(union_token)
-    , union_name(union_token.sourcetext)
+    , def_name(union_token.sourcetext)
 {}
 
 TypeAlias::TypeAlias(
@@ -22,7 +22,7 @@ TypeAlias::TypeAlias(
     const TypeSignature& aliased_type
 )
     : DebugInformationsAwareEntity(alias_token)
-    , alias_name(alias_token.sourcetext)
+    , def_name(alias_token.sourcetext)
     , template_generics_names(template_generics_names)
     , aliased_type(aliased_type)
 {}

@@ -16,10 +16,10 @@ ProjectFileStructure single_file_project_with_list_and_number_defs({
         },
         .type_defs = { 
             StructDefinitionFactory::make_struct_definition(
-                "List", { "T "}, { StructDefinitionFactory::no_fields }
+                "List", "main.basalt", { "T "}, { StructDefinitionFactory::no_fields }
             ),
             UnionDefinitionFactory::make_union_definition(
-                "Number", { }, {
+                "Number", "main.basalt", { }, {
                     TypeSignatureFactory::Int,
                     TypeSignatureFactory::Float
                 }
@@ -38,7 +38,7 @@ ProjectFileStructure multi_file_project_with_ambiguous_list_defs({
         },
         .type_defs = { 
             StructDefinitionFactory::make_struct_definition(
-                "List", { "T" }, { StructDefinitionFactory::no_fields }
+                "List", "a.basalt", { "T" }, { StructDefinitionFactory::no_fields }
             )
         },
         .func_defs = { }
@@ -51,7 +51,7 @@ ProjectFileStructure multi_file_project_with_ambiguous_list_defs({
         },
         .type_defs = { 
             StructDefinitionFactory::make_struct_definition(
-                "List", { "T" }, { StructDefinitionFactory::no_fields }
+                "List", "b.basalt", { "T" }, { StructDefinitionFactory::no_fields }
             )
         },
         .func_defs = { }

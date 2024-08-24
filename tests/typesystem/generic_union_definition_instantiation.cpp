@@ -9,6 +9,7 @@
 TEST(TypeSystem, Generic_Union_Instantiation) {
     UnionDefinition generic_union_definition = UnionDefinitionFactory::make_union_definition(
         "MyUnion", 
+        "test.basalt",
         { "T", "U" }, 
         { 
             TypeSignatureFactory::make_ptr_type(TypeSignatureFactory::T),
@@ -35,7 +36,8 @@ TEST(TypeSystem, Generic_Union_Instantiation) {
 
 TEST(TypeSystem, Non_Generic_Union_NoOp_Instantiation) {
     UnionDefinition generic_union_definition = UnionDefinitionFactory::make_union_definition(
-        "MyUnion", 
+        "MyUnion",
+        "test.basalt", 
         {},
         { 
             TypeSignatureFactory::Int,
@@ -52,6 +54,7 @@ TEST(TypeSystem, Non_Generic_Union_NoOp_Instantiation) {
 TEST(TypeSystem, Fake_Generic_Union_NoOp_Instantiation) {
     UnionDefinition generic_union_definition = UnionDefinitionFactory::make_union_definition(
         "MyUnion", 
+        "test.basalt",
         { "T" },
         { 
             TypeSignatureFactory::Int,

@@ -4,13 +4,15 @@
 #include "errors/internal_errors.hpp"
 #include "language/generics.hpp"
 
+#include <iostream>
+
 TypeDefinitionsRegister::TypeDefinitionsRegister(ProjectFileStructure& project_file_structure) 
     : project_file_structure(project_file_structure) 
 { 
     for (const auto& [package_name, files] : project_file_structure.get_all_files_grouped_by_package()) {
         for (const auto& file : files) {
             for (const auto& type_definition : file.type_defs) {
-                store_type_definition(type_definition, package_name);
+                store_type_definition(type_definition);
             }
         }
     }
@@ -21,10 +23,19 @@ TypeDefinitionsRegister::get_all_type_definitions() {
     return type_definitions;
 }
 
-void TypeDefinitionsRegister::store_type_definition(
-    const TypeDefinition& type_def, 
-    const std::string& package_name
-) {
+void TypeDefinitionsRegister::store_type_definition(const TypeDefinition& type_def) {
+
+    for (const auto& pair : project_file_structure.get_all_files_grouped_by_package()){
+        const std::string& package_name = pair.first;
+        const std::vector<FileRepresentation>& files = pair.second;
+        for (const FileRepresentation& file : files) {
+            std::cerr << "package: " << package_name << " file: " << file.file_metadata.filename << std::endl;
+        }
+    }
+
+    std::cerr << "file-name: " << type_def.get_filename() << std::endl;
+
+    const std::string package_name = project_file_structure.get_package_name_by_file_name(type_def.get_filename());
     const std::string match_pattern = get_type_definition_match_pattern(package_name, type_def);
     const auto& insertion_outcome = type_definitions.insert({match_pattern, type_def});
     ensure_no_multiple_definition_of_the_same_type(insertion_outcome);

@@ -17,7 +17,7 @@ ProjectFileStructure single_file_project_with_number_def({
         },
         .type_defs = { 
             UnionDefinitionFactory::make_union_definition(
-                "Number", { }, {
+                "Number", "main.basalt", { }, {
                     TypeSignatureFactory::Int,
                     TypeSignatureFactory::Float
                 }
@@ -26,6 +26,7 @@ ProjectFileStructure single_file_project_with_number_def({
         .func_defs = { }
     }
 });
+
 
 TEST(TypeChecking, IntOrFloat_Is_Compatible_With_Itself) {
     ProjectFileStructure empty_project;

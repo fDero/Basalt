@@ -20,6 +20,7 @@ TEST(Representation, Retrieve_Generic_StructDefinition_From_TypeSignature_In_The
         .type_defs = {
             StructDefinitionFactory::make_struct_definition(
                 "Pair", 
+                "test.basalt",
                 { "T", "U" }, 
                 {
                     StructDefinition::Field { "first", TypeSignatureFactory::T },
@@ -62,6 +63,7 @@ TEST(Representation, Struct_Overloads_Are_Distinguished_By_Template_Generics_Cou
         .type_defs = {
             StructDefinitionFactory::make_struct_definition(
                 "Pair", 
+                "test.basalt",
                 { "T", "U" }, 
                 {
                     StructDefinition::Field { "first", TypeSignatureFactory::T },
@@ -71,6 +73,7 @@ TEST(Representation, Struct_Overloads_Are_Distinguished_By_Template_Generics_Cou
 
             StructDefinitionFactory::make_struct_definition(
                 "Pair", 
+                "test.basalt",
                 { "T" }, 
                 {
                     StructDefinition::Field { "first", TypeSignatureFactory::T },

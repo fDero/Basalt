@@ -8,13 +8,14 @@ struct StructDefinitionFactory {
     inline static const std::vector<StructDefinition::Field> no_fields = {}; 
 
     static StructDefinition make_struct_definition(
-        const std::string& struct_name, 
+        const std::string& struct_name,
+        const std::string& filename, 
         const std::vector<std::string> generics, 
         const std::vector<StructDefinition::Field>& fields
     ) {
         StructDefinition new_struct_definition {
             Token {
-                struct_name, "test.basalt", 1, 2, 5,
+                struct_name, filename, 1, 2, 5,
                 Token::Type::text
             },
         };
