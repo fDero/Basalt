@@ -1,4 +1,4 @@
-/* 
+
 #include <gtest/gtest.h>
 #include "language/generics.hpp"
 #include "errors/internal_errors.hpp"
@@ -17,14 +17,14 @@ TEST(Preprocessor, Recursive_Two_Struct_Dependency_Is_Cyclic_Dependency_Even_Whe
         },
         .type_defs = { 
             StructDefinitionFactory::make_struct_definition(
-                "A", { "T" }, {
+                "A", "main.basalt", { "T" }, {
                     StructDefinition::Field { "b",
                         CustomType { Token { "B", "main.basalt", 1, 1, 1, Token::Type::type }, {} } 
                     }
                 }
             ),
             StructDefinitionFactory::make_struct_definition(
-                "B", { }, {
+                "B", "main.basalt", { }, {
                     StructDefinition::Field { "a",
                         CustomType { Token { "A", "main.basalt", 1, 1, 1, Token::Type::type }, {
                             PrimitiveType { Token { "Int", "main.basalt", 1, 1, 1, Token::Type::type } }
@@ -36,10 +36,12 @@ TEST(Preprocessor, Recursive_Two_Struct_Dependency_Is_Cyclic_Dependency_Even_Whe
         .func_defs = { }
     };
     
-    TypeDefinitionsRegister representation;
-    representation.store_definitions_from_file(main_dot_basalt);
+    ProjectFileStructure project_file_structure;
+    project_file_structure.store_file_representation(main_dot_basalt);
+    TypeDefinitionsRegister type_register(project_file_structure);
+    TypeDependencyNavigator navigator(type_register);
+
     const StructDefinition& A = main_dot_basalt.type_defs[0].get<StructDefinition>();
-    TypeDependencyNavigator navigator(representation);
     EXPECT_ANY_THROW({
         navigator.visit_struct_definition(A);
     });
@@ -55,14 +57,14 @@ TEST(Preprocessor, Type_Dependency_Navigation_Works_Fine_On_Instantiated_Non_Rec
         },
         .type_defs = { 
             StructDefinitionFactory::make_struct_definition(
-                "Wrapper", { "T" }, {
+                "Wrapper", "main.basalt", { "T" }, {
                     StructDefinition::Field { "wrapped_object",
                         TemplateType { Token { "T", "main.basalt", 1, 1, 1, Token::Type::type } } 
                     }
                 }
             ),
             StructDefinitionFactory::make_struct_definition(
-                "B", { }, {
+                "B", "main.basalt", { }, {
                     StructDefinition::Field { "wrapper",
                         CustomType { Token { "Wrapper", "main.basalt", 1, 1, 1, Token::Type::type }, {
                             PrimitiveType { Token { "Int", "main.basalt", 1, 1, 1, Token::Type::type } }
@@ -74,10 +76,12 @@ TEST(Preprocessor, Type_Dependency_Navigation_Works_Fine_On_Instantiated_Non_Rec
         .func_defs = { }
     };
     
-    TypeDefinitionsRegister representation;
-    representation.store_definitions_from_file(main_dot_basalt);
+    ProjectFileStructure project_file_structure;
+    project_file_structure.store_file_representation(main_dot_basalt);
+    TypeDefinitionsRegister type_register(project_file_structure);
+    TypeDependencyNavigator navigator(type_register);
+    
     const StructDefinition& B = main_dot_basalt.type_defs[1].get<StructDefinition>();
-    TypeDependencyNavigator navigator(representation);
     navigator.visit_struct_definition(B);
 }
 
@@ -91,14 +95,14 @@ TEST(Preprocessor, Type_Dependency_Spots_Cyclic_Dependency_Even_On_Generic_Struc
         },
         .type_defs = { 
             StructDefinitionFactory::make_struct_definition(
-                "Wrapper", { "T" }, {
+                "Wrapper", "main.basalt", { "T" }, {
                     StructDefinition::Field { "wrapped_object",
                         TemplateType { Token { "T", "main.basalt", 1, 1, 1, Token::Type::type } } 
                     }
                 }
             ),
             StructDefinitionFactory::make_struct_definition(
-                "B", { }, {
+                "B", "main.basalt", { }, {
                     StructDefinition::Field { "wrapper",
                         CustomType { Token { "Wrapper", "main.basalt", 1, 1, 1, Token::Type::type }, {
                             CustomType { Token { "B", "main.basalt", 1, 1, 1, Token::Type::type }, {} }
@@ -110,11 +114,13 @@ TEST(Preprocessor, Type_Dependency_Spots_Cyclic_Dependency_Even_On_Generic_Struc
         .func_defs = { }
     };
     
-    FileRepresentation representation;
-    representation.store_definitions_from_file(main_dot_basalt);
+    ProjectFileStructure project_file_structure;
+    project_file_structure.store_file_representation(main_dot_basalt);
+    TypeDefinitionsRegister type_register(project_file_structure);
+    TypeDependencyNavigator navigator(type_register);
+    
     const StructDefinition& B = main_dot_basalt.type_defs[1].get<StructDefinition>();
-    TypeDependencyNavigator navigator(representation);
     EXPECT_ANY_THROW({
         navigator.visit_struct_definition(B);
     });
-} */
+}
