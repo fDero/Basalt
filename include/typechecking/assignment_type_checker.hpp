@@ -1,9 +1,31 @@
-
+/**
+ * @file assignment_type_checker.hpp
+ * @author Francesco De Rosa (francescodero@outlook.it)
+ * @brief The AssignmentTypeChecker class is used to validate assignments between types
+ * @version 0.1
+ * @date 2024-08-31
+ * 
+ * @copyright Copyright (c) 2024
+ * 
+ */
 
 #pragma once
-#include "toolchain/representation.hpp"
+
+#include "model/type_definitions_register.hpp"
+#include "model/project_file_structure.hpp"
 #include "language/generics.hpp"
 
+/**
+ * @brief   Used to validate assignments between types, while also performing 
+ *          type-inference when assigning to generic types.
+ * 
+ * @details The AssignmentTypeChecker class is used to validate assignments between types.
+ *          It is also capable of performing type-inference when assigning to generic types. 
+ *          It is a statefull class that keeps track of the type-inference constraints that
+ *          it encounters during the validation process. It returns true/false based on the
+ *          success of the validation process, and it also provides a way to retrieve the
+ *          type-inference constraints that were generated during the validation process.
+ */
 class AssignmentTypeChecker {
 
     public:
@@ -37,39 +59,4 @@ class AssignmentTypeChecker {
         GenericSubstitutionRuleSet::Ref generic_substitution_rules = std::make_shared<GenericSubstitutionRuleSet>();
 
         bool type_parameters_assignment_validation(const CustomType &source, const CustomType &dest);
-};
-
-class ExpressionTypeDeducer {
-
-    public:
-        ExpressionTypeDeducer(
-            TypeDefinitionsRegister& program_representation,
-            OverloadingResolutionEngine& overloading_resolution_engine,
-            ProjectFileStructure& project_file_structure,
-            ScopeContext& scope_context
-        );
-
-        [[nodiscard]] TypeSignature deduce_expression_type(const Expression& expression);
-        [[nodiscard]] TypeSignature deduce_primtive_type(const std::string& type_name, const Expression& expression);
-        [[nodiscard]] TypeSignature deduce_type_from_identifier(const Expression& expression);
-        [[nodiscard]] TypeSignature deduce_type_from_function_call(const Expression& expression);
-        [[nodiscard]] TypeSignature deduce_type_from_type_operator(const Expression& expression);
-        [[nodiscard]] TypeSignature deduce_type_from_binary_operator(const Expression& expression);
-        [[nodiscard]] TypeSignature deduce_type_from_unary_operator(const Expression& expression);
-
-        [[nodiscard]] TypeSignature deduce_address_operator_type(const UnaryOperator& unary_op);
-        [[nodiscard]] TypeSignature deduce_pointer_dereference_operator_type(const UnaryOperator& unary_op);
-        [[nodiscard]] TypeSignature deduce_boolean_not_operator_type(const UnaryOperator& unary_op);
-        [[nodiscard]] TypeSignature deduce_math_prefix_operator_type(const UnaryOperator& unary_op);
-
-        [[nodiscard]] TypeSignature deduce_type_from_comparison_operator(const BinaryOperator& unary_op);
-        [[nodiscard]] TypeSignature deduce_type_from_square_brackets_access(const Expression& square_brackets_access);
-        [[nodiscard]] TypeSignature deduce_type_from_dot_member_access(const Expression& dot_member_access);
-        [[nodiscard]] TypeSignature deduce_type_from_math_binary_operator(const BinaryOperator& unary_op);        
-
-    private:
-        TypeDefinitionsRegister& type_definitions_register;
-        OverloadingResolutionEngine& overloading_resolution_engine;
-        ProjectFileStructure& project_file_structure;
-        ScopeContext& scope_context;
 };

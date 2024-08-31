@@ -1,9 +1,7 @@
 
-#include "toolchain/preprocessor.hpp"
+#include "preprocessing/type_dependency_navigator.hpp"
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
-
-#include <iostream>
 
 TypeDependencyNavigator::TypeDependencyNavigator(
     TypeDefinitionsRegister& type_definitions_register

@@ -1,6 +1,7 @@
 
 #include <gtest/gtest.h>
-#include "toolchain/representation.hpp"
+#include "model/overloading_resolution_engine.hpp"
+#include "model/type_definitions_register.hpp"
 #include "language/syntax.hpp"
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"

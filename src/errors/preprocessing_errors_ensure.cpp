@@ -1,8 +1,8 @@
 
+#include <unordered_set>
+
 #include "errors/internal_errors.hpp"
 #include "errors/preprocessing_errors.hpp"
-#include "toolchain/representation.hpp"
-#include <unordered_set>
 
 void ensure_type_not_already_visited_hence_no_cyclic_dependency(
     const std::string& target_tag_name, 

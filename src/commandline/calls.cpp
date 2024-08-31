@@ -1,12 +1,13 @@
 
-#include "toolchain/tokenizer.hpp"
-#include "toolchain/commandline.hpp"
-#include "toolchain/parser.hpp"
-#include "toolchain/preprocessor.hpp"
-#include "toolchain/compiler.hpp"
-#include "errors/commandline_errors.hpp"
 #include <iostream>
 #include <cassert>
+
+#include "frontend/tokenizer.hpp"
+#include "frontend/commandline.hpp"
+#include "frontend/parser.hpp"
+#include "preprocessing/preprocessor.hpp"
+#include "core/compiler.hpp"
+#include "errors/commandline_errors.hpp"
 
 void CommandLineController::dispatch_based_on_user_input() {
     using Mode = CommandLineController::Mode; 

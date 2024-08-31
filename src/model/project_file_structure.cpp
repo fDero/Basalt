@@ -1,9 +1,6 @@
 
-#include "toolchain/representation.hpp"
 #include "errors/preprocessing_errors.hpp"
 #include "errors/internal_errors.hpp"
-
-#include <iostream>
 
 ProjectFileStructure::ProjectFileStructure(const std::vector<FileRepresentation>& file_representations) {
     for (const FileRepresentation& file_representation : file_representations) {

@@ -1,6 +1,6 @@
 
 #include <gtest/gtest.h>
-#include "toolchain/parser.hpp"
+#include "frontend/parser.hpp"
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 #include "language/functions.hpp"

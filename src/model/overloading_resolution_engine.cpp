@@ -1,10 +1,10 @@
 
-#include "toolchain/representation.hpp"
+#include "model/function_specificity_descriptor.hpp"
 #include "errors/preprocessing_errors.hpp"
 #include "errors/internal_errors.hpp"
 #include "language/generics.hpp"
-#include "toolchain/preprocessor.hpp"
-#include "toolchain/typechecking.hpp"
+#include "preprocessing/preprocessor.hpp"
+#include "typechecking/assignment_type_checker.hpp"
 
 OverloadingResolutionEngine::OverloadingResolutionEngine(
     FunctionOverloadsRegister& function_overloads_register,

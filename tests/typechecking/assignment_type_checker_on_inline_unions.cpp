@@ -1,8 +1,8 @@
 
 #include <gtest/gtest.h>
 #include "errors/internal_errors.hpp"
-#include "toolchain/preprocessor.hpp"
-#include "toolchain/typechecking.hpp"
+#include "preprocessing/preprocessor.hpp"
+#include "typechecking/assignment_type_checker.hpp"
 #include "../tests_utilities/union_definition_factory.hpp"
 #include "../tests_utilities/struct_definition_factory.hpp"
 #include "../tests_utilities/typesignature_factory.hpp"

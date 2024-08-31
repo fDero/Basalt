@@ -1,7 +1,7 @@
 
 #pragma once
 #include <gtest/gtest.h>
-#include "../../include/toolchain/tokenizer.hpp"
+#include "../../include/frontend/tokenizer.hpp"
 #include "../../include/errors/internal_errors.hpp"
 #include "../../include/errors/parsing_errors.hpp"
 

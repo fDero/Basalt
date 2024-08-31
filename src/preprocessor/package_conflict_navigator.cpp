@@ -1,6 +1,6 @@
 
-#include "toolchain/representation.hpp"
-#include "toolchain/preprocessor.hpp"
+#include "model/project_file_structure.hpp"
+#include "preprocessing/package_type_conflict_navigator.hpp"
 #include "errors/preprocessing_errors.hpp"
 
 PackageTypeConflictNavigator::PackageTypeConflictNavigator(ProjectFileStructure& project_file_structure) 

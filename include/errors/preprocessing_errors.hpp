@@ -1,9 +1,11 @@
 
-#include "toolchain/tokenizer.hpp"
+#include "frontend/tokenizer.hpp"
 #include "language/definitions.hpp"
 #include "errors/error-types.hpp"
 #include "language/functions.hpp"
 #include "misc/forward_declarations.hpp"
+#include "model/scope_context.hpp"
+#include "language/generics.hpp"
 #include <unordered_map>
 #include <unordered_set>
 

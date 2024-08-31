@@ -1,6 +1,6 @@
 
 #include <gtest/gtest.h>
-#include "toolchain/representation.hpp"
+#include "model/function_specificity_descriptor.hpp"
 #include "language/syntax.hpp"
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"

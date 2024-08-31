@@ -1,9 +1,9 @@
 
-#include "errors/commandline_errors.hpp"
-#include "toolchain/tokenizer.hpp"
-#include "toolchain/commandline.hpp"
-
 #include <iostream>
+
+#include "errors/commandline_errors.hpp"
+#include "frontend/tokenizer.hpp"
+#include "frontend/commandline.hpp"
 
 CommandLineController::CommandLineController(int argc, char** argv)
     : arg_counter(argc), arg_values(argv), arg_index(1)

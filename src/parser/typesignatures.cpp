@@ -1,10 +1,11 @@
 
+#include <assert.h>
+
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 #include "language/syntax.hpp"
-#include "toolchain/parser.hpp"
+#include "frontend/parser.hpp"
 #include "language/expressions.hpp"
-#include <assert.h>
 
 [[nodiscard]] TypeSignature Parser::parse_simple_typesignature() {
     if (iterator->sourcetext == pointer_type_symbol) return parse_pointer_type();

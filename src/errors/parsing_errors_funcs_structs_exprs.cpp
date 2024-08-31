@@ -1,4 +1,7 @@
 
+#include <vector>
+
+#include "frontend/tokenizer.hpp"
 #include "errors/parsing_errors.hpp"
 
 void ensure_parenthesis_gets_closed_in_expression_wrapping(

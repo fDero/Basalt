@@ -1,5 +1,5 @@
 
-#include "toolchain/tokenizer.hpp"
+#include "frontend/tokenizer.hpp"
 #include "language/syntax.hpp"
 
 void Tokenizer::update_multiline_comments_tracker() {

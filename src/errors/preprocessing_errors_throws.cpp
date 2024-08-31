@@ -1,8 +1,8 @@
 
+#include <unordered_set>
+
 #include "errors/internal_errors.hpp"
 #include "errors/preprocessing_errors.hpp"
-#include "toolchain/representation.hpp"
-#include <unordered_set>
 
 [[noreturn]] void throw_no_type_definition_found(
     const CustomType& type_signature

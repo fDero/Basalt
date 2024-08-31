@@ -1,6 +1,5 @@
 
 #include "errors/commandline_errors.hpp"
-#include <fstream>
 
 void ensure_lack_of_output_files(const std::vector<std::string>& output_files) {
     if (!output_files.empty()) {

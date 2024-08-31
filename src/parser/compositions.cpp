@@ -2,7 +2,7 @@
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 #include "language/syntax.hpp"
-#include "toolchain/parser.hpp"
+#include "frontend/parser.hpp"
 #include "language/expressions.hpp"
 
 [[nodiscard]] Expression Parser::compose_dot_member_access(const Expression& left_operand) {

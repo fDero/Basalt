@@ -1,8 +1,8 @@
 
-#include "errors/internal_errors.hpp"
-#include "toolchain/representation.hpp"
-#include "language/generics.hpp"
 #include <vector>
+
+#include "errors/internal_errors.hpp"
+#include "language/generics.hpp"
 
 void assert_vectors_have_same_size_hence_they_can_be_zipped(
     const std::vector<std::string>& template_generics,

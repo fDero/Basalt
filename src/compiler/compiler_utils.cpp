@@ -1,7 +1,10 @@
 
-#include "toolchain/file_extensions.hpp"
-#include "toolchain/compiler.hpp"
 #include <iostream>
+
+#include "misc/file_extensions.hpp"
+#include "frontend/parser.hpp"
+#include "frontend/tokenizer.hpp"
+#include "core/compiler.hpp"
 
 Compiler::Compiler(const std::vector<std::string>& source_files, const std::vector<std::string>& output_files) 
     : program_representation()

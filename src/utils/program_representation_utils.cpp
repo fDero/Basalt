@@ -1,5 +1,5 @@
 
-#include "toolchain/representation.hpp"
+#include "model/program_representation.hpp"
 
 ProgramRepresentation::ProgramRepresentation() 
     : project_file_structure()

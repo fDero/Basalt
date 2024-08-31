@@ -1,5 +1,5 @@
 
-#include "toolchain/representation.hpp"
+#include "model/scope_context.hpp"
 #include "errors/preprocessing_errors.hpp"
 
 ScopeContext::ScopeContext(const ScopeKind& scope_kind) 

@@ -9,4 +9,6 @@ enum class FileExtension {
     exe
 };
 
-[[nodiscard]] FileExtension extract_file_extension(const std::string& filename);
+[[nodiscard]] FileExtension extract_file_extension(
+    const std::string& filename
+);

@@ -1,19 +1,10 @@
-/**
- * @file preprocessor.cpp
- * @author Francesco De Rosa (francescodero@outlook.it)
- * @brief 
- * @version 0.1
- * @date 2024-08-31
- * 
- * @copyright Copyright (c) 2024
- * 
- */
 
-#include "toolchain/preprocessor.hpp"
+#include "preprocessing/preprocessor.hpp"
+#include "preprocessing/package_type_conflict_navigator.hpp"
+#include "preprocessing/function_definition_validator.hpp"
+#include "preprocessing/type_dependency_navigator.hpp"
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
-
-#include <iostream>
 
 PreProcessor::PreProcessor(
     ProgramRepresentation& program_representation

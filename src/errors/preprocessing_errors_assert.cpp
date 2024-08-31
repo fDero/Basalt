@@ -1,8 +1,9 @@
 
+#include <unordered_set>
+
 #include "errors/internal_errors.hpp"
 #include "errors/preprocessing_errors.hpp"
-#include "toolchain/representation.hpp"
-#include <unordered_set>
+#include "language/definitions.hpp"
 
 void assert_number_of_arguments_match(
     FunctionDefinition::Ref function_definition,

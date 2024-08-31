@@ -2,7 +2,7 @@
 #include <gtest/gtest.h>
 #include "language/generics.hpp"
 #include "errors/internal_errors.hpp"
-#include "toolchain/preprocessor.hpp"
+#include "preprocessing/package_type_conflict_navigator.hpp"
 #include "../tests_utilities/union_definition_factory.hpp"
 #include "../tests_utilities/struct_definition_factory.hpp"
 #include "../tests_utilities/typesignature_factory.hpp"

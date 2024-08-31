@@ -1,6 +1,6 @@
 
 #include "errors/display_utilities.hpp"
-#include "toolchain/commandline.hpp"
+#include "frontend/commandline.hpp"
 #include <exception>
 
 int main(int argc, char** argv) {

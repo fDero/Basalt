@@ -1,18 +1,21 @@
 
 #pragma once
-#include "toolchain/tokenizer.hpp"
-#include "toolchain/representation.hpp"
-#include "errors/parsing_errors.hpp"
-#include "language/statements.hpp"
-#include "language/definitions.hpp"
-#include "language/functions.hpp"
-#include "language/expressions.hpp"
+
 #include <string>
 #include <vector>
 #include <fstream>
 #include <optional>
 #include <stack>
 #include <regex>
+
+#include "frontend/tokenizer.hpp"
+#include "model/file_representation.hpp"
+#include "errors/parsing_errors.hpp"
+#include "language/statements.hpp"
+#include "language/definitions.hpp"
+#include "language/functions.hpp"
+#include "language/expressions.hpp"
+
 
 class Parser {
 

@@ -1,6 +1,5 @@
 
 #include "errors/commandline_errors.hpp"
-#include <algorithm>
 
 void avoid_conflicting_commandline_flags(
     CommandLineController::Mode previous, 

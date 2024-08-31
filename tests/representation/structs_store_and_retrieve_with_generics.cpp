@@ -1,6 +1,8 @@
 
 #include <gtest/gtest.h>
-#include "toolchain/representation.hpp"
+#include "model/type_definitions_register.hpp"
+#include "model/file_representation.hpp"
+#include "model/project_file_structure.hpp"
 #include "language/syntax.hpp"
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"

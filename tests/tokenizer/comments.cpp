@@ -1,6 +1,6 @@
 
 #include <gtest/gtest.h>
-#include "toolchain/tokenizer.hpp"
+#include "frontend/tokenizer.hpp"
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 

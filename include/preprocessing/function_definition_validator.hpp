@@ -1,53 +1,36 @@
+/**
+ * @file function_definition_validator.hpp
+ * @author Francesco De Rosa (francescodero@outlook.it)
+ * @brief This file contains the definition of the FunctionDefinitionValidator class
+ * @version 0.1
+ * @date 2024-08-31
+ * 
+ * @copyright Copyright (c) 2024
+ * 
+ */
 
 #pragma once
-#include "toolchain/tokenizer.hpp"
-#include "toolchain/parser.hpp"
-#include "language/syntax.hpp"
-#include "language/generics.hpp"
-#include <vector>
-#include <string>
-#include <variant>
-#include <unordered_set>
 
-class TypeDependencyNavigator {
+#include "model/project_file_structure.hpp"
+#include "model/type_definitions_register.hpp"
+#include "model/function_overloads_register.hpp"
+#include "model/overloading_resolution_engine.hpp"
+#include "model/scope_context.hpp"
 
-    public:
-        TypeDependencyNavigator(TypeDefinitionsRegister& program_representation);
-        void visit_struct_definition(const StructDefinition& struct_definition);
-        void visit_union_definition(const UnionDefinition& union_definition);
-        void visit_type_definition(const TypeDefinition& type_definition);
-        void verify_that_the_type_exists(const TypeSignature& type_signature);
-
-    private:
-        void visit_type_definition(
-            const TypeSignature& typesignature,
-            const TypeDefinition& type_definition,
-            const std::vector<std::string>& generics
-        );
-
-        void visit_typesignature(const TypeSignature& typesignature, const std::vector<std::string>& union_def_generics);
-
-        TypeDefinitionsRegister& type_definitions_register;
-        std::unordered_set<std::string> visited_definitions;
-};
-
-class PackageTypeConflictNavigator {
-    
-    public:
-        PackageTypeConflictNavigator(ProjectFileStructure& project_file_structure);
-        void visit_file(const FileRepresentation& file_representation);
-        void visit_package(const std::string& package_name);
-        
-    private:
-        ProjectFileStructure& project_file_structure;
-        std::unordered_set<std::string> visited_files;
-        std::unordered_set<std::string> type_definition_conflict_detection_patterns;
-
-        [[nodiscard]] std::string get_type_definition_conflict_detection_pattern(
-            const TypeDefinition& type_definition
-        );
-};
-
+/**
+ * @brief   Used to inspect the arguments section, the body and the return type of a function definition,
+ *          making sure that the function is correctly defined.
+ * 
+ * @details The FunctionDefinitionValidator class is able to detect errors like: incorrect return value, 
+ *          illegal use of 'break' and 'continue' statements, illegal use of 'return' statement, use of 
+ *          undeclered identifiers, type-unsound assignments and type-unsound use of expressions as 
+ *          arguments/predicates. 
+ * 
+ * @note    The FunctionDefinitionValidator is not able to detect missing return statements, nor it can 
+ *          detect unreachable code or unused variables. It is also not capable of detecting constant-related
+ *          errors, like re-assigning a constant indirectly using a pointer to its memory location 
+ * 
+ */
 class FunctionDefinitionValidator {
 
     public:
@@ -143,24 +126,6 @@ class FunctionDefinitionValidator {
             ScopeContext& scope_context
         );
 
-    private:
-        ProjectFileStructure& project_file_structure;
-        TypeDefinitionsRegister& type_definitions_register;
-        FunctionOverloadsRegister& function_overloads_register;
-        OverloadingResolutionEngine& overloading_resolution_engine;
-};
-
-class PreProcessor {
-
-    public:
-        PreProcessor(
-            ProgramRepresentation& program_representation
-        );
-
-        void preprocess_packages_typename_conflicts();
-        void preprocess_type_definitions();
-        void preprocess_function_definitions();
-    
     private:
         ProjectFileStructure& project_file_structure;
         TypeDefinitionsRegister& type_definitions_register;

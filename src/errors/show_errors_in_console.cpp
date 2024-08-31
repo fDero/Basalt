@@ -1,8 +1,9 @@
 
-#include "errors/display_utilities.hpp"
-#include "misc/console_colors.hpp"
 #include <exception>
 #include <string>
+
+#include "errors/display_utilities.hpp"
+#include "misc/console_colors.hpp"
 
 void display_target_line(size_t char_pos, const std::string& line) {
     std::cout << "\t";

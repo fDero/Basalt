@@ -1,6 +1,8 @@
 
-#include "errors/internal_errors.hpp"
 #include <vector>
+
+#include "frontend/tokenizer.hpp"
+#include "errors/internal_errors.hpp"
 
 void assert_integer_literal_properly_formatted(const std::vector<Token>::iterator& iterator) {
     #ifdef DEBUG_BUILD

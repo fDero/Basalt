@@ -1,6 +1,6 @@
 
 #pragma once
-#include "toolchain/tokenizer.hpp"
+#include "frontend/tokenizer.hpp"
 #include "language/definitions.hpp"
 #include "errors/error-types.hpp"
 #include <unordered_map>

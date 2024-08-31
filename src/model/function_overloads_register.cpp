@@ -1,5 +1,4 @@
 
-#include "toolchain/representation.hpp"
 #include "errors/preprocessing_errors.hpp"
 #include "errors/internal_errors.hpp"
 #include "language/generics.hpp"

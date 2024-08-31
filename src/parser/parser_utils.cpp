@@ -1,11 +1,9 @@
 
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
-#include "toolchain/parser.hpp"
+#include "frontend/parser.hpp"
 #include "language/definitions.hpp"
 #include "language/expressions.hpp"
-
-#include <iostream>
 
 Parser::Parser(const TokenizedFile& tokenized_file) {
     source_tokens = tokenized_file.tokens; 

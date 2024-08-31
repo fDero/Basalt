@@ -1,7 +1,7 @@
 
 #include "errors/tokenization_errors.hpp"
 #include "language/syntax.hpp"
-#include "toolchain/tokenizer.hpp"
+#include "frontend/tokenizer.hpp"
 #include "errors/internal_errors.hpp"
 
 Token::Token (

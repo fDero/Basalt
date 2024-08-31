@@ -2,7 +2,7 @@
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 #include "language/syntax.hpp"
-#include "toolchain/parser.hpp"
+#include "frontend/parser.hpp"
 #include "language/expressions.hpp"
 
 [[nodiscard]] StructDefinition::Field Parser::parse_struct_field() {

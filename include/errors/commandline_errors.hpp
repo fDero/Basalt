@@ -1,6 +1,6 @@
 
 #pragma once
-#include "toolchain/commandline.hpp"
+#include "frontend/commandline.hpp"
 #include "errors/error-types.hpp"
 
 [[noreturn]] void throw_invalid_output_file_format(const std::string& filename);

@@ -1,6 +1,7 @@
 
-#include "errors/internal_errors.hpp"
 #include <vector>
+
+#include "errors/internal_errors.hpp"
 
 void assert_token_matches(
     const std::vector<Token>& source_tokens,

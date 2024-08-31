@@ -1,6 +1,6 @@
 
 #include "errors/tokenization_errors.hpp"
-#include "toolchain/tokenizer.hpp"
+#include "frontend/tokenizer.hpp"
 #include "language/syntax.hpp"
 
 [[nodiscard]] std::optional<Token> Tokenizer::extract_number() {
