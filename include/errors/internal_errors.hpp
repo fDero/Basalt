@@ -1,3 +1,13 @@
+/**
+ * @file internal_errors.hpp
+ * @author Francesco De Rosa (francescodero@outlook.it)
+ * @brief This file contains the definition of the custom exceptions used internally by this codebase.
+ * @version 0.1
+ * @date 2024-08-31
+ * 
+ * @copyright Copyright (c) 2024
+ * 
+ */
 
 #pragma once
 #include "toolchain/tokenizer.hpp"
@@ -6,7 +16,10 @@
 #include "language/definitions.hpp"
 #include "toolchain/representation.hpp"
 #include <vector>
+
+//here
 #include "errors/error-types.hpp"
+
 #include <string>
 #include <map>
 #include <unordered_map>

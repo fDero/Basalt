@@ -25,7 +25,7 @@ Compiler::Compiler(const std::vector<std::string>& source_files, const std::vect
 void Compiler::perform_static_analysis() {
     preprocessor.preprocess_packages_typename_conflicts();
     preprocessor.preprocess_type_definitions();
-    // maybe add a separate function-definitions preprocessing step??
+    preprocessor.preprocess_function_definitions();
 }
 
 void Compiler::perform_code_generation() {

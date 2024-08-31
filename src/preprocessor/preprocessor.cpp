@@ -1,3 +1,13 @@
+/**
+ * @file preprocessor.cpp
+ * @author Francesco De Rosa (francescodero@outlook.it)
+ * @brief 
+ * @version 0.1
+ * @date 2024-08-31
+ * 
+ * @copyright Copyright (c) 2024
+ * 
+ */
 
 #include "toolchain/preprocessor.hpp"
 #include "errors/internal_errors.hpp"
@@ -27,5 +37,20 @@ void PreProcessor::preprocess_type_definitions() {
     for (const auto& type_definition_wrapper : type_definitions_register.get_all_type_definitions()) {
         const TypeDefinition& type_definition = type_definition_wrapper.second;
         navigator.visit_type_definition(type_definition);
+    }
+}
+
+void PreProcessor::preprocess_function_definitions() {
+    FunctionDefinitionValidator function_definition_validator(
+        project_file_structure,
+        type_definitions_register,
+        function_overloads_register,
+        overloading_resolution_engine
+    );
+    for (const auto& func_def : function_overloads_register.get_all_function_overload_sets()) {
+        for (const auto& func_def_ref : func_def.second) {
+            const FunctionDefinition& function_definition = *func_def_ref;
+            function_definition_validator.validate_function_definition(function_definition);
+        }
     }
 }

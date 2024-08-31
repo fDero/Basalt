@@ -47,8 +47,8 @@ void FunctionDefinitionValidator::validate_function_body_statement(
         case StatementBody::Kind::continue_statement:   return ensure_in_loop_scope(statement, scope_context);
         case StatementBody::Kind::return_statement:     return validate_return_statement(statement.get<Return>(), function_definition, scope_context);
         case StatementBody::Kind::conditional:          return validate_conditional(statement.get<Conditional>(), function_definition, scope_context);
-        case StatementBody::Kind::const_declaration:    return scope_context.store_local_constant(statement.get<ConstDeclaration>());
-        case StatementBody::Kind::variable_declaration: return scope_context.store_local_variable(statement.get<VariableDeclaration>());
+        case StatementBody::Kind::const_declaration:    return validate_const_declaratuion(statement.get<ConstDeclaration>(), scope_context);
+        case StatementBody::Kind::variable_declaration: return validate_variable_declaration(statement.get<VariableDeclaration>(), scope_context);
         case StatementBody::Kind::function_call:        return validate_function_call(statement.get<FunctionCall>(), scope_context);
         case StatementBody::Kind::until_loop:           return validate_until_loop(statement.get<UntilLoop>(), function_definition, scope_context);
         case StatementBody::Kind::while_loop:           return validate_while_loop(statement.get<WhileLoop>(), function_definition, scope_context);
@@ -133,4 +133,23 @@ void FunctionDefinitionValidator::validate_function_call(
     }
     FunctionDefinition::Ref retrieved = overloading_resolution_engine.retrieve_function_definition(function_call, arguments_types);
     ensure_function_overload_was_successfully_retrieved(function_call, retrieved);
+}
+
+void FunctionDefinitionValidator::validate_variable_declaration(
+    const VariableDeclaration& variable_declaration,
+    ScopeContext& scope_context
+) {
+    TypeDependencyNavigator type_dependency_navigator(type_definitions_register);
+    type_dependency_navigator.verify_that_the_type_exists(variable_declaration.typesignature);
+    scope_context.store_local_variable(variable_declaration);
+}
+
+
+void FunctionDefinitionValidator::validate_const_declaratuion(
+    const ConstDeclaration& const_declaration,
+    ScopeContext& scope_context
+) {
+    TypeDependencyNavigator type_dependency_navigator(type_definitions_register);
+    type_dependency_navigator.verify_that_the_type_exists(const_declaration.typesignature);
+    scope_context.store_local_constant(const_declaration);
 }

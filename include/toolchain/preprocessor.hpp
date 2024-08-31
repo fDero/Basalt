@@ -19,7 +19,6 @@ class TypeDependencyNavigator {
         void verify_that_the_type_exists(const TypeSignature& type_signature);
 
     private:
-
         void visit_type_definition(
             const TypeSignature& typesignature,
             const TypeDefinition& type_definition,
@@ -134,6 +133,16 @@ class FunctionDefinitionValidator {
             ScopeContext& scope_context
         );
 
+        void validate_variable_declaration(
+            const VariableDeclaration& variable_declaration,
+            ScopeContext& scope_context
+        );
+
+        void validate_const_declaratuion(
+            const ConstDeclaration& const_declaration,
+            ScopeContext& scope_context
+        );
+
     private:
         ProjectFileStructure& project_file_structure;
         TypeDefinitionsRegister& type_definitions_register;
@@ -150,6 +159,7 @@ class PreProcessor {
 
         void preprocess_packages_typename_conflicts();
         void preprocess_type_definitions();
+        void preprocess_function_definitions();
     
     private:
         ProjectFileStructure& project_file_structure;
