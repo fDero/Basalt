@@ -1,53 +1,34 @@
+/**
+ * @file tokenizer.hpp
+ * @author Francesco De Rosa (francescodero@outlook.it)
+ * @brief This file contains the definition of the Tokenizer class
+ * @version 0.1
+ * @date 2024-09-01
+ * 
+ * @copyright Copyright (c) 2024
+ * 
+ */
 
 #pragma once
+
 #include <string>
 #include <vector>
-#include <fstream>
-#include <sstream>
-#include <filesystem>
-#include <optional>
-#include <stack>
-#include <regex>
-#include "misc/debug_informations_aware_entity.h"
 
-struct Token : public DebugInformationsAwareEntity {
+#include "frontend/token.hpp"
+#include "frontend/tokenized_file.hpp"
 
-    enum class Type {
-        symbol, text, type, integer_literal, floating_literal, 
-        string_literal, character_literal, boolean_literal, 
-        return_keyword, break_keyword, continue_keyword, throw_keyword, try_keyword, 
-        catch_keyword, attempt_keyword, multiline_comment, if_keyword, else_keyword,
-        while_keyword, until_keyword, var_keyword, const_keyword, 
-        func_keyword, struct_keyword, union_keyword, enum_keyword,
-        package_keyword, import_keyword, alias_keyword,
-        is_keyword, as_keyword
-    };
-
-    using DebugInformationsAwareEntity::filename;
-    using DebugInformationsAwareEntity::line_number;
-    using DebugInformationsAwareEntity::tok_number;
-    using DebugInformationsAwareEntity::char_pos;
-    
-    std::string sourcetext;
-    Type type;
-
-    Token(
-        const std::string& sourcetext,
-        const std::string& filename,
-        size_t in_line_number,
-        size_t in_tok_number,
-        size_t in_char_pos,
-        Type type
-    );
-
-    virtual ~Token() = default;
-};
-
-struct TokenizedFile {
-    std::string filename;
-    std::vector<Token> tokens;
-};
-
+/**
+ * @brief   Used to tokenize a source file (e.g extract a TokenizedFile object from it).
+ * 
+ * @details The Tokenizer class is used to tokenize a source file. It is used to open a source file, read it line by line,
+ *          and extract tokens from it. The Tokenizer class is stateful, and it keeps track of the current line, the current
+ *          line number, the current token number, and the current character position. The Tokenizer class is also able to
+ *          handle multiline comments, eventually nested inside each other.
+ * 
+ * @see     Token
+ * @see     TokenizedFile
+ * 
+ */
 class Tokenizer {
 
     private: 

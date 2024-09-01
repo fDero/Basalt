@@ -1,7 +1,8 @@
 
 
-#include "language/generics.hpp"
-#include "language/typesystem.hpp"
+#include "typesystem/generics_substitution_rules.hpp"
+#include "typesystem/generics_instantiation_engine.hpp"
+#include "language/typesignatures.hpp"
 #include "errors/internal_errors.hpp"
 
 [[nodiscard]] TypeSignature GenericsInstantiationEngine::instantiate_generic_typesignature(const TypeSignature& type_signature) const {

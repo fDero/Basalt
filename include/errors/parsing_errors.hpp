@@ -1,12 +1,14 @@
 
 #pragma once
-#include "frontend/tokenizer.hpp"
-#include "language/definitions.hpp"
-#include "errors/error-types.hpp"
+
 #include <unordered_map>
 #include <unordered_set>
 #include <string>
 #include <map>
+
+#include "frontend/tokenizer.hpp"
+#include "language/definitions.hpp"
+#include "errors/error-types.hpp"
 
 [[noreturn]] void throw_expression_expected_got_unrecognized(
     const std::vector<Token>::iterator& iterator

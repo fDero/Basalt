@@ -17,7 +17,8 @@
 #include "model/function_overloads_register.hpp"
 #include "language/definitions.hpp"
 #include "language/functions.hpp"
-#include "language/generics.hpp"
+#include "typesystem/generics_substitution_rules.hpp"
+
 
 /**
  * @brief   Used to retrieve a function-definition-shared_ptr from a function call. In case of overloads, it will
@@ -49,7 +50,7 @@ class OverloadingResolutionEngine {
             const std::vector<TypeSignature>& arg_types
         );
 
-        GenericSubstitutionRuleSet::Ref check_function_compatibility(
+        GenericSubstitutionRule::Set::Ref check_function_compatibility(
             const FunctionDefinition::Ref func_def_ref,
             const FunctionCall& func_call,
             const std::vector<TypeSignature>& arg_types

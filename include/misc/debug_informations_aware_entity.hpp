@@ -1,6 +1,27 @@
+/**
+ * @file debug_informations_aware_entity.hpp
+ * @author Francesco De Rosa (francescodero@outlook.it)
+ * @brief This file contains the definition of the DebugInformationsAwareEntity struct
+ * @version 0.1
+ * @date 2024-09-01
+ * 
+ * @copyright Copyright (c) 2024
+ * 
+ */
 
 #pragma once
 
+#include <string>
+#include <cstdint>
+
+/**
+ * @brief   Used to represent an entity that is aware of its position in the source-code file.
+ * 
+ * @details The DebugInformationsAwareEntity struct is used to represent an entity that is aware of its position in 
+ *          the source-code file in terms of filename, line number, token number, and character position. This struct
+ *          is extended by most of the entities in the language module, definitions, statements, expressions etc...
+ * 
+ */
 struct DebugInformationsAwareEntity {
 
     std::string filename;

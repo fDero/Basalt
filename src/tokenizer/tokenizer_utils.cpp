@@ -1,6 +1,6 @@
 
 #include "errors/tokenization_errors.hpp"
-#include "language/syntax.hpp"
+#include "frontend/syntax.hpp"
 #include "frontend/tokenizer.hpp"
 #include "errors/internal_errors.hpp"
 

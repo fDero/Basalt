@@ -3,7 +3,7 @@
 
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
-#include "language/syntax.hpp"
+#include "frontend/syntax.hpp"
 #include "frontend/parser.hpp"
 #include "language/expressions.hpp"
 

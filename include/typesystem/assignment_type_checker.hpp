@@ -13,7 +13,7 @@
 
 #include "model/type_definitions_register.hpp"
 #include "model/project_file_structure.hpp"
-#include "language/generics.hpp"
+#include "typesystem/generics_substitution_rules.hpp"
 
 /**
  * @brief   Used to validate assignments between types, while also performing 
@@ -31,7 +31,7 @@ class AssignmentTypeChecker {
     public:
         AssignmentTypeChecker(TypeDefinitionsRegister& program_representation, ProjectFileStructure& project_file_structure);
         bool validate_assignment(const TypeSignature& source, const TypeSignature& dest);
-        GenericSubstitutionRuleSet::Ref get_generic_substitution_rules(); 
+        GenericSubstitutionRule::Set::Ref get_generic_substitution_rules(); 
 
     private:
         bool validate_type_alias_unaware_assignment(const TypeSignature& source, const TypeSignature& dest);
@@ -56,7 +56,7 @@ class AssignmentTypeChecker {
 
         TypeDefinitionsRegister& type_definitions_register;
         ProjectFileStructure& project_file_structure;
-        GenericSubstitutionRuleSet::Ref generic_substitution_rules = std::make_shared<GenericSubstitutionRuleSet>();
+        GenericSubstitutionRule::Set::Ref generic_substitution_rules = std::make_shared<GenericSubstitutionRule::Set>();
 
         bool type_parameters_assignment_validation(const CustomType &source, const CustomType &dest);
 };

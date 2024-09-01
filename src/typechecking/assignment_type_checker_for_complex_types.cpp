@@ -1,6 +1,6 @@
 
 #include <cassert>
-#include "typechecking/assignment_type_checker.hpp"
+#include "typesystem/assignment_type_checker.hpp"
 #include "errors/preprocessing_errors.hpp"
 
 bool AssignmentTypeChecker::validate_assignment_to_custom_type(const TypeSignature& source, const CustomType& dest) {

@@ -1,7 +1,8 @@
 
-#include "language/generics.hpp"
-#include "language/typesystem.hpp"
+#include "language/typesignatures.hpp"
 #include "errors/internal_errors.hpp"
+#include "typesystem/generics_substitution_rules.hpp"
+#include "typesystem/generics_instantiation_engine.hpp"
 
 StructDefinition GenericsInstantiationEngine::instantiate_generic_struct(const StructDefinition& struct_definition) const {
     StructDefinition struct_def = struct_definition;

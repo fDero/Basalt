@@ -116,17 +116,23 @@ inline const std::map<std::string, short> prefix_operators_priority {
 };
 
 inline const std::map<std::string, Token::Type> keywords {
-    {"func",     Token::Type::func_keyword},     {"struct",   Token::Type::struct_keyword},
-    {"union",    Token::Type::union_keyword},    {"enum",     Token::Type::enum_keyword},
-    {"return",   Token::Type::return_keyword},   {"break",    Token::Type::break_keyword},
-    {"continue", Token::Type::continue_keyword}, {"alias",    Token::Type::alias_keyword},
-    {"throw",    Token::Type::throw_keyword},    {"try",      Token::Type::try_keyword},
-    {"catch",    Token::Type::catch_keyword},    {"attempt",  Token::Type::attempt_keyword},
-    {"if",       Token::Type::if_keyword},       {"else",     Token::Type::else_keyword},
-    {"while",    Token::Type::while_keyword},    {"until",    Token::Type::until_keyword},
-    {"var",      Token::Type::var_keyword},      {"const",    Token::Type::const_keyword},
-    {"is",       Token::Type::is_keyword},       {"as",       Token::Type::as_keyword},
-    {"package",  Token::Type::package_keyword},  {"import",   Token::Type::import_keyword}
+    {"func",     Token::Type::func_keyword},     
+    {"struct",   Token::Type::struct_keyword},
+    {"union",    Token::Type::union_keyword},    
+    {"return",   Token::Type::return_keyword},   
+    {"break",    Token::Type::break_keyword},
+    {"continue", Token::Type::continue_keyword}, 
+    {"alias",    Token::Type::alias_keyword},
+    {"if",       Token::Type::if_keyword},       
+    {"else",     Token::Type::else_keyword},
+    {"while",    Token::Type::while_keyword},    
+    {"until",    Token::Type::until_keyword},
+    {"var",      Token::Type::var_keyword},      
+    {"const",    Token::Type::const_keyword},
+    {"is",       Token::Type::is_keyword},       
+    {"as",       Token::Type::as_keyword},
+    {"package",  Token::Type::package_keyword},  
+    {"import",   Token::Type::import_keyword}
 };
 
 inline const std::set<std::string> primitive_types {

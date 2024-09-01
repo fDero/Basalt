@@ -15,7 +15,7 @@
 #include <string>
 #include <unordered_map>
 
-#include "model/file_representation.hpp"
+#include "frontend/file_representation.hpp"
 
 /**
  * @brief   Used to keep-track of the file structure of the codebase that is being compiled.

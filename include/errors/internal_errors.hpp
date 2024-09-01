@@ -1,16 +1,17 @@
 
 #pragma once
-#include "frontend/tokenizer.hpp"
-#include "language/syntax.hpp"
-#include "language/typesystem.hpp"
-#include "language/definitions.hpp"
-#include "model/file_representation.hpp"
-#include <vector>
-#include "errors/error-types.hpp"
 
+#include <vector>
 #include <string>
 #include <map>
 #include <unordered_map>
+
+#include "frontend/tokenizer.hpp"
+#include "frontend/syntax.hpp"
+#include "language/typesignatures.hpp"
+#include "language/definitions.hpp"
+#include "frontend/file_representation.hpp"
+#include "errors/error-types.hpp"
 
 [[noreturn]] void assert_unreachable();
 

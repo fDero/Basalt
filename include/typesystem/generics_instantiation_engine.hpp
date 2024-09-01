@@ -1,38 +1,43 @@
+/**
+ * @file generics_instantiation_engine.hpp
+ * @author Francesco De Rosa (francescodero@outlook.it)
+ * @brief This file contains the definition of the GenericsInstantiationEngine class
+ * @version 0.1
+ * @date 2024-09-01
+ * 
+ * @copyright Copyright (c) 2024
+ * 
+ */
 
 #pragma once
-#include <map>
-#include <string>
-#include <vector>
-#include "language/typesystem.hpp"
+
+#include "typesystem/generics_substitution_rules.hpp"
+#include "language/typesignatures.hpp"
 #include "language/functions.hpp"
 #include "language/definitions.hpp"
 #include "language/expressions.hpp"
 #include "misc/forward_declarations.hpp"
 
-struct GenericSubstitutionRule {
-    std::string to_be_replaced;
-    TypeSignature replacement;
-};
-
-struct GenericSubstitutionRuleSet : public std::vector<GenericSubstitutionRule> {
-    
-    using Ref = std::shared_ptr<GenericSubstitutionRuleSet>;
-
-    using vector<GenericSubstitutionRule>::vector;
-    using vector<GenericSubstitutionRule>::operator=;
-    using vector<GenericSubstitutionRule>::operator[];
-    using vector<GenericSubstitutionRule>::push_back;
-    
-    [[nodiscard]] static GenericSubstitutionRuleSet zip_components_vectors (
-        const std::vector<std::string>& template_generics,
-        const std::vector<TypeSignature>& type_parameters
-    );
-};
-
+/**
+ * @brief   Used to instantiate generic definitions.
+ * 
+ * @details The GenericsInstantiationEngine class is used to instantiate generic definitions using
+ *          the substitution rules provided by the user.
+ *          
+ * @note    The user of this class is supposed to instantiate a new GenericsInstantiationEngine
+ *          for every definition that needs to be instantiated, passing the substitution rules
+ *          to the constructor. The user can then call the various methods to perform the instantiation.
+ * 
+ * @see     GenericSubstitutionRule
+ * @see     GenericSubstitutionRule::Set
+ * @see     GenericSubstitutionRule::Set::Ref
+ * @see     TypeSignature
+ * 
+ */
 class GenericsInstantiationEngine {
 
     public:
-        GenericsInstantiationEngine(const GenericSubstitutionRuleSet& rules)
+        GenericsInstantiationEngine(const GenericSubstitutionRule::Set& rules)
             : rules(rules) {}
 
         [[nodiscard]] TypeSignature instantiate_generic_typesignature(const TypeSignature& type_signature) const;
@@ -42,7 +47,6 @@ class GenericsInstantiationEngine {
         [[nodiscard]] ArrayType instantiate_array_type(const ArrayType& type_signature) const;
         [[nodiscard]] SliceType instantiate_slice_type(const SliceType& type_signature) const;
         [[nodiscard]] InlineUnion instantiate_inline_union(const InlineUnion& type_signature) const;
-        [[nodiscard]] FunctionDefinition::Ref instantiate_generic_function(const FunctionDefinition& function_definition) const;
         
         [[nodiscard]] Statement instantiate_generic_statement(const Statement& statement) const;
         [[nodiscard]] VariableDeclaration instantiate_generic_variable_declaration(const VariableDeclaration& statement) const;
@@ -66,7 +70,8 @@ class GenericsInstantiationEngine {
         [[nodiscard]] UnionDefinition instantiate_generic_union(const UnionDefinition& type_signature) const;
         [[nodiscard]] StructDefinition instantiate_generic_struct(const StructDefinition& type_signature) const;
         [[nodiscard]] TypeAlias instantiate_generic_alias(const TypeAlias& type_signature) const;
+        [[nodiscard]] FunctionDefinition::Ref instantiate_generic_function(const FunctionDefinition& function_definition) const;
 
     private:
-        GenericSubstitutionRuleSet rules;
+        GenericSubstitutionRule::Set rules;
 };

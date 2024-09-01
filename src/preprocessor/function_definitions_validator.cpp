@@ -1,8 +1,8 @@
 
 #include "preprocessing/function_definition_validator.hpp"
 #include "preprocessing/type_dependency_navigator.hpp"
-#include "typechecking/assignment_type_checker.hpp"
-#include "typechecking/expression_type_deducer.hpp"
+#include "typesystem/assignment_type_checker.hpp"
+#include "typesystem/expression_type_deducer.hpp"
 #include "errors/internal_errors.hpp"
 #include "errors/preprocessing_errors.hpp"
 

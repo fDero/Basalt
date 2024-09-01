@@ -2,7 +2,7 @@
 #include "model/type_definitions_register.hpp"
 #include "errors/preprocessing_errors.hpp"
 #include "errors/internal_errors.hpp"
-#include "language/generics.hpp"
+#include "typesystem/generics_substitution_rules.hpp"
 
 #include <iostream>
 
@@ -122,7 +122,7 @@ std::string TypeDefinitionsRegister::get_fully_qualified_typesignature_name(cons
     }
     else {
         TypeDefinition& to_be_instantiated = retrieved->second;
-        GenericSubstitutionRuleSet rules = GenericSubstitutionRuleSet::zip_components_vectors(
+        GenericSubstitutionRule::Set rules = GenericSubstitutionRule::Set::zip_components_vectors(
             to_be_instantiated.get_template_generics(), 
             type_signature.type_parameters
         );

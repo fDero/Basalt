@@ -4,7 +4,7 @@
 #include <typeinfo>
 
 struct TypeDefinitionsRegister;
-struct GenericSubstitutionRuleSet;
+struct GenericSubstitutionRule;
 struct TypeSignature;
 struct Expression;
 

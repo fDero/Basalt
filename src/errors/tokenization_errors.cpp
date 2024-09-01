@@ -1,6 +1,6 @@
 
 #include "errors/tokenization_errors.hpp"
-#include "language/syntax.hpp"
+#include "frontend/syntax.hpp"
 
 [[nodiscard]] std::string get_sourcetext_from_tokenizer(const Tokenizer& tokenizer) {
     std::string extracted;

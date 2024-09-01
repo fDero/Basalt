@@ -1,7 +1,7 @@
 
 #include "errors/preprocessing_errors.hpp"
 #include "errors/internal_errors.hpp"
-#include "language/generics.hpp"
+#include "typesystem/generics_substitution_rules.hpp"
 
 FunctionOverloadsRegister::FunctionOverloadsRegister(ProjectFileStructure& project_file_structure) 
     : project_file_structure(project_file_structure) 

@@ -1,5 +1,6 @@
 
-#include "language/generics.hpp"
+#include "typesystem/generics_substitution_rules.hpp"
+#include "typesystem/generics_instantiation_engine.hpp"
 #include "errors/internal_errors.hpp"
 
 Expression GenericsInstantiationEngine::instantiate_generic_expression(const Expression& expression) const {

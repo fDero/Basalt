@@ -1,13 +1,17 @@
 
+#pragma once
+
+#include <unordered_map>
+#include <unordered_set>
+
 #include "frontend/tokenizer.hpp"
 #include "language/definitions.hpp"
 #include "errors/error-types.hpp"
 #include "language/functions.hpp"
 #include "misc/forward_declarations.hpp"
 #include "model/scope_context.hpp"
-#include "language/generics.hpp"
-#include <unordered_map>
-#include <unordered_set>
+#include "typesystem/generics_substitution_rules.hpp"
+#include "typesystem/generics_instantiation_engine.hpp"
 
 inline void ensure_assignment_is_valid(
     bool assignment_is_valid,
@@ -61,7 +65,7 @@ void ensure_parent_scope_exists_for_further_local_object_search(
 void ensure_object_is_mutable(bool is_const);
 
 inline void ensure_no_multiple_ambiguous_candidate_function_overloads_have_been_found(
-    const std::vector<std::pair<FunctionDefinition::Ref, GenericSubstitutionRuleSet::Ref>>& best_matches_so_far
+    const std::vector<std::pair<FunctionDefinition::Ref, GenericSubstitutionRule::Set::Ref>>& best_matches_so_far
 ) {
     if (best_matches_so_far.size() > 1) {
         throw std::runtime_error("ambiguous function call");

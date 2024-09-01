@@ -1,7 +1,7 @@
 
 #include <gtest/gtest.h>
 #include "model/function_specificity_descriptor.hpp"
-#include "language/syntax.hpp"
+#include "frontend/syntax.hpp"
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 #include "../tests_utilities/struct_definition_factory.hpp"

@@ -1,5 +1,5 @@
 
-#include "language/generics.hpp"
+#include "typesystem/generics_substitution_rules.hpp"
 #include "errors/internal_errors.hpp"
 #include <regex>
 #include <optional>

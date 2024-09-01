@@ -1,6 +1,7 @@
 
 #include <gtest/gtest.h>
-#include "language/generics.hpp"
+#include "typesystem/generics_substitution_rules.hpp"
+#include "typesystem/generics_instantiation_engine.hpp"
 #include "errors/internal_errors.hpp"
 #include "../tests_utilities/typesignature_factory.hpp"
 #include "../tests_utilities/type_queries.hpp"
@@ -8,7 +9,7 @@
 inline GenericSubstitutionRule ts_are_ints = { "T", TypeSignatureFactory::Int };
 inline GenericSubstitutionRule us_are_list_of_strings = { "U", TypeSignatureFactory::ListOfStrings };
 inline GenericSubstitutionRule vs_are_floats = { "V", TypeSignatureFactory::Float };
-inline GenericSubstitutionRuleSet rules = { ts_are_ints, us_are_list_of_strings, vs_are_floats };
+inline GenericSubstitutionRule::Set rules = { ts_are_ints, us_are_list_of_strings, vs_are_floats };
 inline GenericsInstantiationEngine engine(rules);
 
 TEST(TypeSystem, Non_Generic_Typesignature_Instantiations) {

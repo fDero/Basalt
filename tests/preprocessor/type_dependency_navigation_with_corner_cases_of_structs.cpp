@@ -1,6 +1,6 @@
  
 #include <gtest/gtest.h>
-#include "language/generics.hpp"
+#include "typesystem/generics_substitution_rules.hpp"
 #include "errors/internal_errors.hpp"
 #include "preprocessing/type_dependency_navigator.hpp"
 #include "../tests_utilities/union_definition_factory.hpp"

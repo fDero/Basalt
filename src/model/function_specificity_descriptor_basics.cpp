@@ -2,7 +2,7 @@
 #include "model/function_specificity_descriptor.hpp"
 #include "errors/preprocessing_errors.hpp"
 #include "errors/internal_errors.hpp"
-#include "language/generics.hpp"
+#include "typesystem/generics_substitution_rules.hpp"
 
 FunctionSpecificityDescriptor::FunctionSpecificityDescriptor(
     const FunctionDefinition& function_definition,

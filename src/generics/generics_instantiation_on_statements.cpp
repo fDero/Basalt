@@ -1,5 +1,6 @@
 
-#include "language/generics.hpp"
+#include "typesystem/generics_substitution_rules.hpp"
+#include "typesystem/generics_instantiation_engine.hpp"
 #include "language/statements.hpp"
 #include "errors/internal_errors.hpp"
 

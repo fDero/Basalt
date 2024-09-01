@@ -1,7 +1,7 @@
 
 #include "errors/tokenization_errors.hpp"
 #include "frontend/tokenizer.hpp"
-#include "language/syntax.hpp"
+#include "frontend/syntax.hpp"
 
 [[nodiscard]] std::optional<Token> Tokenizer::extract_number() {
     if (isdigit(current_line[char_pos])) {

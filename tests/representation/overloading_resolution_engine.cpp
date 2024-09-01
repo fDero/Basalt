@@ -2,7 +2,7 @@
 #include <gtest/gtest.h>
 #include "model/overloading_resolution_engine.hpp"
 #include "model/type_definitions_register.hpp"
-#include "language/syntax.hpp"
+#include "frontend/syntax.hpp"
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 #include "../tests_utilities/struct_definition_factory.hpp"

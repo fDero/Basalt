@@ -16,7 +16,7 @@
 
 #include "model/project_file_structure.hpp"
 #include "language/definitions.hpp"
-#include "language/typesystem.hpp"
+#include "language/typesignatures.hpp"
 
 /**
  * @brief Used to keep track of all the type definitions of the program.

@@ -2,9 +2,10 @@
 #include "model/function_specificity_descriptor.hpp"
 #include "errors/preprocessing_errors.hpp"
 #include "errors/internal_errors.hpp"
-#include "language/generics.hpp"
+#include "typesystem/generics_substitution_rules.hpp"
+#include "typesystem/generics_instantiation_engine.hpp"
 #include "preprocessing/preprocessor.hpp"
-#include "typechecking/assignment_type_checker.hpp"
+#include "typesystem/assignment_type_checker.hpp"
 
 OverloadingResolutionEngine::OverloadingResolutionEngine(
     FunctionOverloadsRegister& function_overloads_register,
@@ -35,7 +36,7 @@ FunctionDefinition::Ref OverloadingResolutionEngine::cache_unaware_function_defi
     const std::vector<TypeSignature>& arg_types
 ) {
     std::vector<std::string> candidate_overload_set_ids = function_overloads_register.retrieve_overload_sets_ids(function_call);
-    std::vector<std::pair<FunctionDefinition::Ref, GenericSubstitutionRuleSet::Ref>> best_maches_so_far; 
+    std::vector<std::pair<FunctionDefinition::Ref, GenericSubstitutionRule::Set::Ref>> best_maches_so_far; 
     FunctionSpecificityDescriptor best_specificity_so_far = FunctionSpecificityDescriptor::worst_possible_specificity();
     for (const std::string& overload_set_id : candidate_overload_set_ids) {
         std::vector<FunctionDefinition::Ref>& current_overload_set = function_overloads_register.retrieve_specific_overload_set(overload_set_id);
@@ -43,7 +44,7 @@ FunctionDefinition::Ref OverloadingResolutionEngine::cache_unaware_function_defi
             FunctionSpecificityDescriptor current_specificity(*func_def_ref, type_definitions_register);
             FunctionSpecificityDescriptor::ComparisonResult comparison_result = current_specificity.compare_with(best_specificity_so_far);
             bool is_less_specific = comparison_result == FunctionSpecificityDescriptor::ComparisonResult::less_specific;
-            GenericSubstitutionRuleSet::Ref generic_substitution_rules_ref = check_function_compatibility(func_def_ref, function_call, arg_types);
+            GenericSubstitutionRule::Set::Ref generic_substitution_rules_ref = check_function_compatibility(func_def_ref, function_call, arg_types);
             bool should_be_ignored = is_less_specific || generic_substitution_rules_ref == nullptr;
             if (should_be_ignored) {
                 continue;
@@ -66,7 +67,7 @@ FunctionDefinition::Ref OverloadingResolutionEngine::cache_unaware_function_defi
     return instanitated_func_def_ref;
 }
 
-GenericSubstitutionRuleSet::Ref OverloadingResolutionEngine::check_function_compatibility(
+GenericSubstitutionRule::Set::Ref OverloadingResolutionEngine::check_function_compatibility(
     const FunctionDefinition::Ref func_def_ref,
     const FunctionCall& func_call,
     const std::vector<TypeSignature>& arg_types
@@ -80,9 +81,9 @@ GenericSubstitutionRuleSet::Ref OverloadingResolutionEngine::check_function_comp
     if (type_parameters_fatal_mismatch) {
         return nullptr;
     }
-    GenericSubstitutionRuleSet explicit_generics_substitution_rules;
+    GenericSubstitutionRule::Set explicit_generics_substitution_rules;
     if (!function_is_non_generic_or_it_uses_type_inference) {
-        explicit_generics_substitution_rules  = GenericSubstitutionRuleSet::zip_components_vectors(
+        explicit_generics_substitution_rules  = GenericSubstitutionRule::Set::zip_components_vectors(
             func_def_ref->template_generics_names, 
             func_call.instantiated_generics
         );

@@ -1,9 +1,9 @@
 
 #include <gtest/gtest.h>
-#include "language/generics.hpp"
+#include "typesystem/generics_substitution_rules.hpp"
 #include "errors/internal_errors.hpp"
 #include "preprocessing/preprocessor.hpp"
-#include "typechecking/assignment_type_checker.hpp"
+#include "typesystem/assignment_type_checker.hpp"
 #include "../tests_utilities/union_definition_factory.hpp"
 #include "../tests_utilities/struct_definition_factory.hpp"
 #include "../tests_utilities/typesignature_factory.hpp"

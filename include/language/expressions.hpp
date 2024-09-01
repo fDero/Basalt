@@ -1,10 +1,39 @@
+/**
+ * @file expressions.hpp
+ * @author Francesco De Rosa (francescodero@outlook.it)
+ * @brief This file contains the definition of the different kinds of expressions in the language.
+ * @version 0.1
+ * @date 2024-09-01
+ * 
+ * @copyright Copyright (c) 2024
+ * 
+ */
 
 #pragma once
-#include "language/typesystem.hpp"
-#include "language/syntax.hpp"
+
 #include <vector>
 #include <string>
 
+#include "language/typesignatures.hpp"
+#include "frontend/syntax.hpp"
+
+/**
+ * @brief   Real base class for all the expressions in the language.
+ * 
+ * @details Base class for all the expressions in the language. Used togheter
+ *          with the Expression class to create a value-semantics wrapper around
+ *          the different kinds of expressions in a polymorphic way.
+ * 
+ * @note    This struct is not meant to be used directly, instead you should use the Expression class,
+ *          for wich this class is just the internal implementation.
+ * 
+ * @note    Since this struct extends DebugInformationsAwareEntity, all the expressions in the language
+ *          are aware of their position in the source code file.
+ *          
+ * @see     Expression
+ * @see     Polymorph
+ * 
+ */
 struct ExpressionBody : public DebugInformationsAwareEntity {
 
     enum class Kind {
@@ -31,6 +60,16 @@ struct ExpressionBody : public DebugInformationsAwareEntity {
         : DebugInformationsAwareEntity(debug_info) { }
 };
 
+/**
+ * @brief   Value-semantics polymorphism class to represent all the expressions in the language.
+ * 
+ * @details the Expression class is used togheter with the ExpressionBody class to 
+ *          create a value-semantics wrapper around the different kinds of expressions in a polymorphic way.
+ * 
+ * @see     ExpressionBody
+ * @see     Polymorph
+ * 
+ */
 class Expression : public Polymorph<ExpressionBody> {
     
     public:
@@ -51,6 +90,18 @@ class Expression : public Polymorph<ExpressionBody> {
         bool wrapped_in_parenthesis = false;
 };
 
+/**
+ * @brief   Used to represent the use of the dot operator to access
+ *          a member of a struct in the source code.
+ * 
+ * @details The DotMemberAccess struct is used to represent the use of the dot operator
+ *          to access a member of a struct in the source code. It contains the expression
+ *          that evaluates to the struct, and the name of the member to access.
+ * 
+ * @see     Expression
+ * @see     StructDefinition
+ * 
+ */
 struct DotMemberAccess : public ExpressionBody {
 
     virtual ~DotMemberAccess() = default;
@@ -67,6 +118,18 @@ struct DotMemberAccess : public ExpressionBody {
     std::string member_name;
 };
 
+/**
+ * @brief   Used to represent the use of the square brackets operator
+ *          to access an element of an array in the source code.
+ * 
+ * @details The SquareBracketsAccess struct is used to represent the use of the square brackets operator
+ *          to access an element of an array in the source code. It contains the expression that evaluates
+ *          to the array, and the expression that evaluates to the index of the element to access.
+ * 
+ * @see     ArrayType
+ * @see     ArrayLiteral
+ * 
+ */
 struct SquareBracketsAccess : public ExpressionBody {
 
     virtual ~SquareBracketsAccess() = default;
@@ -83,6 +146,17 @@ struct SquareBracketsAccess : public ExpressionBody {
     Expression index;
 };
 
+/**
+ * @brief   Used to represent an inline array-literal in the source code.
+ * 
+ * @details The ArrayLiteral struct is used to represent an inline array-literal in the source code.
+ *          It contains the length of the array, the type of the elements stored in the array,
+ *          and the expressions that evaluate to the elements of the array.
+ * 
+ * @see     ArrayType
+ * @see     SquareBracketsAccess
+ * 
+ */
 struct ArrayLiteral : public ExpressionBody {
 
     virtual ~ArrayLiteral() = default;
@@ -102,6 +176,14 @@ struct ArrayLiteral : public ExpressionBody {
 
 };
 
+/**
+ * @brief   Used to represent a type-query or a type-cast in the source code.
+ * 
+ * @details The TypeOperator struct is used to represent a type-query or a type-cast in the source code.
+ *          It contains the expression that evaluates to the value to cast or query, and the type-signature
+ *          that represents the type to cast or query.
+ *          
+ */
 struct TypeOperator : public ExpressionBody {
 
     virtual ~TypeOperator() = default;
@@ -120,7 +202,13 @@ struct TypeOperator : public ExpressionBody {
     TypeSignature typesignature;
 };
 
-
+/**
+ * @brief   Used to represent a binary operator in the source code.
+ * 
+ * @details The BinaryOperator struct is used to represent a binary operator in the source code.
+ *          It contains the operator token, the expression that evaluates to the left operand,
+ *          and the expression that evaluates to the right operand.
+ */
 struct BinaryOperator : public ExpressionBody {
 
     virtual ~BinaryOperator() = default;
@@ -139,6 +227,12 @@ struct BinaryOperator : public ExpressionBody {
     [[nodiscard]] ExpressionBody::Kind expression_kind() const override;
 };
 
+/**
+ * @brief   Used to represent a unary operator in the source code.
+ * 
+ * @details The UnaryOperator struct is used to represent a unary operator in the source code.
+ *          It contains the operator token, and the expression that evaluates to the operand.
+ */
 struct UnaryOperator : public ExpressionBody {
 
     virtual ~UnaryOperator() = default;
@@ -155,6 +249,14 @@ struct UnaryOperator : public ExpressionBody {
     Expression operand;
 };
 
+/**
+ * @brief   Used to represent the name of a function, a variable or a constant in the source code.
+ * 
+ * @details The Identifier struct is used to represent the name of a function, a variable or a 
+ *          constant in the source code. It Just contains the name of the identifier, togheter with
+ *          the token that represents it.
+ * 
+ */
 struct Identifier : public ExpressionBody {
 
     virtual ~Identifier() = default;
@@ -166,6 +268,13 @@ struct Identifier : public ExpressionBody {
     std::string name;
 };
 
+/**
+ * @brief   Used to represent a string-literal in the source code.
+ * 
+ * @details The StringLiteral struct is used to represent a string-literal in the source code.
+ *          It contains the value of the string-literal, togheter with the token that represents it.
+ * 
+ */
 struct StringLiteral : public ExpressionBody {
 
     virtual ~StringLiteral() = default;
@@ -177,6 +286,13 @@ struct StringLiteral : public ExpressionBody {
     std::string value;
 };
 
+/**
+ * @brief   Used to represent an integer-literal in the source code.
+ * 
+ * @details The IntLiteral struct is used to represent an integer-literal in the source code.
+ *          It contains the value of the integer-literal, togheter with the token that represents it.
+ * 
+ */
 struct IntLiteral : public ExpressionBody {
 
     virtual ~IntLiteral() = default;
@@ -188,6 +304,13 @@ struct IntLiteral : public ExpressionBody {
     int value;
 };
 
+/**
+ * @brief   Used to represent a float-literal in the source code.
+ * 
+ * @details The FloatLiteral struct is used to represent a float-literal in the source code.
+ *          It contains the value of the float-literal, togheter with the token that represents it.
+ * 
+ */
 struct FloatLiteral : public ExpressionBody {
 
     virtual ~FloatLiteral() = default;
@@ -199,6 +322,13 @@ struct FloatLiteral : public ExpressionBody {
     double value;
 };
 
+/**
+ * @brief   Used to represent a boolean-literal in the source code.
+ * 
+ * @details The BoolLiteral struct is used to represent a boolean-literal in the source code.
+ *          It contains the value of the boolean-literal, togheter with the token that represents it.
+ * 
+ */
 struct BoolLiteral : public ExpressionBody {
 
     virtual ~BoolLiteral() = default;
@@ -210,6 +340,13 @@ struct BoolLiteral : public ExpressionBody {
     bool value;
 };
 
+/**
+ * @brief   Used to represent a char-literal in the source code.
+ * 
+ * @details The CharLiteral struct is used to represent a char-literal in the source code.
+ *          It contains the value of the char-literal, togheter with the token that represents it.
+ * 
+ */
 struct CharLiteral : public ExpressionBody {
 
     virtual ~CharLiteral() = default;

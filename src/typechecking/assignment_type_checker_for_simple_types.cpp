@@ -1,5 +1,5 @@
 
-#include "typechecking/assignment_type_checker.hpp"
+#include "typesystem/assignment_type_checker.hpp"
 #include "errors/preprocessing_errors.hpp"
 #include "errors/internal_errors.hpp"
 
@@ -11,7 +11,7 @@ AssignmentTypeChecker::AssignmentTypeChecker(
     project_file_structure(project_file_structure) 
 {}
 
-GenericSubstitutionRuleSet::Ref AssignmentTypeChecker::get_generic_substitution_rules() {
+GenericSubstitutionRule::Set::Ref AssignmentTypeChecker::get_generic_substitution_rules() {
     return generic_substitution_rules;
 }
 
