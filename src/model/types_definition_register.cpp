@@ -4,8 +4,6 @@
 #include "errors/internal_errors.hpp"
 #include "typesystem/generics_substitution_rules.hpp"
 
-#include <iostream>
-
 TypeDefinitionsRegister::TypeDefinitionsRegister(ProjectFileStructure& project_file_structure) 
     : project_file_structure(project_file_structure) 
 { 

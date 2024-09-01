@@ -28,7 +28,6 @@
  *          value semantics while still being able to access the underlying type. Moreover, it allows to
  *          check the type of the stored object at runtime in O(1) time and to retrieve the stored object.
  *          It's used trough all the project to store polymorphic types such as definitions, statements, expressions etc...
- *          
  * 
  * @note    The Polymorph class works even with types that do not have a virtual destructor, since it uses
  *          std::shared_ptr to manage the memory of the stored object, wich internally have its own way to
