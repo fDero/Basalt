@@ -6,7 +6,6 @@
  * @date 2024-09-01
  * 
  * @copyright Copyright (c) 2024
- * 
  */
 
 #pragma once
@@ -34,7 +33,6 @@
  *          
  * @see     Statement
  * @see     Polymorph
- * 
  */
 struct StatementBody : public DebugInformationsAwareEntity {
 
@@ -67,7 +65,6 @@ struct StatementBody : public DebugInformationsAwareEntity {
  * 
  * @see     StatementBody
  * @see     Polymorph
- * 
  */
 struct Statement : public Polymorph<StatementBody> {
     

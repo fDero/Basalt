@@ -6,7 +6,6 @@
  * @date 2024-09-01
  * 
  * @copyright Copyright (c) 2024
- * 
  */
 
 #pragma once
@@ -27,7 +26,6 @@
  * 
  * @see     Token
  * @see     TokenizedFile
- * 
  */
 class Tokenizer {
 

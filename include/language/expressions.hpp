@@ -6,7 +6,6 @@
  * @date 2024-09-01
  * 
  * @copyright Copyright (c) 2024
- * 
  */
 
 #pragma once
@@ -32,7 +31,6 @@
  *          
  * @see     Expression
  * @see     Polymorph
- * 
  */
 struct ExpressionBody : public DebugInformationsAwareEntity {
 
@@ -68,7 +66,6 @@ struct ExpressionBody : public DebugInformationsAwareEntity {
  * 
  * @see     ExpressionBody
  * @see     Polymorph
- * 
  */
 class Expression : public Polymorph<ExpressionBody> {
     
@@ -100,7 +97,6 @@ class Expression : public Polymorph<ExpressionBody> {
  * 
  * @see     Expression
  * @see     StructDefinition
- * 
  */
 struct DotMemberAccess : public ExpressionBody {
 
@@ -128,7 +124,6 @@ struct DotMemberAccess : public ExpressionBody {
  * 
  * @see     ArrayType
  * @see     ArrayLiteral
- * 
  */
 struct SquareBracketsAccess : public ExpressionBody {
 
@@ -155,7 +150,6 @@ struct SquareBracketsAccess : public ExpressionBody {
  * 
  * @see     ArrayType
  * @see     SquareBracketsAccess
- * 
  */
 struct ArrayLiteral : public ExpressionBody {
 
@@ -255,7 +249,6 @@ struct UnaryOperator : public ExpressionBody {
  * @details The Identifier struct is used to represent the name of a function, a variable or a 
  *          constant in the source code. It Just contains the name of the identifier, togheter with
  *          the token that represents it.
- * 
  */
 struct Identifier : public ExpressionBody {
 
@@ -273,7 +266,6 @@ struct Identifier : public ExpressionBody {
  * 
  * @details The StringLiteral struct is used to represent a string-literal in the source code.
  *          It contains the value of the string-literal, togheter with the token that represents it.
- * 
  */
 struct StringLiteral : public ExpressionBody {
 
@@ -291,7 +283,6 @@ struct StringLiteral : public ExpressionBody {
  * 
  * @details The IntLiteral struct is used to represent an integer-literal in the source code.
  *          It contains the value of the integer-literal, togheter with the token that represents it.
- * 
  */
 struct IntLiteral : public ExpressionBody {
 
@@ -309,7 +300,6 @@ struct IntLiteral : public ExpressionBody {
  * 
  * @details The FloatLiteral struct is used to represent a float-literal in the source code.
  *          It contains the value of the float-literal, togheter with the token that represents it.
- * 
  */
 struct FloatLiteral : public ExpressionBody {
 
@@ -327,7 +317,6 @@ struct FloatLiteral : public ExpressionBody {
  * 
  * @details The BoolLiteral struct is used to represent a boolean-literal in the source code.
  *          It contains the value of the boolean-literal, togheter with the token that represents it.
- * 
  */
 struct BoolLiteral : public ExpressionBody {
 
@@ -345,7 +334,6 @@ struct BoolLiteral : public ExpressionBody {
  * 
  * @details The CharLiteral struct is used to represent a char-literal in the source code.
  *          It contains the value of the char-literal, togheter with the token that represents it.
- * 
  */
 struct CharLiteral : public ExpressionBody {
 

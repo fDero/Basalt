@@ -6,7 +6,6 @@
  * @date 2024-08-31
  * 
  * @copyright Copyright (c) 2024
- * 
  */
 
 #pragma once
@@ -24,7 +23,6 @@
  * @details The ScopeContext class is used to keep track of a scope, it's used by all the
  *          classes that inspect the body of a function definition as a way to keep track of
  *          the symbols encountered and their state.
- * 
  */
 class ScopeContext {
 

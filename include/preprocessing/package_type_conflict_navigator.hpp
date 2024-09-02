@@ -6,7 +6,6 @@
  * @date 2024-08-31
  * 
  * @copyright Copyright (c) 2024
- * 
  */
 
 #pragma once
@@ -28,7 +27,6 @@
  *          that means that the program is in an invalid state, because the TypeDefinitionRegister
  *          itself should have not allowed such a situation to happen. This class will still be able
  *          to detect the error and will still behave as expected. 
- * 
  */
 class PackageTypeConflictNavigator {
     

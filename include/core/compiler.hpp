@@ -6,7 +6,6 @@
  * @date 2024-08-31
  * 
  * @copyright Copyright (c) 2024
- * 
  */
 
 #pragma once
@@ -31,7 +30,6 @@
  * @see     FileRepresentation
  * @see     ProgramRepresentation
  * @see     PreProcessor
- * 
  */
 class Compiler {
 

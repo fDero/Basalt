@@ -6,7 +6,6 @@
  * @date 2024-09-01
  * 
  * @copyright Copyright (c) 2024
- * 
  */
 
 #pragma once
@@ -28,7 +27,6 @@
  * @details The FunctionDefinition struct is used to represent a function definition in the source-code,
  *          it contains the name of the function, the return type, the arguments, the code of the function.
  *          It's supposed to be the root of an AST representing the function iteself.
- * 
  */
 struct FunctionDefinition : public DebugInformationsAwareEntity {
     
@@ -55,7 +53,6 @@ struct FunctionDefinition : public DebugInformationsAwareEntity {
  * @details The StructDefinition struct is used to represent a struct definition in the source-code,
  *          it contains the name of the struct, the fields of the struct, and the template generics names.
  *          It's supposed to be the root of an AST representing the struct itself.
- * 
  */
 struct StructDefinition : public DebugInformationsAwareEntity  {
 

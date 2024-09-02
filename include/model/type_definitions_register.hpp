@@ -6,7 +6,6 @@
  * @date 2024-08-31
  * 
  * @copyright Copyright (c) 2024
- * 
  */
 
 #pragma once
@@ -24,7 +23,6 @@
  * @details The TypeDefinitionsRegister is used to keep track of all the type definitions of the program.
  *          It exposes an API to store and retrieve type definitions, and to get the fully qualified name.
  *          It also provides a way to unalias a type, meaning to get the type definition of a type signature
- * 
  */
 class TypeDefinitionsRegister {
 

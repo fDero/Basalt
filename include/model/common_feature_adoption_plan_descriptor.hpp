@@ -6,7 +6,6 @@
  * @date 2024-09-01
  * 
  * @copyright Copyright (c) 2024
- * 
  */
 
 #pragma once
@@ -27,8 +26,7 @@
  *          it was dispatching to the most appropriate existing overload based on the run-time type-informations
  *          of the arguments wich are passed to it as unions. 
  * 
- * @see     CommonFeatureAdoptionResolutionEngine
- * 
+ * @see     CommonFeatureAdoptionPlanGenerationEngine
  */
 struct CommonFeatureAdoptionPlanDescriptor {
     

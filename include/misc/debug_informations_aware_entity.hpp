@@ -6,7 +6,6 @@
  * @date 2024-09-01
  * 
  * @copyright Copyright (c) 2024
- * 
  */
 
 #pragma once
@@ -20,7 +19,6 @@
  * @details The DebugInformationsAwareEntity struct is used to represent an entity that is aware of its position in 
  *          the source-code file in terms of filename, line number, token number, and character position. This struct
  *          is extended by most of the entities in the language module, definitions, statements, expressions etc...
- * 
  */
 struct DebugInformationsAwareEntity {
 

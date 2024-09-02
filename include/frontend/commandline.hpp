@@ -6,7 +6,6 @@
  * @date 2024-09-01
  * 
  * @copyright Copyright (c) 2024
- * 
  */
 
 #pragma once
@@ -30,7 +29,6 @@
  *          --compile, --output, --help, --version, -c, -o, -h, -v.
  * 
  * @see     Compiler
- * 
  */
 class CommandLineController {
 

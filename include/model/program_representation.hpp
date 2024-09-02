@@ -6,7 +6,6 @@
  * @date 2024-08-31
  * 
  * @copyright Copyright (c) 2024
- * 
  */
 
 #pragma once
@@ -18,7 +17,6 @@
 
 /**
  * @brief Just a container for all the data structures that represent the program
- * 
  */
 struct ProgramRepresentation {
         

@@ -6,7 +6,6 @@
  * @date 2024-09-01
  * 
  * @copyright Copyright (c) 2024
- * 
  */
 
 #pragma once
@@ -31,7 +30,6 @@
  *          
  * @see     TypeSignature
  * @see     Polymorph
- * 
  */
 struct TypeSignatureBody : public DebugInformationsAwareEntity {
 
@@ -62,7 +60,6 @@ struct TypeSignatureBody : public DebugInformationsAwareEntity {
  * 
  * @see     TypeSignatureBody
  * @see     Polymorph
- * 
  */
 struct TypeSignature : public Polymorph<TypeSignatureBody> {
 
@@ -90,7 +87,6 @@ struct TypeSignature : public Polymorph<TypeSignatureBody> {
  * @see     StructDefinition
  * @see     UnionDefinition
  * @see     TypeAlias
- * 
  */
 struct CustomType : public TypeSignatureBody {
 
@@ -152,7 +148,6 @@ struct InlineUnion : public TypeSignatureBody {
  * @see     GenericSubstitutionRule::Set
  * @see     GenericSubstitutionRule::Set::Ref
  * @see     GenericsInstantiationEngine
- * 
  */
 struct TemplateType : public TypeSignatureBody {
 
@@ -171,7 +166,6 @@ struct TemplateType : public TypeSignatureBody {
  * 
  * @details The PrimitiveType struct is used to represent a primitive type in the source-code,
  *          like Int, Float, Bool etc. It contains just the name of the type.
- * 
  */
 struct PrimitiveType : public TypeSignatureBody {
  
@@ -191,7 +185,6 @@ struct PrimitiveType : public TypeSignatureBody {
  * 
  * @details The PointerType struct is used to represent a pointer type in the source-code,
  *          it contains the type of the pointed value.
- * 
  */
 struct PointerType : public TypeSignatureBody {
     
@@ -208,7 +201,6 @@ struct PointerType : public TypeSignatureBody {
  * 
  * @details The ArrayType struct is used to represent an array type in the source-code,
  *          it contains the length of the array, and the type of the stored value.
- * 
  */
 struct ArrayType : public TypeSignatureBody {
     
@@ -226,7 +218,6 @@ struct ArrayType : public TypeSignatureBody {
  * 
  * @details The SliceType struct is used to represent a slice type in the source-code,
  *          it contains jsut the type of the stored value.
- * 
  */
 struct SliceType : public TypeSignatureBody {
     

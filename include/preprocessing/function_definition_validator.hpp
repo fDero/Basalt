@@ -6,7 +6,6 @@
  * @date 2024-08-31
  * 
  * @copyright Copyright (c) 2024
- * 
  */
 
 #pragma once
@@ -29,7 +28,6 @@
  * @note    The FunctionDefinitionValidator is not able to detect missing return statements, nor it can 
  *          detect unreachable code or unused variables. It is also not capable of detecting constant-related
  *          errors, like re-assigning a constant indirectly using a pointer to its memory location 
- * 
  */
 class FunctionDefinitionValidator {
 

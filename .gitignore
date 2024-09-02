@@ -9,6 +9,9 @@ hidden
 grammar/.antlr
 build
 out
+lib
+docs/*
+docs
 cmake-build-debug
 out/bin/**
 out/lib/*

@@ -6,7 +6,6 @@
  * @date 2024-08-31
  * 
  * @copyright Copyright (c) 2024
- * 
  */
 
 #pragma once
@@ -36,24 +35,19 @@ class CommonFeatureAdoptionPlanGenerationEngine {
         /** 
          * @brief   Construct a new Common Feature Adoption Resolution Engine object
          * 
-         * @param   function_overloads_register used to initialize the internal function_overloads_register attribute.
-         * 
          * @param   overloading_resolution_engine used to initialize the internal overloading_resolution_engine attribute.
          * 
          * @param   type_definitions_register used to initialize the internal type_definitions_register attribute.
-         * 
-         * @param   project_file_structure used to initialize the internal project_file_structure attribute.
          */
         CommonFeatureAdoptionPlanGenerationEngine(
-            FunctionOverloadsRegister& function_overloads_register, 
             OverloadingResolutionEngine& overloading_resolution_engine,
-            TypeDefinitionsRegister& type_definitions_register,
-            ProjectFileStructure& project_file_structure
+            TypeDefinitionsRegister& type_definitions_register
         );
 
         /**
-         * @brief   This method is used to generate a common feature adoption plan for an unmatched function call.
-         *          Internally, all that it does is to call the 'generate_common_feature_adoption_iterating_over_arg_types'
+         * @brief   Used to generate a common feature adoption plan for an unmatched function call.
+         * 
+         * @details Internally, all that it does is to call the 'generate_common_feature_adoption_iterating_over_arg_types'
          *          method, passing the arguments types of the function call as an iterator.
          */
         CommonFeatureAdoptionPlanDescriptor generate_common_feature_adoption_plan(
@@ -78,12 +72,13 @@ class CommonFeatureAdoptionPlanGenerationEngine {
         );
 
         /**
-         * @brief    Used to generate a common feature adoption plan for an inline union.
+         * @brief    Used to generate a common-feature-adoption plan for a given function call
+         *           for wich the current argument that is being processed is an inline-union.
          * 
          * @details  The actual generation of the common-feature-adoption plan is delegated to the 
          *           generate_common_feature_adoption_for_current_multicase_arg method, wich requires 
          *           the alternatives of the union to be passed as an argument. The purpuse of this method
-         *           is to extract such alternatives. 
+         *           is to extract such alternatives and pass them to such method. 
          */
         CommonFeatureAdoptionPlanDescriptor generate_common_feature_adoption_for_inline_union(
             const FunctionCall& function_call, 
@@ -92,12 +87,13 @@ class CommonFeatureAdoptionPlanGenerationEngine {
         );
 
         /**
-         * @brief   This method is used to generate a common feature adoption plan for a custom type.
-         
-         * @details The actual generation of the common-feature-adoption plan is delegated to the 
-         *          generate_common_feature_adoption_for_custom_type' method, wich requires 
-         *          the alternatives of the custom type to be passed as an argument. The purpuse of this method
-         *          is to extract such alternatives. 
+         * @brief   Used to generate a common-feature-adoption plan for a given function call
+         *          for wich the current argument that is being processed is a custom-type.
+         * 
+         * @details Depending on the kind of the custom-type, this method will either 
+         *          keep going with the iteration calling 'generate_common_feature_adoption_iterating_over_arg_types'
+         *          with the next argument-type, or, in the case of a named-union, it will extract its
+         *          alternatives and pass them  'generate_common_feature_adoption_for_current_multicase_arg'.
          */
         CommonFeatureAdoptionPlanDescriptor generate_common_feature_adoption_for_custom_type(
             const FunctionCall& function_call, 
@@ -122,8 +118,15 @@ class CommonFeatureAdoptionPlanGenerationEngine {
             const std::vector<TypeSignature>& alternatives
         );
 
-        FunctionOverloadsRegister& function_overloads_register;
+        /**
+         * @brief   Used to attempt the retrieval of a function definition from the function-overloads-register
+         *          to end the common-feature-adoption plan generation process.
+         */
         OverloadingResolutionEngine& overloading_resolution_engine;
+        
+        /**
+         * @brief   Used to retrieve the fully-qualified name of a type-signature.
+         *          Such fully-qualified name is used as a key in the common-feature-adoption tree.
+         */
         TypeDefinitionsRegister& type_definitions_register;
-        ProjectFileStructure& project_file_structure;
 };

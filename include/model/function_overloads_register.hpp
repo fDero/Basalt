@@ -6,7 +6,6 @@
  * @date 2024-08-31
  * 
  * @copyright Copyright (c) 2024
- * 
  */
 
 #pragma once
@@ -34,7 +33,6 @@
  *          the correct overload set id from a function call.
  * 
  * @see     OverloadingResolutionEngine
- * 
  */
 class FunctionOverloadsRegister {
 

@@ -3,16 +3,12 @@
 #include "model/common_feature_adoption_plan_generation_engine.hpp"
 #include "errors/internal_errors.hpp"
 
-CommonFeatureAdoptionPlanGenerationEngine::CommonFeatureAdoptionPlanGenerationEngine(
-    FunctionOverloadsRegister& function_overloads_register, 
+CommonFeatureAdoptionPlanGenerationEngine::CommonFeatureAdoptionPlanGenerationEngine( 
     OverloadingResolutionEngine& overloading_resolution_engine,
-    TypeDefinitionsRegister& type_definitions_register,
-    ProjectFileStructure& project_file_structure
+    TypeDefinitionsRegister& type_definitions_register
 ) 
-    : function_overloads_register(function_overloads_register)
-    , overloading_resolution_engine(overloading_resolution_engine)
+    : overloading_resolution_engine(overloading_resolution_engine)
     , type_definitions_register(type_definitions_register)
-    , project_file_structure(project_file_structure) 
 { }
 
 CommonFeatureAdoptionPlanDescriptor 
@@ -123,5 +119,3 @@ CommonFeatureAdoptionPlanGenerationEngine::generate_common_feature_adoption_for_
     }
     return plan;
 }
-
-
