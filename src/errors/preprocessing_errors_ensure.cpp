@@ -122,6 +122,18 @@ void ensure_typesignature_is_numeric(const TypeSignature& type_signature) {
     }
 }
 
+void ensure_typesignature_is_either_numeric_or_generic(const TypeSignature& type_signature) {
+    if (!type_signature.is<PrimitiveType>() && !type_signature.is<TemplateType>()) {
+        throw InternalError("type must be numeric or generic");
+    }
+    if (type_signature.is<PrimitiveType>()) {
+        const PrimitiveType& primitive_type = type_signature.get<PrimitiveType>();
+        if (primitive_type.type_name != "Int" && primitive_type.type_name != "Float") {
+            throw InternalError("type must be numeric or generic");
+        }
+    }
+}
+
 void ensure_function_overload_was_successfully_retrieved(
     const FunctionCall& function_call,
     const std::optional<FunctionDefinition::Ref>& retrieved

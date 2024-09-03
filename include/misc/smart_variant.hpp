@@ -23,7 +23,6 @@
  * @see     Polymorph
  * 
  * @tparam Types The types that the variant can contain.
- * 
  */
 template <typename...Types>
 struct SmartVariant : public std::variant<Types...> {

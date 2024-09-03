@@ -21,7 +21,6 @@
  *          check the type of the stored object at runtime in O(1) time and to retrieve the stored object.
  *
  * @tparam  Interface The base class of the polymorphic types that will be stored in the Polymorph object. 
- 
  *  
  * @details The Polymorph class is a wrapper on top of std::shared_ptr that allows to store polymorphic types with 
  *          value semantics while still being able to access the underlying type. Moreover, it allows to
@@ -33,7 +32,6 @@
  *          destruct an object that does not involve calling its destructor directly. It's not recommended to
  *          exploit this behaviour, since the internal mechanism of this class is not guaranteed to stay the same
  *          forever, and it's better to always define a virtual destructor in the base class of the polymorphic types.
- * 
  */
 template<typename Interface>
 class Polymorph {

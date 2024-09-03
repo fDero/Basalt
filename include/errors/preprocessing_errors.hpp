@@ -114,6 +114,8 @@ void ensure_operator_kind_was_found(
 
 void ensure_typesignature_is_numeric(const TypeSignature& type_signature);
 
+void ensure_typesignature_is_either_numeric_or_generic(const TypeSignature& type_signature);
+
 void ensure_typesignature_is_boolean(const TypeSignature& type_signature);
 
 [[noreturn]] void throw_cannot_access_square_brackets_on_type(

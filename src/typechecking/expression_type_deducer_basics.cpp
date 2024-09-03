@@ -15,7 +15,9 @@ ExpressionTypeDeducer::ExpressionTypeDeducer(
     , scope_context(scope_context)
 {}
 
-[[nodiscard]] TypeSignature ExpressionTypeDeducer::deduce_expression_type(const Expression& expression) {    
+[[nodiscard]] std::optional<TypeSignature> ExpressionTypeDeducer::deduce_expression_type(
+    const Expression& expression
+) {    
     switch (expression.expression_kind()) {
         case ExpressionBody::Kind::bool_literal:          return deduce_primtive_type("Bool", expression);
         case ExpressionBody::Kind::int_literal:           return deduce_primtive_type("Int", expression);
@@ -34,25 +36,32 @@ ExpressionTypeDeducer::ExpressionTypeDeducer(
     assert_unreachable();
 }
 
-[[nodiscard]] TypeSignature ExpressionTypeDeducer::deduce_primtive_type(const std::string& type_name, const Expression& expression) {
+[[nodiscard]] std::optional<TypeSignature> ExpressionTypeDeducer::deduce_primtive_type(
+    const std::string& type_name, 
+    const Expression& expression
+) {
     return PrimitiveType(
         type_name, 
         expression.as_debug_informations_aware_entity()
     );
 }
 
-[[nodiscard]] TypeSignature ExpressionTypeDeducer::deduce_type_from_identifier(const Expression& expression) {
+[[nodiscard]] std::optional<TypeSignature> ExpressionTypeDeducer::deduce_type_from_identifier(const Expression& expression) {
     const TypeSignature& type = scope_context.get_local_object_type(expression.get<Identifier>().name);
     return type_definitions_register.unalias_type(type);
 }
 
-[[nodiscard]] TypeSignature ExpressionTypeDeducer::deduce_type_from_function_call(const Expression& expression) {
+[[nodiscard]] std::optional<TypeSignature> ExpressionTypeDeducer::deduce_type_from_function_call(const Expression& expression) {
     assert_expression_is<FunctionCall>(expression);
     const FunctionCall& function_call = expression.get<FunctionCall>();
     const std::vector<Expression>& arguments = function_call.arguments;
     std::vector<TypeSignature> argument_types;
     for (const Expression& argument : arguments) {
-        argument_types.push_back(deduce_expression_type(argument));
+        std::optional<TypeSignature> argument_type = deduce_expression_type(argument);
+        if (!argument_type.has_value()) {
+            return std::nullopt;
+        }
+        argument_types.push_back(argument_type.value());
     }
     FunctionDefinition::Ref retrieved = overloading_resolution_engine.retrieve_function_definition(function_call, argument_types);
     ensure_function_overload_was_successfully_retrieved(function_call, retrieved);
@@ -61,7 +70,7 @@ ExpressionTypeDeducer::ExpressionTypeDeducer(
     return type_definitions_register.unalias_type(type);
 }
 
-[[nodiscard]] TypeSignature ExpressionTypeDeducer::deduce_type_from_type_operator(const Expression& expression) {
+[[nodiscard]] std::optional<TypeSignature> ExpressionTypeDeducer::deduce_type_from_type_operator(const Expression& expression) {
     assert_expression_is<TypeOperator>(expression);
     const TypeOperator& type_operator = expression.get<TypeOperator>();
     const TypeSignature& operand_type = type_operator.typesignature;
@@ -75,7 +84,7 @@ ExpressionTypeDeducer::ExpressionTypeDeducer(
     }
 }
 
-[[nodiscard]] TypeSignature ExpressionTypeDeducer::deduce_type_from_binary_operator(const Expression& expression) {
+[[nodiscard]] std::optional<TypeSignature> ExpressionTypeDeducer::deduce_type_from_binary_operator(const Expression& expression) {
     assert_expression_is<BinaryOperator>(expression);
     const BinaryOperator& binary_operator = expression.get<BinaryOperator>();
     auto operator_kind_search_outcome = operator_kinds.find(binary_operator.operator_text);
@@ -101,7 +110,7 @@ ExpressionTypeDeducer::ExpressionTypeDeducer(
     }
 }
 
-[[nodiscard]] TypeSignature ExpressionTypeDeducer::deduce_type_from_unary_operator(const Expression& expression) {
+[[nodiscard]] std::optional<TypeSignature> ExpressionTypeDeducer::deduce_type_from_unary_operator(const Expression& expression) {
     assert_expression_is<UnaryOperator>(expression);
     const UnaryOperator& unary_operator = expression.get<UnaryOperator>();
     auto operator_kind_search_outcome = operator_kinds.find(unary_operator.operator_text);

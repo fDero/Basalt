@@ -65,13 +65,18 @@ void FunctionDefinitionValidator::validate_return_statement(
     bool is_returning_function = function_definition.return_type.has_value();
     bool return_statement_has_value = return_statement.return_value.has_value();
     ensure_return_statement_is_congruent_to_function_definition(is_returning_function, return_statement_has_value);
-    if (is_returning_function){
-        ExpressionTypeDeducer expression_type_deducer(type_definitions_register, overloading_resolution_engine, project_file_structure, scope_context);
-        TypeSignature returned_value_type = expression_type_deducer.deduce_expression_type(*return_statement.return_value);
-        AssignmentTypeChecker assignment_type_checker(type_definitions_register, project_file_structure);
-        bool assignment_is_valid = assignment_type_checker.validate_assignment(returned_value_type, *function_definition.return_type);
-        ensure_return_value_type_is_congruent_to_function_definition(assignment_is_valid, returned_value_type, function_definition, return_statement);
+    if (!is_returning_function){
+        return;
     }
+    ExpressionTypeDeducer expression_type_deducer(type_definitions_register, overloading_resolution_engine, project_file_structure, scope_context);
+    std::optional<TypeSignature> returned_value_type_opt = expression_type_deducer.deduce_expression_type(*return_statement.return_value);
+    if (!returned_value_type_opt.has_value()) {
+        return;
+    }
+    const TypeSignature& returned_value_type = returned_value_type_opt.value();
+    AssignmentTypeChecker assignment_type_checker(type_definitions_register, project_file_structure);
+    bool assignment_is_valid = assignment_type_checker.validate_assignment(returned_value_type, *function_definition.return_type);
+    ensure_return_value_type_is_congruent_to_function_definition(assignment_is_valid, returned_value_type, function_definition, return_statement);
 }
 
 void FunctionDefinitionValidator::validate_conditional(
@@ -80,8 +85,11 @@ void FunctionDefinitionValidator::validate_conditional(
     ScopeContext& scope_context
 ) {
     ExpressionTypeDeducer expression_type_deducer(type_definitions_register, overloading_resolution_engine, project_file_structure, scope_context);
-    TypeSignature condition_type = expression_type_deducer.deduce_expression_type(conditional.condition);
-    ensure_typesignature_is_boolean(condition_type);
+    std::optional<TypeSignature> condition_type_opt = expression_type_deducer.deduce_expression_type(conditional.condition);
+    if (!condition_type_opt.has_value()) {
+        const TypeSignature& condition_type = condition_type_opt.value();
+        ensure_typesignature_is_boolean(condition_type);
+    }
     ScopeContext then_scope = scope_context.create_nested_scope(ScopeContext::ScopeKind::conditional_scope);
     ScopeContext else_scope = scope_context.create_nested_scope(ScopeContext::ScopeKind::conditional_scope);
     for (const auto& statement : conditional.then_brench) {
@@ -98,8 +106,11 @@ void FunctionDefinitionValidator::validate_while_loop(
     ScopeContext& scope_context
 ) {
     ExpressionTypeDeducer expression_type_deducer(type_definitions_register, overloading_resolution_engine, project_file_structure, scope_context);
-    TypeSignature condition_type = expression_type_deducer.deduce_expression_type(while_loop.condition);
-    ensure_typesignature_is_boolean(condition_type);
+    std::optional<TypeSignature> condition_type_opt = expression_type_deducer.deduce_expression_type(while_loop.condition);
+    if (!condition_type_opt.has_value()) {
+        const TypeSignature& condition_type = condition_type_opt.value();
+        ensure_typesignature_is_boolean(condition_type);
+    }
     ScopeContext loop_scope = scope_context.create_nested_scope(ScopeContext::ScopeKind::loop_scope);
     for (const auto& statement : while_loop.loop_body) {
         validate_function_body_statement(statement, function_definition, loop_scope);
@@ -112,8 +123,11 @@ void FunctionDefinitionValidator::validate_until_loop(
     ScopeContext& scope_context
 ) {
     ExpressionTypeDeducer expression_type_deducer(type_definitions_register, overloading_resolution_engine, project_file_structure, scope_context);
-    TypeSignature condition_type = expression_type_deducer.deduce_expression_type(until_loop.condition);
-    ensure_typesignature_is_boolean(condition_type);
+    std::optional<TypeSignature> condition_type_opt = expression_type_deducer.deduce_expression_type(until_loop.condition);
+    if (!condition_type_opt.has_value()) {
+        const TypeSignature& condition_type = condition_type_opt.value();
+        ensure_typesignature_is_boolean(condition_type);
+    }
     ScopeContext loop_scope = scope_context.create_nested_scope(ScopeContext::ScopeKind::loop_scope);
     for (const auto& statement : until_loop.loop_body) {
         validate_function_body_statement(statement, function_definition, loop_scope);
@@ -129,7 +143,11 @@ void FunctionDefinitionValidator::validate_function_call(
     const std::vector<Expression>& arguments = function_call.arguments;
     std::vector<TypeSignature> arguments_types;
     for (const Expression& argument : arguments) {
-        TypeSignature argument_type = expression_type_deducer.deduce_expression_type(argument);
+        std::optional<TypeSignature> argument_type_opt = expression_type_deducer.deduce_expression_type(argument);
+        if (!argument_type_opt.has_value() || argument_type_opt.value().is<TemplateType>()) {
+            return;
+        }
+        const TypeSignature& argument_type = argument_type_opt.value();
         arguments_types.push_back(argument_type);
     }
     FunctionDefinition::Ref retrieved = overloading_resolution_engine.retrieve_function_definition(function_call, arguments_types);
