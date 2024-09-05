@@ -65,7 +65,7 @@
     const Token& array_length_token = *(iterator++);
     assert_token_matches(source_tokens, iterator++, "]");
     const TypeSignature array_stored_type = parse_typesignature();
-    int array_length = std::stoi(array_length_token.sourcetext);
+    size_t array_length = std::stoull(array_length_token.sourcetext);
     return ArrayType { array_square_bracket_token, array_length, array_stored_type };
 }
 

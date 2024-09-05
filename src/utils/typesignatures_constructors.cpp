@@ -49,7 +49,7 @@ PointerType::PointerType(
 
 ArrayType::ArrayType(
     const DebugInformationsAwareEntity& array_open_square_bracket_token,
-    int length, 
+    size_t length, 
     const TypeSignature& stored
 ) 
     : TypeSignatureBody(array_open_square_bracket_token) 

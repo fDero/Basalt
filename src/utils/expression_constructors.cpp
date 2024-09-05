@@ -23,7 +23,7 @@ DotMemberAccess::DotMemberAccess(
 {}
 
 ArrayLiteral::ArrayLiteral(
-    int length,
+    std::optional<size_t> length,
     const TypeSignature& type,
     const std::vector<Expression>& elements,
     const DebugInformationsAwareEntity& debug_info

@@ -86,7 +86,7 @@ std::string TypeDefinitionsRegister::get_fully_qualified_typesignature_name(cons
         case TypeSignatureBody::Kind::array_type: {
             const TypeSignature& stored_type = type_signature.get<ArrayType>().stored_type;
             const ArrayType& array_type = type_signature.get<ArrayType>();
-            std::string array_size_section = "[" + ((array_type.array_length == -1)? "" : std::to_string(array_type.array_length)) + "]";
+            std::string array_size_section = "[" + std::to_string(array_type.array_length) + "]";
             return array_size_section + get_fully_qualified_typesignature_name(stored_type);
         }
         case TypeSignatureBody::Kind::primitive_type: return type_signature.get<PrimitiveType>().type_name;
@@ -168,7 +168,7 @@ std::string TypeDefinitionsRegister::get_fully_qualified_typesignature_name(cons
         case TypeSignatureBody::Kind::array_type: {
             const TypeSignature& stored_type = type_signature.get<ArrayType>().stored_type;
             const ArrayType& array_type = type_signature.get<ArrayType>();
-            std::string array_size_section = "[" + ((array_type.array_length == -1)? "" : std::to_string(array_type.array_length)) + "]";
+            std::string array_size_section = "[" + std::to_string(array_type.array_length) + "]";
             return array_size_section + infer_possible_fully_qualified_typesignature_name(package_name, stored_type);
         }
         case TypeSignatureBody::Kind::primitive_type: return type_signature.get<PrimitiveType>().type_name;

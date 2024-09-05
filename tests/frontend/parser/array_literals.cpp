@@ -15,7 +15,7 @@ TEST(Parsing, Array_Literal_Without_Explicit_Size) {
     Parser parser = Parser({ "inline-tests.basalt", tokens });
     Expression expr = parser.parse_expression();
     ASSERT_TRUE(expr.is<ArrayLiteral>());
-    EXPECT_EQ(expr.get<ArrayLiteral>().array_length, -1);
+    EXPECT_FALSE(expr.get<ArrayLiteral>().array_length.has_value());
     EXPECT_TRUE(expr.get<ArrayLiteral>().elements.empty());
     ASSERT_TRUE(expr.get<ArrayLiteral>().stored_type.is<CustomType>());
     EXPECT_EQ(expr.get<ArrayLiteral>().stored_type.get<CustomType>().type_name, "Ent");
@@ -38,7 +38,7 @@ TEST(Parsing, Array_Literal_Of_Generic_StoredType_Without_Explicit_Size) {
     Parser parser = Parser({ "inline-tests.basalt", tokens });
     Expression expr = parser.parse_expression();
     ASSERT_TRUE(expr.is<ArrayLiteral>());
-    EXPECT_EQ(expr.get<ArrayLiteral>().array_length, -1);
+    EXPECT_FALSE(expr.get<ArrayLiteral>().array_length.has_value());
     EXPECT_TRUE(expr.get<ArrayLiteral>().elements.empty());
     ASSERT_TRUE(expr.get<ArrayLiteral>().stored_type.is<CustomType>());
     EXPECT_EQ(expr.get<ArrayLiteral>().stored_type.get<CustomType>().type_name, "Pair");
@@ -70,14 +70,14 @@ TEST(Parsing, Nested_Array_Literals_Without_Explicit_Size_And_Incorrect_Type) {
     Parser parser = Parser({ "inline-tests.basalt", tokens });
     Expression expr = parser.parse_expression();
     ASSERT_TRUE(expr.is<ArrayLiteral>());
-    EXPECT_EQ(expr.get<ArrayLiteral>().array_length, -1);
+    EXPECT_FALSE(expr.get<ArrayLiteral>().array_length.has_value());
     EXPECT_EQ(expr.get<ArrayLiteral>().elements.size(), 2);
     ASSERT_TRUE(expr.get<ArrayLiteral>().stored_type.is<PrimitiveType>());
     EXPECT_EQ(expr.get<ArrayLiteral>().stored_type.get<PrimitiveType>().type_name, "Int");
 
     for (Expression inner_array : expr.get<ArrayLiteral>().elements) {
         ASSERT_TRUE(inner_array.is<ArrayLiteral>());
-        EXPECT_EQ(inner_array.get<ArrayLiteral>().array_length, -1);
+        EXPECT_FALSE(inner_array.get<ArrayLiteral>().array_length.has_value());
         EXPECT_TRUE(inner_array.get<ArrayLiteral>().elements.empty());
         ASSERT_TRUE(inner_array.get<ArrayLiteral>().stored_type.is<PrimitiveType>());
         EXPECT_EQ(inner_array.get<ArrayLiteral>().stored_type.get<PrimitiveType>().type_name, "Int");
@@ -116,7 +116,7 @@ TEST(Parsing, Nested_Array_Literals_With_Explicit_Size_And_Correct_Type) {
 
     for (Expression inner_array : expr.get<ArrayLiteral>().elements) {
         ASSERT_TRUE(inner_array.is<ArrayLiteral>());
-        EXPECT_EQ(inner_array.get<ArrayLiteral>().array_length, -1);
+        EXPECT_FALSE(inner_array.get<ArrayLiteral>().array_length.has_value());
         EXPECT_TRUE(inner_array.get<ArrayLiteral>().elements.empty());
         ASSERT_TRUE(inner_array.get<ArrayLiteral>().stored_type.is<PrimitiveType>());
         EXPECT_EQ(inner_array.get<ArrayLiteral>().stored_type.get<PrimitiveType>().type_name, "Int");
@@ -136,13 +136,14 @@ TEST(Parsing, Square_Bracket_Access_On_Array_Literal) {
     };
     Parser parser = Parser({ "inline-tests.basalt", tokens });
     Expression expr = parser.parse_expression();
+
     ASSERT_TRUE(expr.is<SquareBracketsAccess>());
     
     Expression array_literal = expr.get<SquareBracketsAccess>().storage;
     Expression index = expr.get<SquareBracketsAccess>().index;
 
     ASSERT_TRUE(array_literal.is<ArrayLiteral>());
-    EXPECT_EQ(array_literal.get<ArrayLiteral>().array_length, -1);
+    EXPECT_FALSE(array_literal.get<ArrayLiteral>().array_length.has_value());
     EXPECT_TRUE(array_literal.get<ArrayLiteral>().elements.empty());
     ASSERT_TRUE(array_literal.get<ArrayLiteral>().stored_type.is<PrimitiveType>());
     EXPECT_EQ(array_literal.get<ArrayLiteral>().stored_type.get<PrimitiveType>().type_name, "Int");

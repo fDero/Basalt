@@ -156,7 +156,7 @@ struct ArrayLiteral : public ExpressionBody {
     virtual ~ArrayLiteral() = default;
 
     ArrayLiteral(
-        int length,
+        std::optional<size_t> length,
         const TypeSignature& type,
         const std::vector<Expression>& elements,
         const DebugInformationsAwareEntity& debug_info
@@ -164,7 +164,7 @@ struct ArrayLiteral : public ExpressionBody {
 
     [[nodiscard]] ExpressionBody::Kind expression_kind() const override;
 
-    int array_length;
+    std::optional<size_t> array_length;
     TypeSignature stored_type;
     std::vector<Expression> elements;
 

@@ -20,7 +20,7 @@ inline bool is_pointer_to_primitive_type(const TypeSignature& ts, const std::str
         ts.get<PointerType>().pointed_type.get<PrimitiveType>().type_name == type_name;
 }
 
-inline bool is_array_of_primitive_type_of_size_n(const TypeSignature& ts, const std::string& type_name, int n) {
+inline bool is_array_of_primitive_type_of_size_n(const TypeSignature& ts, const std::string& type_name, size_t n) {
     return 
         ts.is<ArrayType>() && ts.get<ArrayType>().array_length == n && 
         ts.get<ArrayType>().stored_type.is<PrimitiveType>() &&

@@ -9,10 +9,10 @@
     const Token& array_token = *iterator;
     assert_token_matches(source_tokens, iterator++, "[");
     ensure_there_are_still_tokens(source_tokens, iterator);
-    int array_length = -1;
+    std::optional<size_t> array_length = std::nullopt;
     if (iterator->sourcetext != "]") {
         ensure_token_is_fixed_array_length(source_tokens, iterator);
-        array_length = std::stoi(iterator->sourcetext);
+        array_length = std::stoull(iterator->sourcetext);
         iterator++;
     }
     assert_token_matches(source_tokens, iterator++, "]");

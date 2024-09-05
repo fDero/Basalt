@@ -100,7 +100,7 @@ struct TypeSignatureFactory {
         };
     }
 
-    static TypeSignature make_array_type(const TypeSignature& stored, int length) {
+    static TypeSignature make_array_type(const TypeSignature& stored, size_t length) {
         return ArrayType { 
             Token { "[", "test.basalt", 1, 1, 1, Token::Type::type }, 
             length,

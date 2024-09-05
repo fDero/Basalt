@@ -204,12 +204,12 @@ struct PointerType : public TypeSignatureBody {
  */
 struct ArrayType : public TypeSignatureBody {
     
-    ArrayType(const DebugInformationsAwareEntity& array_open_square_bracket_token, int length, const TypeSignature& stored);
+    ArrayType(const DebugInformationsAwareEntity& array_open_square_bracket_token, size_t length, const TypeSignature& stored);
 
     [[nodiscard]] virtual TypeSignatureBody::Kind typesiganture_kind() const;
     [[nodiscard]] bool is_generic() const override;
 
-    int array_length;
+    size_t array_length;
     TypeSignature stored_type;
 };
 
