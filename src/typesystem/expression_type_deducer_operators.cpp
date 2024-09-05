@@ -5,10 +5,9 @@
 #include "errors/preprocessing_errors.hpp"
 #include "errors/internal_errors.hpp"
 
-#include <iostream>
-
 [[nodiscard]] std::optional<TypeSignature> ExpressionTypeDeducer::deduce_address_operator_type(const UnaryOperator& expression) {
     assert_unary_operator_is(expression, address_operator);
+    ensure_not_tryng_to_dereference_a_literal(expression);
     std::optional<TypeSignature> operand_type = deduce_expression_type(expression.operand);
     return (operand_type.has_value())
         ? std::optional<TypeSignature>( PointerType { expression.as_debug_informations_aware_entity(), operand_type.value() } )

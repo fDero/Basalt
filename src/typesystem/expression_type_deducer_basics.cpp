@@ -3,8 +3,6 @@
 #include "errors/preprocessing_errors.hpp"
 #include "errors/internal_errors.hpp"
 
-#include <iostream>
-
 ExpressionTypeDeducer::ExpressionTypeDeducer(
     TypeDefinitionsRegister& program_representation,
     OverloadingResolutionEngine& overloading_resolution_engine,

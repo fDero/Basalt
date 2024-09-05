@@ -75,28 +75,34 @@ inline void ensure_no_multiple_ambiguous_candidate_function_overloads_have_been_
 template <typename T>
 inline void ensure_typesignature_is(const TypeSignature& type_signature) {
     if (!type_signature.is<T>()) {
-        throw InternalError(std::string("type must be ") + typeid(T).name());
+        throw std::runtime_error(std::string("type must be ") + typeid(T).name());
     }
 }
 
 template <typename T>
 inline void ensure_expression_is(const Expression& expression) {
     if (!expression.is<T>()) {
-        throw InternalError(std::string("expression must be ") + typeid(T).name());
+        throw std::runtime_error(std::string("expression must be ") + typeid(T).name());
     }
 }
 
 template <typename T>
 inline void ensure_type_definition_is(const TypeDefinition& tdef) {
     if (!tdef.is<T>()) {
-        throw InternalError(std::string("type must be ") + typeid(T).name());
+        throw std::runtime_error(std::string("type must be ") + typeid(T).name());
     }
 }
 
 template <typename T>
 inline void ensure_statement_is(const Statement& statement) {
     if (!statement.is<T>()) {
-        throw InternalError(std::string("statement must be ") + typeid(T).name());
+        throw std::runtime_error(std::string("statement must be ") + typeid(T).name());
+    }
+}
+
+inline void ensure_not_tryng_to_dereference_a_literal(const Expression& expression) {
+    if (expression.is_literal()) {
+        throw std::runtime_error("tryng to dereference a literal");
     }
 }
 

@@ -32,8 +32,7 @@ ProjectFileStructure single_file_project_with_multiple_union_defs({
                     TypeSignatureFactory::Bool,
                     TypeSignatureFactory::String,
                     TypeSignatureFactory::RawString,
-                    TypeSignatureFactory::Char,
-                    TypeSignatureFactory::Byte
+                    TypeSignatureFactory::Char
                 }
             ),
             UnionDefinitionFactory::make_union_definition(

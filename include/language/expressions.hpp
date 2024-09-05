@@ -36,11 +36,11 @@ struct ExpressionBody : public DebugInformationsAwareEntity {
 
     enum class Kind {
         function_call,
-        array_literal,
         type_operator,
         binary_operator,
         unary_operator,
         identifier,
+        array_literal,
         string_literal,
         float_literal,
         char_literal,
@@ -51,7 +51,6 @@ struct ExpressionBody : public DebugInformationsAwareEntity {
     };
 
     virtual Kind expression_kind() const = 0;
-
     virtual ~ExpressionBody() = default;
 
     ExpressionBody(const DebugInformationsAwareEntity& debug_info)
@@ -75,13 +74,12 @@ class Expression : public Polymorph<ExpressionBody> {
         using Polymorph<ExpressionBody>::get;
         using Polymorph<ExpressionBody>::Polymorph;
 
-        void wrap_in_parenthesis() { wrapped_in_parenthesis = true; }
-        [[nodiscard]] bool is_wrapped_in_in_parenthesis() const { return wrapped_in_parenthesis; }
-        [[nodiscard]] ExpressionBody::Kind expression_kind() const;
+        void wrap_in_parenthesis();
 
-        const DebugInformationsAwareEntity& as_debug_informations_aware_entity() const {
-            return ptr->as_debug_informations_aware_entity();
-        }
+        [[nodiscard]] bool is_wrapped_in_in_parenthesis() const;
+        [[nodiscard]] bool is_literal() const;
+        [[nodiscard]] ExpressionBody::Kind expression_kind() const;
+        [[nodiscard]] const DebugInformationsAwareEntity& as_debug_informations_aware_entity() const;
 
     private:
         bool wrapped_in_parenthesis = false;

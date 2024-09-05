@@ -138,5 +138,5 @@ inline const std::map<std::string, Token::Type> keywords {
 inline const std::set<std::string> primitive_types {
     "Int", "Float", "Bool",
     "String", "Char", 
-    "RawString", "Byte"
+    "RawString"
 };
