@@ -23,6 +23,22 @@ TypeDefinitionsRegister::get_all_type_definitions() {
     return type_definitions;
 }
 
+void TypeDefinitionsRegister::verify_that_the_type_exists(const TypeSignature& type_signature) {
+    switch (type_signature.typesiganture_kind()) {
+        break; case TypeSignatureBody::Kind::pointer_type:   verify_that_the_type_exists(type_signature.get<PointerType>().pointed_type);
+        break; case TypeSignatureBody::Kind::array_type:     verify_that_the_type_exists(type_signature.get<ArrayType>().stored_type);
+        break; case TypeSignatureBody::Kind::slice_type:     verify_that_the_type_exists(type_signature.get<SliceType>().stored_type);
+        break; case TypeSignatureBody::Kind::custom_type:    std::ignore = retrieve_type_definition(type_signature.get<CustomType>());
+        break; case TypeSignatureBody::Kind::template_type:  return;
+        break; case TypeSignatureBody::Kind::primitive_type: return;
+        break; case TypeSignatureBody::Kind::inline_union: {    
+            for (const TypeSignature& alternative : type_signature.get<InlineUnion>().alternatives) {
+                verify_that_the_type_exists(alternative);
+            }
+        }
+    }
+}
+
 void TypeDefinitionsRegister::store_type_definition(const TypeDefinition& type_def) {
     const std::string package_name = project_file_structure.get_package_name_by_file_name(type_def.get_filename());
     const std::string match_pattern = get_type_definition_match_pattern(package_name, type_def);

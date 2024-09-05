@@ -31,11 +31,10 @@
 class TypeDependencyNavigator {
 
     public:
-        TypeDependencyNavigator(TypeDefinitionsRegister& program_representation);
+        TypeDependencyNavigator(TypeDefinitionsRegister& type_definition_register);
         void visit_struct_definition(const StructDefinition& struct_definition);
         void visit_union_definition(const UnionDefinition& union_definition);
         void visit_type_definition(const TypeDefinition& type_definition);
-        void verify_that_the_type_exists(const TypeSignature& type_signature);
 
     private:
         void visit_type_definition(

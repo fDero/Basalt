@@ -35,6 +35,7 @@ class TypeDefinitionsRegister {
         [[nodiscard]] std::string get_fully_qualified_typesignature_name(const TypeSignature& type_signature);
         [[nodiscard]] TypeSignature unalias_type(const TypeSignature& type_signature);
         [[nodiscard]] std::unordered_map<std::string, TypeDefinition>& get_all_type_definitions();
+        void verify_that_the_type_exists(const TypeSignature& type_signature);
 
     protected:
          

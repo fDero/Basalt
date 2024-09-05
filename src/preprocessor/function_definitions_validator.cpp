@@ -28,8 +28,7 @@ void FunctionDefinitionValidator::validate_all_function_definitions() {
 
 void FunctionDefinitionValidator::validate_function_definition(const FunctionDefinition& function_definition) {
     for (const auto& argument : function_definition.arguments) {
-        TypeDependencyNavigator type_dependency_navigator(type_definitions_register);
-        type_dependency_navigator.verify_that_the_type_exists(argument.arg_type);
+        type_definitions_register.verify_that_the_type_exists(argument.arg_type);
     }
     ScopeContext scope_context(function_definition.arguments);
     for (const auto& statement : function_definition.code) {
@@ -158,8 +157,7 @@ void FunctionDefinitionValidator::validate_variable_declaration(
     const VariableDeclaration& variable_declaration,
     ScopeContext& scope_context
 ) {
-    TypeDependencyNavigator type_dependency_navigator(type_definitions_register);
-    type_dependency_navigator.verify_that_the_type_exists(variable_declaration.typesignature);
+    type_definitions_register.verify_that_the_type_exists(variable_declaration.typesignature);
     scope_context.store_local_variable(variable_declaration);
 }
 
@@ -167,7 +165,6 @@ void FunctionDefinitionValidator::validate_const_declaratuion(
     const ConstDeclaration& const_declaration,
     ScopeContext& scope_context
 ) {
-    TypeDependencyNavigator type_dependency_navigator(type_definitions_register);
-    type_dependency_navigator.verify_that_the_type_exists(const_declaration.typesignature);
+    type_definitions_register.verify_that_the_type_exists(const_declaration.typesignature);
     scope_context.store_local_constant(const_declaration);
 }
