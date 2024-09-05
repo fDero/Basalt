@@ -48,7 +48,7 @@ PointerType::PointerType(
     , pointed_type(pointed) {}
 
 ArrayType::ArrayType(
-    const Token& array_open_square_bracket_token,
+    const DebugInformationsAwareEntity& array_open_square_bracket_token,
     int length, 
     const TypeSignature& stored
 ) 

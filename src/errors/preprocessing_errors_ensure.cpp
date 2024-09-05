@@ -106,6 +106,34 @@ void ensure_numeric_types_are_equal(
     }
 }
 
+void ensure_template_types_are_equal(
+    const TypeSignature& left_operand_type,
+    const TypeSignature& right_operand_type
+) {
+    assert_typesignature_is<TemplateType>(left_operand_type);
+    assert_typesignature_is<TemplateType>(right_operand_type);
+    const TemplateType& left_primitive = left_operand_type.get<TemplateType>();
+    const TemplateType& right_primitive = right_operand_type.get<TemplateType>();
+    if (left_primitive.type_name != right_primitive.type_name) {
+        throw InternalError("numeric types are not equal");
+    }
+}
+
+void ensure_numeric_or_generics_types_are_equal(
+    const TypeSignature& left_operand_type,
+    const TypeSignature& right_operand_type
+) {
+    if (left_operand_type.is<PrimitiveType>() && right_operand_type.is<PrimitiveType>()) {
+        ensure_numeric_types_are_equal(left_operand_type, right_operand_type);
+        return;
+    }
+    if (left_operand_type.is<TemplateType>() && right_operand_type.is<TemplateType>()) {
+        ensure_template_types_are_equal(left_operand_type, right_operand_type);
+        return;
+    }
+    throw std::runtime_error("types are not equal");
+}
+
 void ensure_typesignature_is_boolean(const TypeSignature& type_signature) {
     if (!type_signature.is<PrimitiveType>() || type_signature.get<PrimitiveType>().type_name != "Bool") {
         throw InternalError("type must be Bool");

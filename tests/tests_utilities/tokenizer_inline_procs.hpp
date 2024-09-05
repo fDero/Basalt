@@ -1,9 +1,9 @@
 
 #pragma once
 #include <gtest/gtest.h>
-#include "../../include/frontend/tokenizer.hpp"
-#include "../../include/errors/internal_errors.hpp"
-#include "../../include/errors/parsing_errors.hpp"
+#include "frontend/tokenizer.hpp"
+#include "errors/internal_errors.hpp"
+#include "errors/parsing_errors.hpp"
 
 inline std::pair<std::vector<std::string>, std::string> 
     make_testable_input(const std::vector<std::string>& tokens_text) {

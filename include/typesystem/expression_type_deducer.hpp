@@ -43,6 +43,7 @@ class ExpressionTypeDeducer {
 
         [[nodiscard]] std::optional<TypeSignature> deduce_expression_type(const Expression& expression);
         [[nodiscard]] std::optional<TypeSignature> deduce_primtive_type(const std::string& type_name, const Expression& expression);
+        [[nodiscard]] std::optional<TypeSignature> deduce_type_from_array_literal(const Expression& expression);
         [[nodiscard]] std::optional<TypeSignature> deduce_type_from_identifier(const Expression& expression);
         [[nodiscard]] std::optional<TypeSignature> deduce_type_from_function_call(const Expression& expression);
         [[nodiscard]] std::optional<TypeSignature> deduce_type_from_type_operator(const Expression& expression);

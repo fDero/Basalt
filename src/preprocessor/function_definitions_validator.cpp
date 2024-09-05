@@ -163,7 +163,6 @@ void FunctionDefinitionValidator::validate_variable_declaration(
     scope_context.store_local_variable(variable_declaration);
 }
 
-
 void FunctionDefinitionValidator::validate_const_declaratuion(
     const ConstDeclaration& const_declaration,
     ScopeContext& scope_context

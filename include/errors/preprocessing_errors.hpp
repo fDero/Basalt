@@ -144,6 +144,16 @@ void ensure_numeric_types_are_equal(
     const TypeSignature& right_operand_type
 );
 
+void ensure_template_types_are_equal(
+    const TypeSignature& left_operand_type,
+    const TypeSignature& right_operand_type
+);
+
+void ensure_numeric_or_generics_types_are_equal(
+    const TypeSignature& left_operand_type,
+    const TypeSignature& right_operand_type
+);
+
 void assert_number_of_arguments_match(
     FunctionDefinition::Ref function_definition,
     const std::vector<TypeSignature>& arg_types

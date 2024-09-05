@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include "forward_declarations.hpp"
+#include "misc/forward_declarations.hpp"
 
 #include <memory>
 #include <string>
