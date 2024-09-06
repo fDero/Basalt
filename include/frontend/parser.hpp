@@ -1,12 +1,3 @@
-/**
- * @file parser.hpp
- * @author Francesco De Rosa (francescodero@outlook.it)
- * @brief This file contains the definition of the Parser class 
- * @version 0.1
- * @date 2024-09-01
- * 
- * @copyright Copyright (c) 2024
- */
 
 #pragma once
 
@@ -25,18 +16,6 @@
 #include "language/functions.hpp"
 #include "language/expressions.hpp"
 
-/**
- * @brief Used to create a FileRepresentation from a TokenizedFile. 
- * 
- * @details The Parser class is used to create a FileRepresentation from a TokenizedFile, the process of
- *          transforming a TokenizedFile into a FileRepresentation is called parsing. The Parser class
- *          implements a recursive descent parser, wich is a kind of top-down LL parser. The grammar itself
- *          is encoded in the structure of the Parser class, and the parsing process is done by calling
- *          the parse_everything() method.
- * 
- * @note    Since the parser class has decide weather to parse a TypeSignature as a TemplateType or a CustomType,
- *          it needs to keep track of the template generics encountered so far, making it stateful and not stateless.
- */
 class Parser {
 
     public:

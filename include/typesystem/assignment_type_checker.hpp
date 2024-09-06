@@ -1,12 +1,3 @@
-/**
- * @file assignment_type_checker.hpp
- * @author Francesco De Rosa (francescodero@outlook.it)
- * @brief The AssignmentTypeChecker class is used to validate assignments between types
- * @version 0.1
- * @date 2024-08-31
- * 
- * @copyright Copyright (c) 2024
- */
 
 #pragma once
 
@@ -14,17 +5,6 @@
 #include "model/project_file_structure.hpp"
 #include "typesystem/generics_substitution_rules.hpp"
 
-/**
- * @brief   Used to validate assignments between types, while also performing 
- *          type-inference when assigning to generic types.
- * 
- * @details The AssignmentTypeChecker class is used to validate assignments between types.
- *          It is also capable of performing type-inference when assigning to generic types. 
- *          It is a statefull class that keeps track of the type-inference constraints that
- *          it encounters during the validation process. It returns true/false based on the
- *          success of the validation process, and it also provides a way to retrieve the
- *          type-inference constraints that were generated during the validation process.
- */
 class AssignmentTypeChecker {
 
     public:

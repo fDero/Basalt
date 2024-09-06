@@ -1,12 +1,3 @@
-/**
- * @file commandline.hpp
- * @author Francesco De Rosa (francescodero@outlook.it)
- * @brief This file contains the definition of the CommandLineController class
- * @version 0.1
- * @date 2024-09-01
- * 
- * @copyright Copyright (c) 2024
- */
 
 #pragma once
 
@@ -15,21 +6,6 @@
 
 #include "misc/file_extensions.hpp"
 
-/**
- * @brief   Used to interpret the command line arguments and to dispatch the execution to the right 
- *          component (compiler, interpreter, etc.) setting it up with the right parameters.
- * 
- * @details The CommandLineController class is used to interpret the command line arguments and to
- *          dispatch the execution to the right component (compiler, interpreter, etc.) setting it
- *          up with the right parameters. It encapsulates its own commandline arguments parser, and
- *          it performs some minor validation on the input files and output files 
- *          (e.g. checking their existence and that their name contains correct file extensions).
- * 
- * @note    Currently, the only supported command line flags are: 
- *          --compile, --output, --help, --version, -c, -o, -h, -v.
- * 
- * @see     Compiler
- */
 class CommandLineController {
 
     public: 

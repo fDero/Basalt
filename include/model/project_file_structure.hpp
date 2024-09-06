@@ -1,12 +1,3 @@
-/**
- * @file project_file_structure.hpp
- * @author Francesco De Rosa (francescodero@outlook.it)
- * @brief This file contains the definition of the ProjectFileStructure class
- * @version 0.1
- * @date 2024-08-31
- * 
- * @copyright Copyright (c) 2024
- */
 
 #pragma once
 
@@ -16,14 +7,6 @@
 
 #include "frontend/file_representation.hpp"
 
-/**
- * @brief   Used to keep-track of the file structure of the codebase that is being compiled.
- *          It is used to enable easy access to the files, their packages and their dependencies.
- * 
- * @details The ProjectFileStructure is used to keep-track of the file structure of the codebase that is being compiled.
- *          It is used to enable easy access to the files, their packages and their dependencies, and it's used by
- *          most of the classes in the preprocessing and model modules.
- */
 class ProjectFileStructure {
 
     public:

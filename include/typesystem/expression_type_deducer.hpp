@@ -1,12 +1,3 @@
-/**
- * @file expression_type_deducer.hpp
- * @author Francesco De Rosa (francescodero@outlook.it)
- * @brief This file contains the definition of the ExpressionTypeDeducer class
- * @version 0.1
- * @date 2024-08-31
- * 
- * @copyright Copyright (c) 2024
- */
 
 #pragma once
 
@@ -15,21 +6,6 @@
 #include "model/project_file_structure.hpp"
 #include "model/scope_context.hpp"
 
-/**
- * @brief   Used to deduce the type of an expression.
- * 
- * @details The ExpressionTypeDeducer is used to deduce the type of an expression. It is used during the preprocessing phase
- *          togheter with AssignmentTypeChecker to check the correctness of assignments and return values. 
- * 
- * @note    The ExpressionTypeDeducer class needs to be constructed from a TypeDefinitionsRegister
- *          in order to be able to work. The TypeDefinitionsRegister must be already checked for correctness, 
- *          otherwise the ExpressionTypeDeducer could fall in an infinite loop while trying to resolve 
- *          the definitions of the types that contains a direct cyclic dependency
- * 
- * @see     TypeDefinitionsRegister
- * @see     TypeDependencyNavigator
- * @see     AssignmentTypeChecker
- */
 class ExpressionTypeDeducer {
 
     public:

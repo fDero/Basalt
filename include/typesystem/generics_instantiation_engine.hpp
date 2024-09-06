@@ -1,12 +1,3 @@
-/**
- * @file generics_instantiation_engine.hpp
- * @author Francesco De Rosa (francescodero@outlook.it)
- * @brief This file contains the definition of the GenericsInstantiationEngine class
- * @version 0.1
- * @date 2024-09-01
- * 
- * @copyright Copyright (c) 2024
- */
 
 #pragma once
 
@@ -17,21 +8,6 @@
 #include "language/expressions.hpp"
 #include "misc/forward_declarations.hpp"
 
-/**
- * @brief   Used to instantiate generic definitions.
- * 
- * @details The GenericsInstantiationEngine class is used to instantiate generic definitions using
- *          the substitution rules provided by the user.
- *          
- * @note    The user of this class is supposed to instantiate a new GenericsInstantiationEngine
- *          for every definition that needs to be instantiated, passing the substitution rules
- *          to the constructor. The user can then call the various methods to perform the instantiation.
- * 
- * @see     GenericSubstitutionRule
- * @see     GenericSubstitutionRule::Set
- * @see     GenericSubstitutionRule::Set::Ref
- * @see     TypeSignature
- */
 class GenericsInstantiationEngine {
 
     public:

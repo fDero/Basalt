@@ -1,12 +1,3 @@
-/**
- * @file function_definition_validator.hpp
- * @author Francesco De Rosa (francescodero@outlook.it)
- * @brief This file contains the definition of the FunctionDefinitionValidator class
- * @version 0.1
- * @date 2024-08-31
- * 
- * @copyright Copyright (c) 2024
- */
 
 #pragma once
 
@@ -16,19 +7,6 @@
 #include "model/overloading_resolution_engine.hpp"
 #include "model/scope_context.hpp"
 
-/**
- * @brief   Used to inspect the arguments section, the body and the return type of a function definition,
- *          making sure that the function is correctly defined.
- * 
- * @details The FunctionDefinitionValidator class is able to detect errors like: incorrect return value, 
- *          illegal use of 'break' and 'continue' statements, illegal use of 'return' statement, use of 
- *          undeclered identifiers, type-unsound assignments and type-unsound use of expressions as 
- *          arguments/predicates. 
- * 
- * @note    The FunctionDefinitionValidator is not able to detect missing return statements, nor it can 
- *          detect unreachable code or unused variables. It is also not capable of detecting constant-related
- *          errors, like re-assigning a constant indirectly using a pointer to its memory location 
- */
 class FunctionDefinitionValidator {
 
     public:
@@ -43,7 +21,6 @@ class FunctionDefinitionValidator {
         void validate_function_definition(const FunctionDefinition& function_definition);
 
     protected:
-        
         void validate_function_body_statement(
             const Statement& statement, 
             const FunctionDefinition& function_definition,

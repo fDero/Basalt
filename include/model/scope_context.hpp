@@ -1,12 +1,3 @@
-/**
- * @file scope_context.hpp
- * @author Francesco De Rosa (francescodero@outlook.it)
- * @brief This file contains the definition of the ScopeContext class
- * @version 0.1
- * @date 2024-08-31
- * 
- * @copyright Copyright (c) 2024
- */
 
 #pragma once
 
@@ -16,14 +7,6 @@
 #include "model/program_representation.hpp"
 #include "language/definitions.hpp"
 
-/**
- * @brief   Used to keep track of a scope, storing the local variables and constants, and 
- *          providing a way to create nested scopes.
- * 
- * @details The ScopeContext class is used to keep track of a scope, it's used by all the
- *          classes that inspect the body of a function definition as a way to keep track of
- *          the symbols encountered and their state.
- */
 class ScopeContext {
 
     public:

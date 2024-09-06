@@ -1,12 +1,3 @@
-/**
- * @file token.hpp
- * @author Francesco De Rosa (francescodero@outlook.it)
- * @brief This file contains the definition of the Token struct
- * @version 0.1
- * @date 2024-09-01
- * 
- * @copyright Copyright (c) 2024
- */
 
 #pragma once
 
@@ -21,18 +12,6 @@
 
 #include "misc/debug_informations_aware_entity.hpp"
 
-/**
- * @brief   Used to represent a single unit of text extracted from the source code.
- * 
- * @details The Token struct is used to represent a single unit of text extracted from the source code,
- *          it extends the DebugInformationsAwareEntity, hence it keeps track of the position of the token
- *          in the source code file, in terms of filepath, line number, token number, and character position.
- *          The Token struct also keeps track of the type of the token, which can be later use by the parser
- *          to understand the meaning of the token faster then it would be possible by just looking at the text.
- * 
- * @see     DebugInformationsAwareEntity
- * @see     Tokenizer
- */
 struct Token : public DebugInformationsAwareEntity {
 
     enum class Type {

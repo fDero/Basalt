@@ -1,12 +1,3 @@
-/**
- * @file type_definitions_register.hpp
- * @author Francesco De Rosa (francescodero@outlook.it)
- * @brief This file contains the definition of the TypeDefinitionsRegister class
- * @version 0.1
- * @date 2024-08-31
- * 
- * @copyright Copyright (c) 2024
- */
 
 #pragma once
 
@@ -17,13 +8,6 @@
 #include "language/definitions.hpp"
 #include "language/typesignatures.hpp"
 
-/**
- * @brief Used to keep track of all the type definitions of the program.
- * 
- * @details The TypeDefinitionsRegister is used to keep track of all the type definitions of the program.
- *          It exposes an API to store and retrieve type definitions, and to get the fully qualified name.
- *          It also provides a way to unalias a type, meaning to get the type definition of a type signature
- */
 class TypeDefinitionsRegister {
 
     public:
