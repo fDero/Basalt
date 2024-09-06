@@ -11,18 +11,15 @@
 class TypeDefinitionsRegister {
 
     public:
-    
         TypeDefinitionsRegister(ProjectFileStructure& project_file_structure);
-
         void store_type_definition(const TypeDefinition& type_definition);
-        [[nodiscard]] TypeDefinition retrieve_type_definition(const CustomType& type_signature);
-        [[nodiscard]] std::string get_fully_qualified_typesignature_name(const TypeSignature& type_signature);
-        [[nodiscard]] TypeSignature unalias_type(const TypeSignature& type_signature);
-        [[nodiscard]] std::unordered_map<std::string, TypeDefinition>& get_all_type_definitions();
         void verify_that_the_type_exists(const TypeSignature& type_signature);
-
+        void foreach_type_definition(std::function<void(const TypeDefinition&)> visitor);
+        [[nodiscard]] std::string get_fully_qualified_typesignature_name(const TypeSignature& type_signature);
+        [[nodiscard]] TypeDefinition retrieve_type_definition(const CustomType& type_signature);
+        [[nodiscard]] TypeSignature unalias_type(const TypeSignature& type_signature);
+        
     protected:
-         
         [[nodiscard]] std::string get_fully_qualified_customtype_name(const CustomType& type_signature);
         [[nodiscard]] std::optional<std::string> search_fully_qualified_typesignature_name(const CustomType&, const std::string&);
         [[nodiscard]] std::string get_type_definition_match_pattern(const std::string&, const TypeDefinition&);
@@ -31,7 +28,7 @@ class TypeDefinitionsRegister {
         [[nodiscard]] std::string infer_possible_fully_qualified_customtype_name(const std::string &packageName, const CustomType &custom_type);
 
     private:
-
+        std::list<std::string> type_definitions_ids;
         std::unordered_map<std::string, TypeDefinition> type_definitions;
         ProjectFileStructure& project_file_structure;
 

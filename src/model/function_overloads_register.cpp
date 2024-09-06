@@ -6,18 +6,11 @@
 FunctionOverloadsRegister::FunctionOverloadsRegister(ProjectFileStructure& project_file_structure) 
     : project_file_structure(project_file_structure) 
 { 
-    for (const auto& [package_name, files] : project_file_structure.get_all_files_grouped_by_package()) {
-        for (const auto& file : files) {
-            for (const auto& func_def : file.func_defs) {
-                store_function_definition(func_def);
-            }
+    project_file_structure.foreach_file([&](const FileRepresentation& file_representation) {
+        for (const auto& function_definition : file_representation.func_defs) {
+            store_function_definition(function_definition);
         }
-    }
-}
-
-const std::unordered_map<std::string, FunctionDefinition::OverloadSet>& 
-FunctionOverloadsRegister::get_all_function_overload_sets() const {
-    return function_definitions_overload_sets;
+    });
 }
 
 void FunctionOverloadsRegister::store_function_definition(
@@ -25,11 +18,20 @@ void FunctionOverloadsRegister::store_function_definition(
 ) {
     const std::string package_name = project_file_structure.get_package_name_by_file_name(func_def.filename);
     FunctionDefinition::Ref func_def_ref = std::make_shared<FunctionDefinition>(func_def);
+    function_definitions.push_back(func_def_ref);
     const std::string overload_set_id = get_function_definition_overload_set_id(package_name, func_def_ref);
     function_definitions_overload_sets[overload_set_id].push_back(func_def_ref);
     if (!func_def.template_generics_names.empty()) {
         const std::string generics_unaware_overload_set_id = get_generics_unaware_function_definition_overload_set_id(package_name, func_def_ref);
         function_definitions_overload_sets[generics_unaware_overload_set_id].push_back(func_def_ref);
+    }
+}
+
+void FunctionOverloadsRegister::foreach_function_definition(
+    std::function<void(FunctionDefinition::Ref)> visitor
+) {
+    for (const auto& func_def : function_definitions) {
+        visitor(func_def);
     }
 }
 

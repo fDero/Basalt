@@ -7,8 +7,6 @@
 #include "language/expressions.hpp"
 #include "language/functions.hpp"
 
-#include <iostream>
-
 [[nodiscard]] std::string Parser::parse_package_name() {
     ensure_token_matches(source_tokens, iterator++, "package");
     ensure_there_are_still_tokens(source_tokens, iterator);

@@ -18,14 +18,6 @@ FunctionDefinitionValidator::FunctionDefinitionValidator(
     , overloading_resolution_engine(overloading_resolution_engine) 
 {}
 
-void FunctionDefinitionValidator::validate_all_function_definitions() {
-    for (const auto& function_overload_set : function_overloads_register.get_all_function_overload_sets()) {
-        for (const auto& function_definition : function_overload_set.second) {
-           validate_function_definition(*function_definition);
-        }
-    }
-}
-
 void FunctionDefinitionValidator::validate_function_definition(const FunctionDefinition& function_definition) {
     for (const auto& argument : function_definition.arguments) {
         type_definitions_register.verify_that_the_type_exists(argument.arg_type);

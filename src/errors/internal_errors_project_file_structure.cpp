@@ -14,9 +14,9 @@ void assert_packagename_is_found(
     #endif
 }
 
-void assert_files_vector_is_found(
-    const std::unordered_map<std::string, std::vector<FileRepresentation>>::const_iterator& search_outcome,
-    const std::unordered_map<std::string, std::vector<FileRepresentation>>::const_iterator& end
+void assert_files_are_found(
+    const std::unordered_map<std::string, std::list<FileRepresentation>>::const_iterator& search_outcome,
+    const std::unordered_map<std::string, std::list<FileRepresentation>>::const_iterator& end
 ) {
     #ifdef DEBUG_BUILD
     if (search_outcome == end) {

@@ -8,8 +8,8 @@
 
 template<typename Interface>
 class Polymorph {
+    
     public:
-
         Polymorph(const Polymorph& other)
             : ptr(other.ptr), cpp_type_info_str(other.cpp_type_info_str) { }
 

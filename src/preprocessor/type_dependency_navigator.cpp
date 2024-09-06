@@ -21,6 +21,12 @@ void TypeDependencyNavigator::visit_type_definition(
     }
 }
 
+void TypeDependencyNavigator::visit_all_type_definitions() {
+    type_definitions_register.foreach_type_definition([&](const TypeDefinition& type_definition) {
+        visit_type_definition(type_definition);
+    });
+}
+
 void TypeDependencyNavigator::visit_typesignature(const TypeSignature& typesignature, const std::vector<std::string>& generics) {
     if (typesignature.is_generic()) {
         return;

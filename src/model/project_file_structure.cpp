@@ -8,13 +8,31 @@ ProjectFileStructure::ProjectFileStructure(const std::vector<FileRepresentation>
     }
 }
 
+void ProjectFileStructure::foreach_file(const std::function<void(const FileRepresentation&)>& func) {
+    for (const std::list<FileRepresentation>::iterator& file_iterator : files) {
+        const FileRepresentation& file_representation = *file_iterator;
+        func(file_representation);
+    }
+}
+
+void ProjectFileStructure::foreach_package(const std::function<void(const std::string&)>& func) {
+    for (const std::string& package_name : package_names) {
+        func(package_name);
+    }
+}
+
 void ProjectFileStructure::store_file_representation(const FileRepresentation& file_representation) {
     const std::string& package_name = file_representation.file_metadata.packagename;
-    files_by_package[package_name].push_back(file_representation);
+    files_by_package[package_name].push_front(file_representation);
+    files.push_front(files_by_package[package_name].begin());
     package_name_by_file_name[file_representation.file_metadata.filename] = package_name;
     const std::string& filename = file_representation.file_metadata.filename;
     const std::vector<std::string>& imports = file_representation.file_metadata.imports;
     imports_by_file[filename] = imports;
+    auto package_name_search_outcome = std::find(package_names.begin(), package_names.end(), package_name);
+    if (package_name_search_outcome == package_names.end()) {
+        package_names.push_front(package_name);
+    }
 }
 
 std::string& ProjectFileStructure::get_package_name_by_file_name(const std::string& file_name) {
@@ -23,9 +41,9 @@ std::string& ProjectFileStructure::get_package_name_by_file_name(const std::stri
     return search_outcome->second;
 }
 
-std::vector<FileRepresentation>& ProjectFileStructure::get_files_by_package(const std::string& package_name) {
+std::list<FileRepresentation>& ProjectFileStructure::get_files_by_package(const std::string& package_name) {
     auto search_outcome = files_by_package.find(package_name);
-    assert_files_vector_is_found(search_outcome, files_by_package.end());
+    assert_files_are_found(search_outcome, files_by_package.end());
     return search_outcome->second;
 }
 
@@ -33,24 +51,4 @@ std::vector<std::string>& ProjectFileStructure::get_imports_by_file(const std::s
     auto search_outcome = imports_by_file.find(file_name);
     assert_imports_vector_is_found(search_outcome, imports_by_file.end());
     return search_outcome->second;
-}
-
-const std::string& ProjectFileStructure::get_package_name_by_file_name(const std::string& file_name) const {
-    ProjectFileStructure* casted_this = const_cast<ProjectFileStructure*>(this);
-    return casted_this->get_package_name_by_file_name(file_name);
-}
-
-const std::vector<FileRepresentation>& ProjectFileStructure::get_files_by_package(const std::string& package_name) const {
-    ProjectFileStructure* casted_this = const_cast<ProjectFileStructure*>(this);
-    return casted_this->get_files_by_package(package_name);
-}
-
-const std::vector<std::string>& ProjectFileStructure::get_imports_by_file(const std::string& file_name) const {
-    ProjectFileStructure* casted_this = const_cast<ProjectFileStructure*>(this);
-    return casted_this->get_imports_by_file(file_name);
-}
-
-const std::unordered_map<std::string, std::vector<FileRepresentation>>& 
-ProjectFileStructure::get_all_files_grouped_by_package() const {
-    return files_by_package;
 }

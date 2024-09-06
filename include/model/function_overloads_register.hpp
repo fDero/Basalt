@@ -16,6 +16,10 @@ class FunctionOverloadsRegister {
         void store_function_definition(
             const FunctionDefinition& function_definition
         );
+
+        void foreach_function_definition(
+            std::function<void(FunctionDefinition::Ref)> visitor
+        );
         
         [[nodiscard]] std::vector<std::string> retrieve_overload_sets_ids(
             const FunctionCall& function_call
@@ -29,11 +33,7 @@ class FunctionOverloadsRegister {
             const FunctionCall& function_call
         );
 
-        [[nodiscard]] const std::unordered_map<std::string, FunctionDefinition::OverloadSet>& 
-        get_all_function_overload_sets() const;
-
     protected:
-
         [[nodiscard]] std::string get_function_definition_overload_set_id(
             const std::string& package_name, 
             const FunctionDefinition::Ref function_definition
@@ -50,7 +50,7 @@ class FunctionOverloadsRegister {
         );
 
     private:
-
         ProjectFileStructure& project_file_structure;
+        std::list<FunctionDefinition::Ref> function_definitions;
         std::unordered_map<std::string, FunctionDefinition::OverloadSet> function_definitions_overload_sets;
 };

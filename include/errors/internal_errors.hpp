@@ -5,6 +5,7 @@
 #include <string>
 #include <map>
 #include <unordered_map>
+#include <list>
 
 #include "frontend/tokenizer.hpp"
 #include "frontend/syntax.hpp"
@@ -150,9 +151,9 @@ void assert_packagename_is_found(
     const std::unordered_map<std::string, std::string>::const_iterator& end
 );
 
-void assert_files_vector_is_found(
-    const std::unordered_map<std::string, std::vector<FileRepresentation>>::const_iterator& search_outcome,
-    const std::unordered_map<std::string, std::vector<FileRepresentation>>::const_iterator& end
+void assert_files_are_found(
+    const std::unordered_map<std::string, std::list<FileRepresentation>>::const_iterator& search_outcome,
+    const std::unordered_map<std::string, std::list<FileRepresentation>>::const_iterator& end
 );
 
 void assert_imports_vector_is_found(

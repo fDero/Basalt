@@ -10,7 +10,6 @@
 class ScopeContext {
 
     public:
-
         enum class ScopeKind {
             function_scope,
             loop_scope,
@@ -31,7 +30,6 @@ class ScopeContext {
         [[nodiscard]] ScopeKind get_scope_kind() const;
 
     private:
-    
         struct ObjectDescriptor {
             std::string identifier;
             TypeSignature type_signature;

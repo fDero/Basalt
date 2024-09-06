@@ -90,17 +90,16 @@ ProjectFileStructure directly_recursive_structs_in_different_files_of_the_same_p
 
 TEST(Preprocessor, Preprocessor_Recursive_Two_Struct_Dependency_With_Pointer_Accross_Different_Files_Of_The_Same_Package_Without_Allucinating_Errors) {
     TypeDefinitionsRegister type_register(indirectly_recursive_structs_in_different_files_of_the_same_package);
-    const FileRepresentation file_with_struct_A = indirectly_recursive_structs_in_different_files_of_the_same_package.get_files_by_package("testpackage")[0];
+    const FileRepresentation file_with_struct_A = indirectly_recursive_structs_in_different_files_of_the_same_package.get_files_by_package("testpackage").back();
     const StructDefinition& A = file_with_struct_A.type_defs[0].get<StructDefinition>();
     TypeDependencyNavigator navigator(type_register);
     ASSERT_EQ(A.def_name, "A");
     navigator.visit_struct_definition(A);
 }
 
-
 TEST(Preprocessor, Recursive_Two_Struct_Dependency_With_Pointer_Accross_Different_Files_Of_The_Same_Package_Spotting_Real_Errors) {
     TypeDefinitionsRegister type_register(directly_recursive_structs_in_different_files_of_the_same_packages);
-    const FileRepresentation file_with_struct_A = directly_recursive_structs_in_different_files_of_the_same_packages.get_files_by_package("testpackage")[0];
+    const FileRepresentation file_with_struct_A = directly_recursive_structs_in_different_files_of_the_same_packages.get_files_by_package("testpackage").back();
     const StructDefinition& A = file_with_struct_A.type_defs[0].get<StructDefinition>();
     TypeDependencyNavigator navigator(type_register);
     ASSERT_EQ(A.def_name, "A");

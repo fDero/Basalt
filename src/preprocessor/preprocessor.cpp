@@ -17,18 +17,14 @@ PreProcessor::PreProcessor(
 
 void PreProcessor::preprocess_packages_typename_conflicts() {
     PackageTypeConflictNavigator package_type_conflict_navigator(project_file_structure);
-    for (const auto& files_by_package : project_file_structure.get_all_files_grouped_by_package()) {
-        const std::string& package_name = files_by_package.first;
+    project_file_structure.foreach_package([&](const std::string& package_name) {
         package_type_conflict_navigator.visit_package(package_name);
-    }
+    });
 }
 
 void PreProcessor::preprocess_type_definitions() {
-    TypeDependencyNavigator navigator(type_definitions_register);
-    for (const auto& type_definition_wrapper : type_definitions_register.get_all_type_definitions()) {
-        const TypeDefinition& type_definition = type_definition_wrapper.second;
-        navigator.visit_type_definition(type_definition);
-    }
+    TypeDependencyNavigator type_dependency_navigator(type_definitions_register);
+    type_dependency_navigator.visit_all_type_definitions();
 }
 
 void PreProcessor::preprocess_function_definitions() {
@@ -38,10 +34,7 @@ void PreProcessor::preprocess_function_definitions() {
         function_overloads_register,
         overloading_resolution_engine
     );
-    for (const auto& func_def : function_overloads_register.get_all_function_overload_sets()) {
-        for (const auto& func_def_ref : func_def.second) {
-            const FunctionDefinition& function_definition = *func_def_ref;
-            function_definition_validator.validate_function_definition(function_definition);
-        }
-    }
+    function_overloads_register.foreach_function_definition([&](const FunctionDefinition::Ref& function_definition) {
+        function_definition_validator.validate_function_definition(*function_definition);
+    });
 }

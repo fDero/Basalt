@@ -4,23 +4,23 @@
 #include "errors/internal_errors.hpp"
 #include "typesystem/generics_substitution_rules.hpp"
 
-#include <iostream>
-
 TypeDefinitionsRegister::TypeDefinitionsRegister(ProjectFileStructure& project_file_structure) 
     : project_file_structure(project_file_structure) 
 { 
-    for (const auto& [package_name, files] : project_file_structure.get_all_files_grouped_by_package()) {
-        for (const auto& file : files) {
-            for (const auto& type_definition : file.type_defs) {
-                store_type_definition(type_definition);
-            }
+    project_file_structure.foreach_file([&](const FileRepresentation& file_representation) {
+        for (const auto& type_definition : file_representation.type_defs) {
+            store_type_definition(type_definition);
         }
-    }
+    });
 }
 
-std::unordered_map<std::string, TypeDefinition>& 
-TypeDefinitionsRegister::get_all_type_definitions() {
-    return type_definitions;
+void TypeDefinitionsRegister::foreach_type_definition(
+    std::function<void(const TypeDefinition&)> visitor
+) {
+    for (const std::string& type_definition_id : type_definitions_ids) {
+        const TypeDefinition& type_definition = type_definitions.at(type_definition_id);
+        visitor(type_definition);
+    }
 }
 
 void TypeDefinitionsRegister::verify_that_the_type_exists(const TypeSignature& type_signature) {
@@ -44,6 +44,7 @@ void TypeDefinitionsRegister::store_type_definition(const TypeDefinition& type_d
     const std::string match_pattern = get_type_definition_match_pattern(package_name, type_def);
     const auto& insertion_outcome = type_definitions.insert({match_pattern, type_def});
     ensure_no_multiple_definition_of_the_same_type(insertion_outcome);
+    type_definitions_ids.push_back(match_pattern);
 }
 
 [[nodiscard]] TypeDefinition TypeDefinitionsRegister::retrieve_type_definition(const CustomType& type_signature) {

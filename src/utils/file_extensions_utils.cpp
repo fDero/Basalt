@@ -1,7 +1,6 @@
 
 #include "misc/file_extensions.hpp"
 #include "errors/commandline_errors.hpp"
-#include <iostream>
 
 [[nodiscard]] bool check_for_specific_file_extension(const std::string& filename, const std::string& extension) {
     const size_t size = filename.size();
