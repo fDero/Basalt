@@ -17,6 +17,12 @@ struct TypeSignatureFactory {
     inline static const TypeSignature K = TemplateType{ Token { "K", "test.basalt", 1, 1, 1, Token::Type::type} };
     inline static const TypeSignature S = TemplateType{ Token { "S", "test.basalt", 1, 1, 1, Token::Type::type} };
 
+    inline static const TypeSignature PtrToT = PointerType { Token { "#", "test.basalt", 1, 1, 1, Token::Type::symbol}, T };
+    inline static const TypeSignature PtrToU = PointerType { Token { "#", "test.basalt", 1, 1, 1, Token::Type::symbol}, U };
+    inline static const TypeSignature PtrToV = PointerType { Token { "#", "test.basalt", 1, 1, 1, Token::Type::symbol}, V };
+    inline static const TypeSignature PtrToK = PointerType { Token { "#", "test.basalt", 1, 1, 1, Token::Type::symbol}, K };
+    inline static const TypeSignature PtrToS = PointerType { Token { "#", "test.basalt", 1, 1, 1, Token::Type::symbol}, S };
+
     inline static const TypeSignature ListOfStrings       = CustomType{ Token { "List", "test.basalt", 1, 1, 4, Token::Type::type}, { String } };
     inline static const TypeSignature ListOfInts          = CustomType{ Token { "List", "test.basalt", 1, 1, 4, Token::Type::type}, { Int } };
     inline static const TypeSignature PairOfStringAndInt  = CustomType{ Token { "Pair", "test.basalt", 1, 1, 4, Token::Type::type}, { String, Int } };

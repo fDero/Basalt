@@ -109,3 +109,42 @@ TEST(TypeChecking, Type_Deduction_Cannot_Figure_What_Operator_To_Use) {
     EXPECT_EQ(binary_operator_template_type.type_name, "S");
 }
 
+TEST(TypeChecking, Type_Deduction_Works_For_Address_Of_Generic_Typed_Variable) {
+    simple_scope_context.store_local_variable(VariableDeclaration {
+        "v", TypeSignatureFactory::V, std::nullopt, 
+        Token { "var", "main.basalt", 1, 1, 1, Token::Type::var_keyword }
+    });
+    Expression address_of = UnaryOperator {
+        Token { "&", "main.basalt", 1, 1, 1, Token::Type::symbol },
+        Identifier { Token { "v", "main.basalt", 1, 1, 1, Token::Type::text } }
+    };
+    std::optional<TypeSignature> address_of_type_opt = type_deducer.deduce_expression_type(address_of);
+    ASSERT_TRUE(address_of_type_opt.has_value());
+    const TypeSignature& address_of_type = address_of_type_opt.value();
+    ASSERT_TRUE(address_of_type.is<PointerType>());
+    const PointerType& address_of_pointer_type = address_of_type.get<PointerType>();
+    EXPECT_TRUE(address_of_pointer_type.pointed_type.is<TemplateType>());
+    const TemplateType& address_of_pointer_template_type = address_of_pointer_type.pointed_type.get<TemplateType>();
+    EXPECT_EQ(address_of_pointer_template_type.type_name, "V");
+}
+
+TEST(TypeChecking, Type_Deduction_Works_For_Pointer_Dereference_Of_Generic_Typed_Pointer) {
+    simple_scope_context.store_local_variable(VariableDeclaration {
+        "k", TypeSignatureFactory::PtrToK, std::nullopt, 
+        Token { "var", "main.basalt", 1, 1, 1, Token::Type::var_keyword }
+    });
+
+    ASSERT_TRUE(simple_scope_context.get_local_object_type("k").is<PointerType>());
+
+    Expression ptr_deref = UnaryOperator {
+        Token { "#", "main.basalt", 1, 1, 1, Token::Type::symbol },
+        Identifier { Token { "k", "main.basalt", 1, 1, 1, Token::Type::text } }
+    };
+   
+    std::optional<TypeSignature> ptr_deref_type_opt = type_deducer.deduce_expression_type(ptr_deref);
+    ASSERT_TRUE(ptr_deref_type_opt.has_value());
+    const TypeSignature& ptr_deref_type = ptr_deref_type_opt.value();
+    ASSERT_TRUE(ptr_deref_type.is<TemplateType>());
+    const TemplateType& ptr_deref_template_type = ptr_deref_type.get<TemplateType>();
+    EXPECT_EQ(ptr_deref_template_type.type_name, "K");
+}
