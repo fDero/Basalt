@@ -1,3 +1,7 @@
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+// AUTHOR: Francesco De Rosa (https://github.com/fDero)                    //
+// LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 #include "preprocessing/function_definition_validator.hpp"
 #include "preprocessing/type_dependency_navigator.hpp"

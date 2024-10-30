@@ -61,7 +61,6 @@ target_link_libraries(
   llvm-core::llvm-core
 )
 
-
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 #                                 "basalt_unit_tests" COMPILATION OPTIONS                                  #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
@@ -81,7 +80,6 @@ target_compile_options(
   -Wfloat-equal
   -DDEBUG_BUILD
 )
-
 
 target_link_libraries(
   ${TEST_BINARY}

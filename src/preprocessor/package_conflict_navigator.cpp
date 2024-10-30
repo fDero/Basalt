@@ -1,3 +1,7 @@
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+// AUTHOR: Francesco De Rosa (https://github.com/fDero)                    //
+// LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 #include "model/project_file_structure.hpp"
 #include "preprocessing/package_type_conflict_navigator.hpp"

@@ -1,10 +1,16 @@
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+// AUTHOR: Francesco De Rosa (https://github.com/fDero)                    //
+// LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 #pragma once
+
 #include "errors/tokenization_errors.hpp"
 #include "errors/parsing_errors.hpp"
 #include "errors/commandline_errors.hpp"
 #include "errors/internal_errors.hpp"
 #include "misc/console_colors.hpp"
+
 #include <iostream>
 
 void display_target_line(size_t char_pos, const std::string& line);

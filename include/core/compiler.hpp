@@ -1,3 +1,8 @@
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+// AUTHOR: Francesco De Rosa (https://github.com/fDero)                    //
+// LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+
 #pragma once
 
 #include <vector>

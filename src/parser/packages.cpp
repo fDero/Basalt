@@ -1,3 +1,7 @@
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+// AUTHOR: Francesco De Rosa (https://github.com/fDero)                    //
+// LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
