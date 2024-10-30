@@ -8,15 +8,19 @@ Basalt is designed to be compiled directly to machine code, and offers all the f
 while still being able to be interpreted like languages like Python or Ruby (enhancing portability, 
 and reducing wasted time by removing the need to perform a full compilation of your code-base just to run unit-tests).
 
-### Installation (Building from source)
-In order to install Basalt, you have to build it from source. Basalt can easily be built with CMake. Assuming 
-CMake is installed on your machine, all you have to do is run the following commands.
+### Building from source
+In order to build Basalt from source, `conan`, `cmake` and `g++` must be installed on your machine.
+Assuming such tools are indeed installed on the host machine, running the following command will download 
+dependencies, setup and start the build.
 ```bash
 $ git clone https://www.github.com/fDero/Basalt
 $ cd Basalt
+$ conan install . --output-folder=dependencies --build=missing
 $ cmake -S . -B build
 $ cmake --build build --target basalt
 ```
+**notice:** __conan installations prior to the `2.8.1` version might not be able to correctly download and install the
+necessary dependencies for the project. Try to upgrade it before proceeding.__
 
 If you want to run the unit-tests, run the command `cmake --build build --target basalt_unit_tests`. This will create
 a binary called `basalt_unit_tests` that will perform the tests when executed. Tests are written using the
