@@ -16,7 +16,7 @@ dependencies, setup and start the build.
 $ git clone https://www.github.com/fDero/Basalt
 $ cd Basalt
 $ conan install . --output-folder=dependencies --build=missing
-$ cmake -S . -B build
+$ cmake -S . -B build -DCMAKE_BUILD_TYPE=release
 $ cmake --build build --target basalt
 ```
 **notice:** __conan installations prior to the `2.8.1` version might not be able to correctly download and install the

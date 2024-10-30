@@ -1,5 +1,6 @@
 [requires]
 llvm-core/13.0.0
+gtest/1.15.0
 
 [generators]
 CMakeDeps

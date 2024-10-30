@@ -1,14 +1,15 @@
 cmake_minimum_required(VERSION 3.22)
 
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#                                     PROJECT FILE-STRUCTURE SETTINGS                                      #
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
 project(
   Basalt
   DESCRIPTION "The Basalt Programming Language"
   HOMEPAGE_URL https://github.com/fDero/Basalt
   LANGUAGES CXX
 )
-
-set(CMAKE_PREFIX_PATH ${CMAKE_SOURCE_DIR}/dependencies/build/Release/generators ${CMAKE_PREFIX_PATH})
-set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/dependencies/build/Release/generators ${CMAKE_MODULE_PATH})
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -26,29 +27,24 @@ file(GLOB_RECURSE MAIN_FILE ${CMAKE_SOURCE_DIR}/src/main.cpp)
 file(GLOB_RECURSE SOURCE_FILES ${CMAKE_SOURCE_DIR}/src/*/*.cpp)
 file(GLOB_RECURSE TEST_FILES ${CMAKE_SOURCE_DIR}/tests/*/*.cpp)
 
-include(FetchContent)
-FetchContent_Declare(
-  googletest
-  URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
-)
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-FetchContent_MakeAvailable(googletest)
-enable_testing()
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#                                             DEPENDENCIES                                                 #
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
+set(CMAKE_PREFIX_PATH ${CMAKE_SOURCE_DIR}/dependencies/build/Release/generators ${CMAKE_PREFIX_PATH})
+set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/dependencies/build/Release/generators ${CMAKE_MODULE_PATH})
 
 find_package(LLVM REQUIRED)
+find_package(GTest REQUIRED)
 
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#                                     "basalt" COMPILATION OPTIONS                                         #
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
 add_executable(
   ${MAIN_BINARY}
   ${MAIN_FILE}
   ${SOURCE_FILES}
-)
-
-add_executable(
-  ${TEST_BINARY}
-  ${SOURCE_FILES}
-  ${TEST_FILES}
 )
 
 target_compile_options(
@@ -58,6 +54,22 @@ target_compile_options(
   -Wall
   -Wpedantic
   -Wfloat-equal
+)
+
+target_link_libraries(
+  ${MAIN_BINARY}
+  llvm-core::llvm-core
+)
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#                                 "basalt_unit_tests" COMPILATION OPTIONS                                  #
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+add_executable(
+  ${TEST_BINARY}
+  ${SOURCE_FILES}
+  ${TEST_FILES}
 )
 
 target_compile_options(
@@ -70,17 +82,11 @@ target_compile_options(
   -DDEBUG_BUILD
 )
 
-target_link_libraries(
-  ${MAIN_BINARY}
-  llvm-core::llvm-core
-)
 
 target_link_libraries(
   ${TEST_BINARY}
   PRIVATE
-  GTest::gtest_main
+  GTest::GTest
+  GTest::Main
   llvm-core::llvm-core
 )
-
-include(GoogleTest)
-gtest_discover_tests(${TEST_BINARY} DISCOVERY_MODE PRE_TEST)
