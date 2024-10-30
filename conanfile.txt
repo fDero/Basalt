@@ -1,0 +1,9 @@
+[requires]
+llvm-core/13.0.0
+
+[generators]
+CMakeDeps
+CMakeToolchain
+
+[layout]
+cmake_layout

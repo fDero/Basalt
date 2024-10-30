@@ -7,6 +7,9 @@ project(
   LANGUAGES CXX
 )
 
+set(CMAKE_PREFIX_PATH ${CMAKE_SOURCE_DIR}/dependencies/build/Release/generators ${CMAKE_PREFIX_PATH})
+set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/dependencies/build/Release/generators ${CMAKE_MODULE_PATH})
+
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -28,12 +31,13 @@ FetchContent_Declare(
   googletest
   URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
 )
-
-# For Windows: Prevent overriding the parent project's compiler/linker settings
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
-
 enable_testing()
+
+
+find_package(LLVM REQUIRED)
+
 
 add_executable(
   ${MAIN_BINARY}
@@ -67,8 +71,15 @@ target_compile_options(
 )
 
 target_link_libraries(
+  ${MAIN_BINARY}
+  llvm-core::llvm-core
+)
+
+target_link_libraries(
   ${TEST_BINARY}
+  PRIVATE
   GTest::gtest_main
+  llvm-core::llvm-core
 )
 
 include(GoogleTest)
