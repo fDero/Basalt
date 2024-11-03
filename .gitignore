@@ -21,3 +21,4 @@ basalt_unit_tests
 basalt_unit_tests.exe
 snippets
 dependencies
+*.ll
