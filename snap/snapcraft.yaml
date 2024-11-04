@@ -1,0 +1,38 @@
+name: basalt
+base: core24
+version: '0.0.0-alpha'
+summary: Compiler for the Basalt programming language
+description: |
+  A type-safe, general-purpuse, low-level language compiled directly to machine code
+
+grade: devel
+confinement: devmode
+
+parts:
+  basalt:
+    plugin: nil
+    source: .
+    build-packages:
+      - g++
+      - make
+      - cmake
+      - python3-venv
+      - pipx
+    override-build: |
+      snapcraftctl build
+      pipx install conan
+      export PATH="$HOME/.local/bin:$PATH"
+      [ -f ~/.conan2/profiles/default ] || conan profile detect
+      conan install . --output-folder=dependencies --build=missing
+      rm -rf build
+      rm -rf out
+      cmake -S . -B build -DCMAKE_BUILD_TYPE=release
+      cmake --build build
+      cp out/bin/basalt $SNAPCRAFT_PART_INSTALL
+    
+apps:
+  basalt:
+    command: bin/basalt
+    plugs:
+      - home
+      - removable-media
