@@ -1,4 +1,5 @@
 [requires]
+libxml2/2.12.5
 llvm-core/13.0.0
 gtest/1.15.0
 

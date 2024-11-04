@@ -19,10 +19,13 @@ $ conan install . --output-folder=dependencies --build=missing
 $ cmake -S . -B build -DCMAKE_BUILD_TYPE=release
 $ cmake --build build --target basalt
 ```
-**notice:** __conan installations prior to the `2.8.1` version might not be able to correctly download and install the
-necessary dependencies for the project. Try to upgrade it before proceeding.__
+**notice:** conan installations prior to the `2.8.1` version might not be able to correctly download and install the
+necessary dependencies for the project. Try to upgrade it before proceeding.
 
-If you want to run the unit-tests, run the command `cmake --build build --target basalt_unit_tests`. This will create
+**notice:** When building on **Windows**, you might need to replace `cmake -S . -B build -DCMAKE_BUILD_TYPE=release` with
+`cmake -S . -B build -DCMAKE_BUILD_TYPE=release -G "MinGW Makefiles" -DCMAKE_CXX_COMPILER=g++`, make sure to remove the directories `build` and `out` before running the command again.
+
+**notice:** If you want to run the unit-tests, run the command `cmake --build build --target basalt_unit_tests`. This will create
 a binary called `basalt_unit_tests` that will perform the tests when executed. Tests are written using the
 gtest (googletest) unit-testing framework. Keep in mind that compilation will take much longer when compiling
 the test-suite, since gtest is a framework that heavily relies on the use of macros.

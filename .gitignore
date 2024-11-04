@@ -6,6 +6,7 @@
 hidden
 *.bt
 *.basalt
+*dependencies*
 grammar/.antlr
 build
 out
