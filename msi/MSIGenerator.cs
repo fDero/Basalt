@@ -3,7 +3,7 @@ using WixSharp;
 
 namespace BasaltInstaller
 {
-    public class Program
+    public class MSIGenerator
     {
         static void Main()
         {
