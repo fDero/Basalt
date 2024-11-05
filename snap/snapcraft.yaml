@@ -28,11 +28,9 @@ parts:
       rm -rf out
       cmake -S . -B build -DCMAKE_BUILD_TYPE=release
       cmake --build build
-      cp out/bin/basalt $SNAPCRAFT_PART_INSTALL
-    
+      mkdir -p $SNAPCRAFT_PART_INSTALL/bin
+      cp out/bin/basalt $SNAPCRAFT_PART_INSTALL/bin
+
 apps:
   basalt:
     command: bin/basalt
-    plugs:
-      - home
-      - removable-media
