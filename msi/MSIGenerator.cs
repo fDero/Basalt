@@ -8,7 +8,7 @@ namespace BasaltInstaller
         static void Main()
         {
             string exePath = @"..\out\bin\basalt.exe";
-            string licensePath = @"..\LICENSE.rtf";
+            string licensePath = @"..\EULA.rtf";
             var project = new Project("basalt-v0.0.0-alpha",
                 new Dir(@"%ProgramFiles%\basalt\v0.0.0-alpha",
                     new File(exePath)
