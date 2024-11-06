@@ -8,13 +8,25 @@ namespace BasaltInstaller
         static void Main()
         {
             string exePath = @"..\out\bin\basalt.exe";
-            string licensePath = @"..\EULA.rtf";
+            string licenseRtfPath = @"..\EULA.rtf";
+            string licenseTxtPath = @"..\LICENSE";
+            string installDir = @"%ProgramFiles%\basalt\v0.0.0-alpha";
             var project = new Project("basalt-v0.0.0-alpha",
-                new Dir(@"%ProgramFiles%\basalt\v0.0.0-alpha",
-                    new File(exePath)
-                )
+                new Dir(installDir, 
+                    new File(exePath),
+                    new File(licenseTxtPath),
+                    new File(licenseRtfPath)
+                ),
+                new EnvironmentVariable("Path", @"[INSTALLDIR]")
+                {
+                    Id = "Path_INSTALLDIR",
+                    Action = EnvVarAction.set,
+                    Part = EnvVarPart.last,
+                    Permanent = false,
+                    System = true,
+                }
             );
-            project.LicenceFile = licensePath;
+            project.LicenceFile = licenseRtfPath;
             project.GUID = new Guid("03d24f34-2adb-4bc9-8325-94a90aefdb11");
             project.BuildMsi();
         }
