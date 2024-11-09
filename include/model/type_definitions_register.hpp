@@ -7,6 +7,7 @@
 
 #include <string>
 #include <unordered_map>
+#include <functional>
 
 #include "model/project_file_structure.hpp"
 #include "language/definitions.hpp"

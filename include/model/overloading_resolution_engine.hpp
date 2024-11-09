@@ -39,6 +39,11 @@ class OverloadingResolutionEngine {
             const std::vector<TypeSignature>& arg_types
         );
 
+        std::string get_function_default_search_key(
+            const FunctionCall &function_call, 
+            const std::vector<TypeSignature> &arg_types
+        );
+
         FunctionOverloadsRegister& function_overloads_register;
         TypeDefinitionsRegister& type_definitions_register;
         ProjectFileStructure& project_file_structure;

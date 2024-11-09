@@ -4,6 +4,7 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 #include "model/function_specificity_descriptor.hpp"
+#include "model/overloading_resolution_engine.hpp"
 #include "errors/preprocessing_errors.hpp"
 #include "errors/internal_errors.hpp"
 #include "typesystem/generics_substitution_rules.hpp"
@@ -25,7 +26,7 @@ FunctionDefinition::Ref OverloadingResolutionEngine::retrieve_function_definitio
     const FunctionCall& function_call,
     const std::vector<TypeSignature>& arg_types
 ) {
-    std::string function_call_default_search_key = function_overloads_register.get_function_default_search_key(function_call);
+    std::string function_call_default_search_key = get_function_default_search_key(function_call, arg_types);
     auto cache_search_outcome = fast_retrieve_cache.find(function_call_default_search_key);
     if (cache_search_outcome != fast_retrieve_cache.end()) {
         return cache_search_outcome->second;
@@ -33,6 +34,19 @@ FunctionDefinition::Ref OverloadingResolutionEngine::retrieve_function_definitio
     FunctionDefinition::Ref func_def_ref = cache_unaware_function_definition_retrieval(function_call, arg_types);
     fast_retrieve_cache.insert({function_call_default_search_key, func_def_ref});
     return func_def_ref;
+}
+
+std::string OverloadingResolutionEngine::get_function_default_search_key(
+    const FunctionCall& function_call,
+    const std::vector<TypeSignature>& arg_types
+) {
+    std::string search_key = function_call.function_name;
+    search_key += "<" + std::to_string(function_call.instantiated_generics.size()) + ">";
+    for (const TypeSignature& arg_type : arg_types) {
+        search_key += type_definitions_register.get_fully_qualified_typesignature_name(arg_type);
+        search_key += ";";
+    }
+    return search_key;
 }
 
 FunctionDefinition::Ref OverloadingResolutionEngine::cache_unaware_function_definition_retrieval(

@@ -33,6 +33,11 @@ CommonFeatureAdoptionPlanGenerationEngine::generate_common_feature_adoption_iter
     const std::vector<TypeSignature>& arg_types,
     std::vector<TypeSignature>::const_iterator current_arg_type_iterator
 ) { 
+    FunctionDefinition::Ref retrieved = overloading_resolution_engine.retrieve_function_definition(function_call, arg_types);
+    CommonFeatureAdoptionPlanDescriptor direct_adoption_plan { {}, retrieved };
+    if (direct_adoption_plan.direct_adoption != nullptr) {
+        return direct_adoption_plan;
+    }
     //ensure_common_feature_adoption_is_possible(current_arg_type_iterator, arg_types.end());
     TypeSignature current_arg_type = type_definitions_register.unalias_type(*current_arg_type_iterator);
     //assert_current_arg_type_is_not_generic(current_arg_type);
@@ -62,7 +67,6 @@ CommonFeatureAdoptionPlanGenerationEngine::generate_common_feature_adoption_for_
     return generate_common_feature_adoption_for_current_multicase_arg(
         function_call, arg_types, current_arg_type_iterator, union_alternatives
     );
-
 }
 
 CommonFeatureAdoptionPlanDescriptor
@@ -107,12 +111,6 @@ CommonFeatureAdoptionPlanGenerationEngine::generate_common_feature_adoption_for_
         std::copy(arg_types.begin(), current_arg_type_iterator, std::back_inserter(new_arg_types));
         new_arg_types.push_back(alternative);
         std::copy(std::next(current_arg_type_iterator), arg_types.end(), std::back_inserter(new_arg_types));
-        FunctionDefinition::Ref func = overloading_resolution_engine.retrieve_function_definition(function_call, new_arg_types);
-        if (func != nullptr) {
-            std::string type_name = type_definitions_register.get_fully_qualified_typesignature_name(alternative);
-            plan.direct_adoptions.push_back({ type_name, func });
-            continue;
-        }
         std::vector<TypeSignature>::const_iterator new_arg_type_iterator = new_arg_types.begin();
         new_arg_type_iterator += std::distance(arg_types.begin(), current_arg_type_iterator);
         CommonFeatureAdoptionPlanDescriptor nested_plan = generate_common_feature_adoption_iterating_over_arg_types(

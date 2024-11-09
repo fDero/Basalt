@@ -34,7 +34,7 @@ class FunctionOverloadsRegister {
             const std::string& overload_set_id
         );
 
-        [[nodiscard]] std::string get_function_default_search_key(
+        [[nodiscard]] std::string get_overload_set_default_search_key(
             const FunctionCall& function_call
         );
 

@@ -100,7 +100,7 @@ class FunctionDefinitionValidator {
             ScopeContext& scope_context
         );
 
-        void validate_const_declaratuion(
+        void validate_const_declaration(
             const ConstDeclaration& const_declaration,
             ScopeContext& scope_context
         );

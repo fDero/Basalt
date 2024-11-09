@@ -25,3 +25,5 @@ dependencies
 *.ll
 *.snap
 *.msi
+*.nix
+result

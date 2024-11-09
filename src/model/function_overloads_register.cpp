@@ -97,7 +97,7 @@ void FunctionOverloadsRegister::foreach_function_definition(
     return overload_set_search_outcome->second;
 }
 
-[[nodiscard]] std::string FunctionOverloadsRegister::get_function_default_search_key(const FunctionCall& function_call) {
+[[nodiscard]] std::string FunctionOverloadsRegister::get_overload_set_default_search_key(const FunctionCall& function_call) {
     const std::string& file_where_function_call_is_located = function_call.as_debug_informations_aware_entity().filename;
     const std::string& package_where_the_function_call_is_located = project_file_structure.get_package_name_by_file_name(file_where_function_call_is_located);
     return get_function_call_overload_set_id(package_where_the_function_call_is_located, function_call);

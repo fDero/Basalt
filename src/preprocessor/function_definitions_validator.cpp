@@ -43,7 +43,7 @@ void FunctionDefinitionValidator::validate_function_body_statement(
         case StatementBody::Kind::continue_statement:   return ensure_in_loop_scope(statement, scope_context);
         case StatementBody::Kind::return_statement:     return validate_return_statement(statement.get<Return>(), function_definition, scope_context);
         case StatementBody::Kind::conditional:          return validate_conditional(statement.get<Conditional>(), function_definition, scope_context);
-        case StatementBody::Kind::const_declaration:    return validate_const_declaratuion(statement.get<ConstDeclaration>(), scope_context);
+        case StatementBody::Kind::const_declaration:    return validate_const_declaration(statement.get<ConstDeclaration>(), scope_context);
         case StatementBody::Kind::variable_declaration: return validate_variable_declaration(statement.get<VariableDeclaration>(), scope_context);
         case StatementBody::Kind::function_call:        return validate_function_call(statement.get<FunctionCall>(), scope_context);
         case StatementBody::Kind::until_loop:           return validate_until_loop(statement.get<UntilLoop>(), function_definition, scope_context);
@@ -157,7 +157,7 @@ void FunctionDefinitionValidator::validate_variable_declaration(
     scope_context.store_local_variable(variable_declaration);
 }
 
-void FunctionDefinitionValidator::validate_const_declaratuion(
+void FunctionDefinitionValidator::validate_const_declaration(
     const ConstDeclaration& const_declaration,
     ScopeContext& scope_context
 ) {
