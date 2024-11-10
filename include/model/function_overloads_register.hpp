@@ -12,8 +12,9 @@
 #include "model/project_file_structure.hpp"
 #include "language/definitions.hpp"
 #include "language/functions.hpp"
+#include "model/caching_aware_register.hpp"
 
-class FunctionOverloadsRegister {
+class FunctionOverloadsRegister : public CachingAwareRegister {
 
     public:
         FunctionOverloadsRegister(ProjectFileStructure& project_file_structure);
@@ -39,20 +40,10 @@ class FunctionOverloadsRegister {
         );
 
     protected:
-        [[nodiscard]] std::string get_function_definition_overload_set_id(
-            const std::string& package_name, 
-            const FunctionDefinition::Ref function_definition
-        );
-
-        [[nodiscard]] std::string get_generics_unaware_function_definition_overload_set_id(
-            const std::string& package_name, 
-            const FunctionDefinition::Ref function_definition
-        );
-
-        [[nodiscard]] std::string get_function_call_overload_set_id(
-            const std::string& package_name, 
-            const FunctionCall& original_function_call
-        );
+        using CachingAwareRegister::get_function_definition_overload_set_id;
+        using CachingAwareRegister::get_generics_unaware_function_definition_overload_set_id;
+        using CachingAwareRegister::get_function_call_overload_set_id;
+        using CachingAwareRegister::get_overload_set_default_search_key;
 
     private:
         ProjectFileStructure& project_file_structure;

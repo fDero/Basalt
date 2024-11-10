@@ -26,27 +26,14 @@ FunctionDefinition::Ref OverloadingResolutionEngine::retrieve_function_definitio
     const FunctionCall& function_call,
     const std::vector<TypeSignature>& arg_types
 ) {
-    std::string function_call_default_search_key = get_function_default_search_key(function_call, arg_types);
-    auto cache_search_outcome = fast_retrieve_cache.find(function_call_default_search_key);
+    std::string cache_key = get_cache_search_key_for_func_def_retrieval_from_func_call(type_definitions_register, function_call, arg_types);
+    auto cache_search_outcome = fast_retrieve_cache.find(cache_key);
     if (cache_search_outcome != fast_retrieve_cache.end()) {
         return cache_search_outcome->second;
     }
     FunctionDefinition::Ref func_def_ref = cache_unaware_function_definition_retrieval(function_call, arg_types);
-    fast_retrieve_cache.insert({function_call_default_search_key, func_def_ref});
+    fast_retrieve_cache.insert({cache_key, func_def_ref});
     return func_def_ref;
-}
-
-std::string OverloadingResolutionEngine::get_function_default_search_key(
-    const FunctionCall& function_call,
-    const std::vector<TypeSignature>& arg_types
-) {
-    std::string search_key = function_call.function_name;
-    search_key += "<" + std::to_string(function_call.instantiated_generics.size()) + ">";
-    for (const TypeSignature& arg_type : arg_types) {
-        search_key += type_definitions_register.get_fully_qualified_typesignature_name(arg_type);
-        search_key += ";";
-    }
-    return search_key;
 }
 
 FunctionDefinition::Ref OverloadingResolutionEngine::cache_unaware_function_definition_retrieval(

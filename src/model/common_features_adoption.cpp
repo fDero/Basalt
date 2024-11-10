@@ -21,11 +21,20 @@ CommonFeatureAdoptionPlanGenerationEngine::generate_common_feature_adoption_plan
     const FunctionCall& function_call, 
     const std::vector<TypeSignature>& arg_types
 ) { 
-    return generate_common_feature_adoption_iterating_over_arg_types(
+    std::string cache_key = get_cache_search_key_for_func_def_retrieval_from_func_call(
+        type_definitions_register, function_call, arg_types
+    );
+    auto cache_search_outcome = fast_retrieve_cache.find(cache_key);
+    if (cache_search_outcome != fast_retrieve_cache.end()) {
+        return cache_search_outcome->second;
+    }
+    auto cfa_plan = generate_common_feature_adoption_iterating_over_arg_types(
         function_call, 
         arg_types, 
         arg_types.begin()
     );
+    fast_retrieve_cache.insert({cache_key, cfa_plan});
+    return cfa_plan;
 }
 
 CommonFeatureAdoptionPlanDescriptor

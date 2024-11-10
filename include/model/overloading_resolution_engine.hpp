@@ -9,11 +9,13 @@
 
 #include "model/project_file_structure.hpp"
 #include "model/function_overloads_register.hpp"
+#include "model/type_definitions_register.hpp"
 #include "language/definitions.hpp"
 #include "language/functions.hpp"
 #include "typesystem/generics_substitution_rules.hpp"
+#include "model/caching_aware_register.hpp"
 
-class OverloadingResolutionEngine {
+class OverloadingResolutionEngine : public CachingAwareRegister {
 
     public:
         OverloadingResolutionEngine(
@@ -33,15 +35,13 @@ class OverloadingResolutionEngine {
             const std::vector<TypeSignature>& arg_types
         );
 
+    protected:
+        using CachingAwareRegister::get_cache_search_key_for_func_def_retrieval_from_func_call;
+
     private:
         FunctionDefinition::Ref cache_unaware_function_definition_retrieval(
             const FunctionCall& function_call, 
             const std::vector<TypeSignature>& arg_types
-        );
-
-        std::string get_function_default_search_key(
-            const FunctionCall &function_call, 
-            const std::vector<TypeSignature> &arg_types
         );
 
         FunctionOverloadsRegister& function_overloads_register;
