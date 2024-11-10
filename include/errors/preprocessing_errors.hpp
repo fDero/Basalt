@@ -184,5 +184,16 @@ inline void ensure_return_value_type_is_congruent_to_function_definition(
     const FunctionDefinition& function_definition,
     const Statement& return_statement
 ) {
+    if (!assignment_is_valid) {
+        throw std::runtime_error("return value type is not congruent to function definition");
+    }
+}
 
+inline void ensure_common_feature_adoption_is_possible(
+    std::vector<TypeSignature>::const_iterator current_arg_type_iterator,
+    std::vector<TypeSignature>::const_iterator arg_types_end
+) {
+    if (current_arg_type_iterator == arg_types_end) {
+        throw std::runtime_error("common feature adoption is not possible");
+    }
 }

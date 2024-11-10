@@ -6,6 +6,7 @@
 #include "model/common_feature_adoption_plan_descriptor.hpp"
 #include "model/common_feature_adoption_plan_generation_engine.hpp"
 #include "errors/internal_errors.hpp"
+#include "errors/preprocessing_errors.hpp"
 
 CommonFeatureAdoptionPlanGenerationEngine::CommonFeatureAdoptionPlanGenerationEngine( 
     OverloadingResolutionEngine& overloading_resolution_engine,
@@ -34,13 +35,13 @@ CommonFeatureAdoptionPlanGenerationEngine::generate_common_feature_adoption_iter
     std::vector<TypeSignature>::const_iterator current_arg_type_iterator
 ) { 
     FunctionDefinition::Ref retrieved = overloading_resolution_engine.retrieve_function_definition(function_call, arg_types);
-    CommonFeatureAdoptionPlanDescriptor direct_adoption_plan { {}, retrieved };
-    if (direct_adoption_plan.direct_adoption != nullptr) {
+    CommonFeatureAdoptionPlanDescriptor direct_adoption_plan = retrieved;
+    if (retrieved != nullptr) {
         return direct_adoption_plan;
     }
-    //ensure_common_feature_adoption_is_possible(current_arg_type_iterator, arg_types.end());
+    ensure_common_feature_adoption_is_possible(current_arg_type_iterator, arg_types.end());
     TypeSignature current_arg_type = type_definitions_register.unalias_type(*current_arg_type_iterator);
-    //assert_current_arg_type_is_not_generic(current_arg_type);
+    assert_current_arg_type_is_not_generic(current_arg_type);
     switch (current_arg_type.typesiganture_kind()) {
         case TypeSignatureBody::Kind::inline_union:return generate_common_feature_adoption_for_inline_union(
             function_call, arg_types, current_arg_type_iterator
@@ -60,7 +61,7 @@ CommonFeatureAdoptionPlanGenerationEngine::generate_common_feature_adoption_for_
     const std::vector<TypeSignature>& arg_types,
     std::vector<TypeSignature>::const_iterator current_arg_type_iterator
 ) {
-    //assert_current_arg_type_is_not_generic(*current_arg_type_iterator);
+    assert_current_arg_type_is_not_generic(*current_arg_type_iterator);
     assert_typesignature_is<InlineUnion>(*current_arg_type_iterator);
     InlineUnion inline_union = current_arg_type_iterator->get<InlineUnion>();
     std::vector<TypeSignature> union_alternatives = inline_union.alternatives;
@@ -75,7 +76,7 @@ CommonFeatureAdoptionPlanGenerationEngine::generate_common_feature_adoption_for_
     const std::vector<TypeSignature>& arg_types,
     std::vector<TypeSignature>::const_iterator current_arg_type_iterator
 ) {
-    //assert_current_arg_type_is_not_generic(*current_arg_type_iterator);
+    assert_current_arg_type_is_not_generic(*current_arg_type_iterator);
     assert_typesignature_is<CustomType>(*current_arg_type_iterator);
     CustomType custom_type = current_arg_type_iterator->get<CustomType>();
     TypeSignature unaliased_type = type_definitions_register.unalias_type(custom_type);
@@ -104,20 +105,23 @@ CommonFeatureAdoptionPlanGenerationEngine::generate_common_feature_adoption_for_
     std::vector<TypeSignature>::const_iterator current_arg_type_iterator,
     const std::vector<TypeSignature>& alternatives
 ) {
-    //assert_current_arg_type_is_not_generic(*current_arg_type_iterator);
-    CommonFeatureAdoptionPlanDescriptor plan;
+    assert_current_arg_type_is_not_generic(*current_arg_type_iterator);
+    RecursiveAdoptionPlan plan {
+        .argument_index = static_cast<size_t>(std::distance(arg_types.begin(), current_arg_type_iterator))
+    };
     for (const TypeSignature& alternative : alternatives) { 
         std::vector<TypeSignature> new_arg_types;
         std::copy(arg_types.begin(), current_arg_type_iterator, std::back_inserter(new_arg_types));
         new_arg_types.push_back(alternative);
         std::copy(std::next(current_arg_type_iterator), arg_types.end(), std::back_inserter(new_arg_types));
         std::vector<TypeSignature>::const_iterator new_arg_type_iterator = new_arg_types.begin();
-        new_arg_type_iterator += std::distance(arg_types.begin(), current_arg_type_iterator);
+        size_t new_arg_type_iterator_offset = std::distance(arg_types.begin(), current_arg_type_iterator);
+        new_arg_type_iterator += new_arg_type_iterator_offset;
         CommonFeatureAdoptionPlanDescriptor nested_plan = generate_common_feature_adoption_iterating_over_arg_types(
             function_call, new_arg_types, new_arg_type_iterator
         );
-        std::string type_name = type_definitions_register.get_fully_qualified_typesignature_name(alternative);
-        plan.recursive_adoptions.emplace_back(type_name, std::move(nested_plan));
+        plan.alternatives.push_back(alternative);
+        plan.nested_plans.emplace_back(std::move(nested_plan));
     }
     return plan;
 }

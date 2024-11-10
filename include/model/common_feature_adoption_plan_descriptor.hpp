@@ -8,13 +8,36 @@
 #include <memory>
 #include <string>
 #include <map>
-
+#include <variant>
 #include "language/definitions.hpp"
 
-struct CommonFeatureAdoptionPlanDescriptor {
+struct CommonFeatureAdoptionPlanDescriptor;
 
-    using RecursiveAdoption = std::pair<std::string, CommonFeatureAdoptionPlanDescriptor>;
+struct RecursiveAdoptionPlan {
+    size_t argument_index;
+    std::vector<TypeSignature> alternatives;
+    std::vector<CommonFeatureAdoptionPlanDescriptor> nested_plans;
+};
 
-    std::vector<RecursiveAdoption> recursive_adoptions;
-    FunctionDefinition::Ref direct_adoption;
+struct CommonFeatureAdoptionPlanDescriptor 
+    : public std::variant<RecursiveAdoptionPlan, FunctionDefinition::Ref>
+{
+    using std::variant<RecursiveAdoptionPlan, FunctionDefinition::Ref>::variant;
+    using std::variant<RecursiveAdoptionPlan, FunctionDefinition::Ref>::operator=;
+
+    bool is_direct_adoption() const {
+        return std::holds_alternative<FunctionDefinition::Ref>(*this);
+    }
+
+    bool is_recursive_adoption() const {
+        return std::holds_alternative<RecursiveAdoptionPlan>(*this);
+    }
+
+    FunctionDefinition::Ref get_direct_adoption() const {
+        return std::get<FunctionDefinition::Ref>(*this);
+    }
+
+    RecursiveAdoptionPlan get_recursive_adoption() const {
+        return std::get<RecursiveAdoptionPlan>(*this);
+    }
 };

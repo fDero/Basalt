@@ -169,3 +169,9 @@ void assert_overload_set_exists(
     const std::unordered_map<std::string, std::vector<FunctionDefinition::Ref>>::const_iterator& search_outcome,
     const std::unordered_map<std::string, std::vector<FunctionDefinition::Ref>>::const_iterator& end
 );
+
+inline void assert_current_arg_type_is_not_generic(const TypeSignature& current_arg_type) {
+    if (current_arg_type.is_generic()) {
+        throw std::runtime_error("the compiler expected this type to be non-generic, the assumption was false");
+    }
+}
