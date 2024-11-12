@@ -35,10 +35,6 @@ class FunctionOverloadsRegister : public CachingAwareRegister {
             const std::string& overload_set_id
         );
 
-        [[nodiscard]] std::string get_overload_set_default_search_key(
-            const FunctionCall& function_call
-        );
-
     protected:
         using CachingAwareRegister::get_function_definition_overload_set_id;
         using CachingAwareRegister::get_generics_unaware_function_definition_overload_set_id;

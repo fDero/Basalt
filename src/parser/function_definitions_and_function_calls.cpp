@@ -23,13 +23,14 @@
 }
 
 [[nodiscard]] FunctionCall Parser::parse_function_call() {
+    std::string package_prefix = parse_package_prefix();
     assert_token_is_text(source_tokens, iterator);
     assert_identifier_is_properly_formatted(iterator);
     const Token& function_name_token = *( iterator++ );
     std::vector<TypeSignature> concrete_generics = parse_concrete_generics();
     assert_token_matches(source_tokens, iterator++, "(");
     std::vector<Expression> call_arguments = parse_function_call_arguments();
-    return FunctionCall { function_name_token, call_arguments, concrete_generics };
+    return FunctionCall { function_name_token, package_prefix, call_arguments, concrete_generics };
 }
 
 [[nodiscard]] std::vector<Expression> Parser::parse_function_call_arguments() {

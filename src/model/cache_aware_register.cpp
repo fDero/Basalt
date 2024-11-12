@@ -11,6 +11,9 @@
     const std::vector<TypeSignature>& arg_types
 ) {
     std::string search_key = function_call.as_debug_informations_aware_entity().filename;
+    if (!function_call.package_prefix.empty()) {
+        search_key = function_call.package_prefix;
+    }
     search_key += namespace_concatenation + function_call.function_name;
     search_key += "<" + std::to_string(function_call.instantiated_generics.size()) + ">";
     for (const TypeSignature& arg_type : arg_types) {
@@ -46,11 +49,13 @@
     const std::string& package_name, 
     const FunctionCall& original_function_call
 ) {
+    const std::string& actual_package_prefix = original_function_call.package_prefix.empty()? 
+        package_name : original_function_call.package_prefix;
     const std::string& function_name = original_function_call.function_name;
     const std::vector<TypeSignature>& generics = original_function_call.instantiated_generics;
     const std::string generics_string = "<" + std::to_string(generics.size()) + ">";
     const std::string args_string = "(" + std::to_string(original_function_call.arguments.size()) + ")";
-    std::string overload_set_id = package_name + namespace_concatenation + function_name + generics_string + args_string;
+    std::string overload_set_id = actual_package_prefix + namespace_concatenation + function_name + generics_string + args_string;
     return overload_set_id;
 }
 
@@ -58,6 +63,9 @@
     ProjectFileStructure project_file_structure, 
     const FunctionCall& function_call
 ) {
+    if (!function_call.package_prefix.empty()) {
+        return get_function_call_overload_set_id(function_call.package_prefix, function_call);
+    }
     const std::string& file_where_function_call_is_located = 
         function_call.as_debug_informations_aware_entity().filename;
     const std::string& package_where_the_function_call_is_located = 

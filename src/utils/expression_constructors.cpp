@@ -101,11 +101,26 @@ CharLiteral::CharLiteral(const Token& char_literal_token)
 
 FunctionCall::FunctionCall(
     const Token& function_call_token, 
+    const std::string& package_prefix,
     const std::vector<Expression>& args, 
     const std::vector<TypeSignature>& instantiated_generics
 ) 
     : ExpressionBody(function_call_token)
     , StatementBody(function_call_token)
+    , package_prefix(package_prefix)
+    , function_name(function_call_token.sourcetext)
+    , instantiated_generics(instantiated_generics)
+    , arguments(args) 
+{ }
+
+FunctionCall::FunctionCall(
+    const Token& function_call_token, 
+    const std::vector<Expression>& args, 
+    const std::vector<TypeSignature>& instantiated_generics
+) 
+    : ExpressionBody(function_call_token)
+    , StatementBody(function_call_token)
+    , package_prefix("")
     , function_name(function_call_token.sourcetext)
     , instantiated_generics(instantiated_generics)
     , arguments(args) 

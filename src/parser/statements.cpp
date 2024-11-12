@@ -11,21 +11,6 @@
 #include "language/expressions.hpp"
 #include "language/functions.hpp"
 
-[[nodiscard]] Statement Parser::parse_non_keyword_initialized_statements() {
-    Expression expression = parse_expression();
-    if (expression.is<FunctionCall>()) {
-        FunctionCall function_call = expression.get<FunctionCall>();
-        ensure_token_matches(source_tokens, iterator++, ";");
-        return function_call;
-    }
-    ensure_there_are_still_tokens(source_tokens, iterator);
-    const Token& assignment_token = *iterator;
-    ensure_token_matches(source_tokens, iterator++, "=");
-    Expression right_hand_side = parse_expression();
-    ensure_token_matches(source_tokens, iterator++, ";");
-    return Assignment { expression, right_hand_side, assignment_token };
-}
-
 [[nodiscard]] Statement Parser::parse_statement() {
     ensure_there_are_still_tokens(source_tokens, iterator);
     switch (iterator->type) {
@@ -39,6 +24,21 @@
         break; case Token::Type::const_keyword:    return parse_constant_definition();
         break; default:                            return parse_non_keyword_initialized_statements();
     }
+}
+
+[[nodiscard]] Statement Parser::parse_non_keyword_initialized_statements() {
+    Expression expression = parse_expression();
+    if (expression.is<FunctionCall>()) {
+        FunctionCall function_call = expression.get<FunctionCall>();
+        ensure_token_matches(source_tokens, iterator++, ";");
+        return function_call;
+    }
+    ensure_there_are_still_tokens(source_tokens, iterator);
+    const Token& assignment_token = *iterator;
+    ensure_token_matches(source_tokens, iterator++, "=");
+    Expression right_hand_side = parse_expression();
+    ensure_token_matches(source_tokens, iterator++, ";");
+    return Assignment { expression, right_hand_side, assignment_token };
 }
 
 [[nodiscard]] std::vector<Statement> Parser::parse_multiline_code_block() {

@@ -57,11 +57,22 @@
     ensure_there_are_still_tokens(source_tokens, iterator);
     switch(iterator->type) {
         break; case Token::Type::text: {
-            if (std::next(iterator) == source_tokens.end() || std::next(iterator)->sourcetext != "(") { 
-                return parse_identifier();
+            auto old_iterator_backup = iterator;
+            Expression Identifier = parse_identifier();
+            if (iterator == source_tokens.end()) {
+                return Identifier;
             }
-            FunctionCall fcall = parse_function_call();
-            return fcall;
+            if (std::next(iterator) == source_tokens.end()) {
+                return Identifier;
+            }
+            else if (iterator->sourcetext == "(" || iterator->sourcetext == namespace_concatenation) {
+                iterator = old_iterator_backup;
+                FunctionCall fcall = parse_function_call();
+                return fcall;
+            }
+            else {
+                return Identifier;
+            }
         }
         break; case Token::Type::symbol: {
             if (iterator->sourcetext == "(") return parse_expression_wrapped_in_parenthesis(); 

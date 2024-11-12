@@ -16,6 +16,13 @@ struct FunctionCall
 
 	FunctionCall(
 	    const Token& function_call_token, 
+		const std::string& package_prefix,
+	    const std::vector<Expression>& args, 
+	    const std::vector<TypeSignature>& instantiated_generics
+	);
+
+	FunctionCall(
+	    const Token& function_call_token, 
 	    const std::vector<Expression>& args, 
 	    const std::vector<TypeSignature>& instantiated_generics
 	);
@@ -28,6 +35,7 @@ struct FunctionCall
 		return StatementBody::Kind::function_call;
 	}
 
+	std::string package_prefix;
 	std::string function_name;
 	std::vector<TypeSignature> instantiated_generics;
 	std::vector<Expression> arguments;
@@ -36,3 +44,4 @@ struct FunctionCall
 		return (const ExpressionBody&) *this;		
 	};
 };
+                  
