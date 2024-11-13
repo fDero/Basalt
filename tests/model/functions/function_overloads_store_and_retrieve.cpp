@@ -109,6 +109,49 @@ TEST(Representation, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_Fr
     EXPECT_EQ(function_register.retrieve_specific_overload_set(overload_sets_ids[2]).size(), 1);
 }
 
+TEST(Representation, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_From_A_Dot_Basalt_Without_Explicit_Generics_But_Specifyng_A_Package_Prefix) {
+    
+    FunctionOverloadsRegister function_register(multi_file_project_with_multiple_function_definitions);
+    
+    FunctionCall function_call {
+        Token { "add", "a.basalt", 1, 1, 1, Token::Type::text },
+        { 
+            IntLiteral { Token { "6", "a.basalt", 1, 1, 1, Token::Type::integer_literal } },
+            IntLiteral { Token { "7", "a.basalt", 1, 1, 1, Token::Type::integer_literal } } 
+        }, 
+        {
+            //no explicit type parameters section
+        }
+    };
+    function_call.package_prefix = "apackage";
+
+    std::vector<std::string> overload_sets_ids = function_register.retrieve_overload_sets_ids(function_call);
+    ASSERT_EQ(overload_sets_ids.size(), 1);
+    EXPECT_EQ(function_register.retrieve_specific_overload_set(overload_sets_ids[0]).size(), 2);
+}
+
+
+TEST(Representation, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_From_A_Dot_Basalt_Without_Explicit_Generics_But_Specifyng_A_Package_Prefix_2) {
+    
+    FunctionOverloadsRegister function_register(multi_file_project_with_multiple_function_definitions);
+    
+    FunctionCall function_call {
+        Token { "add", "a.basalt", 1, 1, 1, Token::Type::text },
+        { 
+            IntLiteral { Token { "6", "a.basalt", 1, 1, 1, Token::Type::integer_literal } },
+            IntLiteral { Token { "7", "a.basalt", 1, 1, 1, Token::Type::integer_literal } } 
+        }, 
+        {
+            //no explicit type parameters section
+        }
+    };
+    function_call.package_prefix = "bpackage";
+
+    std::vector<std::string> overload_sets_ids = function_register.retrieve_overload_sets_ids(function_call);
+    ASSERT_EQ(overload_sets_ids.size(), 1);
+    EXPECT_EQ(function_register.retrieve_specific_overload_set(overload_sets_ids[0]).size(), 1);
+}
+
 TEST(Representation, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_From_B_Dot_Basalt_Without_Explicit_Generics) {
     
     FunctionOverloadsRegister function_register(multi_file_project_with_multiple_function_definitions);

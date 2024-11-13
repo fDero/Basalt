@@ -40,6 +40,10 @@ void FunctionOverloadsRegister::foreach_function_definition(
 }
 
 [[nodiscard]] std::vector<std::string> FunctionOverloadsRegister::retrieve_overload_sets_ids(const FunctionCall& function_call) {
+    if (!function_call.package_prefix.empty()) {
+        std::string overload_set_id = get_function_call_overload_set_id(function_call.package_prefix, function_call); 
+        return { overload_set_id };
+    }
     std::vector<std::string> overload_sets_ids;
     const std::string& file_where_function_call_is_located = function_call.as_debug_informations_aware_entity().filename;
     const std::string& package_where_the_function_call_is_located = project_file_structure.get_package_name_by_file_name(file_where_function_call_is_located);
@@ -58,7 +62,10 @@ void FunctionOverloadsRegister::foreach_function_definition(
 }
 
 [[nodiscard]] std::vector<FunctionDefinition::Ref>& FunctionOverloadsRegister::retrieve_specific_overload_set(const std::string& overload_set_id) {
+    static std::vector<FunctionDefinition::Ref> empty_overload_set;
     auto overload_set_search_outcome = function_definitions_overload_sets.find(overload_set_id);
-    assert_overload_set_exists(overload_set_search_outcome, function_definitions_overload_sets.end());
+    if (overload_set_search_outcome == function_definitions_overload_sets.end()) {
+        return empty_overload_set;
+    }
     return overload_set_search_outcome->second;
 }
