@@ -14,4 +14,8 @@ ProgramRepresentation::ProgramRepresentation()
         type_definitions_register, 
         project_file_structure
     )
+    , common_feature_adoption_plan_generation_engine(
+        overloading_resolution_engine,
+        type_definitions_register
+    )
 {}

@@ -10,7 +10,7 @@
 #include "frontend/commandline.hpp"
 #include "frontend/parser.hpp"
 #include "preprocessing/preprocessor.hpp"
-#include "core/compiler.hpp"
+#include "backend/compiler.hpp"
 #include "errors/commandline_errors.hpp"
 
 void CommandLineController::dispatch_based_on_user_input() {

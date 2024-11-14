@@ -96,6 +96,11 @@ std::string TypeDefinitionsRegister::get_fully_qualified_customtype_name(const C
     throw_no_type_definition_found(type_signature);
 }
 
+std::string TypeDefinitionsRegister::get_fully_qualified_typedefinition_name(const TypeDefinition& type_defintion) {
+    std::string package_where_typedef_is_located = project_file_structure.get_package_name_by_file_name(type_defintion.get_filename());
+    return get_type_definition_match_pattern(package_where_typedef_is_located, type_defintion);
+}
+
 std::string TypeDefinitionsRegister::get_fully_qualified_typesignature_name(const TypeSignature& type_signature) {
     switch (type_signature.typesiganture_kind()) {
         case TypeSignatureBody::Kind::slice_type: {

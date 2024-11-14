@@ -8,12 +8,15 @@
 #include "misc/file_extensions.hpp"
 #include "frontend/parser.hpp"
 #include "frontend/tokenizer.hpp"
-#include "core/compiler.hpp"
+#include "backend/compiler.hpp"
 
 Compiler::Compiler(const std::vector<std::string>& source_files, const std::vector<std::string>& output_files) 
     : program_representation()
     , preprocessor(program_representation)
     , output_files(output_files)
+    , llvm_context()
+    , llvm_module("basalt_program", llvm_context)
+    , llvm_builder(llvm_context)
 {
     for (const std::string& input_file_name : source_files) {
         Tokenizer tokenizer(input_file_name);
