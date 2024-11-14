@@ -20,14 +20,13 @@ class TypeDefinitionsRegister {
         void store_type_definition(const TypeDefinition& type_definition);
         void verify_that_the_type_exists(const TypeSignature& type_signature);
         void foreach_type_definition(std::function<void(const TypeDefinition&)> visitor);
-        
-        
+
+        [[nodiscard]] TypeSignature unalias_type(const TypeSignature& type_signature);
+        [[nodiscard]] TypeDefinition retrieve_type_definition(const CustomType& type_signature);
+
         [[nodiscard]] std::string get_fully_qualified_typedefinition_name(const TypeDefinition& type_definition);
         [[nodiscard]] std::string get_fully_qualified_typesignature_name(const TypeSignature& type_signature);
-        [[nodiscard]] TypeDefinition retrieve_type_definition(const CustomType& type_signature);
         
-        [[nodiscard]] TypeSignature unalias_type(const TypeSignature& type_signature);
-        [[nodiscard]] std::vector<TypeSignature> flat_union_alternatives(const TypeSignature& type_signature);
         [[nodiscard]] size_t compute_type_definition_memory_footprint(const TypeDefinition& type_definition);
         [[nodiscard]] size_t compute_header_unaware_type_definition_memory_footprint(const TypeDefinition& type_definition);
         [[nodiscard]] size_t compute_typesignature_definition_memory_footprint(const TypeSignature& typesignature);
