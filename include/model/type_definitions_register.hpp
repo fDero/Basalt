@@ -27,11 +27,6 @@ class TypeDefinitionsRegister {
         [[nodiscard]] std::string get_fully_qualified_typedefinition_name(const TypeDefinition& type_definition);
         [[nodiscard]] std::string get_fully_qualified_typesignature_name(const TypeSignature& type_signature);
         
-        [[nodiscard]] size_t compute_type_definition_memory_footprint(const TypeDefinition& type_definition);
-        [[nodiscard]] size_t compute_header_unaware_type_definition_memory_footprint(const TypeDefinition& type_definition);
-        [[nodiscard]] size_t compute_typesignature_definition_memory_footprint(const TypeSignature& typesignature);
-        [[nodiscard]] size_t compute_header_unaware_typesignature_memory_footprint(const TypeSignature& typesignature);
-        
     protected:
         [[nodiscard]] std::string get_fully_qualified_customtype_name(const CustomType& type_signature);
         [[nodiscard]] std::optional<std::string> search_fully_qualified_typesignature_name(const CustomType&, const std::string&);
