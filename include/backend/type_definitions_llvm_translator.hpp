@@ -32,4 +32,3 @@ class TypeDefinitionsLLVMTranslator {
         llvm::DataLayout& data_layout;
         std::unordered_map<std::string, llvm::Type*> llvm_type_definitions;
 };
-

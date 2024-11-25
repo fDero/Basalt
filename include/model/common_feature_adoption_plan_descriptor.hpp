@@ -9,6 +9,7 @@
 #include <string>
 #include <map>
 #include <variant>
+
 #include "language/definitions.hpp"
 
 struct CommonFeatureAdoptionPlanDescriptor;
@@ -17,6 +18,7 @@ struct RecursiveAdoptionPlan {
     size_t argument_index;
     std::vector<TypeSignature> alternatives;
     std::vector<CommonFeatureAdoptionPlanDescriptor> nested_plans;
+    std::optional<TypeSignature> return_type;
 };
 
 struct CommonFeatureAdoptionPlanDescriptor 
@@ -39,5 +41,11 @@ struct CommonFeatureAdoptionPlanDescriptor
 
     RecursiveAdoptionPlan get_recursive_adoption() const {
         return std::get<RecursiveAdoptionPlan>(*this);
+    }
+
+    std::optional<TypeSignature> get_return_type() const {
+        return (is_direct_adoption())
+            ? get_direct_adoption()->return_type
+            : get_recursive_adoption().return_type;
     }
 };

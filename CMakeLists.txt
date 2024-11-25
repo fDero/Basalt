@@ -51,6 +51,7 @@ target_compile_options(
   ${MAIN_BINARY}
   PRIVATE
   -O3
+  -Wunused
   -Wall
   -Wpedantic
   -Wfloat-equal
@@ -75,6 +76,7 @@ target_compile_options(
   ${TEST_BINARY}
   PRIVATE
   -O0
+  -Wunused
   -Wall
   -Wpedantic
   -Wfloat-equal

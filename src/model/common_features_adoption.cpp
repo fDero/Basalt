@@ -115,9 +115,9 @@ CommonFeatureAdoptionPlanGenerationEngine::generate_common_feature_adoption_for_
     const std::vector<TypeSignature>& alternatives
 ) {
     assert_current_arg_type_is_not_generic(*current_arg_type_iterator);
-    RecursiveAdoptionPlan plan {
-        .argument_index = static_cast<size_t>(std::distance(arg_types.begin(), current_arg_type_iterator))
-    };
+    RecursiveAdoptionPlan plan;
+    std::vector<std::optional<TypeSignature>> return_types;
+    plan.argument_index = static_cast<size_t>(std::distance(arg_types.begin(), current_arg_type_iterator));
     for (const TypeSignature& alternative : alternatives) { 
         std::vector<TypeSignature> new_arg_types;
         std::copy(arg_types.begin(), current_arg_type_iterator, std::back_inserter(new_arg_types));
@@ -129,8 +129,34 @@ CommonFeatureAdoptionPlanGenerationEngine::generate_common_feature_adoption_for_
         CommonFeatureAdoptionPlanDescriptor nested_plan = generate_common_feature_adoption_iterating_over_arg_types(
             function_call, new_arg_types, new_arg_type_iterator
         );
+        return_types.push_back(nested_plan.get_return_type());
         plan.alternatives.push_back(alternative);
         plan.nested_plans.emplace_back(std::move(nested_plan));
     }
+    plan.return_type = compute_recursive_adoption_plan_return_type(function_call, return_types);
     return plan;
+}
+
+std::optional<TypeSignature> 
+CommonFeatureAdoptionPlanGenerationEngine::compute_recursive_adoption_plan_return_type(
+    const FunctionCall& function_call,
+    std::vector<std::optional<TypeSignature>>& return_types
+) {
+    bool contains_void_return_type = false;
+    bool contains_non_void_return_type = false;
+    std::vector<TypeSignature> unwrapped_return_types;
+    for (const std::optional<TypeSignature>& return_type : return_types) {
+        contains_void_return_type |= !return_type.has_value();
+        contains_non_void_return_type |= return_type.has_value();
+        if (return_type.has_value()) {
+            unwrapped_return_types.push_back(return_type.value());
+        }
+    }
+    ensure_common_feature_adoption_is_possible(function_call, contains_void_return_type, contains_non_void_return_type);
+    return (contains_void_return_type)
+        ? std::optional<TypeSignature>(std::nullopt) 
+        : InlineUnion ( 
+            function_call.as_debug_informations_aware_entity(), 
+            unwrapped_return_types 
+        );
 }

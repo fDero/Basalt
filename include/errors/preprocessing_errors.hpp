@@ -197,3 +197,13 @@ inline void ensure_common_feature_adoption_is_possible(
         throw std::runtime_error("common feature adoption is not possible");
     }
 }
+
+inline void ensure_common_feature_adoption_is_possible(
+    const FunctionCall& function_call,
+    bool contains_void_return_type,
+    bool contains_non_void_return_type
+) {
+    if (contains_non_void_return_type && contains_void_return_type) {
+        throw std::runtime_error("common feature adoption is not possible");
+    }
+}

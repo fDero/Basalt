@@ -17,7 +17,7 @@ ProjectFileStructure project_with_single_file_containing_two_overload_of_the_add
         .file_metadata = { 
             .filename = "a.basalt",
             .packagename = "apackage",
-            .imports = { "bpackage", "cpackage" },
+            .imports = { },
         },
         .type_defs = {},
         .func_defs = {
@@ -65,6 +65,65 @@ TEST(Representation, CFA_Failure_Not_Every_Case_Is_Covered) {
             },
             {
                 TypeSignatureFactory::IntOrFloat,
+                TypeSignatureFactory::IntOrFloat
+            }
+        )
+    );
+}
+
+
+ProjectFileStructure project_with_single_file_containing_two_overload_of_the_f_function_with_incompatible_return_types ({
+    FileRepresentation {
+        .file_metadata = { 
+            .filename = "f.basalt",
+            .packagename = "fpackage",
+            .imports = { },
+        },
+        .type_defs = {},
+        .func_defs = {
+            FunctionDefinitionFactory::make_void_function_definition(
+                "f",
+                "f.basalt", 
+                FunctionDefinitionFactory::no_generics, 
+                {
+                    FunctionDefinition::Argument { "x", TypeSignatureFactory::Float },
+                    FunctionDefinition::Argument { "y", TypeSignatureFactory::Float }
+                }
+            ),
+            FunctionDefinitionFactory::make_function_definition(
+                "f",
+                "f.basalt", 
+                FunctionDefinitionFactory::no_generics, 
+                {
+                    FunctionDefinition::Argument { "a", TypeSignatureFactory::Float },
+                    FunctionDefinition::Argument { "b", TypeSignatureFactory::Int }
+                },
+                TypeSignatureFactory::Float
+            )
+        }
+    }
+});
+
+
+TEST(Representation, CFA_Failure_Incompatible_Return_Types) {
+    FunctionOverloadsRegister function_register(project_with_single_file_containing_two_overload_of_the_f_function_with_incompatible_return_types);
+    TypeDefinitionsRegister type_register(project_with_single_file_containing_two_overload_of_the_f_function_with_incompatible_return_types);
+    OverloadingResolutionEngine overloading_resolution_engine(function_register, type_register, project_with_single_file_containing_two_overload_of_the_f_function_with_incompatible_return_types);
+    CommonFeatureAdoptionPlanGenerationEngine common_feature_adoption_plan_generator(overloading_resolution_engine, type_register);
+    EXPECT_ANY_THROW(
+        common_feature_adoption_plan_generator.generate_common_feature_adoption_plan(
+            FunctionCall {
+                Token { "f", "f.basalt", 1, 1, 1, Token::Type::text },
+                { 
+                    Identifier { Token { "x", "f.basalt", 1, 1, 1, Token::Type::text } },
+                    IntLiteral { Token { "7", "f.basalt", 1, 1, 1, Token::Type::integer_literal } } 
+                }, 
+                {
+                    //no explicit type parameters section
+                }
+            },
+            {
+                TypeSignatureFactory::Float,
                 TypeSignatureFactory::IntOrFloat
             }
         )
