@@ -27,4 +27,3 @@ dependencies
 *.msi
 *.nix
 result
-function_calls_resolver.hpp
