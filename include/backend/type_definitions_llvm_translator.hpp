@@ -9,15 +9,15 @@
 #include <llvm/IR/Module.h>
 #include <functional>
 
-#include "core/type_definitions_register.hpp"
+#include "core/program_representation.hpp"
 #include "language/definitions.hpp"
 
 class TypeDefinitionsLLVMTranslator {
     public:
         TypeDefinitionsLLVMTranslator(
-            TypeDefinitionsRegister& type_definitions_register, 
+            ProgramRepresentation& program_representation, 
             llvm::LLVMContext& context,
-            llvm::DataLayout& data_layout
+            llvm::Module& llvm_module
         );
 
         llvm::Type* translate_typesignature_to_llvm_type(const TypeSignature& type_signature);
@@ -27,8 +27,8 @@ class TypeDefinitionsLLVMTranslator {
         size_t compute_header_unaware_typesignature_memory_footprint(const TypeSignature& typesignature);
         
     private:
-        TypeDefinitionsRegister& type_definitions_register;
+        ProgramRepresentation& program_representation;
         llvm::LLVMContext& context;
-        llvm::DataLayout& data_layout;
+        llvm::Module& llvm_module;
         std::unordered_map<std::string, llvm::Type*> llvm_type_definitions;
 };

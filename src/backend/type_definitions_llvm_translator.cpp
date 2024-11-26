@@ -7,13 +7,13 @@
 #include "errors/internal_errors.hpp"
 
 TypeDefinitionsLLVMTranslator::TypeDefinitionsLLVMTranslator(
-    TypeDefinitionsRegister& type_definitions_register, 
+    ProgramRepresentation& program_representation, 
     llvm::LLVMContext& context,
-    llvm::DataLayout& data_layout
+    llvm::Module& llvm_module
 )
-    : type_definitions_register(type_definitions_register) 
+    : program_representation(program_representation) 
     , context(context)
-    , data_layout(data_layout)
+    , llvm_module(llvm_module)
 { 
     llvm_type_definitions.insert({"Int", llvm::Type::getInt64Ty(context)});
     llvm_type_definitions.insert({"Float", llvm::Type::getDoubleTy(context)});
@@ -61,15 +61,15 @@ llvm::Type* TypeDefinitionsLLVMTranslator::translate_typesignature_to_llvm_type(
 size_t TypeDefinitionsLLVMTranslator::compute_header_unaware_typesignature_memory_footprint(const TypeSignature& typesignature) {
     switch (typesignature.typesiganture_kind()) {
         case TypeSignatureBody::Kind::custom_type: {
-            TypeSignature unaliased_type = type_definitions_register.unalias_type(typesignature.get<CustomType>());
+            TypeSignature unaliased_type = program_representation.unalias_type(typesignature.get<CustomType>());
             if (unaliased_type.typesiganture_kind() != TypeSignatureBody::Kind::custom_type) {
                 return compute_header_unaware_typesignature_memory_footprint(unaliased_type);
             }
             CustomType unaliased_custom_type = unaliased_type.get<CustomType>();
-            TypeDefinition type_definition = type_definitions_register.retrieve_type_definition(unaliased_custom_type);
+            TypeDefinition type_definition = program_representation.retrieve_type_definition(unaliased_custom_type);
             if (!type_definition.is<UnionDefinition>()) {
                 llvm::Type* llvm_type = translate_custom_type_to_llvm_type(unaliased_custom_type);
-                return data_layout.getTypeAllocSize(llvm_type);
+                return llvm_module.getDataLayout().getTypeAllocSize(llvm_type);
             }
             size_t union_payload_memory_size_in_bytes = 0;
             UnionDefinition union_definition = type_definition.get<UnionDefinition>();
@@ -88,13 +88,13 @@ size_t TypeDefinitionsLLVMTranslator::compute_header_unaware_typesignature_memor
         }
         default: {
             llvm::Type* llvm_type = translate_typesignature_to_llvm_type(typesignature);
-            return data_layout.getTypeAllocSize(llvm_type);
+            return llvm_module.getDataLayout().getTypeAllocSize(llvm_type);
         }
     }    
 }
 
 llvm::Type* TypeDefinitionsLLVMTranslator::translate_inline_union_to_llvm_type(const InlineUnion& inline_union) {
-    std::string inline_union_typename =  type_definitions_register.get_fully_qualified_typesignature_name(inline_union);
+    std::string inline_union_typename =  program_representation.get_fully_qualified_typesignature_name(inline_union);
     llvm::StructType* llvm_type_def = llvm::StructType::create(context, inline_union_typename);
     size_t union_payload_memory_size_in_bytes = 0;
     for (const auto& alternative : inline_union.alternatives) {
@@ -107,13 +107,13 @@ llvm::Type* TypeDefinitionsLLVMTranslator::translate_inline_union_to_llvm_type(c
 }
 
 llvm::Type* TypeDefinitionsLLVMTranslator::translate_custom_type_to_llvm_type(const CustomType& custom_type) {
-    TypeSignature unaliased_type = type_definitions_register.unalias_type(custom_type);
+    TypeSignature unaliased_type = program_representation.unalias_type(custom_type);
     if (unaliased_type.typesiganture_kind() != TypeSignatureBody::Kind::custom_type) {
         return translate_typesignature_to_llvm_type(unaliased_type);
     }
     CustomType unaliased_custom_type = unaliased_type.get<CustomType>();
-    TypeDefinition type_definition = type_definitions_register.retrieve_type_definition(unaliased_custom_type);
-    std::string fully_qualified_name = type_definitions_register.get_fully_qualified_typedefinition_name(type_definition);
+    TypeDefinition type_definition = program_representation.retrieve_type_definition(unaliased_custom_type);
+    std::string fully_qualified_name = program_representation.get_fully_qualified_typedefinition_name(type_definition);
     if (llvm_type_definitions.find(fully_qualified_name) != llvm_type_definitions.end()) {
         return llvm_type_definitions.at(fully_qualified_name);
     }

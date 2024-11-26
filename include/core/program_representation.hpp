@@ -23,6 +23,10 @@ class ProgramRepresentation {
 
         [[nodiscard]] TypeDefinition retrieve_type_definition(const CustomType& type_signature) ;
         [[nodiscard]] std::list<FileRepresentation>& get_files_by_package(const std::string& package_name);
+        [[nodiscard]] TypeSignature unalias_type(const TypeSignature& type_signature);
+        [[nodiscard]] std::string get_fully_qualified_typesignature_name(const TypeSignature& typesignature);
+        [[nodiscard]] std::string get_fully_qualified_typedefinition_name(const TypeDefinition& type_definition);
+
 
         void foreach_type_definition(std::function<void(const TypeDefinition&)> visitor);
         void verify_that_the_type_exists(const TypeSignature& type_signature);

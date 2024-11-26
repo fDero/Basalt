@@ -63,6 +63,24 @@ TypeDefinition ProgramRepresentation::retrieve_type_definition(
     return type_definitions_register.retrieve_type_definition(type_signature);
 }
 
+TypeSignature ProgramRepresentation::unalias_type(
+    const TypeSignature& type_signature
+) {
+    return type_definitions_register.unalias_type(type_signature);
+}
+
+std::string ProgramRepresentation::get_fully_qualified_typesignature_name(
+    const TypeSignature& typesignature
+) {
+    return type_definitions_register.get_fully_qualified_typesignature_name(typesignature);
+}
+
+std::string ProgramRepresentation::get_fully_qualified_typedefinition_name(
+    const TypeDefinition& type_definition
+) {
+    return type_definitions_register.get_fully_qualified_typedefinition_name(type_definition);
+}
+
 std::list<FileRepresentation>& ProgramRepresentation::get_files_by_package(
     const std::string& package_name
 ) {

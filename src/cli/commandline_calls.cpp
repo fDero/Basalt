@@ -10,7 +10,7 @@
 #include "cli/commandline.hpp"
 #include "frontend/parser.hpp"
 #include "preprocessing/preprocessor.hpp"
-#include "backend/compiler.hpp"
+#include "backend/finalizer.hpp"
 #include "errors/commandline_errors.hpp"
 
 void CommandLineController::dispatch_based_on_user_input() {
@@ -29,10 +29,24 @@ void CommandLineController::instantiation_and_run_compiler() {
     avoid_lack_of_input_files(inputs);
     avoid_lack_of_output_files(outputs);
     avoid_duplicate_input_files(inputs);
-    //Compiler compiler(inputs, outputs);
-    //compiler.perform_static_analysis();
-    //compiler.perform_code_generation();
-    //compiler.output_the_required_files();
+    std::vector<FileRepresentation> file_representations;
+    for (const std::string& input_file : inputs) {
+        Tokenizer tokenizer(input_file);
+        TokenizedFile tokenized_file = tokenizer.tokenize();
+        Parser parser(tokenized_file);
+        FileRepresentation file_representation = parser.parse_everything();
+        file_representations.push_back(file_representation);
+    }
+    ProjectFileStructure project_file_structure(file_representations);
+    ProgramRepresentation program_representation(project_file_structure);
+    PreProcessor preprocessor(program_representation);
+    preprocessor.preprocess_packages_typename_conflicts();
+    preprocessor.preprocess_type_definitions();
+    preprocessor.preprocess_function_definitions();
+    Finalizer finalizer(program_representation);
+    finalizer.generate_llvm_ir();
+    finalizer.emit_llvm_ir(outputs.front() + ".ll");
+    finalizer.emit_object_file(outputs.front() + ".o");
 }
 
 void CommandLineController::instantiation_and_run_interpreter() {
