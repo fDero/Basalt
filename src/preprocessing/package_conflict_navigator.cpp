@@ -3,12 +3,31 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
-#include "core/project_file_structure.hpp"
 #include "preprocessing/package_type_conflict_navigator.hpp"
 #include "errors/preprocessing_errors.hpp"
 
-PackageTypeConflictNavigator::PackageTypeConflictNavigator(ProjectFileStructure& project_file_structure) 
-    : project_file_structure(project_file_structure) {}
+#include <iostream>
+
+PackageTypeConflictNavigator::PackageTypeConflictNavigator(
+    ProgramRepresentation& program_representation
+) 
+    : program_representation(program_representation) 
+{}
+
+void PackageTypeConflictNavigator::visit_package(const std::string& package_name) {
+    visited_files.clear();
+    type_definition_conflict_detection_patterns.clear();
+    std::list<FileRepresentation>& files = program_representation.get_files_by_package(package_name);
+    for (const FileRepresentation& file : files) {
+        visit_file(file);
+    }
+}
+
+void PackageTypeConflictNavigator::visit_all_packages() {
+    program_representation.foreach_package([&](const std::string& package_name) {
+        visit_package(package_name);
+    });
+}
 
 void PackageTypeConflictNavigator::visit_file(const FileRepresentation& file_representation) {
     if (visited_files.find(file_representation.file_metadata.filename) != visited_files.end()) {
@@ -21,12 +40,13 @@ void PackageTypeConflictNavigator::visit_file(const FileRepresentation& file_rep
     }
     visited_files.insert(file_representation.file_metadata.filename);
     for (const std::string& import : file_representation.file_metadata.imports) {
-        visit_package(import);
+        visit_imported_package(import);
     }
 }
 
-void PackageTypeConflictNavigator::visit_package(const std::string& package_name) {
-    for (const FileRepresentation& file : project_file_structure.get_files_by_package(package_name)) {
+void PackageTypeConflictNavigator::visit_imported_package(const std::string& package_name) {
+    std::list<FileRepresentation>& files = program_representation.get_files_by_package(package_name);
+    for (const FileRepresentation& file : files) {
         visit_file(file);
     }
 }

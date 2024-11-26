@@ -7,7 +7,7 @@
 #include <cassert>
 
 #include "frontend/tokenizer.hpp"
-#include "frontend/commandline.hpp"
+#include "cli/commandline.hpp"
 #include "frontend/parser.hpp"
 #include "preprocessing/preprocessor.hpp"
 #include "backend/compiler.hpp"
@@ -29,10 +29,10 @@ void CommandLineController::instantiation_and_run_compiler() {
     avoid_lack_of_input_files(inputs);
     avoid_lack_of_output_files(outputs);
     avoid_duplicate_input_files(inputs);
-    Compiler compiler(inputs, outputs);
-    compiler.perform_static_analysis();
-    compiler.perform_code_generation();
-    compiler.output_the_required_files();
+    //Compiler compiler(inputs, outputs);
+    //compiler.perform_static_analysis();
+    //compiler.perform_code_generation();
+    //compiler.output_the_required_files();
 }
 
 void CommandLineController::instantiation_and_run_interpreter() {

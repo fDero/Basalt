@@ -102,21 +102,24 @@ ProjectFileStructure project_with_type_conflicts_in_tree_files_in_different_pack
 
 
 TEST(Preprocessor, Detected_Type_Conflict_In_Two_File_Of_Different_Packages) {
-    PackageTypeConflictNavigator navigator(project_with_type_conflicts_in_two_files_in_different_packages_that_mutually_imports_each_other);
+    ProgramRepresentation program_representation(project_with_type_conflicts_in_two_files_in_different_packages_that_mutually_imports_each_other);
+    PackageTypeConflictNavigator navigator(program_representation);
     EXPECT_ANY_THROW({
         navigator.visit_package("a1package");
     });
 }
 
 TEST(Preprocessor, Detected_Type_Conflict_In_Three_Files_Of_Different_Packages) {
-    PackageTypeConflictNavigator navigator(project_with_type_conflicts_in_two_files_in_different_packages_imported_by_a_third_one);
+    ProgramRepresentation program_representation(project_with_type_conflicts_in_two_files_in_different_packages_that_mutually_imports_each_other);
+    PackageTypeConflictNavigator navigator(program_representation);
     EXPECT_ANY_THROW({
         navigator.visit_package("mainpackage");
     });
 }
 
 TEST(Preprocessor, Detected_Type_Conflict_In_Three_Files_During_Chain_Import) {
-    PackageTypeConflictNavigator navigator(project_with_type_conflicts_in_tree_files_in_different_packages_in_an_import_chain);
+    ProgramRepresentation program_representation(project_with_type_conflicts_in_two_files_in_different_packages_that_mutually_imports_each_other);
+    PackageTypeConflictNavigator navigator(program_representation);
     EXPECT_ANY_THROW({
         navigator.visit_package("mainpackage");
     });

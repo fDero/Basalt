@@ -8,8 +8,8 @@
 #include "errors/parsing_errors.hpp"
 
 TypeDependencyNavigator::TypeDependencyNavigator(
-    TypeDefinitionsRegister& type_definitions_register
-) : type_definitions_register(type_definitions_register) {}
+    ProgramRepresentation& program_representation
+) : program_representation(program_representation) {}
 
 void TypeDependencyNavigator::visit_type_definition(
     const TypeDefinition& type_definition
@@ -26,7 +26,7 @@ void TypeDependencyNavigator::visit_type_definition(
 }
 
 void TypeDependencyNavigator::visit_all_type_definitions() {
-    type_definitions_register.foreach_type_definition([&](const TypeDefinition& type_definition) {
+    program_representation.foreach_type_definition([&](const TypeDefinition& type_definition) {
         visit_type_definition(type_definition);
     });
 }
@@ -38,9 +38,9 @@ void TypeDependencyNavigator::visit_typesignature(const TypeSignature& typesigna
     switch (typesignature.typesiganture_kind()) {
         break; case TypeSignatureBody::Kind::template_type:  return;
         break; case TypeSignatureBody::Kind::primitive_type: return;
-        break; case TypeSignatureBody::Kind::pointer_type:   type_definitions_register.verify_that_the_type_exists(typesignature.get<PointerType>().pointed_type);
+        break; case TypeSignatureBody::Kind::pointer_type:   program_representation.verify_that_the_type_exists(typesignature.get<PointerType>().pointed_type);
         break; case TypeSignatureBody::Kind::array_type:     visit_typesignature(typesignature.get<ArrayType>().stored_type, generics);
-        break; case TypeSignatureBody::Kind::slice_type:     type_definitions_register.verify_that_the_type_exists(typesignature.get<SliceType>().stored_type);
+        break; case TypeSignatureBody::Kind::slice_type:     program_representation.verify_that_the_type_exists(typesignature.get<SliceType>().stored_type);
         break; case TypeSignatureBody::Kind::inline_union: {
             for (const TypeSignature& alternative : typesignature.get<InlineUnion>().alternatives) {
                 visit_typesignature(alternative, generics);
@@ -48,7 +48,7 @@ void TypeDependencyNavigator::visit_typesignature(const TypeSignature& typesigna
         }
         break; case TypeSignatureBody::Kind::custom_type: {
             const CustomType& custom_type = typesignature.get<CustomType>();
-            TypeDefinition type_definition = type_definitions_register.retrieve_type_definition(custom_type);
+            TypeDefinition type_definition = program_representation.retrieve_type_definition(custom_type);
             visit_type_definition(typesignature, type_definition, generics);
         }
     }

@@ -11,18 +11,27 @@
 #include "core/overloading_resolution_engine.hpp"
 #include "core/common_feature_adoption_plan_generation_engine.hpp"
 
-struct ProgramRepresentation {
-        
-    ProjectFileStructure project_file_structure;
-    TypeDefinitionsRegister type_definitions_register;
-    FunctionOverloadsRegister function_overloads_register;
-    OverloadingResolutionEngine overloading_resolution_engine;
-    CommonFeatureAdoptionPlanGenerationEngine common_feature_adoption_plan_generation_engine;
+class ProgramRepresentation {
+    
+    public:
+        ProgramRepresentation(const ProjectFileStructure& project_file_structure);
 
-    ProgramRepresentation();
+        [[nodiscard]] std::optional<TypeSignature> resolve_function_call_return_type(
+            const FunctionCall& function_call, 
+            const std::vector<TypeSignature>& arg_types
+        );
 
-    std::optional<TypeSignature> resolve_function_call_return_type(
-        const FunctionCall& function_call, 
-        const std::vector<TypeSignature>& arg_types
-    );
+        [[nodiscard]] TypeDefinition retrieve_type_definition(const CustomType& type_signature) ;
+        [[nodiscard]] std::list<FileRepresentation>& get_files_by_package(const std::string& package_name);
+
+        void foreach_type_definition(std::function<void(const TypeDefinition&)> visitor);
+        void verify_that_the_type_exists(const TypeSignature& type_signature);
+        void foreach_package(const std::function<void(const std::string&)>& func);
+
+    private:
+        ProjectFileStructure project_file_structure;
+        TypeDefinitionsRegister type_definitions_register;
+        FunctionOverloadsRegister function_overloads_register;
+        OverloadingResolutionEngine overloading_resolution_engine;
+        CommonFeatureAdoptionPlanGenerationEngine common_feature_adoption_plan_generation_engine;
 };

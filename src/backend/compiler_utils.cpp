@@ -10,26 +10,26 @@
 #include "frontend/tokenizer.hpp"
 #include "backend/compiler.hpp"
 
-Compiler::Compiler(const std::vector<std::string>& source_files, const std::vector<std::string>& output_files) 
-    : program_representation()
+Compiler::Compiler(const ProjectFileStructure& project_file_structure) 
+    : program_representation(project_file_structure)
     , preprocessor(program_representation)
     , output_files(output_files)
     , llvm_context()
     , llvm_module("basalt_program", llvm_context)
     , llvm_builder(llvm_context)
 {
-    for (const std::string& input_file_name : source_files) {
-        Tokenizer tokenizer(input_file_name);
-        Parser parser(tokenizer.tokenize());
-        FileRepresentation file_representation = parser.parse_everything();
-        program_representation.project_file_structure.store_file_representation(file_representation);
-        for (const FunctionDefinition& function_definition : file_representation.func_defs) {
-            program_representation.function_overloads_register.store_function_definition(function_definition);
-        }
-        for (const TypeDefinition& type_definition : file_representation.type_defs) {
-            program_representation.type_definitions_register.store_type_definition(type_definition);
-        }
-    }        
+    //for (const std::string& input_file_name : source_files) {
+    //    Tokenizer tokenizer(input_file_name);
+    //    Parser parser(tokenizer.tokenize());
+    //    FileRepresentation file_representation = parser.parse_everything();
+    //    program_representation.project_file_structure.store_file_representation(file_representation);
+    //    for (const FunctionDefinition& function_definition : file_representation.func_defs) {
+    //        program_representation.function_overloads_register.store_function_definition(function_definition);
+    //    }
+    //    for (const TypeDefinition& type_definition : file_representation.type_defs) {
+    //        program_representation.type_definitions_register.store_type_definition(type_definition);
+    //    }
+    //}        
 }
 
 void Compiler::perform_static_analysis() {

@@ -69,19 +69,19 @@ ProjectFileStructure directly_recursive_structs_in_same_file({
 });
 
 TEST(Preprocessor, Non_Direct_Recursive_Two_Struct_Dependency_Is_Ok) {
-    TypeDefinitionsRegister type_register(indirectly_recursive_structs_in_same_file);
+    ProgramRepresentation program_representation(indirectly_recursive_structs_in_same_file);
     const FileRepresentation& main_dot_basalt = indirectly_recursive_structs_in_same_file.get_files_by_package("testpackage").back();
     const StructDefinition& A = main_dot_basalt.type_defs[0].get<StructDefinition>();
-    TypeDependencyNavigator navigator(type_register);
+    TypeDependencyNavigator navigator(program_representation);
     ASSERT_EQ(A.def_name, "A");
     navigator.visit_struct_definition(A);
 }
 
 TEST(Preprocessor, Recursive_Two_Struct_Dependency_Is_Cyclic_Dependency) {
-    TypeDefinitionsRegister type_register(directly_recursive_structs_in_same_file);
+    ProgramRepresentation program_representation(directly_recursive_structs_in_same_file);
     const FileRepresentation& main_dot_basalt = directly_recursive_structs_in_same_file.get_files_by_package("testpackage").back();
     const StructDefinition& A = main_dot_basalt.type_defs[0].get<StructDefinition>();
-    TypeDependencyNavigator navigator(type_register);
+    TypeDependencyNavigator navigator(program_representation);
     ASSERT_EQ(A.def_name, "A");
     EXPECT_ANY_THROW({
         navigator.visit_struct_definition(A);

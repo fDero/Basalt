@@ -21,8 +21,7 @@ class Compiler {
 
     public:
         Compiler(
-            const std::vector<std::string>& source_files, 
-            const std::vector<std::string>& output_files
+            const ProjectFileStructure& project_file_structure
         );
 
         void perform_static_analysis();

@@ -4,7 +4,7 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 #include "errors/display_utilities.hpp"
-#include "frontend/commandline.hpp"
+#include "cli/commandline.hpp"
 
 #include <exception>
 #include <iostream>

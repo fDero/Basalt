@@ -8,17 +8,19 @@
 #include <string>
 #include <unordered_set>
 
-#include "core/project_file_structure.hpp"
+#include "core/program_representation.hpp"
 
 class PackageTypeConflictNavigator {
     
     public:
-        PackageTypeConflictNavigator(ProjectFileStructure& project_file_structure);
+        PackageTypeConflictNavigator(ProgramRepresentation& program_representation);
         void visit_file(const FileRepresentation& file_representation);
         void visit_package(const std::string& package_name);
-        
+        void visit_imported_package(const std::string& package_name);
+        void visit_all_packages();
+
     private:
-        ProjectFileStructure& project_file_structure;
+        ProgramRepresentation& program_representation;
         std::unordered_set<std::string> visited_files;
         std::unordered_set<std::string> type_definition_conflict_detection_patterns;
 

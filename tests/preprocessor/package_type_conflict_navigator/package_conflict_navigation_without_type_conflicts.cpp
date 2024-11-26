@@ -44,39 +44,48 @@ ProjectFileStructure simple_multifile_project_with_harmless_typedefs({
     },
     FileRepresentation {
         .file_metadata = {
-            .filename = "a.basalt",
-            .packagename = "apackage",
-            .imports = { "bpackage" }
+            .filename = "x.basalt",
+            .packagename = "xpackage",
+            .imports = { "ypackage" }
         },
         .type_defs = { 
-            StructDefinitionFactory::make_struct_definition("A", "a.basalt", { }, { }),
+            StructDefinitionFactory::make_struct_definition("A", "x.basalt", { }, { }),
         },
         .func_defs = { }
     },
     FileRepresentation {
         .file_metadata = {
-            .filename = "b.basalt",
-            .packagename = "bpackage",
-            .imports = { "apackage" }
+            .filename = "y.basalt",
+            .packagename = "ypackage",
+            .imports = { "xpackage" }
         },
         .type_defs = { 
-            StructDefinitionFactory::make_struct_definition("B", "b.basalt", { }, { }),
+            StructDefinitionFactory::make_struct_definition("B", "y.basalt", { }, { }),
         },
         .func_defs = { }
     }
 });
 
 TEST(Preprocessor, No_Type_Conflict_In_Same_File) {
-    PackageTypeConflictNavigator navigator(simple_multifile_project_with_harmless_typedefs);
+    ProgramRepresentation program_representation(simple_multifile_project_with_harmless_typedefs);
+    PackageTypeConflictNavigator navigator(program_representation);
     navigator.visit_package("testpackage");
 }
 
 TEST(Preprocessor, No_Type_Conflict_In_Two_File_Of_Same_Package) {
-    PackageTypeConflictNavigator navigator(simple_multifile_project_with_harmless_typedefs);
+    ProgramRepresentation program_representation(simple_multifile_project_with_harmless_typedefs);
+    PackageTypeConflictNavigator navigator(program_representation);
     navigator.visit_package("testpackage2");
 }
 
 TEST(Preprocessor, No_Type_Conflict_In_Two_File_Of_Different_Packages) {
-    PackageTypeConflictNavigator navigator(simple_multifile_project_with_harmless_typedefs);
-    navigator.visit_package("apackage");
+    ProgramRepresentation program_representation(simple_multifile_project_with_harmless_typedefs);
+    PackageTypeConflictNavigator navigator(program_representation);
+    navigator.visit_package("xpackage");
+}
+
+TEST(Preprocessor, No_Type_Conflict_In_All_Packages) {
+    ProgramRepresentation program_representation(simple_multifile_project_with_harmless_typedefs);
+    PackageTypeConflictNavigator navigator(program_representation);
+    navigator.visit_all_packages();
 }

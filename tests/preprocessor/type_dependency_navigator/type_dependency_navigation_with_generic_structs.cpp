@@ -91,8 +91,8 @@ FileRepresentation illegal_wrapper_use = {
 TEST(Preprocessor, Recursive_Two_Struct_Dependency_Is_Cyclic_Dependency_Even_When_One_Is_Generic) {  
     ProjectFileStructure project_file_structure;
     project_file_structure.store_file_representation(generic_recursion_problem_file);
-    TypeDefinitionsRegister type_register(project_file_structure);
-    TypeDependencyNavigator navigator(type_register);
+    ProgramRepresentation program_representation(project_file_structure);
+    TypeDependencyNavigator navigator(program_representation);
     const StructDefinition& A = generic_recursion_problem_file.type_defs[0].get<StructDefinition>();
     EXPECT_ANY_THROW({
         navigator.visit_struct_definition(A);
@@ -102,8 +102,8 @@ TEST(Preprocessor, Recursive_Two_Struct_Dependency_Is_Cyclic_Dependency_Even_Whe
 TEST(Preprocessor, Type_Dependency_Navigation_Works_Fine_On_Instantiated_Non_Recursive_Generic_Structs) {
     ProjectFileStructure project_file_structure;
     project_file_structure.store_file_representation(legal_wrapper_use);
-    TypeDefinitionsRegister type_register(project_file_structure);
-    TypeDependencyNavigator navigator(type_register);
+    ProgramRepresentation program_representation(project_file_structure);
+    TypeDependencyNavigator navigator(program_representation);
     const StructDefinition& B = legal_wrapper_use.type_defs[1].get<StructDefinition>();
     navigator.visit_struct_definition(B);
 }
@@ -111,8 +111,8 @@ TEST(Preprocessor, Type_Dependency_Navigation_Works_Fine_On_Instantiated_Non_Rec
 TEST(Preprocessor, Type_Dependency_Spots_Cyclic_Dependency_Even_On_Generic_Structs_Instantiation) {    
     ProjectFileStructure project_file_structure;
     project_file_structure.store_file_representation(illegal_wrapper_use);
-    TypeDefinitionsRegister type_register(project_file_structure);
-    TypeDependencyNavigator navigator(type_register);
+    ProgramRepresentation program_representation(project_file_structure);
+    TypeDependencyNavigator navigator(program_representation);
     const StructDefinition& B = illegal_wrapper_use.type_defs[1].get<StructDefinition>();
     EXPECT_ANY_THROW({
         navigator.visit_struct_definition(B);

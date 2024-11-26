@@ -9,13 +9,13 @@
 #include <vector>
 #include <unordered_set>
 
-#include "core/type_definitions_register.hpp"
+#include "core/program_representation.hpp"
 #include "language/definitions.hpp"
 
 class TypeDependencyNavigator {
 
     public:
-        TypeDependencyNavigator(TypeDefinitionsRegister& type_definition_register);
+        TypeDependencyNavigator(ProgramRepresentation& type_definition_register);
         void visit_struct_definition(const StructDefinition& struct_definition);
         void visit_union_definition(const UnionDefinition& union_definition);
         void visit_type_definition(const TypeDefinition& type_definition);
@@ -33,6 +33,6 @@ class TypeDependencyNavigator {
             const std::vector<std::string>& union_def_generics
         );
 
-        TypeDefinitionsRegister& type_definitions_register;
+        ProgramRepresentation& program_representation;
         std::unordered_set<std::string> visited_definitions;
 };

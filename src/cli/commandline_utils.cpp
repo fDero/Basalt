@@ -7,7 +7,7 @@
 
 #include "errors/commandline_errors.hpp"
 #include "frontend/tokenizer.hpp"
-#include "frontend/commandline.hpp"
+#include "cli/commandline.hpp"
 
 CommandLineController::CommandLineController(int argc, char** argv)
     : arg_counter(argc), arg_values(argv), arg_index(1)
