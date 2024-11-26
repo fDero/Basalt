@@ -3,7 +3,7 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
-#include "typesystem/generics_substitution_rules.hpp"
+#include "core/generics_substitution_rules.hpp"
 #include "errors/internal_errors.hpp"
 #include <regex>
 #include <optional>

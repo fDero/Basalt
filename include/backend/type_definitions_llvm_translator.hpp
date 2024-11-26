@@ -9,7 +9,7 @@
 #include <llvm/IR/Module.h>
 #include <functional>
 
-#include "model/type_definitions_register.hpp"
+#include "core/type_definitions_register.hpp"
 #include "language/definitions.hpp"
 
 class TypeDefinitionsLLVMTranslator {

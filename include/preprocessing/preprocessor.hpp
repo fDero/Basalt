@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "model/program_representation.hpp"
+#include "core/program_representation.hpp"
 
 class PreProcessor {
 

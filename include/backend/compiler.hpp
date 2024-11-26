@@ -8,7 +8,7 @@
 #include <vector>
 #include <string>
 
-#include "model/program_representation.hpp"
+#include "core/program_representation.hpp"
 #include "preprocessing/preprocessor.hpp"
 #include "backend/type_definitions_llvm_translator.hpp"
 

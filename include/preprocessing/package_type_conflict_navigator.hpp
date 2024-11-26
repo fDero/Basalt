@@ -8,7 +8,7 @@
 #include <string>
 #include <unordered_set>
 
-#include "model/project_file_structure.hpp"
+#include "core/project_file_structure.hpp"
 
 class PackageTypeConflictNavigator {
     

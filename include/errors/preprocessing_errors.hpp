@@ -13,9 +13,9 @@
 #include "errors/error-types.hpp"
 #include "language/functions.hpp"
 #include "misc/forward_declarations.hpp"
-#include "model/scope_context.hpp"
-#include "typesystem/generics_substitution_rules.hpp"
-#include "typesystem/generics_instantiation_engine.hpp"
+#include "core/scope_context.hpp"
+#include "core/generics_substitution_rules.hpp"
+#include "core/generics_instantiation_engine.hpp"
 
 inline void ensure_assignment_is_valid(
     bool assignment_is_valid,

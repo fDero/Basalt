@@ -5,11 +5,11 @@
 
 #pragma once
 
-#include "model/project_file_structure.hpp"
-#include "model/type_definitions_register.hpp"
-#include "model/function_overloads_register.hpp"
-#include "model/overloading_resolution_engine.hpp"
-#include "model/scope_context.hpp"
+#include "core/project_file_structure.hpp"
+#include "core/type_definitions_register.hpp"
+#include "core/function_overloads_register.hpp"
+#include "core/overloading_resolution_engine.hpp"
+#include "core/scope_context.hpp"
 
 class FunctionDefinitionValidator {
 

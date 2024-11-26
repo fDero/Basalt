@@ -9,7 +9,7 @@
 #include <vector>
 #include <unordered_set>
 
-#include "model/type_definitions_register.hpp"
+#include "core/type_definitions_register.hpp"
 #include "language/definitions.hpp"
 
 class TypeDependencyNavigator {
