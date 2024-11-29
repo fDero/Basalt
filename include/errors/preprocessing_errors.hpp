@@ -207,3 +207,27 @@ inline void ensure_common_feature_adoption_is_possible(
         throw std::runtime_error("common feature adoption is not possible");
     }
 }
+
+inline void ensure_every_path_returns_in_function_exit_navigation(
+    bool every_path_returns
+) {
+    if (!every_path_returns) {
+        throw std::runtime_error("not every path returns");
+    }
+}
+
+inline void ensure_no_unreachable_code_in_function_exit_navigation(
+    bool code_from_now_on_is_unreachable
+) {
+    if (code_from_now_on_is_unreachable) {
+        throw std::runtime_error("unreachable code");
+    }
+}
+
+inline void ensure_no_loop_specific_statements_outside_loop_body_in_function_exit_navigation(
+    bool inside_loop
+) {
+    if (!inside_loop) {
+        throw std::runtime_error("loop specific statement outside loop body");
+    }
+}

@@ -45,6 +45,12 @@ void ProgramRepresentation::foreach_type_definition(
     type_definitions_register.foreach_type_definition(visitor);
 }
 
+void ProgramRepresentation::foreach_function_definition(
+    std::function<void(const FunctionDefinition::Ref&)> visitor
+) {
+    function_overloads_register.foreach_function_definition(visitor);
+}
+
 void ProgramRepresentation::verify_that_the_type_exists(
     const TypeSignature& type_signature
 ) {

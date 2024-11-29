@@ -29,6 +29,7 @@ class ProgramRepresentation {
 
 
         void foreach_type_definition(std::function<void(const TypeDefinition&)> visitor);
+        void foreach_function_definition(std::function<void(const FunctionDefinition::Ref&)> visitor);
         void verify_that_the_type_exists(const TypeSignature& type_signature);
         void foreach_package(const std::function<void(const std::string&)>& func);
 
