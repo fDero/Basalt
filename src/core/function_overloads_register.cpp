@@ -6,6 +6,7 @@
 #include "errors/preprocessing_errors.hpp"
 #include "errors/internal_errors.hpp"
 #include "core/generics_substitution_rules.hpp"
+#include "core/function_overloads_register.hpp"
 
 FunctionOverloadsRegister::FunctionOverloadsRegister(ProjectFileStructure& project_file_structure) 
     : project_file_structure(project_file_structure) 

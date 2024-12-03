@@ -42,7 +42,7 @@ ConstDeclaration c_const_of_type_int = ConstDeclaration(
     Token { "Int", "test.basalt", 1, 1, 3, Token::Type::type }   
 );
 
-TEST(Representation, Scope_Context_Store_A_Bunch_Of_Local_Objects) {
+TEST(Core, Scope_Context_Store_A_Bunch_Of_Local_Objects) {
     ScopeContext scope_context(ScopeContext::ScopeKind::function_scope);
     scope_context.store_local_variable(x_variable_of_type_int);
     scope_context.store_local_variable(y_variable_of_type_int);
@@ -55,27 +55,16 @@ TEST(Representation, Scope_Context_Store_A_Bunch_Of_Local_Objects) {
     ASSERT_FALSE(scope_context.contains("c"));
 }
 
-TEST(Representation, Scope_Context_Store_A_Bunch_Of_Local_Objects_And_Check_Theri_Types) {
+TEST(Core, Scope_Context_Say_Variable_Is_Mutable) {
     ScopeContext scope_context(ScopeContext::ScopeKind::function_scope);
     scope_context.store_local_variable(x_variable_of_type_int);
-    scope_context.store_local_variable(y_variable_of_type_int);
     EXPECT_TRUE(is_int(scope_context.get_local_object_type("x")));
-    EXPECT_TRUE(is_int(scope_context.get_local_mutable_object_type("y")));
+    EXPECT_FALSE(scope_context.is_identifier_immutable("x"));
 }
 
-TEST(Representation, Scope_Context_Store_A_Bunch_Of_Local_Objects_And_Check_Their_Types_One_Is_Constant) {
-    ScopeContext scope_context(ScopeContext::ScopeKind::function_scope);
-    scope_context.store_local_variable(x_variable_of_type_int);
-    scope_context.store_local_constant(a_const_of_type_int);
-    EXPECT_TRUE(is_int(scope_context.get_local_object_type("a")));
-    EXPECT_TRUE(is_int(scope_context.get_local_mutable_object_type("x")));
-}
-
-TEST(Representation, Scope_Context_Contants_Are_Not_Mutable) {
+TEST(Core, Scope_Context_Say_Constant_Is_Non_Mutable) {
     ScopeContext scope_context(ScopeContext::ScopeKind::function_scope);
     scope_context.store_local_constant(a_const_of_type_int);
     EXPECT_TRUE(is_int(scope_context.get_local_object_type("a")));
-    EXPECT_ANY_THROW({
-        std::ignore = scope_context.get_local_mutable_object_type("a");
-    });
+    EXPECT_TRUE(scope_context.is_identifier_immutable("a"));
 }

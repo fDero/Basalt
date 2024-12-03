@@ -7,6 +7,7 @@
 
 #include "core/type_definitions_register.hpp"
 #include "core/overloading_resolution_engine.hpp"
+#include "core/common_feature_adoption_plan_generation_engine.hpp"
 #include "core/project_file_structure.hpp"
 #include "core/scope_context.hpp"
 
@@ -15,10 +16,16 @@ class ExpressionTypeDeducer {
     public:
 
         ExpressionTypeDeducer(
-            TypeDefinitionsRegister& program_representation,
+            TypeDefinitionsRegister& type_definitions_register,
             OverloadingResolutionEngine& overloading_resolution_engine,
+            CommonFeatureAdoptionPlanGenerationEngine& common_feature_adoption_plan_generation_engine,
             ProjectFileStructure& project_file_structure,
             ScopeContext& scope_context
+        );
+
+        [[nodiscard]] std::optional<TypeSignature> deduce_type_from_function_call(
+            const FunctionCall& function_call, 
+            const std::vector<TypeSignature>& argument_types
         );
 
         [[nodiscard]] std::optional<TypeSignature> deduce_expression_type(const Expression& expression);
@@ -43,6 +50,7 @@ class ExpressionTypeDeducer {
     private:
         TypeDefinitionsRegister& type_definitions_register;
         OverloadingResolutionEngine& overloading_resolution_engine;
+        CommonFeatureAdoptionPlanGenerationEngine& common_feature_adoption_plan_generation_engine;
         ProjectFileStructure& project_file_structure;
         ScopeContext& scope_context;
 };

@@ -20,7 +20,7 @@ static ProjectFileStructure simple_project ({
             FunctionDefinitionFactory::make_void_function_definition(
                 "main", "main.basalt", FunctionDefinitionFactory::no_generics, FunctionDefinitionFactory::no_args
             ),
-            FunctionDefinitionFactory::make_void_function_definition(
+            FunctionDefinitionFactory::make_function_definition(
                 "add", "main.basalt", FunctionDefinitionFactory::no_generics, {
                     FunctionDefinition::Argument {
                         "a", TypeSignatureFactory::Int
@@ -28,9 +28,10 @@ static ProjectFileStructure simple_project ({
                     FunctionDefinition::Argument {
                         "b", TypeSignatureFactory::Int
                     },
-                }
+                },
+                TypeSignatureFactory::Int
             ),
-            FunctionDefinitionFactory::make_void_function_definition(
+            FunctionDefinitionFactory::make_function_definition(
                 "add", "main.basalt", FunctionDefinitionFactory::no_generics, {
                     FunctionDefinition::Argument {
                         "a", TypeSignatureFactory::Float
@@ -38,7 +39,8 @@ static ProjectFileStructure simple_project ({
                     FunctionDefinition::Argument {
                         "b", TypeSignatureFactory::Float
                     },
-                }
+                },
+                TypeSignatureFactory::Float
             )
         }
     }
@@ -47,15 +49,17 @@ static ProjectFileStructure simple_project ({
 static TypeDefinitionsRegister simple_type_register(simple_project);
 static FunctionOverloadsRegister simple_overloads_register(simple_project);
 static OverloadingResolutionEngine simple_overloading_resolution_engine(simple_overloads_register, simple_type_register, simple_project);
+static CommonFeatureAdoptionPlanGenerationEngine simple_common_feature_adoption_plan_generation_engine(simple_overloading_resolution_engine, simple_type_register);
 static ScopeContext simple_scope_context(ScopeContext::ScopeKind::function_scope);
 static ExpressionTypeDeducer type_deducer(
     simple_type_register,
     simple_overloading_resolution_engine,
+    simple_common_feature_adoption_plan_generation_engine,
     simple_project,
     simple_scope_context    
 );
 
-TEST(TypeChecking, Type_Deduction_Cannot_Figure_Out_Wich_Overload_To_Use) {
+TEST(TypeChecking, Type_Deduction_Fails_Because_Args_Are_Generic) {
     simple_scope_context.store_local_variable(VariableDeclaration {
         "t", TypeSignatureFactory::T, std::nullopt, 
         Token { "var", "main.basalt", 1, 1, 1, Token::Type::var_keyword }
@@ -68,8 +72,9 @@ TEST(TypeChecking, Type_Deduction_Cannot_Figure_Out_Wich_Overload_To_Use) {
         },
         {}
     };
-    std::optional<TypeSignature> function_call_type_opt = type_deducer.deduce_expression_type(function_call);
-    EXPECT_FALSE(function_call_type_opt.has_value());
+    EXPECT_ANY_THROW({
+        std::optional<TypeSignature> function_call_type_opt = type_deducer.deduce_expression_type(function_call);
+    });
 }
 
 TEST(TypeChecking, Type_Deduction_Can_Still_Spot_Errors_With_Function_Calls_Even_When_Type_Is_Already_Known_To_Be_Undecidible) {

@@ -6,8 +6,6 @@
 #include "preprocessing/package_type_conflict_navigator.hpp"
 #include "errors/preprocessing_errors.hpp"
 
-#include <iostream>
-
 PackageTypeConflictNavigator::PackageTypeConflictNavigator(
     ProgramRepresentation& program_representation
 ) 

@@ -3,6 +3,8 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#pragma once
+
 #include <string>
 #include <vector>
 #include <unordered_set>
@@ -57,6 +59,7 @@ class FunctionExitPathNavigator {
                 case StatementBody::Kind::until_loop: return visit_until_loop(statement.get<UntilLoop>());
                 case StatementBody::Kind::function_call: return false;
                 case StatementBody::Kind::variable_declaration: return false;
+                case StatementBody::Kind::const_declaration: return false;
                 case StatementBody::Kind::assignment: return false;
                 case StatementBody::Kind::break_statement: return visit_loop_blocking_statement(scope_kind);
                 case StatementBody::Kind::continue_statement: return visit_loop_blocking_statement(scope_kind);

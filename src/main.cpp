@@ -7,7 +7,6 @@
 #include "cli/commandline.hpp"
 
 #include <exception>
-#include <iostream>
 #include <cstdlib>
 
 int main(int argc, char** argv) {

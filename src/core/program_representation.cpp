@@ -4,6 +4,7 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 #include "core/program_representation.hpp"
+#include "core/expression_type_deducer.hpp"
 
 ProgramRepresentation::ProgramRepresentation(
     const ProjectFileStructure& input_project_file_structure
@@ -27,16 +28,28 @@ ProgramRepresentation::resolve_function_call_return_type(
     const FunctionCall& function_call, 
     const std::vector<TypeSignature>& arg_types
 ) {
-    FunctionDefinition::Ref retrieved = 
-        overloading_resolution_engine
-            .retrieve_function_definition(function_call, arg_types);
-    if (retrieved != nullptr) {
-        return retrieved->return_type;
-    }
-    CommonFeatureAdoptionPlanDescriptor cfa = 
-        common_feature_adoption_plan_generation_engine
-            .generate_common_feature_adoption_plan(function_call, arg_types);
-    return cfa.get_return_type();
+    ScopeContext dummy_scope {ScopeContext::ScopeKind::function_scope};
+    return ExpressionTypeDeducer(
+        type_definitions_register, 
+        overloading_resolution_engine,
+        common_feature_adoption_plan_generation_engine, 
+        project_file_structure, 
+        dummy_scope
+    ).deduce_type_from_function_call(function_call, arg_types);
+}
+
+std::optional<TypeSignature> 
+ProgramRepresentation::resolve_expression_type(
+    const Expression& expression, 
+    ScopeContext& scope_context
+) {
+    return ExpressionTypeDeducer(
+        type_definitions_register, 
+        overloading_resolution_engine,
+        common_feature_adoption_plan_generation_engine, 
+        project_file_structure, 
+        scope_context
+    ).deduce_expression_type(expression);
 }
 
 void ProgramRepresentation::foreach_type_definition(

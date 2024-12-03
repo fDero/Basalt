@@ -8,7 +8,6 @@
 #include <string>
 #include <vector>
 
-#include "core/program_representation.hpp"
 #include "language/definitions.hpp"
 
 class ScopeContext {
@@ -27,8 +26,8 @@ class ScopeContext {
         void store_local_constant(const ConstDeclaration& const_declaration);
         
         [[nodiscard]] bool contains(const std::string& identifier);
+        [[nodiscard]] bool is_identifier_immutable(const std::string& identifier);
         [[nodiscard]] TypeSignature& get_local_object_type(const std::string& identifier);
-        [[nodiscard]] TypeSignature& get_local_mutable_object_type(const std::string& identifier);
         [[nodiscard]] ScopeContext   create_nested_scope(const ScopeKind& scope_kind);
         
         [[nodiscard]] ScopeKind get_scope_kind() const;
@@ -39,8 +38,6 @@ class ScopeContext {
             TypeSignature type_signature;
             bool is_const = false; 
             bool is_arg = false;
-            bool gets_modified = false;
-            bool gets_accessed = false;
         };
 
         std::vector<ObjectDescriptor> local_objects;

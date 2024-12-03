@@ -175,8 +175,8 @@ void ensure_function_overload_was_successfully_retrieved(
     }
 }
 
-void ensure_function_has_a_return_type(FunctionDefinition::Ref function_definition) {
-    if (!function_definition->return_type.has_value()) {
+void ensure_function_has_a_return_type(const std::optional<TypeSignature>& return_type) {
+    if (!return_type.has_value()) {
         throw InternalError("function has no return type");
     }
 }

@@ -10,16 +10,19 @@
 ExpressionTypeDeducer::ExpressionTypeDeducer(
     TypeDefinitionsRegister& program_representation,
     OverloadingResolutionEngine& overloading_resolution_engine,
+    CommonFeatureAdoptionPlanGenerationEngine& common_feature_adoption_plan_generation_engine,
     ProjectFileStructure& project_file_structure,
     ScopeContext& scope_context
 )
     : type_definitions_register(program_representation)
     , overloading_resolution_engine(overloading_resolution_engine)
+    , common_feature_adoption_plan_generation_engine(common_feature_adoption_plan_generation_engine)
     , project_file_structure(project_file_structure)
     , scope_context(scope_context)
 {}
 
-[[nodiscard]] std::optional<TypeSignature> ExpressionTypeDeducer::deduce_expression_type(
+[[nodiscard]] std::optional<TypeSignature> 
+ExpressionTypeDeducer::deduce_expression_type(
     const Expression& expression
 ) {    
     switch (expression.expression_kind()) {
@@ -40,7 +43,8 @@ ExpressionTypeDeducer::ExpressionTypeDeducer(
     assert_unreachable();
 }
 
-[[nodiscard]] std::optional<TypeSignature> ExpressionTypeDeducer::deduce_primtive_type(
+[[nodiscard]] std::optional<TypeSignature> 
+ExpressionTypeDeducer::deduce_primtive_type(
     const std::string& type_name, 
     const Expression& expression
 ) {
@@ -50,12 +54,32 @@ ExpressionTypeDeducer::ExpressionTypeDeducer(
     );
 }
 
-[[nodiscard]] std::optional<TypeSignature> ExpressionTypeDeducer::deduce_type_from_identifier(const Expression& expression) {
+[[nodiscard]] std::optional<TypeSignature> 
+ExpressionTypeDeducer::deduce_type_from_identifier(const Expression& expression) {
     const TypeSignature& type = scope_context.get_local_object_type(expression.get<Identifier>().name);
     return type_definitions_register.unalias_type(type);
 }
 
-[[nodiscard]] std::optional<TypeSignature> ExpressionTypeDeducer::deduce_type_from_function_call(const Expression& expression) {
+[[nodiscard]] std::optional<TypeSignature> 
+ExpressionTypeDeducer::deduce_type_from_function_call(
+    const FunctionCall& function_call, 
+    const std::vector<TypeSignature>& argument_types
+) {
+    FunctionDefinition::Ref retrieved = 
+        overloading_resolution_engine
+            .retrieve_function_definition(function_call, argument_types);
+    if (retrieved != nullptr) {
+        std::optional<TypeSignature> func_return_type = retrieved->return_type;
+        return func_return_type;
+    }
+    CommonFeatureAdoptionPlanDescriptor cfa = 
+        common_feature_adoption_plan_generation_engine
+            .generate_common_feature_adoption_plan(function_call, argument_types);
+    return cfa.get_return_type();
+}
+
+[[nodiscard]] std::optional<TypeSignature> 
+ExpressionTypeDeducer::deduce_type_from_function_call(const Expression& expression) {
     assert_expression_is<FunctionCall>(expression);
     const FunctionCall& function_call = expression.get<FunctionCall>();
     const std::vector<Expression>& arguments = function_call.arguments;
@@ -68,17 +92,15 @@ ExpressionTypeDeducer::ExpressionTypeDeducer(
             argument_types.push_back(argument_type.value());
         }
     }
-    if (!attempt_retrieve) {
-        return std::nullopt;
-    }
-    FunctionDefinition::Ref retrieved = overloading_resolution_engine.retrieve_function_definition(function_call, argument_types);
-    ensure_function_overload_was_successfully_retrieved(function_call, retrieved);
-    ensure_function_has_a_return_type(retrieved);
-    const TypeSignature& type =  *retrieved->return_type;
-    return type_definitions_register.unalias_type(type);
+    std::optional<TypeSignature> return_type = (attempt_retrieve)
+        ? deduce_type_from_function_call(function_call, argument_types)
+        : std::nullopt;
+    ensure_function_has_a_return_type(return_type);
+    return type_definitions_register.unalias_type(*return_type);
 }
 
-[[nodiscard]] std::optional<TypeSignature> ExpressionTypeDeducer::deduce_type_from_type_operator(const Expression& expression) {
+[[nodiscard]] std::optional<TypeSignature> 
+ExpressionTypeDeducer::deduce_type_from_type_operator(const Expression& expression) {
     assert_expression_is<TypeOperator>(expression);
     const TypeOperator& type_operator = expression.get<TypeOperator>();
     const TypeSignature& operand_type = type_operator.typesignature;
@@ -118,7 +140,8 @@ ExpressionTypeDeducer::ExpressionTypeDeducer(
     }
 }
 
-[[nodiscard]] std::optional<TypeSignature> ExpressionTypeDeducer::deduce_type_from_unary_operator(const Expression& expression) {
+[[nodiscard]] std::optional<TypeSignature> 
+ExpressionTypeDeducer::deduce_type_from_unary_operator(const Expression& expression) {
     assert_expression_is<UnaryOperator>(expression);
     const UnaryOperator& unary_operator = expression.get<UnaryOperator>();
     auto operator_kind_search_outcome = operator_kinds.find(unary_operator.operator_text);
@@ -136,7 +159,8 @@ ExpressionTypeDeducer::ExpressionTypeDeducer(
     }
 }
 
-[[nodiscard]] std::optional<TypeSignature> ExpressionTypeDeducer::deduce_type_from_array_literal(const Expression& expression) {
+[[nodiscard]] std::optional<TypeSignature> 
+ExpressionTypeDeducer::deduce_type_from_array_literal(const Expression& expression) {
     assert_expression_is<ArrayLiteral>(expression);
     const ArrayLiteral& array_literal = expression.get<ArrayLiteral>();
     return ArrayType {

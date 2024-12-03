@@ -115,7 +115,7 @@ void ensure_function_overload_was_successfully_retrieved(
     const std::optional<FunctionDefinition::Ref>& retrieved
 );
 
-void ensure_function_has_a_return_type(FunctionDefinition::Ref function_definition);
+void ensure_function_has_a_return_type(const std::optional<TypeSignature>& function_definition);
 
 void ensure_operator_kind_was_found(
     const std::map<std::string, OperatorKind>::const_iterator& operator_kind_search_outcome,
@@ -229,5 +229,24 @@ inline void ensure_no_loop_specific_statements_outside_loop_body_in_function_exi
 ) {
     if (!inside_loop) {
         throw std::runtime_error("loop specific statement outside loop body");
+    }
+}
+
+inline void ensure_use_as_function_argument_complies_with_const_qualifiers(
+    const FunctionCall& function_call,
+    const Expression& argument,
+    bool assignment_discard_qualifiers
+) {
+    if (assignment_discard_qualifiers) {
+        throw std::runtime_error("use as function argument does not comply with const qualifiers");
+    }
+}
+
+inline void ensure_assignment_complies_with_const_qualifiers(
+    const Assignment& function_call,
+    bool assignment_discard_qualifiers
+) {
+    if (assignment_discard_qualifiers) {
+        throw std::runtime_error("use as function argument does not comply with const qualifiers");
     }
 }
