@@ -6,6 +6,8 @@
 #include "preprocessing/package_type_conflict_navigator.hpp"
 #include "errors/preprocessing_errors.hpp"
 
+using PTCN = PackageTypeConflictNavigator;
+
 PackageTypeConflictNavigator::PackageTypeConflictNavigator(
     ProgramRepresentation& program_representation
 ) 
@@ -13,12 +15,8 @@ PackageTypeConflictNavigator::PackageTypeConflictNavigator(
 {}
 
 void PackageTypeConflictNavigator::visit_package(const std::string& package_name) {
-    visited_files.clear();
-    type_definition_conflict_detection_patterns.clear();
-    std::list<FileRepresentation>& files = program_representation.get_files_by_package(package_name);
-    for (const FileRepresentation& file : files) {
-        visit_file(file);
-    }
+    SinglePackageTypeConflictNavigator single_package_type_conflict_navigator(program_representation);
+    single_package_type_conflict_navigator.visit_package(package_name);
 }
 
 void PackageTypeConflictNavigator::visit_all_packages() {
@@ -27,7 +25,20 @@ void PackageTypeConflictNavigator::visit_all_packages() {
     });
 }
 
-void PackageTypeConflictNavigator::visit_file(const FileRepresentation& file_representation) {
+PTCN::SinglePackageTypeConflictNavigator::SinglePackageTypeConflictNavigator(
+    ProgramRepresentation& program_representation
+) 
+    : program_representation(program_representation) 
+{}
+
+void PTCN::SinglePackageTypeConflictNavigator::visit_package(const std::string& package_name) {
+    std::list<FileRepresentation>& files = program_representation.get_files_by_package(package_name);
+    for (const FileRepresentation& file : files) {
+        visit_file(file);
+    }
+}
+
+void PTCN::SinglePackageTypeConflictNavigator::visit_file(const FileRepresentation& file_representation) {
     if (visited_files.find(file_representation.file_metadata.filename) != visited_files.end()) {
         return;
     }
@@ -38,18 +49,11 @@ void PackageTypeConflictNavigator::visit_file(const FileRepresentation& file_rep
     }
     visited_files.insert(file_representation.file_metadata.filename);
     for (const std::string& import : file_representation.file_metadata.imports) {
-        visit_imported_package(import);
+        visit_package(import);
     }
 }
 
-void PackageTypeConflictNavigator::visit_imported_package(const std::string& package_name) {
-    std::list<FileRepresentation>& files = program_representation.get_files_by_package(package_name);
-    for (const FileRepresentation& file : files) {
-        visit_file(file);
-    }
-}
-
-std::string PackageTypeConflictNavigator::get_type_definition_conflict_detection_pattern(
+std::string PTCN::SinglePackageTypeConflictNavigator::get_type_definition_conflict_detection_pattern(
     const TypeDefinition& type_definition
 ) {
     std::string pattern_tag_name = type_definition.get_simple_name();

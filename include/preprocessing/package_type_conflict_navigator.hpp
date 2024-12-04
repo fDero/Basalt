@@ -14,17 +14,27 @@ class PackageTypeConflictNavigator {
     
     public:
         PackageTypeConflictNavigator(ProgramRepresentation& program_representation);
-        void visit_file(const FileRepresentation& file_representation);
+        
         void visit_package(const std::string& package_name);
-        void visit_imported_package(const std::string& package_name);
         void visit_all_packages();
 
     private:
-        ProgramRepresentation& program_representation;
-        std::unordered_set<std::string> visited_files;
-        std::unordered_set<std::string> type_definition_conflict_detection_patterns;
+        struct SinglePackageTypeConflictNavigator {
+            SinglePackageTypeConflictNavigator(
+                ProgramRepresentation& program_representation
+            );
 
-        [[nodiscard]] std::string get_type_definition_conflict_detection_pattern(
-            const TypeDefinition& type_definition
-        );
+            void visit_package(const std::string& package_name);
+            void visit_file(const FileRepresentation& file_representation);
+
+            [[nodiscard]] std::string get_type_definition_conflict_detection_pattern(
+                const TypeDefinition& type_definition
+            );
+
+            std::unordered_set<std::string> visited_files;
+            std::unordered_set<std::string> type_definition_conflict_detection_patterns;
+            ProgramRepresentation& program_representation;
+        };
+
+        ProgramRepresentation& program_representation;
 };
