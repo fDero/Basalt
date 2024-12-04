@@ -4,7 +4,7 @@
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 
-TEST(Parsing, Return_Nothing) {
+TEST(Frontend, Parse_Return_Nothing) {
     std::vector<Token> tokens = {
         { "return", "test.basalt", 1, 1, 1, Token::Type::return_keyword },
         { ";",      "test.basalt", 1, 4, 4, Token::Type::symbol }
@@ -15,7 +15,7 @@ TEST(Parsing, Return_Nothing) {
     EXPECT_FALSE(statement.get<Return>().return_value.has_value());
 }
 
-TEST(Parsing, Return_Integer) {
+TEST(Frontend, Parse_Return_Integer) {
     std::vector<Token> tokens = {
         { "return", "test.basalt", 1, 1, 1, Token::Type::return_keyword },
         { "6",      "test.basalt", 1, 4, 4, Token::Type::integer_literal },
@@ -29,7 +29,7 @@ TEST(Parsing, Return_Integer) {
     EXPECT_EQ(statement.get<Return>().return_value->get<IntLiteral>().value, 6);
 }
 
-TEST(Parsing, Return_Expression) {
+TEST(Frontend, Parse_Return_Expression) {
     std::vector<Token> tokens = {
         { "return", "test.basalt", 1, 1, 1, Token::Type::return_keyword  },
         { "6",      "test.basalt", 1, 4, 4, Token::Type::integer_literal },

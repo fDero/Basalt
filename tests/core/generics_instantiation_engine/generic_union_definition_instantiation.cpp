@@ -7,7 +7,7 @@
 #include "../../tests_utilities/typesignature_factory.hpp"
 #include "../../tests_utilities/type_queries.hpp"
 
-TEST(TypeSystem, Generic_Union_Instantiation) {
+TEST(Core, Generic_Union_Instantiation) {
     UnionDefinition generic_union_definition = UnionDefinitionFactory::make_union_definition(
         "MyUnion", 
         "test.basalt",
@@ -35,7 +35,7 @@ TEST(TypeSystem, Generic_Union_Instantiation) {
     EXPECT_TRUE(is_array_of_ints_of_size_n(instantiated_union_definition.types[3], 10));
 }
 
-TEST(TypeSystem, Non_Generic_Union_NoOp_Instantiation) {
+TEST(Core, Non_Generic_Union_NoOp_Instantiation) {
     UnionDefinition generic_union_definition = UnionDefinitionFactory::make_union_definition(
         "MyUnion",
         "test.basalt", 
@@ -52,7 +52,7 @@ TEST(TypeSystem, Non_Generic_Union_NoOp_Instantiation) {
     EXPECT_TRUE(is_float(instantiated_union_definition.types[1]));
 }
 
-TEST(TypeSystem, Fake_Generic_Union_NoOp_Instantiation) {
+TEST(Core, Fake_Generic_Union_NoOp_Instantiation) {
     UnionDefinition generic_union_definition = UnionDefinitionFactory::make_union_definition(
         "MyUnion", 
         "test.basalt",

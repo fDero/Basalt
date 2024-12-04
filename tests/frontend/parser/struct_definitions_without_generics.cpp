@@ -4,7 +4,7 @@
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 
-TEST(Parsing, Struct_Definition_With_No_Fields_And_No_Nested_Structs) {
+TEST(Frontend, Parse_Struct_Definition_With_No_Fields_And_No_Nested_Structs) {
     std::vector<Token> tokens = {
         { "struct", "test.basalt", 1, 1, 1, Token::Type::struct_keyword },
         { "S",      "test.basalt", 1, 2, 7, Token::Type::type           },
@@ -19,7 +19,7 @@ TEST(Parsing, Struct_Definition_With_No_Fields_And_No_Nested_Structs) {
     EXPECT_TRUE(struct_def.fields.empty());
 }
 
-TEST(Parsing, Struct_Definition_With_One_Field_And_No_Nested_Structs) {
+TEST(Frontend, Parse_Struct_Definition_With_One_Field_And_No_Nested_Structs) {
     std::vector<Token> tokens = {
         { "struct", "test.basalt",  1,  1,   1,  Token::Type::struct_keyword },
         { "S",      "test.basalt",  1,  2,   7,  Token::Type::type           },
@@ -39,7 +39,7 @@ TEST(Parsing, Struct_Definition_With_One_Field_And_No_Nested_Structs) {
     EXPECT_EQ(struct_def.fields.back().field_name, "x");
 }
 
-TEST(Parsing, Struct_Definition_With_Two_Fields_And_No_Nested_Structs) {
+TEST(Frontend, Parse_Struct_Definition_With_Two_Fields_And_No_Nested_Structs) {
     std::vector<Token> tokens = {
         { "struct", "test.basalt",  1,   1,  1,   Token::Type::struct_keyword },
         { "S",      "test.basalt",  1,   2,  7,   Token::Type::type           },

@@ -66,7 +66,7 @@ ProjectFileStructure project_with_single_file_containing_four_overloads_of_the_a
 });
 
 
-TEST(Representation, CFA_Success_When_It_Is_Not_Necessary) {
+TEST(Core, CFA_Success_When_It_Is_Not_Necessary) {
     FunctionOverloadsRegister function_register(project_with_single_file_containing_four_overloads_of_the_add_function);
     TypeDefinitionsRegister type_register(project_with_single_file_containing_four_overloads_of_the_add_function);
     OverloadingResolutionEngine overloading_resolution_engine(function_register, type_register, project_with_single_file_containing_four_overloads_of_the_add_function);
@@ -91,7 +91,7 @@ TEST(Representation, CFA_Success_When_It_Is_Not_Necessary) {
 }
 
 
-TEST(Representation, CFA_Success_When_It_Is_Not_Necessary2) {
+TEST(Core, CFA_Success_When_It_Is_Not_Necessary2) {
     FunctionOverloadsRegister function_register(project_with_single_file_containing_four_overloads_of_the_add_function);
     TypeDefinitionsRegister type_register(project_with_single_file_containing_four_overloads_of_the_add_function);
     OverloadingResolutionEngine overloading_resolution_engine(function_register, type_register, project_with_single_file_containing_four_overloads_of_the_add_function);
@@ -116,7 +116,7 @@ TEST(Representation, CFA_Success_When_It_Is_Not_Necessary2) {
 }
 
 
-TEST(Representation, CFA_Success_Resolving_One_Union_As_First_Arg) {
+TEST(Core, CFA_Success_Resolving_One_Union_As_First_Arg) {
     FunctionOverloadsRegister function_register(project_with_single_file_containing_four_overloads_of_the_add_function);
     TypeDefinitionsRegister type_register(project_with_single_file_containing_four_overloads_of_the_add_function);
     OverloadingResolutionEngine overloading_resolution_engine(function_register, type_register, project_with_single_file_containing_four_overloads_of_the_add_function);
@@ -149,7 +149,7 @@ TEST(Representation, CFA_Success_Resolving_One_Union_As_First_Arg) {
     EXPECT_TRUE(cfa_plan.get_return_type().value().is<InlineUnion>());
 }
 
-TEST(Representation, CFA_Success_Resolving_Two_Unions) {
+TEST(Core, CFA_Success_Resolving_Two_Unions) {
     FunctionOverloadsRegister function_register(project_with_single_file_containing_four_overloads_of_the_add_function);
     TypeDefinitionsRegister type_register(project_with_single_file_containing_four_overloads_of_the_add_function);
     OverloadingResolutionEngine overloading_resolution_engine(function_register, type_register, project_with_single_file_containing_four_overloads_of_the_add_function);
@@ -186,7 +186,7 @@ TEST(Representation, CFA_Success_Resolving_Two_Unions) {
     EXPECT_TRUE(cfa_plan.get_return_type().value().is<InlineUnion>());
 }
 
-TEST(Representation, CFA_Success_Resolving_One_Union_As_Second_Arg) {
+TEST(Core, CFA_Success_Resolving_One_Union_As_Second_Arg) {
     FunctionOverloadsRegister function_register(project_with_single_file_containing_four_overloads_of_the_add_function);
     TypeDefinitionsRegister type_register(project_with_single_file_containing_four_overloads_of_the_add_function);
     OverloadingResolutionEngine overloading_resolution_engine(function_register, type_register, project_with_single_file_containing_four_overloads_of_the_add_function);

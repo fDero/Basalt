@@ -4,7 +4,7 @@
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 
-TEST(Parsing, Trivial_Assignment) {
+TEST(Frontend, Parse_Trivial_Assignment) {
     std::vector<Token> tokens = {
         { "x", "test.basalt", 1, 1, 1, Token::Type::text },
         { "=", "test.basalt", 1, 2, 2, Token::Type::symbol },
@@ -18,7 +18,7 @@ TEST(Parsing, Trivial_Assignment) {
     EXPECT_TRUE(statement.get<Assignment>().assignment_target.is<Identifier>());
 }
 
-TEST(Parsing, Assignment_Of_Expression_To_Pointer_Dereference) {
+TEST(Frontend, Parse_Assignment_Of_Expression_To_Pointer_Dereference) {
     std::vector<Token> tokens = {
         { "#", "test.basalt", 1, 1, 1, Token::Type::symbol },
         { "x", "test.basalt", 1, 2, 2, Token::Type::text },

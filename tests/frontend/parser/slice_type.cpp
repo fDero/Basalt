@@ -4,7 +4,7 @@
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 
-TEST(Parsing, Simple_Slice) {
+TEST(Frontend, Parse_Simple_Slice) {
     std::vector<Token> tokens = {
         { "$",   "test.basalt",   1, 1, 1, Token::Type::type     },
         { "Ent", "test.basalt",   1, 2, 2, Token::Type::type     },
@@ -17,7 +17,7 @@ TEST(Parsing, Simple_Slice) {
     EXPECT_EQ(type.get<SliceType>().stored_type.get<CustomType>().type_name, "Ent");
 }
 
-TEST(Parsing, Nested_Slice_Types) {
+TEST(Frontend, Parse_Nested_Slice_Types) {
     std::vector<Token> tokens = {
         { "$",   "test.basalt",     1, 1, 1,  Token::Type::type      },
         { "$",   "test.basalt",     1, 2, 2,  Token::Type::symbol    },

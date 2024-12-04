@@ -4,7 +4,7 @@
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 
-TEST(Parsing, Is_Operator_Expression_On_Variable) {
+TEST(Frontend, Parse_Is_Operator_Expression_On_Variable) {
     std::vector<Token> tokens = {
         { "number",      "test.basalt", 1, 1, 1, Token::Type::text       },
         { "is",          "test.basalt", 1, 2, 7, Token::Type::is_keyword },
@@ -15,7 +15,7 @@ TEST(Parsing, Is_Operator_Expression_On_Variable) {
     ASSERT_TRUE(expression.is<TypeOperator>());
 }
 
-TEST(Parsing, As_Cast_On_Complex_Expression_AST_Rotation_Needed) {
+TEST(Frontend, Parse_As_Cast_On_Complex_Expression_AST_Rotation_Needed) {
     std::vector<Token> tokens = {
         { "x",      "test.basalt", 1, 1, 1, Token::Type::text       },
         { "*",      "test.basalt", 1, 2, 2, Token::Type::symbol     },
@@ -36,7 +36,7 @@ TEST(Parsing, As_Cast_On_Complex_Expression_AST_Rotation_Needed) {
     EXPECT_EQ(primitive_type.type_name, "Int");
 }
 
-TEST(Parsing, Is_Operator_Expression_Used_As_Operand) {
+TEST(Frontend, Parse_Is_Operator_Expression_Used_As_Operand) {
     std::vector<Token> tokens = {
         { "number",      "test.basalt", 1, 1, 1,  Token::Type::text       },
         { "is",          "test.basalt", 1, 2, 7,  Token::Type::is_keyword },

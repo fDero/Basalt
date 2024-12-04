@@ -4,7 +4,7 @@
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 
-TEST(Parsing, Integer_Literals) {
+TEST(Frontend, Parse_Integer_Literals) {
     std::vector<Token> tokens = {
         { "123",  "test.basalt",  1, 1, 1,  Token::Type::integer_literal },
         { "0",    "test.basalt",  1, 2, 4,  Token::Type::integer_literal },
@@ -18,7 +18,7 @@ TEST(Parsing, Integer_Literals) {
     }
 }
 
-TEST(Parsing, String_Literals) {
+TEST(Frontend, Parse_String_Literals) {
     std::vector<Token> tokens = {
         { "\"Hello\"",  "test.basalt",  1, 1, 1,  Token::Type::string_literal },
         { "\"World\"",  "test.basalt",  1, 2, 8,  Token::Type::string_literal },
@@ -31,7 +31,7 @@ TEST(Parsing, String_Literals) {
     }
 }
 
-TEST(Parsing, Floating_Literals) {
+TEST(Frontend, Parse_Floating_Literals) {
     std::vector<Token> tokens = {
         { "123.0",  "test.basalt",  1, 1, 1,  Token::Type::floating_literal },
         { "0.0",    "test.basalt",  1, 2, 4,  Token::Type::floating_literal },
@@ -45,7 +45,7 @@ TEST(Parsing, Floating_Literals) {
     }
 }
 
-TEST(Parsing, Char_Literals) {
+TEST(Frontend, Parse_Char_Literals) {
     std::vector<Token> tokens = {
         { "'x'",   "test.basalt",  1, 1, 1,  Token::Type::character_literal },
         { "'y'",   "test.basalt",  1, 2, 2,  Token::Type::character_literal },
@@ -59,7 +59,7 @@ TEST(Parsing, Char_Literals) {
     }
 }
 
-TEST(Parsing, Boolean_Literals) {
+TEST(Frontend, Parse_Boolean_Literals) {
     std::vector<Token> tokens = {
         { "true",   "test.basalt",  1, 1, 1,  Token::Type::boolean_literal },
         { "false",  "test.basalt",  1, 2, 5,  Token::Type::boolean_literal },

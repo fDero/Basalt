@@ -5,7 +5,7 @@
 #include "errors/parsing_errors.hpp"
 #include "language/functions.hpp"
 
-TEST(Parsing, Simple_Identifiers) {
+TEST(Frontend, Parse_Simple_Identifiers) {
     std::vector<Token> tokens = {
         { "x", "test.basalt", 1, 1, 1, Token::Type::text },
         { "counter", "test.basalt", 1, 2, 2, Token::Type::text },

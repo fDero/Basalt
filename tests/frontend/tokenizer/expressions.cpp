@@ -4,7 +4,7 @@
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 
-TEST(Tokenizing, Complex_Math_Expression) {
+TEST(Frontend, Tokenize_Complex_Math_Expression) {
     std::string inline_input = "(16+17*19)/2;";
     Tokenizer tokenizer = Tokenizer(std::istringstream(inline_input));
     std::vector<Token> tokens = tokenizer.tokenize().tokens;
@@ -21,7 +21,7 @@ TEST(Tokenizing, Complex_Math_Expression) {
     EXPECT_EQ(tokens[9].sourcetext, ";");
 }
 
-TEST(Tokenizing, Complex_Logical_Expression) {
+TEST(Frontend, Tokenize_Complex_Logical_Expression) {
     std::string inline_input = "!(a && b || !c);";
     Tokenizer tokenizer = Tokenizer(std::istringstream(inline_input));
     std::vector<Token> tokens = tokenizer.tokenize().tokens;
@@ -38,7 +38,7 @@ TEST(Tokenizing, Complex_Logical_Expression) {
     EXPECT_EQ(tokens[9].sourcetext, ";");
 }
 
-TEST(Tokenizing, Expression_With_Comments) {
+TEST(Frontend, Tokenize_Expression_With_Comments) {
     std::string inline_input = "/*/**/*/(16+17* /*AA*/ 19)/2; // hello world";
     Tokenizer tokenizer = Tokenizer(std::istringstream(inline_input));
     std::vector<Token> tokens = tokenizer.tokenize().tokens;

@@ -48,7 +48,7 @@ static Expression illegal_square_brackets_access_on_int_literal = SquareBrackets
     IntLiteral { Token { "0", "main.basalt", 1, 1, 1, Token::Type::integer_literal } }
 };
 
-TEST(TypeChecking, Type_Deduction_Of_Sum_Of_Two_Integer_Literals) {
+TEST(Core, Type_Deduction_Of_Sum_Of_Two_Integer_Literals) {
     std::optional<TypeSignature> sum_of_two_integer_literals_type_opt = type_deducer.deduce_expression_type(sum_of_two_integer_literals);
     ASSERT_TRUE(sum_of_two_integer_literals_type_opt.has_value());
     const TypeSignature& sum_of_two_integer_literals_type = sum_of_two_integer_literals_type_opt.value();
@@ -57,7 +57,7 @@ TEST(TypeChecking, Type_Deduction_Of_Sum_Of_Two_Integer_Literals) {
     EXPECT_EQ(sum_of_two_integer_literals_primitive_type.type_name, "Int");
 }
 
-TEST(TypeChecking, Type_Deduction_Of_Square_Brackets_Access_On_Array_Literal_Of_Integers) {
+TEST(Core, Type_Deduction_Of_Square_Brackets_Access_On_Array_Literal_Of_Integers) {
     std::optional<TypeSignature> square_brackets_access_on_int_array_type_opt = type_deducer.deduce_expression_type(square_brackets_access_on_int_array);
     ASSERT_TRUE(square_brackets_access_on_int_array_type_opt.has_value());
     const TypeSignature& square_brackets_access_on_int_array_type = square_brackets_access_on_int_array_type_opt.value();
@@ -66,7 +66,7 @@ TEST(TypeChecking, Type_Deduction_Of_Square_Brackets_Access_On_Array_Literal_Of_
     EXPECT_EQ(square_brackets_access_on_int_array_primitive_type.type_name, "Int");
 }
 
-TEST(TypeChecking, Type_Deduction_Of_Illegal_Square_Brackets_Access_On_Int_Literal_Throws_Exception) {
+TEST(Core, Type_Deduction_Of_Illegal_Square_Brackets_Access_On_Int_Literal_Throws_Exception) {
     EXPECT_ANY_THROW({
         std::optional<TypeSignature> illegal_square_brackets_access_on_int_literal_type_opt = 
             type_deducer.deduce_expression_type(illegal_square_brackets_access_on_int_literal);

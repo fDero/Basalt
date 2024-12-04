@@ -11,7 +11,7 @@
 #include "../../tests_utilities/type_alias_factory.hpp"
 #include "../../tests_utilities/type_queries.hpp"
 
-TEST(Representation, Retrieve_Generic_StructDefinition_From_TypeSignature_In_The_Same_File) {
+TEST(Core, Retrieve_Generic_StructDefinition_From_TypeSignature_In_The_Same_File) {
     
     FileRepresentation file {
         .file_metadata = { 
@@ -54,7 +54,7 @@ TEST(Representation, Retrieve_Generic_StructDefinition_From_TypeSignature_In_The
     EXPECT_TRUE(is_string(struct_def.fields[1].field_type));
 }
 
-TEST(Representation, Struct_Overloads_Are_Distinguished_By_Template_Generics_Count) {
+TEST(Core, Struct_Overloads_Are_Distinguished_By_Template_Generics_Count) {
     
     FileRepresentation file {
         .file_metadata = { 

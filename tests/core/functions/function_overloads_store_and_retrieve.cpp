@@ -86,7 +86,7 @@ ProjectFileStructure multi_file_project_with_multiple_function_definitions ({
     }
 });
 
-TEST(Representation, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_From_A_Dot_Basalt_Without_Explicit_Generics) {
+TEST(Core, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_From_A_Dot_Basalt_Without_Explicit_Generics) {
     
     FunctionOverloadsRegister function_register(multi_file_project_with_multiple_function_definitions);
     
@@ -109,7 +109,7 @@ TEST(Representation, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_Fr
     EXPECT_EQ(function_register.retrieve_specific_overload_set(overload_sets_ids[2]).size(), 1);
 }
 
-TEST(Representation, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_From_A_Dot_Basalt_Without_Explicit_Generics_But_Specifyng_A_Package_Prefix) {
+TEST(Core, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_From_A_Dot_Basalt_Without_Explicit_Generics_But_Specifyng_A_Package_Prefix) {
     
     FunctionOverloadsRegister function_register(multi_file_project_with_multiple_function_definitions);
     
@@ -131,7 +131,7 @@ TEST(Representation, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_Fr
 }
 
 
-TEST(Representation, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_From_A_Dot_Basalt_Without_Explicit_Generics_But_Specifyng_A_Package_Prefix_2) {
+TEST(Core, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_From_A_Dot_Basalt_Without_Explicit_Generics_But_Specifyng_A_Package_Prefix_2) {
     
     FunctionOverloadsRegister function_register(multi_file_project_with_multiple_function_definitions);
     
@@ -152,7 +152,7 @@ TEST(Representation, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_Fr
     EXPECT_EQ(function_register.retrieve_specific_overload_set(overload_sets_ids[0]).size(), 1);
 }
 
-TEST(Representation, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_From_B_Dot_Basalt_Without_Explicit_Generics) {
+TEST(Core, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_From_B_Dot_Basalt_Without_Explicit_Generics) {
     
     FunctionOverloadsRegister function_register(multi_file_project_with_multiple_function_definitions);
     
@@ -173,7 +173,7 @@ TEST(Representation, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_Fr
     EXPECT_EQ(function_register.retrieve_specific_overload_set(overload_sets_ids[0]).size(), 1);
 }
 
-TEST(Representation, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_From_C_Dot_Basalt_Without_Explicit_Generics) {
+TEST(Core, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_From_C_Dot_Basalt_Without_Explicit_Generics) {
     
     FunctionOverloadsRegister function_register(multi_file_project_with_multiple_function_definitions);
     
@@ -194,7 +194,7 @@ TEST(Representation, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_Fr
     EXPECT_EQ(function_register.retrieve_specific_overload_set(overload_sets_ids[0]).size(), 1);
 }
 
-TEST(Representation, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_From_A_Dot_Basalt_With_Explicit_Generics) {
+TEST(Core, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_From_A_Dot_Basalt_With_Explicit_Generics) {
     
     FunctionOverloadsRegister function_register(multi_file_project_with_multiple_function_definitions);
     
@@ -215,7 +215,7 @@ TEST(Representation, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_Fr
     EXPECT_EQ(function_register.retrieve_specific_overload_set(overload_sets_ids[0]).size(), 1);
 }
 
-TEST(Representation, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_From_B_Dot_Basalt_With_Explicit_Generics) {
+TEST(Core, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_From_B_Dot_Basalt_With_Explicit_Generics) {
     
     FunctionOverloadsRegister function_register(multi_file_project_with_multiple_function_definitions);
     
@@ -236,7 +236,7 @@ TEST(Representation, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_Fr
     EXPECT_EQ(function_register.retrieve_specific_overload_set(overload_sets_ids[0]).size(), 1);
 }
 
-TEST(Representation, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_From_C_Dot_Basalt_With_Explicit_Generics) {
+TEST(Core, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_From_C_Dot_Basalt_With_Explicit_Generics) {
     
     FunctionOverloadsRegister function_register(multi_file_project_with_multiple_function_definitions);
     

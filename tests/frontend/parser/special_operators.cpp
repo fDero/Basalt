@@ -4,7 +4,7 @@
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 
-TEST(Parsing, Dot_Member_Access_nested_with_multiplication) {
+TEST(Frontend, Parse_Dot_Member_Access_nested_with_multiplication) {
     std::vector<Token> tokens = {
         { "a", "test.basalt", 1, 1, 1, Token::Type::text },
         { "*", "test.basalt", 1, 2, 2, Token::Type::symbol },
@@ -23,7 +23,7 @@ TEST(Parsing, Dot_Member_Access_nested_with_multiplication) {
     EXPECT_EQ(dot_member_access.member_name, "c");
 }
 
-TEST(Parsing, Dot_Member_Access_Array_Square_Brackets_Access_And_Pointer_Dereference_non_trivial_composition) {
+TEST(Frontend, Parse_Dot_Member_Access_Array_Square_Brackets_Access_And_Pointer_Dereference_non_trivial_composition) {
     std::vector<Token> tokens = {
         { "#", "test.basalt", 1, 1, 1, Token::Type::symbol },
         { "a", "test.basalt", 1, 2, 2, Token::Type::text },
@@ -51,7 +51,7 @@ TEST(Parsing, Dot_Member_Access_Array_Square_Brackets_Access_And_Pointer_Derefer
     EXPECT_EQ(dot_member_access.member_name, "c");
 }
 
-TEST(Parsing, Dot_Member_Access_Array_Square_Brackets_Access_And_Pointer_Dereference_trivial_composition) {
+TEST(Frontend, Parse_Dot_Member_Access_Array_Square_Brackets_Access_And_Pointer_Dereference_trivial_composition) {
     std::vector<Token> tokens = {
         { "#", "test.basalt", 1, 1, 1, Token::Type::symbol },
         { "a", "test.basalt", 1, 2, 2, Token::Type::text },

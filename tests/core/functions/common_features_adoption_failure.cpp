@@ -46,7 +46,7 @@ ProjectFileStructure project_with_single_file_containing_two_overload_of_the_add
 });
 
 
-TEST(Representation, CFA_Failure_Not_Every_Case_Is_Covered) {
+TEST(Core, CFA_Failure_Not_Every_Case_Is_Covered) {
     FunctionOverloadsRegister function_register(project_with_single_file_containing_two_overload_of_the_add_function);
     TypeDefinitionsRegister type_register(project_with_single_file_containing_two_overload_of_the_add_function);
     OverloadingResolutionEngine overloading_resolution_engine(function_register, type_register, project_with_single_file_containing_two_overload_of_the_add_function);
@@ -105,7 +105,7 @@ ProjectFileStructure project_with_single_file_containing_two_overload_of_the_f_f
 });
 
 
-TEST(Representation, CFA_Failure_Incompatible_Return_Types) {
+TEST(Core, CFA_Failure_Incompatible_Return_Types) {
     FunctionOverloadsRegister function_register(project_with_single_file_containing_two_overload_of_the_f_function_with_incompatible_return_types);
     TypeDefinitionsRegister type_register(project_with_single_file_containing_two_overload_of_the_f_function_with_incompatible_return_types);
     OverloadingResolutionEngine overloading_resolution_engine(function_register, type_register, project_with_single_file_containing_two_overload_of_the_f_function_with_incompatible_return_types);

@@ -32,34 +32,34 @@ TypeSignature SliceOfNumbers = SliceType {
     CustomType { Token { "Number", "main.basalt", 1, 2, 2, Token::Type::type }, { } } 
 };
 
-TEST(TypeChecking, Assignment_Type_Checking_For_Slice_Of_Ints_Assigned_To_Slice_Of_IntsOrFloats) {
+TEST(Core, Assignment_Type_Checking_For_Slice_Of_Ints_Assigned_To_Slice_Of_IntsOrFloats) {
     ProjectFileStructure empty_project;
     TypeDefinitionsRegister type_register(empty_project); 
     AssignmentTypeChecker type_checker(type_register, empty_project);
     EXPECT_FALSE(type_checker.validate_assignment(TypeSignatureFactory::SliceOfInts, TypeSignatureFactory::SliceOfIntsOrFloats));
 }
 
-TEST(TypeChecking, Assignment_Type_Checking_For_Slice_Of_Ints_Assigned_To_Slice_Of_Ints) {
+TEST(Core, Assignment_Type_Checking_For_Slice_Of_Ints_Assigned_To_Slice_Of_Ints) {
     ProjectFileStructure empty_project;
     TypeDefinitionsRegister type_register(empty_project); 
     AssignmentTypeChecker type_checker(type_register, empty_project);
     EXPECT_TRUE(type_checker.validate_assignment(TypeSignatureFactory::SliceOfInts, TypeSignatureFactory::SliceOfInts));
 }
 
-TEST(TypeChecking, Assignment_Type_Checking_For_Slice_Of_IntsOrFloat_Assigned_To_Slice_Of_IntsOrFloat) {
+TEST(Core, Assignment_Type_Checking_For_Slice_Of_IntsOrFloat_Assigned_To_Slice_Of_IntsOrFloat) {
     ProjectFileStructure empty_project;
     TypeDefinitionsRegister type_register(empty_project); 
     AssignmentTypeChecker type_checker(type_register, empty_project);
     EXPECT_TRUE(type_checker.validate_assignment(TypeSignatureFactory::SliceOfIntsOrFloats, TypeSignatureFactory::SliceOfIntsOrFloats));
 }
 
-TEST(TypeChecking, Assignment_Type_Checking_For_Slice_Of_IntsOrFloat_Assigned_To_SliceOfNumbers) {
+TEST(Core, Assignment_Type_Checking_For_Slice_Of_IntsOrFloat_Assigned_To_SliceOfNumbers) {
     TypeDefinitionsRegister type_register(single_file_project_with_number_defy); 
     AssignmentTypeChecker type_checker(type_register, single_file_project_with_number_defy);
     EXPECT_TRUE(type_checker.validate_assignment(TypeSignatureFactory::SliceOfIntsOrFloats, SliceOfNumbers));
 }
 
-TEST(TypeChecking, Assignment_Type_Checking_For_SliceOfNumbers_Assigned_To_Slice_Of_IntsOrFloat) {
+TEST(Core, Assignment_Type_Checking_For_SliceOfNumbers_Assigned_To_Slice_Of_IntsOrFloat) {
     TypeDefinitionsRegister type_register(single_file_project_with_number_defy); 
     AssignmentTypeChecker type_checker(type_register, single_file_project_with_number_defy);
     EXPECT_TRUE(type_checker.validate_assignment(SliceOfNumbers, TypeSignatureFactory::SliceOfIntsOrFloats));

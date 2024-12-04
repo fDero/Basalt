@@ -4,7 +4,7 @@
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 
-TEST(Parsing, Simple_Array) {
+TEST(Frontend, Parse_Simple_Array) {
     std::vector<Token> tokens = {
         { "[",   "test.basalt",  1, 1, 1, Token::Type::type               },
         { "10",  "test.basalt",  1, 2, 2, Token::Type::integer_literal    },
@@ -19,7 +19,7 @@ TEST(Parsing, Simple_Array) {
     EXPECT_EQ(type.get<ArrayType>().stored_type.get<PrimitiveType>().type_name, "Int");
 }
 
-TEST(Parsing, Nested_Array_Types) {
+TEST(Frontend, Parse_Nested_Array_Types) {
     std::vector<Token> tokens = {
         { "[",   "test.basalt",     1, 1, 1, Token::Type::type            },
         { "10",  "test.basalt",     1, 2, 2, Token::Type::integer_literal },

@@ -4,7 +4,7 @@
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 
-TEST(Parsing, Function_Definition_WithOut_generics_And_No_Arguments_And_Empty_Body) {
+TEST(Frontend, Parse_Function_Definition_WithOut_generics_And_No_Arguments_And_Empty_Body) {
     std::vector<Token> tokens = {
         { "func","test.basalt", 1, 1, 1, Token::Type::func_keyword },
         { "f",   "test.basalt", 1, 2, 5, Token::Type::text   },
@@ -21,7 +21,7 @@ TEST(Parsing, Function_Definition_WithOut_generics_And_No_Arguments_And_Empty_Bo
     EXPECT_EQ(funcdef.filename, "test.basalt");
 }
 
-TEST(Parsing, Function_Definition_WithOut_generics_And_Only_One_Argument_And_Empty_Body) {
+TEST(Frontend, Parse_Function_Definition_WithOut_generics_And_Only_One_Argument_And_Empty_Body) {
     std::vector<Token> tokens = {
         { "func","test.basalt", 1, 1, 1,  Token::Type::func_keyword },
         { "f",   "test.basalt", 1, 2, 5,  Token::Type::text   },
@@ -44,7 +44,7 @@ TEST(Parsing, Function_Definition_WithOut_generics_And_Only_One_Argument_And_Emp
     EXPECT_EQ(funcdef.arguments[0].arg_type.get<PrimitiveType>().type_name, "Int");
 }
 
-TEST(Parsing, Function_Definition_WithOut_generics_And_Two_Arguments_And_Empty_Body) {
+TEST(Frontend, Parse_Function_Definition_WithOut_generics_And_Two_Arguments_And_Empty_Body) {
     std::vector<Token> tokens = {
         { "func","test.basalt", 1, 1,  1,   Token::Type::func_keyword },
         { "f",   "test.basalt", 1, 2,  5,   Token::Type::text   },

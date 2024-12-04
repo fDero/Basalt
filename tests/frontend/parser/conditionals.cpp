@@ -4,7 +4,7 @@
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 
-TEST(Parsing, If_Statement_Inline_Then_No_Else) {
+TEST(Frontend, Parse_If_Statement_Inline_Then_No_Else) {
     std::vector<Token> tokens = {
         { "if", "test.basalt", 1, 1, 1, Token::Type::if_keyword },
         { "(", "test.basalt", 1, 2, 2, Token::Type::symbol },
@@ -22,7 +22,7 @@ TEST(Parsing, If_Statement_Inline_Then_No_Else) {
     EXPECT_TRUE(statement.get<Conditional>().condition.is<Identifier>());
 }
 
-TEST(Parsing, If_Statement_Inline_Then_Inline_Else) {
+TEST(Frontend, Parse_If_Statement_Inline_Then_Inline_Else) {
     std::vector<Token> tokens = {
         { "if", "test.basalt", 1, 1, 1, Token::Type::if_keyword },
         { "(", "test.basalt", 1, 2, 2, Token::Type::symbol },
@@ -44,7 +44,7 @@ TEST(Parsing, If_Statement_Inline_Then_Inline_Else) {
     EXPECT_TRUE(statement.get<Conditional>().condition.is<Identifier>());
 }
 
-TEST(Parsing, If_Statement_Block_Then_Block_Else) {
+TEST(Frontend, Parse_If_Statement_Block_Then_Block_Else) {
     std::vector<Token> tokens = {
         { "if", "test.basalt", 1, 1, 1, Token::Type::if_keyword },
         { "(", "test.basalt", 1, 2, 2, Token::Type::symbol },
@@ -70,7 +70,7 @@ TEST(Parsing, If_Statement_Block_Then_Block_Else) {
     EXPECT_TRUE(statement.get<Conditional>().condition.is<Identifier>());
 }
 
-TEST(Parsing, If_Statement_Block_Then_Block_Else_More_Then_One_Statement_In_Body) {
+TEST(Frontend, Parse_If_Statement_Block_Then_Block_Else_More_Then_One_Statement_In_Body) {
     std::vector<Token> tokens = {
         { "if", "test.basalt", 1, 1, 1, Token::Type::if_keyword },
         { "(", "test.basalt", 1, 2, 2, Token::Type::symbol },
@@ -102,7 +102,7 @@ TEST(Parsing, If_Statement_Block_Then_Block_Else_More_Then_One_Statement_In_Body
     EXPECT_TRUE(statement.get<Conditional>().condition.is<Identifier>());
 }
 
-TEST(Parsing, If_Statement_Inline_Then_No_Else_Condition_Is_Function_Call) {
+TEST(Frontend, Parse_If_Statement_Inline_Then_No_Else_Condition_Is_Function_Call) {
     std::vector<Token> tokens = {
         { "if", "test.basalt", 1, 1, 1, Token::Type::if_keyword },
         { "(", "test.basalt", 1, 2, 2, Token::Type::symbol },
@@ -122,7 +122,7 @@ TEST(Parsing, If_Statement_Inline_Then_No_Else_Condition_Is_Function_Call) {
     EXPECT_TRUE(statement.get<Conditional>().condition.is<FunctionCall>());
 }
 
-TEST(Parsing, If_Statement_Inline_Then_No_Else_Condition_Is_Binary_Operator) {
+TEST(Frontend, Parse_If_Statement_Inline_Then_No_Else_Condition_Is_Binary_Operator) {
     std::vector<Token> tokens = {
         { "if", "test.basalt", 1, 1, 1, Token::Type::if_keyword },
         { "(", "test.basalt", 1, 2, 2, Token::Type::symbol },

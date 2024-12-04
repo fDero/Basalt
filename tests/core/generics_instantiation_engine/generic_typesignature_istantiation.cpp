@@ -12,7 +12,7 @@ inline GenericSubstitutionRule vs_are_floats = { "V", TypeSignatureFactory::Floa
 inline GenericSubstitutionRule::Set rules = { ts_are_ints, us_are_list_of_strings, vs_are_floats };
 inline GenericsInstantiationEngine engine(rules);
 
-TEST(TypeSystem, Non_Generic_Typesignature_Instantiations) {
+TEST(Core, Non_Generic_Typesignature_Instantiations) {
     TypeSignature integer = TypeSignatureFactory::Int;
     TypeSignature list_of_strings = TypeSignatureFactory::ListOfStrings;
     TypeSignature ptr_to_float = TypeSignatureFactory::PointerToFloat;
@@ -32,7 +32,7 @@ TEST(TypeSystem, Non_Generic_Typesignature_Instantiations) {
     EXPECT_TRUE(is_array_of_strings_of_size_n(array_of_strings, 10));
 }
 
-TEST(TypeSystem, CustomType_With_Two_Generics_instantiation) {
+TEST(Core, CustomType_With_Two_Generics_instantiation) {
     TypeSignature Pair = TypeSignatureFactory::make_custom_type("Pair", { TypeSignatureFactory::T, TypeSignatureFactory::U });
     Pair = engine.instantiate_generic_typesignature(Pair);
     EXPECT_TRUE(Pair.is<CustomType>());
@@ -43,7 +43,7 @@ TEST(TypeSystem, CustomType_With_Two_Generics_instantiation) {
     EXPECT_TRUE(is_list_of_strings(pair.type_parameters[1]));
 }
 
-TEST(TypeSystem, CustomType_With_One_Conrete_Generic_And_One_Template_Generic_instantiation) {
+TEST(Core, CustomType_With_One_Conrete_Generic_And_One_Template_Generic_instantiation) {
     TypeSignature Pair = TypeSignatureFactory::make_custom_type("Pair", { TypeSignatureFactory::T, TypeSignatureFactory::Char });
     Pair = engine.instantiate_generic_typesignature(Pair);
     EXPECT_TRUE(Pair.is<CustomType>());
@@ -54,7 +54,7 @@ TEST(TypeSystem, CustomType_With_One_Conrete_Generic_And_One_Template_Generic_in
     EXPECT_TRUE(is_char(pair.type_parameters[1]));
 }
 
-TEST(TypeSystem, Pointer_To_Pointer_To_Array_Of_Generic_Type_Instanc_Test) {
+TEST(Core, Pointer_To_Pointer_To_Array_Of_Generic_Type_Instanc_Test) {
     TypeSignature ptr_to_ptr_to_array_of_t = TypeSignatureFactory::make_ptr_type(
         TypeSignatureFactory::make_ptr_type(
             TypeSignatureFactory::make_array_type(TypeSignatureFactory::T, 10)
@@ -64,7 +64,7 @@ TEST(TypeSystem, Pointer_To_Pointer_To_Array_Of_Generic_Type_Instanc_Test) {
     EXPECT_TRUE(is_pointer_to_pointer_to_array_of_ints_of_size_n(ptr_to_ptr_to_array_of_t, 10));
 }
 
-TEST(TypeSystem, Pointer_To_Pointer_To_Slice_Of_Generic_Type_Instanc_Test) {
+TEST(Core, Pointer_To_Pointer_To_Slice_Of_Generic_Type_Instanc_Test) {
         TypeSignature ptr_to_ptr_to_slice_of_t = TypeSignatureFactory::make_ptr_type(
         TypeSignatureFactory::make_ptr_type(
             TypeSignatureFactory::make_slice_type(TypeSignatureFactory::T)

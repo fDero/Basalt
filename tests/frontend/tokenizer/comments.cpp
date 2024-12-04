@@ -4,7 +4,7 @@
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 
-TEST(Tokenizing, Nested_Multiline_Comments_compact) {
+TEST(Frontend, Tokenize_Nested_Multiline_Comments_compact) {
     std::string inline_input = "16/*/*comment*/*/17";
     Tokenizer tokenizer = Tokenizer(std::istringstream(inline_input));
     std::vector<Token> tokens = tokenizer.tokenize().tokens;
@@ -15,7 +15,7 @@ TEST(Tokenizing, Nested_Multiline_Comments_compact) {
     EXPECT_EQ(tokens[1].type, Token::Type::integer_literal);
 }
 
-TEST(Tokenizing, Nested_Multiline_Comments_hyper_spread) {
+TEST(Frontend, Tokenize_Nested_Multiline_Comments_hyper_spread) {
     std::string inline_input = " 16   /*   /*   comment   */  */  17";
     Tokenizer tokenizer = Tokenizer(std::istringstream(inline_input));
     std::vector<Token> tokens = tokenizer.tokenize().tokens;
@@ -26,7 +26,7 @@ TEST(Tokenizing, Nested_Multiline_Comments_hyper_spread) {
     EXPECT_EQ(tokens[1].type, Token::Type::integer_literal);
 }
 
-TEST(Tokenizing, Nested_Multiline_Comments_full_spread) {
+TEST(Frontend, Tokenize_Nested_Multiline_Comments_full_spread) {
     std::string inline_input = "16 /* /* comment */ */ 17";
     Tokenizer tokenizer = Tokenizer(std::istringstream(inline_input));
     std::vector<Token> tokens = tokenizer.tokenize().tokens;
@@ -37,7 +37,7 @@ TEST(Tokenizing, Nested_Multiline_Comments_full_spread) {
     EXPECT_EQ(tokens[1].type, Token::Type::integer_literal);
 }
 
-TEST(Tokenizing, Nested_Multiline_Comments_half_spread) {
+TEST(Frontend, Tokenize_Nested_Multiline_Comments_half_spread) {
     std::string inline_input = "16 /*/* comment*/ */17";
     Tokenizer tokenizer = Tokenizer(std::istringstream(inline_input));
     std::vector<Token> tokens = tokenizer.tokenize().tokens;
@@ -48,7 +48,7 @@ TEST(Tokenizing, Nested_Multiline_Comments_half_spread) {
     EXPECT_EQ(tokens[1].type, Token::Type::integer_literal);
 }
 
-TEST(Tokenizing, Nested_Multiline_Comments_on_two_lines) {
+TEST(Frontend, Tokenize_Nested_Multiline_Comments_on_two_lines) {
     std::string inline_input = "16 /*/* \n \tcomment \n */ */17";
     Tokenizer tokenizer = Tokenizer(std::istringstream(inline_input));
     std::vector<Token> tokens = tokenizer.tokenize().tokens;
@@ -59,7 +59,7 @@ TEST(Tokenizing, Nested_Multiline_Comments_on_two_lines) {
     EXPECT_EQ(tokens[1].type, Token::Type::integer_literal);
 }
 
-TEST(Tokenizing, Single_Line_Comment) {
+TEST(Frontend, Tokenize_Single_Line_Comment) {
     std::string inline_input = "16 // comment  */ */17";
     Tokenizer tokenizer = Tokenizer(std::istringstream(inline_input));
     std::vector<Token> tokens = tokenizer.tokenize().tokens;

@@ -4,7 +4,7 @@
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 
-TEST(Parsing, Operators_Combinations_minus_and_power) {
+TEST(Frontend, Parse_Operators_Combinations_minus_and_power) {
     std::vector<Token> tokens = {
         { "-", "test.basalt", 1, 1, 1, Token::Type::symbol },
         { "6", "test.basalt", 1, 2, 2, Token::Type::integer_literal },
@@ -21,7 +21,7 @@ TEST(Parsing, Operators_Combinations_minus_and_power) {
     ASSERT_EQ(expr.get<UnaryOperator>().operand.get<BinaryOperator>().right_operand.get<IntLiteral>().value, 5);
 }
 
-TEST(Parsing, Operators_Combinations_double_minus_and_power) {
+TEST(Frontend, Parse_Operators_Combinations_double_minus_and_power) {
     std::vector<Token> tokens = {
         { "-", "test.basalt", 0, 1, 1, Token::Type::symbol },
         { "-", "test.basalt", 0, 2, 2, Token::Type::symbol },
@@ -39,7 +39,7 @@ TEST(Parsing, Operators_Combinations_double_minus_and_power) {
     EXPECT_EQ(expr.get<UnaryOperator>().operand.get<UnaryOperator>().operand.get<BinaryOperator>().operator_text, "^");
 }
 
-TEST(Parsing, Operators_Combinations_double_minus_and_power_with_parenthesis) {
+TEST(Frontend, Parse_Operators_Combinations_double_minus_and_power_with_parenthesis) {
     std::vector<Token> tokens = {
         { "-", "test.basalt", 0, 1, 1, Token::Type::symbol },
         { "(", "test.basalt", 0, 2, 2, Token::Type::symbol },

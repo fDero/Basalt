@@ -5,7 +5,7 @@
 #include "errors/parsing_errors.hpp"
 #include "../../tests_utilities/tokenizer_inline_procs.hpp"
 
-TEST(Tokenizing, Integer_Literals) {
+TEST(Frontend, Tokenize_Integer_Literals) {
     auto [tokens_text, inline_input] = make_testable_input({"16", "811", "9", "01", "10"});
     Tokenizer tokenizer = Tokenizer(std::istringstream(inline_input));
     std::vector<Token> tokens = tokenizer.tokenize().tokens;
@@ -16,7 +16,7 @@ TEST(Tokenizing, Integer_Literals) {
     }
 }
 
-TEST(Tokenizing, Floating_Literals) {
+TEST(Frontend, Tokenize_Floating_Literals) {
     auto [tokens_text, inline_input] = make_testable_input({"16.0", "81.100", "9.", "0.1", "00.1"});
     Tokenizer tokenizer = Tokenizer(std::istringstream(inline_input));
     std::vector<Token> tokens = tokenizer.tokenize().tokens;
@@ -27,7 +27,7 @@ TEST(Tokenizing, Floating_Literals) {
     }
 }
 
-TEST(Tokenizing, Boolean_Literals) {
+TEST(Frontend, Tokenize_Boolean_Literals) {
     auto [tokens_text, inline_input] = make_testable_input({"true", "false"});
     Tokenizer tokenizer = Tokenizer(std::istringstream(inline_input));
     std::vector<Token> tokens = tokenizer.tokenize().tokens;
@@ -38,7 +38,7 @@ TEST(Tokenizing, Boolean_Literals) {
     }
 }
 
-TEST(Tokenizing, Char_Literals) {
+TEST(Frontend, Tokenize_Char_Literals) {
     auto [tokens_text, inline_input] = make_testable_input({"'x'", "'\t'", "'\\t'", "' '", "'\\''"});
     Tokenizer tokenizer = Tokenizer(std::istringstream(inline_input));
     std::vector<Token> tokens = tokenizer.tokenize().tokens;
@@ -49,7 +49,7 @@ TEST(Tokenizing, Char_Literals) {
     }
 }
 
-TEST(Tokenizing, String_Literals_doublequotes) {
+TEST(Frontend, Tokenize_String_Literals_doublequotes) {
     auto [tokens_text, inline_input] = make_testable_input({"\"x\"", "\"\t\"", "\"\\t\"", "\" \"", "\"\\\"\""});
     Tokenizer tokenizer = Tokenizer(std::istringstream(inline_input));
     std::vector<Token> tokens = tokenizer.tokenize().tokens;
@@ -60,7 +60,7 @@ TEST(Tokenizing, String_Literals_doublequotes) {
     }
 }
 
-TEST(Tokenizing, String_Literals_backticks) {
+TEST(Frontend, Tokenize_String_Literals_backticks) {
     auto [tokens_text, inline_input] = make_testable_input({"`x`", "`\t`", "`\\t`", "` `", "`\\``"});
     Tokenizer tokenizer = Tokenizer(std::istringstream(inline_input));
     std::vector<Token> tokens = tokenizer.tokenize().tokens;

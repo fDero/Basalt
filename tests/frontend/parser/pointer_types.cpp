@@ -4,7 +4,7 @@
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 
-TEST(Parsing, Simple_Pointer) {
+TEST(Frontend, Parse_Simple_Pointer) {
     std::vector<Token> tokens = {
         { "#", "test.basalt",   1, 1, 1, Token::Type::symbol },
         { "Int", "test.basalt", 1, 2, 2, Token::Type::type   },
@@ -16,7 +16,7 @@ TEST(Parsing, Simple_Pointer) {
     EXPECT_EQ(type.get<PointerType>().pointed_type.get<PrimitiveType>().type_name, "Int");
 }
 
-TEST(Parsing, Pointer_To_Pointer) {
+TEST(Frontend, Parse_Pointer_To_Pointer) {
     std::vector<Token> tokens = {
         { "#", "test.basalt",   1, 1, 1, Token::Type::symbol },
         { "#", "test.basalt",   1, 2, 2, Token::Type::symbol },

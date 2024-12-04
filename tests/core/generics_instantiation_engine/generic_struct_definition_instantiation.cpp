@@ -7,7 +7,7 @@
 #include "../../tests_utilities/typesignature_factory.hpp"
 #include "../../tests_utilities/type_queries.hpp"
 
-TEST(TypeSystem, Generic_Struct_With_CustomType_Fields_Instantiation) {
+TEST(Core, Generic_Struct_With_CustomType_Fields_Instantiation) {
     StructDefinition generic_struct_definition = StructDefinitionFactory::make_struct_definition(
         "Pair",
         "test.basalt",  
@@ -29,7 +29,7 @@ TEST(TypeSystem, Generic_Struct_With_CustomType_Fields_Instantiation) {
     EXPECT_TRUE(is_list_of_strings(instantiated_struct_definition.fields[1].field_type));
 }
 
-TEST(TypeSystem, Generic_Struct_With_PointerType_Field_Instantiation) {
+TEST(Core, Generic_Struct_With_PointerType_Field_Instantiation) {
     StructDefinition generic_struct_definition = StructDefinitionFactory::make_struct_definition(
         "PointerWrapper",
         "test.basalt",   
@@ -50,7 +50,7 @@ TEST(TypeSystem, Generic_Struct_With_PointerType_Field_Instantiation) {
     EXPECT_EQ(pointed_type.pointed_type.get<PrimitiveType>().type_name, "Int");
 }
 
-TEST(TypeSystem, Generic_Struct_With_Slice_Type_Field_Instantiation) {
+TEST(Core, Generic_Struct_With_Slice_Type_Field_Instantiation) {
     StructDefinition generic_struct_definition = StructDefinitionFactory::make_struct_definition(
         "SliceWrapper", 
         "test.basalt",  
@@ -71,7 +71,7 @@ TEST(TypeSystem, Generic_Struct_With_Slice_Type_Field_Instantiation) {
     EXPECT_EQ(slice_type.stored_type.get<PrimitiveType>().type_name, "Int");
 }
 
-TEST(TypeSystem, Generic_Struct_With_Array_Type_Field_Instantiation) {
+TEST(Core, Generic_Struct_With_Array_Type_Field_Instantiation) {
     StructDefinition generic_struct_definition = StructDefinitionFactory::make_struct_definition(
         "ArrayWrapper", 
         "test.basalt",  

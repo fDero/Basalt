@@ -4,7 +4,7 @@
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 
-TEST(Parsing, Union_Generic_Either_Definition) {
+TEST(Frontend, Parse_Union_Generic_Either_Definition) {
     std::vector<Token> tokens = {
         { "union",   "test.basalt",  1,  1,  1,   Token::Type::struct_keyword },
         { "Either",  "test.basalt",  1,  2,  7,   Token::Type::type           },

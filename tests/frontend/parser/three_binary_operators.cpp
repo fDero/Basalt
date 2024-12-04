@@ -4,7 +4,7 @@
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 
-TEST(Parsing, Three_Binary_Operators_two_rotations_needed) {
+TEST(Frontend, Parse_Three_Binary_Operators_two_rotations_needed) {
     std::vector<Token> tokens = {
         { "1", "test.basalt", 1, 1, 1, Token::Type::integer_literal },
         { "+", "test.basalt", 1, 2, 2, Token::Type::symbol },

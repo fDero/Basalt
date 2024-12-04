@@ -4,7 +4,7 @@
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 
-TEST(Parsing, CustomType_WithOut_Generics) {
+TEST(Frontend, Parse_CustomType_WithOut_Generics) {
     std::vector<Token> tokens = {
         { "Person",   "test.basalt", 1, 1, 1,  Token::Type::type },
         { "Employee", "test.basalt", 1, 2, 9,  Token::Type::type },
@@ -19,7 +19,7 @@ TEST(Parsing, CustomType_WithOut_Generics) {
     }
 }
 
-TEST(Parsing, Custom_Type_With_One_Generic) {
+TEST(Frontend, Parse_Custom_Type_With_One_Generic) {
     std::vector<Token> tokens = {
         { "Wrapper", "test.basalt", 1, 1, 1, Token::Type::type },
         { "<", "test.basalt", 1, 2, 7, Token::Type::symbol     },
@@ -35,7 +35,7 @@ TEST(Parsing, Custom_Type_With_One_Generic) {
     EXPECT_EQ(type.get<CustomType>().type_parameters[0].get<PrimitiveType>().type_name, "String");
 }
 
-TEST(Parsing, CustomType_With_Multiple_Generic) {
+TEST(Frontend, Parse_CustomType_With_Multiple_Generic) {
     std::vector<Token> tokens = {
         { "MultiWrapper", "test.basalt", 1, 1, 1, Token::Type::type },
         { "<", "test.basalt", 1, 2, 13, Token::Type::symbol },

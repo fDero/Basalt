@@ -4,7 +4,7 @@
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 
-TEST(Parsing, Function_Call_WithOut_generics_And_Only_One_Argument_As_Statement) {
+TEST(Frontend, Parse_Function_Call_WithOut_generics_And_Only_One_Argument_As_Statement) {
     std::vector<Token> tokens = {
         { "f", "test.basalt", 1, 1, 1, Token::Type::text   },
         { "(", "test.basalt", 1, 2, 2, Token::Type::symbol },
@@ -21,7 +21,7 @@ TEST(Parsing, Function_Call_WithOut_generics_And_Only_One_Argument_As_Statement)
     EXPECT_EQ(proc.get<FunctionCall>().arguments.back().get<Identifier>().name, "x");
 }
 
-TEST(Parsing, Function_Call_WithOut_generics_And_Two_Arguments_As_Statement) {
+TEST(Frontend, Parse_Function_Call_WithOut_generics_And_Two_Arguments_As_Statement) {
     std::vector<Token> tokens = {
         { "f", "test.basalt", 1, 1, 1, Token::Type::text   },
         { "(", "test.basalt", 1, 2, 2, Token::Type::symbol },
@@ -42,7 +42,7 @@ TEST(Parsing, Function_Call_WithOut_generics_And_Two_Arguments_As_Statement) {
     EXPECT_EQ(proc.get<FunctionCall>().arguments[1].get<Identifier>().name, "y");
 }
 
-TEST(Parsing, Function_Call_WithOut_generics_And_Only_One_Argument_As_Expression) {
+TEST(Frontend, Parse_Function_Call_WithOut_generics_And_Only_One_Argument_As_Expression) {
     std::vector<Token> tokens = {
         { "f", "test.basalt", 1, 1, 1, Token::Type::text   },
         { "(", "test.basalt", 1, 2, 2, Token::Type::symbol },
@@ -58,7 +58,7 @@ TEST(Parsing, Function_Call_WithOut_generics_And_Only_One_Argument_As_Expression
     EXPECT_EQ(expr.get<FunctionCall>().arguments.back().get<Identifier>().name, "x");
 }
 
-TEST(Parsing, Function_Call_WithOut_generics_And_Two_Arguments_As_Expression) {
+TEST(Frontend, Parse_Function_Call_WithOut_generics_And_Two_Arguments_As_Expression) {
     std::vector<Token> tokens = {
         { "f", "test.basalt", 1, 1, 1, Token::Type::text   },
         { "(", "test.basalt", 1, 2, 2, Token::Type::symbol },

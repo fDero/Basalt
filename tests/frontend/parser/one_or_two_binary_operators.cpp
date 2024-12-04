@@ -4,7 +4,7 @@
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 
-TEST(Parsing, Simple_Binary_Operator) {
+TEST(Frontend, Parse_Simple_Binary_Operator) {
     std::vector<Token> tokens = {
         { "5", "test.basalt", 1, 1, 1, Token::Type::integer_literal },
         { "*", "test.basalt", 1, 2, 2, Token::Type::symbol },
@@ -20,7 +20,7 @@ TEST(Parsing, Simple_Binary_Operator) {
     EXPECT_EQ(expr.get<BinaryOperator>().right_operand.get<IntLiteral>().value, 9);
 }
 
-TEST(Parsing, Two_Binary_Operators_same_operator) {
+TEST(Frontend, Parse_Two_Binary_Operators_same_operator) {
     std::vector<Token> tokens = {
         { "1", "test.basalt", 1, 1, 1, Token::Type::integer_literal },
         { "*", "test.basalt", 1, 2, 2, Token::Type::symbol },
@@ -44,7 +44,7 @@ TEST(Parsing, Two_Binary_Operators_same_operator) {
     EXPECT_EQ(parentop.right_operand.get<IntLiteral>().value, 3);
 }
 
-TEST(Parsing, Two_Binary_Operators_rotation_not_needed) {
+TEST(Frontend, Parse_Two_Binary_Operators_rotation_not_needed) {
     std::vector<Token> tokens = {
         { "1", "test.basalt", 1, 1, 1, Token::Type::integer_literal },
         { "*", "test.basalt", 1, 2, 2, Token::Type::symbol },
@@ -68,7 +68,7 @@ TEST(Parsing, Two_Binary_Operators_rotation_not_needed) {
     EXPECT_EQ(parentop.right_operand.get<IntLiteral>().value, 3);
 }
 
-TEST(Parsing, Two_Binary_Operators_rotation_is_needed) {
+TEST(Frontend, Parse_Two_Binary_Operators_rotation_is_needed) {
     std::vector<Token> tokens = {
         { "1", "test.basalt", 1, 1, 1, Token::Type::integer_literal },
         { "+", "test.basalt", 1, 2, 2, Token::Type::symbol },
@@ -92,7 +92,7 @@ TEST(Parsing, Two_Binary_Operators_rotation_is_needed) {
     EXPECT_EQ(rightop.right_operand.get<IntLiteral>().value, 3);
 }
 
-TEST(Parsing, Two_Binary_Operators_rotation_blocked_with_parenthesis) {
+TEST(Frontend, Parse_Two_Binary_Operators_rotation_blocked_with_parenthesis) {
     std::vector<Token> tokens = {
         { "(", "test.basalt", 1, 2, 2, Token::Type::symbol },
         { "1", "test.basalt", 1, 1, 1, Token::Type::integer_literal },

@@ -4,7 +4,7 @@
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 
-TEST(Parsing, Simple_Unary_Operator) {
+TEST(Frontend, Parse_Simple_Unary_Operator) {
     std::vector<Token> tokens = {
         { "-", "test.basalt", 1, 1, 1, Token::Type::symbol },
         { "9", "test.basalt", 1, 2, 2, Token::Type::integer_literal },
@@ -17,7 +17,7 @@ TEST(Parsing, Simple_Unary_Operator) {
     EXPECT_EQ(expr.get<UnaryOperator>().operand.get<IntLiteral>().value, 9);
 }
 
-TEST(Parsing, Nested_Unary_Operators) {
+TEST(Frontend, Parse_Nested_Unary_Operators) {
     std::vector<Token> tokens = {
         { "-", "test.basalt", 1, 1, 1, Token::Type::symbol },
         { "-", "test.basalt", 1, 2, 2, Token::Type::symbol },
@@ -30,7 +30,7 @@ TEST(Parsing, Nested_Unary_Operators) {
     ASSERT_TRUE(expr.get<UnaryOperator>().operand.get<UnaryOperator>().operand.is<IntLiteral>());
 }
 
-TEST(Parsing, Nested_Unary_Operators_With_Parenthesis) {
+TEST(Frontend, Parse_Nested_Unary_Operators_With_Parenthesis) {
     std::vector<Token> tokens = {
         { "-", "test.basalt", 1, 1, 1, Token::Type::symbol },
         { "-", "test.basalt", 1, 2, 2, Token::Type::symbol },

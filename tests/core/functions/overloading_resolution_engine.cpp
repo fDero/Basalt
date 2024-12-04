@@ -43,7 +43,7 @@ ProjectFileStructure simple_project_with_both_generic_and_non_generic_func_overl
     }
 });
 
-TEST(Representation, Simple_Overloading_Resolution_Of_Generic_Vs_Non_Generic_Function_In_Same_File_V1) {
+TEST(Core, Simple_Overloading_Resolution_Of_Generic_Vs_Non_Generic_Function_In_Same_File_V1) {
     ProjectFileStructure& proj = simple_project_with_both_generic_and_non_generic_func_overloads_in_same_file;
     TypeDefinitionsRegister type_register(proj);
     FunctionOverloadsRegister func_register(proj);
@@ -63,7 +63,7 @@ TEST(Representation, Simple_Overloading_Resolution_Of_Generic_Vs_Non_Generic_Fun
     EXPECT_TRUE(func_def_ref->template_generics_names.empty());
 }
 
-TEST(Representation, Simple_Overloading_Resolution_Of_Generic_Vs_Non_Generic_Function_In_Same_File_V2) {
+TEST(Core, Simple_Overloading_Resolution_Of_Generic_Vs_Non_Generic_Function_In_Same_File_V2) {
     ProjectFileStructure& proj = simple_project_with_both_generic_and_non_generic_func_overloads_in_same_file;
     TypeDefinitionsRegister type_register(proj);
     FunctionOverloadsRegister func_register(proj);
@@ -84,7 +84,7 @@ TEST(Representation, Simple_Overloading_Resolution_Of_Generic_Vs_Non_Generic_Fun
     EXPECT_EQ(func_def_ref->function_name, "add");
 }
 
-TEST(Representation, Simple_Overloading_Of_Non_Existing_Function) {
+TEST(Core, Simple_Overloading_Of_Non_Existing_Function) {
     ProjectFileStructure& proj = simple_project_with_both_generic_and_non_generic_func_overloads_in_same_file;
     TypeDefinitionsRegister type_register(proj);
     FunctionOverloadsRegister func_register(proj);

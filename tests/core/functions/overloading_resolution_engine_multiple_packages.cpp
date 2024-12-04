@@ -64,7 +64,7 @@ ProjectFileStructure simple_project_with_both_generic_and_non_generic_func_overl
 
 });
 
-TEST(Representation, Simple_Overloading_Resolution_Of_Generic_Vs_Non_Generic_Function_In_Multiple_Packages_V1) {
+TEST(Core, Simple_Overloading_Resolution_Of_Generic_Vs_Non_Generic_Function_In_Multiple_Packages_V1) {
     ProjectFileStructure& proj = simple_project_with_both_generic_and_non_generic_func_overloads_in_multiple_packages;
     TypeDefinitionsRegister type_register(proj);
     FunctionOverloadsRegister func_register(proj);
@@ -84,7 +84,7 @@ TEST(Representation, Simple_Overloading_Resolution_Of_Generic_Vs_Non_Generic_Fun
     EXPECT_TRUE(func_def_ref->template_generics_names.empty());
 }
 
-TEST(Representation, Simple_Overloading_Resolution_Of_Generic_Vs_Non_Generic_Function_In_Multiple_Packages_V2) {
+TEST(Core, Simple_Overloading_Resolution_Of_Generic_Vs_Non_Generic_Function_In_Multiple_Packages_V2) {
     ProjectFileStructure& proj = simple_project_with_both_generic_and_non_generic_func_overloads_in_multiple_packages;
     TypeDefinitionsRegister type_register(proj);
     FunctionOverloadsRegister func_register(proj);
@@ -105,7 +105,7 @@ TEST(Representation, Simple_Overloading_Resolution_Of_Generic_Vs_Non_Generic_Fun
     EXPECT_EQ(func_def_ref->function_name, "add");
 }
 
-TEST(Representation, Simple_Overloading_Of_Non_Existing_Function_In_Multiple_Packages) {
+TEST(Core, Simple_Overloading_Of_Non_Existing_Function_In_Multiple_Packages) {
     ProjectFileStructure& proj = simple_project_with_both_generic_and_non_generic_func_overloads_in_multiple_packages;
     TypeDefinitionsRegister type_register(proj);
     FunctionOverloadsRegister func_register(proj);
@@ -125,10 +125,7 @@ TEST(Representation, Simple_Overloading_Of_Non_Existing_Function_In_Multiple_Pac
     EXPECT_EQ(func_def_ref, nullptr);
 }
 
-
-
-
-TEST(Representation, Simple_Overloading_Resolution_Of_Generic_Vs_Non_Generic_Function_In_Multiple_Packages_V3) {
+TEST(Core, Simple_Overloading_Resolution_Of_Generic_Vs_Non_Generic_Function_In_Multiple_Packages_V3) {
     ProjectFileStructure& proj = simple_project_with_both_generic_and_non_generic_func_overloads_in_multiple_packages;
     TypeDefinitionsRegister type_register(proj);
     FunctionOverloadsRegister func_register(proj);
@@ -148,7 +145,7 @@ TEST(Representation, Simple_Overloading_Resolution_Of_Generic_Vs_Non_Generic_Fun
     EXPECT_EQ(func_def_ref->function_name, "add");
 }
 
-TEST(Representation, Simple_Overloading_Resolution_Of_Generic_Vs_Non_Generic_Function_In_Multiple_Packages_V4) {
+TEST(Core, Simple_Overloading_Resolution_Of_Generic_Vs_Non_Generic_Function_In_Multiple_Packages_V4) {
     ProjectFileStructure& proj = simple_project_with_both_generic_and_non_generic_func_overloads_in_multiple_packages;
     TypeDefinitionsRegister type_register(proj);
     FunctionOverloadsRegister func_register(proj);
@@ -170,7 +167,7 @@ TEST(Representation, Simple_Overloading_Resolution_Of_Generic_Vs_Non_Generic_Fun
     EXPECT_EQ(func_def_ref->function_name, "add");
 }
 
-TEST(Representation, Simple_Overloading_Of_Non_Existing_Function_In_Multiple_Packages_V2) {
+TEST(Core, Simple_Overloading_Of_Non_Existing_Function_In_Multiple_Packages_V2) {
     ProjectFileStructure& proj = simple_project_with_both_generic_and_non_generic_func_overloads_in_multiple_packages;
     TypeDefinitionsRegister type_register(proj);
     FunctionOverloadsRegister func_register(proj);
@@ -191,11 +188,7 @@ TEST(Representation, Simple_Overloading_Of_Non_Existing_Function_In_Multiple_Pac
     EXPECT_EQ(func_def_ref, nullptr);
 }
 
-
-
-
-
-TEST(Representation, Simple_Overloading_Resolution_Of_Generic_Vs_Non_Generic_Function_In_Multiple_Packages_V5) {
+TEST(Core, Simple_Overloading_Resolution_Of_Generic_Vs_Non_Generic_Function_In_Multiple_Packages_V5) {
     ProjectFileStructure& proj = simple_project_with_both_generic_and_non_generic_func_overloads_in_multiple_packages;
     TypeDefinitionsRegister type_register(proj);
     FunctionOverloadsRegister func_register(proj);
@@ -216,7 +209,7 @@ TEST(Representation, Simple_Overloading_Resolution_Of_Generic_Vs_Non_Generic_Fun
     EXPECT_TRUE(func_def_ref->template_generics_names.empty());
 }
 
-TEST(Representation, Simple_Overloading_Resolution_Of_Generic_Vs_Non_Generic_Function_In_Multiple_Packages_V6) {
+TEST(Core, Simple_Overloading_Resolution_Of_Generic_Vs_Non_Generic_Function_In_Multiple_Packages_V6) {
     ProjectFileStructure& proj = simple_project_with_both_generic_and_non_generic_func_overloads_in_multiple_packages;
     TypeDefinitionsRegister type_register(proj);
     FunctionOverloadsRegister func_register(proj);
@@ -237,7 +230,7 @@ TEST(Representation, Simple_Overloading_Resolution_Of_Generic_Vs_Non_Generic_Fun
     EXPECT_EQ(func_def_ref, nullptr);
 }
 
-TEST(Representation, Simple_Overloading_Of_Non_Existing_Function_In_Multiple_Packages_V3) {
+TEST(Core, Simple_Overloading_Of_Non_Existing_Function_In_Multiple_Packages_V3) {
     ProjectFileStructure& proj = simple_project_with_both_generic_and_non_generic_func_overloads_in_multiple_packages;
     TypeDefinitionsRegister type_register(proj);
     FunctionOverloadsRegister func_register(proj);

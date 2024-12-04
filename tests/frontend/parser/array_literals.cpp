@@ -4,7 +4,7 @@
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 
-TEST(Parsing, Array_Literal_Without_Explicit_Size) {
+TEST(Frontend, Parse_Array_Literal_Without_Explicit_Size) {
     std::vector<Token> tokens = {
         { "[",   "test.basalt",  1, 1, 1, Token::Type::symbol  },
         { "]",   "test.basalt",  1, 2, 2, Token::Type::symbol  },
@@ -22,7 +22,7 @@ TEST(Parsing, Array_Literal_Without_Explicit_Size) {
     EXPECT_TRUE(expr.get<ArrayLiteral>().stored_type.get<CustomType>().type_parameters.empty());
 }
 
-TEST(Parsing, Array_Literal_Of_Generic_StoredType_Without_Explicit_Size) {
+TEST(Frontend, Parse_Array_Literal_Of_Generic_StoredType_Without_Explicit_Size) {
     std::vector<Token> tokens = {
         { "[",    "test.basalt",  1, 1, 1, Token::Type::symbol  },
         { "]",    "test.basalt",  1, 2, 2, Token::Type::symbol  },
@@ -45,7 +45,7 @@ TEST(Parsing, Array_Literal_Of_Generic_StoredType_Without_Explicit_Size) {
     EXPECT_EQ(expr.get<ArrayLiteral>().stored_type.get<CustomType>().type_parameters.size(), 2);
 }
 
-TEST(Parsing, Nested_Array_Literals_Without_Explicit_Size_And_Incorrect_Type) {
+TEST(Frontend, Parse_Nested_Array_Literals_Without_Explicit_Size_And_Incorrect_Type) {
     std::vector<Token> tokens = {
         { "[",   "test.basalt",  1,  1,  1, Token::Type::symbol  },
         { "]",   "test.basalt",  1,  2,  2, Token::Type::symbol  },
@@ -84,7 +84,7 @@ TEST(Parsing, Nested_Array_Literals_Without_Explicit_Size_And_Incorrect_Type) {
     }
 }
 
-TEST(Parsing, Nested_Array_Literals_With_Explicit_Size_And_Correct_Type) {
+TEST(Frontend, Parse_Nested_Array_Literals_With_Explicit_Size_And_Correct_Type) {
     std::vector<Token> tokens = {
         { "[",   "test.basalt",  1,  1,  1, Token::Type::symbol  },
         { "2",   "test.basalt",  1,  1,  1, Token::Type::integer_literal  },
@@ -123,7 +123,7 @@ TEST(Parsing, Nested_Array_Literals_With_Explicit_Size_And_Correct_Type) {
     }
 }
 
-TEST(Parsing, Square_Bracket_Access_On_Array_Literal) {
+TEST(Frontend, Parse_Square_Bracket_Access_On_Array_Literal) {
     std::vector<Token> tokens = {
         { "[",   "test.basalt",  1,  1,  1, Token::Type::symbol  },
         { "]",   "test.basalt",  1,  2,  2, Token::Type::symbol  },

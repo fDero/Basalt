@@ -4,7 +4,7 @@
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 
-TEST(Parsing, Struct_Generic_Definition_With_No_Fields) {
+TEST(Frontend, Parse_Struct_Generic_Definition_With_No_Fields) {
     std::vector<Token> tokens = {
         { "struct", "test.basalt",  1,  1,  1,   Token::Type::struct_keyword },
         { "S",      "test.basalt",  1,  2,  7,   Token::Type::type           },
@@ -26,7 +26,7 @@ TEST(Parsing, Struct_Generic_Definition_With_No_Fields) {
     EXPECT_EQ(struct_def.template_generics_names.back(), "U");
 }
 
-TEST(Parsing, Struct_Generic_Definition_With_One_Field) {
+TEST(Frontend, Parse_Struct_Generic_Definition_With_One_Field) {
     std::vector<Token> tokens = {
         { "struct", "test.basalt",  1,  1,   1,  Token::Type::struct_keyword },
         { "S",      "test.basalt",  1,  2,   7,  Token::Type::type           },
@@ -51,7 +51,7 @@ TEST(Parsing, Struct_Generic_Definition_With_One_Field) {
     EXPECT_TRUE(struct_def.fields.back().field_type.is<TemplateType>());
 }
 
-TEST(Parsing, Struct_Generic_Definition_With_Two_Fields) {
+TEST(Frontend, Parse_Struct_Generic_Definition_With_Two_Fields) {
     std::vector<Token> tokens = {
         { "struct", "test.basalt",  1,  1,  1,   Token::Type::struct_keyword },
         { "S",      "test.basalt",  1,  2,  7,   Token::Type::type           },

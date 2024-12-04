@@ -4,7 +4,7 @@
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 
-TEST(Tokenizing, Simple_Dot_Access) {
+TEST(Frontend, Tokenize_Simple_Dot_Access) {
     std::string inline_input = "a.b";
     Tokenizer tokenizer = Tokenizer(std::istringstream(inline_input));
     std::vector<Token> tokens = tokenizer.tokenize().tokens;
@@ -14,7 +14,7 @@ TEST(Tokenizing, Simple_Dot_Access) {
     EXPECT_EQ(tokens[2].sourcetext, "b");
 }
 
-TEST(Tokenizing, Simple_Pointer_Dereference) {
+TEST(Frontend, Tokenize_Simple_Pointer_Dereference) {
     std::string inline_input = "#a";
     Tokenizer tokenizer = Tokenizer(std::istringstream(inline_input));
     std::vector<Token> tokens = tokenizer.tokenize().tokens;
@@ -23,7 +23,7 @@ TEST(Tokenizing, Simple_Pointer_Dereference) {
     EXPECT_EQ(tokens[1].sourcetext, "a");
 }
 
-TEST(Tokenizing, Simple_Mod_Operation) {
+TEST(Frontend, Tokenize_Simple_Mod_Operation) {
     std::string inline_input = "a%b";
     Tokenizer tokenizer = Tokenizer(std::istringstream(inline_input));
     std::vector<Token> tokens = tokenizer.tokenize().tokens;

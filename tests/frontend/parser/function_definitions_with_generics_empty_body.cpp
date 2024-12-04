@@ -4,7 +4,7 @@
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 
-TEST(Parsing, Function_Definition_With_generics_And_No_Arguments_And_Empty_Body) {
+TEST(Frontend, Parse_Function_Definition_With_generics_And_No_Arguments_And_Empty_Body) {
     std::vector<Token> tokens = {
         { "func","test.basalt", 1, 1, 1, Token::Type::func_keyword },
         { "f",   "test.basalt", 1, 2, 2, Token::Type::text   },
@@ -26,7 +26,7 @@ TEST(Parsing, Function_Definition_With_generics_And_No_Arguments_And_Empty_Body)
     EXPECT_EQ(funcdef.template_generics_names.back(), "T");
 }
 
-TEST(Parsing, Function_Definition_With_generics_And_Only_One_Argument_And_Empty_Body) {
+TEST(Frontend, Parse_Function_Definition_With_generics_And_Only_One_Argument_And_Empty_Body) {
     std::vector<Token> tokens = {
         { "func","test.basalt", 1, 1, 1,  Token::Type::func_keyword },
         { "f",   "test.basalt", 1, 2, 5,  Token::Type::text   },

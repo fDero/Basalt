@@ -4,7 +4,7 @@
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 
-TEST(Parsing, Inline_While_Loop) {
+TEST(Frontend, Parse_Inline_While_Loop) {
     std::vector<Token> tokens = {
         { "while", "test.basalt", 1, 1, 1, Token::Type::while_keyword },
         { "(", "test.basalt", 1, 2, 2, Token::Type::symbol },
@@ -22,7 +22,7 @@ TEST(Parsing, Inline_While_Loop) {
     EXPECT_TRUE(statement.get<WhileLoop>().loop_body.back().is<FunctionCall>());
 }
 
-TEST(Parsing, Block_While_Loop_Single_Instruction) {
+TEST(Frontend, Parse_Block_While_Loop_Single_Instruction) {
     std::vector<Token> tokens = {
         { "while", "test.basalt", 1, 1, 1, Token::Type::while_keyword },
         { "(", "test.basalt", 1, 2, 2, Token::Type::symbol },
@@ -42,7 +42,7 @@ TEST(Parsing, Block_While_Loop_Single_Instruction) {
     EXPECT_TRUE(statement.get<WhileLoop>().loop_body.back().is<FunctionCall>());
 }
 
-TEST(Parsing, Block_While_Loop_Multiple_Instructions) {
+TEST(Frontend, Parse_Block_While_Loop_Multiple_Instructions) {
     std::vector<Token> tokens = {
         { "while", "test.basalt", 1, 1, 1, Token::Type::while_keyword },
         { "(", "test.basalt", 1, 2, 2, Token::Type::symbol },
@@ -72,7 +72,7 @@ TEST(Parsing, Block_While_Loop_Multiple_Instructions) {
     EXPECT_TRUE(statement.get<WhileLoop>().loop_body[2].is<FunctionCall>());
 }
 
-TEST(Parsing, Inline_Until_Loop) {
+TEST(Frontend, Parse_Inline_Until_Loop) {
     std::vector<Token> tokens = {
         { "until", "test.basalt", 1, 1, 1, Token::Type::until_keyword },
         { "(", "test.basalt", 1, 2, 2, Token::Type::symbol },
@@ -90,7 +90,7 @@ TEST(Parsing, Inline_Until_Loop) {
     EXPECT_TRUE(statement.get<UntilLoop>().loop_body.back().is<FunctionCall>());
 }
 
-TEST(Parsing, Block_Until_Loop_Single_Instruction) {
+TEST(Frontend, Parse_Block_Until_Loop_Single_Instruction) {
     std::vector<Token> tokens = {
         { "until", "test.basalt", 1, 1, 1, Token::Type::until_keyword },
         { "(", "test.basalt", 1, 2, 2, Token::Type::symbol },
@@ -110,7 +110,7 @@ TEST(Parsing, Block_Until_Loop_Single_Instruction) {
     EXPECT_TRUE(statement.get<UntilLoop>().loop_body.back().is<FunctionCall>());
 }
 
-TEST(Parsing, Block_Until_Loop_Multiple_Instructions) {
+TEST(Frontend, Parse_Block_Until_Loop_Multiple_Instructions) {
     std::vector<Token> tokens = {
         { "until", "test.basalt", 1, 1, 1, Token::Type::until_keyword },
         { "(", "test.basalt", 1, 2, 2, Token::Type::symbol },

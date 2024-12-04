@@ -28,7 +28,7 @@ ProjectFileStructure single_file_project_with_number_def({
 });
 
 
-TEST(TypeChecking, IntOrFloat_Is_Compatible_With_Itself) {
+TEST(Core, IntOrFloat_Is_Compatible_With_Itself) {
     ProjectFileStructure empty_project;
     TypeDefinitionsRegister type_register(empty_project); 
     AssignmentTypeChecker type_checker(type_register, empty_project);
@@ -39,7 +39,7 @@ TEST(TypeChecking, IntOrFloat_Is_Compatible_With_Itself) {
     EXPECT_TRUE(IntOrFloat_is_compatible_with_itself);
 }
 
-TEST(TypeChecking, IntOrFloat_Is_Mutually_Compatible_With_Number) {
+TEST(Core, IntOrFloat_Is_Mutually_Compatible_With_Number) {
     TypeDefinitionsRegister type_register(single_file_project_with_number_def); 
     AssignmentTypeChecker type_checker(type_register, single_file_project_with_number_def);
     TypeSignature IntOrFloat = InlineUnion { Token { "Int", "main.basalt", 1, 1, 1, Token::Type::type }, {
@@ -52,7 +52,7 @@ TEST(TypeChecking, IntOrFloat_Is_Mutually_Compatible_With_Number) {
     EXPECT_TRUE(Number_is_compatible_with_IntOrFloat);
 }
 
-TEST(TypeChecking, Int_And_Float_Are_Compatible_With_IntOrFloat) {
+TEST(Core, Int_And_Float_Are_Compatible_With_IntOrFloat) {
     ProjectFileStructure empty_project;
     TypeDefinitionsRegister type_register(empty_project); 
     AssignmentTypeChecker type_checker(type_register, empty_project);
