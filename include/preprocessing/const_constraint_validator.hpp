@@ -116,8 +116,8 @@ class ConstConstraintValidator {
 
             void visit_if_statement(const Conditional& conditional, ScopeContext& scope_context) {
                 visit_expression(conditional.condition, scope_context);
-                ScopeContext then_scope_context = scope_context.create_nested_scope(ScopeContext::ScopeKind::conditional_scope);
-                ScopeContext else_scope_context = scope_context.create_nested_scope(ScopeContext::ScopeKind::conditional_scope);
+                ScopeContext then_scope_context = scope_context.create_nested_scope();
+                ScopeContext else_scope_context = scope_context.create_nested_scope();
                 for (const Statement& statement : conditional.then_brench) {
                     visit_statement(statement, then_scope_context);
                 }
@@ -128,7 +128,7 @@ class ConstConstraintValidator {
 
             void visit_while_loop(const WhileLoop& while_loop, ScopeContext& scope_context) {
                 visit_expression(while_loop.condition, scope_context);
-                ScopeContext loop_scope_context = scope_context.create_nested_scope(ScopeContext::ScopeKind::loop_scope);
+                ScopeContext loop_scope_context = scope_context.create_nested_scope();
                 for (const Statement& statement : while_loop.loop_body) {
                     visit_statement(statement, loop_scope_context);
                 }
@@ -136,7 +136,7 @@ class ConstConstraintValidator {
 
             void visit_until_loop(const UntilLoop& until_loop, ScopeContext& scope_context) {
                 visit_expression(until_loop.condition, scope_context);
-                ScopeContext loop_scope_context = scope_context.create_nested_scope(ScopeContext::ScopeKind::loop_scope);
+                ScopeContext loop_scope_context = scope_context.create_nested_scope();
                 for (const Statement& statement : until_loop.loop_body) {
                     visit_statement(statement, loop_scope_context);
                 }
