@@ -29,16 +29,6 @@ inline void ensure_assignment_is_valid(
     }
 }
 
-inline void ensure_in_loop_scope(
-    const Statement& statement,
-    const ScopeContext& scope_context
-) {
-    if (scope_context.get_scope_kind() != ScopeContext::ScopeKind::loop_scope) {
-        throw std::runtime_error("statement is not in loop scope");
-    }
-}
-
-
 void ensure_no_multiple_definition_of_the_same_type(
     const std::pair<std::unordered_map<std::string, TypeDefinition>::iterator, bool>& 
         type_definition_insertion_outcome

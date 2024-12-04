@@ -43,7 +43,7 @@ ConstDeclaration c_const_of_type_int = ConstDeclaration(
 );
 
 TEST(Core, Scope_Context_Store_A_Bunch_Of_Local_Objects) {
-    ScopeContext scope_context(ScopeContext::ScopeKind::function_scope);
+    ScopeContext scope_context;
     scope_context.store_local_variable(x_variable_of_type_int);
     scope_context.store_local_variable(y_variable_of_type_int);
     scope_context.store_local_variable(z_variable_of_type_int);
@@ -56,14 +56,14 @@ TEST(Core, Scope_Context_Store_A_Bunch_Of_Local_Objects) {
 }
 
 TEST(Core, Scope_Context_Say_Variable_Is_Mutable) {
-    ScopeContext scope_context(ScopeContext::ScopeKind::function_scope);
+    ScopeContext scope_context;
     scope_context.store_local_variable(x_variable_of_type_int);
     EXPECT_TRUE(is_int(scope_context.get_local_object_type("x")));
     EXPECT_FALSE(scope_context.is_identifier_immutable("x"));
 }
 
 TEST(Core, Scope_Context_Say_Constant_Is_Non_Mutable) {
-    ScopeContext scope_context(ScopeContext::ScopeKind::function_scope);
+    ScopeContext scope_context;
     scope_context.store_local_constant(a_const_of_type_int);
     EXPECT_TRUE(is_int(scope_context.get_local_object_type("a")));
     EXPECT_TRUE(scope_context.is_identifier_immutable("a"));

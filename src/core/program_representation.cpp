@@ -24,21 +24,6 @@ ProgramRepresentation::ProgramRepresentation(
 {}
 
 std::optional<TypeSignature> 
-ProgramRepresentation::resolve_function_call_return_type(
-    const FunctionCall& function_call, 
-    const std::vector<TypeSignature>& arg_types
-) {
-    ScopeContext dummy_scope {ScopeContext::ScopeKind::function_scope};
-    return ExpressionTypeDeducer(
-        type_definitions_register, 
-        overloading_resolution_engine,
-        common_feature_adoption_plan_generation_engine, 
-        project_file_structure, 
-        dummy_scope
-    ).deduce_type_from_function_call(function_call, arg_types);
-}
-
-std::optional<TypeSignature> 
 ProgramRepresentation::resolve_expression_type(
     const Expression& expression, 
     ScopeContext& scope_context

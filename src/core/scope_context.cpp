@@ -6,15 +6,7 @@
 #include "core/scope_context.hpp"
 #include "errors/preprocessing_errors.hpp"
 
-ScopeContext::ScopeContext(const ScopeKind& scope_kind) 
-    : scope_kind(scope_kind) { }
-
-ScopeContext::ScopeKind ScopeContext::get_scope_kind() const {
-    return scope_kind;
-}
-
 ScopeContext::ScopeContext(const std::vector<FunctionDefinition::Argument>& arguments) {
-    scope_kind = ScopeKind::function_scope;
     for (const FunctionDefinition::Argument& argument : arguments) {
         local_objects.push_back({
             .identifier = argument.arg_name,
@@ -78,8 +70,8 @@ TypeSignature& ScopeContext::get_local_object_type(const std::string& identifier
     return parent_scope->get_local_object_type(identifier);
 }
 
-ScopeContext ScopeContext::create_nested_scope(const ScopeKind& scope_kind) {
-    ScopeContext nested_scope(scope_kind);
+ScopeContext ScopeContext::create_nested_scope() {
+    ScopeContext nested_scope;
     nested_scope.parent_scope = this;
     return nested_scope;
 }

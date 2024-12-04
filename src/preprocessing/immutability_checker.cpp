@@ -41,7 +41,7 @@ bool ImmutabilityChecker::is_strictly_immutable_expression(const Expression& exp
 }
 
 bool ImmutabilityChecker::is_identifier_immutable(const Identifier& identifier) {
-    scope_context.is_identifier_immutable(identifier.name);
+    return scope_context.is_identifier_immutable(identifier.name);
 }
 
 bool ImmutabilityChecker::is_unary_operator_immutable(const UnaryOperator& unary_operator) {
