@@ -5,12 +5,13 @@
 
 #pragma once
 
-#include <llvm/IR/LLVMContext.h>
-#include <llvm/IR/Module.h>
 #include <functional>
 
 #include "core/program_representation.hpp"
 #include "language/definitions.hpp"
+
+#include <llvm/IR/LLVMContext.h>
+#include <llvm/IR/Module.h>
 
 class TypeDefinitionsLLVMTranslator {
     public:
