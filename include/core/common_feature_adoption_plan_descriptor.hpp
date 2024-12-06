@@ -10,9 +10,8 @@
 #include <map>
 #include <variant>
 
+#include "misc/forward_declarations.hpp"
 #include "language/definitions.hpp"
-
-struct CommonFeatureAdoptionPlanDescriptor;
 
 struct RecursiveAdoptionPlan {
     size_t argument_index;
