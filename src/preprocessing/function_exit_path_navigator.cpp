@@ -4,6 +4,9 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 #include "preprocessing/function_exit_path_navigator.hpp"
+#include "errors/internal_errors.hpp"
+
+#define EPK FunctionExitPathNavigator::ExitPathKind
 
 FunctionExitPathNavigator::FunctionExitPathNavigator(
     ProgramRepresentation& program_representation
@@ -20,65 +23,80 @@ void FunctionExitPathNavigator::visit_all_function_definitions() {
 void FunctionExitPathNavigator::visit_function_definition(
     const FunctionDefinition& function_definition
 ) {
-    bool every_path_returns = visit_code_block(function_definition.code, ScopeKind::function);
+    EPK codeblock_exit = visit_code_block(function_definition.code, ScopeKind::function);
+    bool every_path_returns = (codeblock_exit == EPK::definitive_exit);
     ensure_every_path_returns_in_function_exit_navigation(every_path_returns);
 }
 
-bool FunctionExitPathNavigator::visit_code_block(
+EPK FunctionExitPathNavigator::visit_code_block(
     const std::vector<Statement>& code_block, 
     ScopeKind scope_kind
 ) {
-    bool every_path_returns = false;
-    bool& code_from_now_on_is_unreachable = every_path_returns;
+    EPK exit_path_found = EPK::no_exit;
+    bool code_from_now_on_is_unreachable = false;
     for (const Statement& statement : code_block) {
         ensure_no_unreachable_code_in_function_exit_navigation(code_from_now_on_is_unreachable);
-        every_path_returns = visit_statement(statement, scope_kind);
+        exit_path_found = visit_statement(statement, scope_kind);
+        code_from_now_on_is_unreachable = (exit_path_found != EPK::no_exit);
     }
-    return every_path_returns;
+    return exit_path_found;
 }
 
-bool FunctionExitPathNavigator::visit_statement(
+EPK FunctionExitPathNavigator::visit_statement(
     const Statement& statement, 
     ScopeKind scope_kind
 ) {
     switch (statement.statement_kind()) {
-        case StatementBody::Kind::return_statement: return true;
-        case StatementBody::Kind::conditional: return visit_if_statement(statement.get<Conditional>());
+        case StatementBody::Kind::return_statement: return EPK::definitive_exit;
+        case StatementBody::Kind::conditional: return visit_if_statement(statement.get<Conditional>(), scope_kind);
         case StatementBody::Kind::while_loop: return visit_while_loop(statement.get<WhileLoop>());
         case StatementBody::Kind::until_loop: return visit_until_loop(statement.get<UntilLoop>());
-        case StatementBody::Kind::function_call: return false;
-        case StatementBody::Kind::variable_declaration: return false;
-        case StatementBody::Kind::const_declaration: return false;
-        case StatementBody::Kind::assignment: return false;
+        case StatementBody::Kind::function_call: return EPK::no_exit;
+        case StatementBody::Kind::variable_declaration: return EPK::no_exit;
+        case StatementBody::Kind::const_declaration: return EPK::no_exit;
+        case StatementBody::Kind::assignment: return EPK::no_exit;
         case StatementBody::Kind::break_statement: return visit_loop_blocking_statement(scope_kind);
         case StatementBody::Kind::continue_statement: return visit_loop_blocking_statement(scope_kind);
     }
 }
 
-bool FunctionExitPathNavigator::visit_loop_blocking_statement(
+EPK FunctionExitPathNavigator::visit_loop_blocking_statement(
     ScopeKind scope_kind
 ) {
     bool inside_loop = scope_kind == ScopeKind::loop;
     ensure_no_loop_specific_statements_outside_loop_body_in_function_exit_navigation(inside_loop);
-    return true;
+    return EPK::local_control_flow_alteration;
 }
 
-bool FunctionExitPathNavigator::visit_if_statement(
-    const Conditional& if_statement
+EPK FunctionExitPathNavigator::visit_if_statement(
+    const Conditional& if_statement, 
+    ScopeKind scope_kind
 ) {
-    bool then_ok = visit_code_block(if_statement.then_brench, ScopeKind::conditional);            
-    bool else_ok = visit_code_block(if_statement.else_brench, ScopeKind::conditional);
-    return then_ok && else_ok;
+    EPK then_ok = visit_code_block(if_statement.then_brench, scope_kind);            
+    EPK else_ok = visit_code_block(if_statement.else_brench, scope_kind);
+    if (then_ok == EPK::definitive_exit && else_ok == EPK::definitive_exit) {
+        return EPK::definitive_exit;
+    }
+    else if (then_ok == EPK::no_exit || else_ok == EPK::no_exit) {
+        return EPK::no_exit;
+    }
+    else {
+        return EPK::local_control_flow_alteration;
+    }
 }
 
-bool FunctionExitPathNavigator::visit_while_loop(
+EPK FunctionExitPathNavigator::visit_while_loop(
     const WhileLoop& while_loop
 ) {
-    return visit_code_block(while_loop.loop_body, ScopeKind::loop);
+    std::ignore = visit_code_block(while_loop.loop_body, ScopeKind::loop);
+    return EPK::no_exit;
 }
 
-bool FunctionExitPathNavigator::visit_until_loop(
+EPK FunctionExitPathNavigator::visit_until_loop(
     const UntilLoop& until_loop
 ) {
-    return visit_code_block(until_loop.loop_body, ScopeKind::loop);
+    EPK exit_kind = visit_code_block(until_loop.loop_body, ScopeKind::loop);
+    return (exit_kind == EPK::local_control_flow_alteration) 
+        ? EPK::no_exit 
+        : exit_kind;
 }
