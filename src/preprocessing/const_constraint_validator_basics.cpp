@@ -18,11 +18,11 @@ void ConstConstraintValidator::visit_all_function_definitions() {
 void ConstConstraintValidator::visit_function_definition(const FunctionDefinition& function_definition) {
     ScopeContext scope_context(function_definition.arguments);
     ImmutabilityChecker immutability_checker(scope_context, program_representation);
-    BoundInspector bound_inspector(scope_context, program_representation);
+    BondInspector bond_inspector(scope_context, program_representation);
     SingleFunctionConstConstraintValidator single_function_const_constraint_validator(
         program_representation,
         immutability_checker,
-        bound_inspector
+        bond_inspector
     );
     single_function_const_constraint_validator.visit_function_definition(function_definition);
 }
@@ -30,11 +30,11 @@ void ConstConstraintValidator::visit_function_definition(const FunctionDefinitio
 CCV::SingleFunctionConstConstraintValidator::SingleFunctionConstConstraintValidator(
     ProgramRepresentation& program_representation,
     ImmutabilityChecker& immutability_checker,
-    BoundInspector& bound_inspector
+    BondInspector& bond_inspector
 )
     : program_representation(program_representation)
     , immutability_checker(immutability_checker)
-    , bound_inspector(bound_inspector)
+    , bond_inspector(bond_inspector)
 {}
 
 

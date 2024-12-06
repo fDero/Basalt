@@ -8,7 +8,7 @@
 #include "core/program_representation.hpp"
 #include "core/scope_context.hpp"
 #include "preprocessing/immutability_checker.hpp"
-#include "preprocessing/bound_inspector.hpp"
+#include "preprocessing/bond_inspector.hpp"
 #include "errors/preprocessing_errors.hpp"
 
 class ConstConstraintValidator {
@@ -23,7 +23,7 @@ class ConstConstraintValidator {
             SingleFunctionConstConstraintValidator(
                 ProgramRepresentation& program_representation,
                 ImmutabilityChecker& immutability_checker,
-                BoundInspector& bound_inspector
+                BondInspector& bond_inspector
             );
 
             void visit_function_definition(const FunctionDefinition& function_definition);
@@ -48,7 +48,7 @@ class ConstConstraintValidator {
 
             ProgramRepresentation& program_representation;
             ImmutabilityChecker& immutability_checker;
-            BoundInspector& bound_inspector;
+            BondInspector& bond_inspector;
         };
 
     private:

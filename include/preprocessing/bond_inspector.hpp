@@ -12,10 +12,10 @@
 #include "language/functions.hpp"
 #include "errors/preprocessing_errors.hpp"
 
-class BoundInspector {
+class BondInspector {
 
     public:
-        BoundInspector(
+        BondInspector(
             ScopeContext& scope_context, 
             ProgramRepresentation& program_representation
         );
