@@ -4,6 +4,7 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 #include "preprocessing/bond_inspector.hpp"
+#include "errors/internal_errors.hpp"
 
 BondInspector::BondInspector(
     ScopeContext& scope_context, 
@@ -35,10 +36,29 @@ bool BondInspector::does_this_inline_union_imply_a_bound(const InlineUnion& inli
 }
 
 bool BondInspector::does_this_custom_type_imply_a_bound(const CustomType& custom_type) {
-    for (const TypeSignature& type_parameter : custom_type.type_parameters) {
-        if (does_the_type_of_this_expr_imply_a_bound(type_parameter)) {
-            return true;
+    TypeDefinition type_definition = program_representation.retrieve_type_definition(custom_type);
+    if (type_definition.is<StructDefinition>()) {
+        const StructDefinition& struct_def = type_definition.get<StructDefinition>();
+        for (const StructDefinition::Field& field : struct_def.fields) {
+            if (does_the_type_of_this_expr_imply_a_bound(field.field_type)) {
+                return true;
+            }
         }
+        return false;
     }
-    return false;
+    else if (type_definition.is<UnionDefinition>()) {
+        const UnionDefinition& union_def = type_definition.get<UnionDefinition>();
+        for (const TypeSignature& alternative : union_def.types) {
+            if (does_the_type_of_this_expr_imply_a_bound(alternative)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    else if (type_definition.is<TypeAlias>()) {
+        return does_the_type_of_this_expr_imply_a_bound(
+            type_definition.get<TypeAlias>().aliased_type
+        );
+    } 
+    assert_unreachable();
 }

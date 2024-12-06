@@ -17,11 +17,6 @@ class ProgramRepresentation {
     public:
         ProgramRepresentation(const ProjectFileStructure& project_file_structure);
 
-        [[nodiscard]] std::optional<TypeSignature> resolve_function_call_return_type(
-            const FunctionCall& function_call, 
-            const std::vector<TypeSignature>& arg_types
-        );
-
         [[nodiscard]] std::optional<TypeSignature> resolve_expression_type(
             const Expression& function_call, 
             ScopeContext& arg_types
@@ -32,7 +27,7 @@ class ProgramRepresentation {
         [[nodiscard]] TypeSignature unalias_type(const TypeSignature& type_signature);
         [[nodiscard]] std::string get_fully_qualified_typesignature_name(const TypeSignature& typesignature);
         [[nodiscard]] std::string get_fully_qualified_typedefinition_name(const TypeDefinition& type_definition);
-
+    
         void foreach_type_definition(std::function<void(const TypeDefinition&)> visitor);
         void foreach_function_definition(std::function<void(const FunctionDefinition::Ref&)> visitor);
         void verify_that_the_type_exists(const TypeSignature& type_signature);
