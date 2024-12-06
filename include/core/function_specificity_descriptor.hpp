@@ -33,7 +33,7 @@ class FunctionSpecificityDescriptor {
             more_specific
         };
 
-        ComparisonResult compare_with(const FunctionSpecificityDescriptor& other) const;
+        [[nodiscard]] ComparisonResult compare_with(const FunctionSpecificityDescriptor& other) const;
 
         static FunctionSpecificityDescriptor worst_possible_specificity();
 

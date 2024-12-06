@@ -21,11 +21,11 @@ class TypeDefinitionsLLVMTranslator {
             llvm::Module& llvm_module
         );
 
-        llvm::Type* translate_typesignature_to_llvm_type(const TypeSignature& type_signature);
-        llvm::Type* translate_inline_union_to_llvm_type(const InlineUnion& inline_union);
-        llvm::Type* translate_custom_type_to_llvm_type(const CustomType& custom_type);
+        [[nodiscard]] llvm::Type* translate_typesignature_to_llvm_type(const TypeSignature& type_signature);
+        [[nodiscard]] llvm::Type* translate_inline_union_to_llvm_type(const InlineUnion& inline_union);
+        [[nodiscard]] llvm::Type* translate_custom_type_to_llvm_type(const CustomType& custom_type);
 
-        size_t compute_header_unaware_typesignature_memory_footprint(const TypeSignature& typesignature);
+        [[nodiscard]] size_t compute_header_unaware_typesignature_memory_footprint(const TypeSignature& typesignature);
         
     private:
         ProgramRepresentation& program_representation;

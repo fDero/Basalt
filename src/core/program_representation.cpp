@@ -23,8 +23,7 @@ ProgramRepresentation::ProgramRepresentation(
     )
 {}
 
-std::optional<TypeSignature> 
-ProgramRepresentation::resolve_expression_type(
+std::optional<TypeSignature> ProgramRepresentation::resolve_expression_type(
     const Expression& expression, 
     ScopeContext& scope_context
 ) {

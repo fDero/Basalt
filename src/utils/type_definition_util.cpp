@@ -26,31 +26,31 @@ void TypeDefinition::set_name(const std::string& name) {
     std::visit(visiting_lambda, *this);
 }
 
-[[nodiscard]] const std::vector<std::string>& TypeDefinition::get_template_generics() const {
+const std::vector<std::string>& TypeDefinition::get_template_generics() const {
     auto visiting_lambda = [](const auto& type_def) -> const std::vector<std::string>& {
         return type_def.template_generics_names;
     };
     return std::visit(visiting_lambda, *this);
 }
 
-[[nodiscard]] const std::string& TypeDefinition::get_filename() const {
+const std::string& TypeDefinition::get_filename() const {
     auto visiting_lambda = [](const auto& type_def) -> const std::string& {
         return type_def.filename;
     };
     return std::visit(visiting_lambda, *this);
 }
 
-[[nodiscard]] std::string TypeAlias::generate_alias_id() const {
+std::string TypeAlias::generate_alias_id() const {
     return filename + "/" + std::to_string(line_number) + "/" +
         std::to_string(char_pos) + "/" + std::to_string(tok_number) + "/" + def_name;
 }
 
-[[nodiscard]] std::string UnionDefinition::generate_union_id() const {
+std::string UnionDefinition::generate_union_id() const {
     return filename + "/" + std::to_string(line_number) + "/" +
         std::to_string(char_pos) + "/" + std::to_string(tok_number) + "/" + def_name;
 }
 
-[[nodiscard]] std::string StructDefinition::generate_struct_id() const {
+std::string StructDefinition::generate_struct_id() const {
     return filename + "/" + std::to_string(line_number) + "/" +
         std::to_string(char_pos) + "/" + std::to_string(tok_number) + "/" + def_name;
 }

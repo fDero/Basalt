@@ -11,7 +11,7 @@
 #include "language/expressions.hpp"
 #include "language/functions.hpp"
 
-[[nodiscard]] Statement Parser::parse_statement() {
+Statement Parser::parse_statement() {
     ensure_there_are_still_tokens(source_tokens, iterator);
     switch (iterator->type) {
         break; case Token::Type::if_keyword:       return parse_if_statement();
@@ -26,7 +26,7 @@
     }
 }
 
-[[nodiscard]] Statement Parser::parse_non_keyword_initialized_statements() {
+Statement Parser::parse_non_keyword_initialized_statements() {
     Expression expression = parse_expression();
     if (expression.is<FunctionCall>()) {
         FunctionCall function_call = expression.get<FunctionCall>();
@@ -41,7 +41,7 @@
     return Assignment { expression, right_hand_side, assignment_token };
 }
 
-[[nodiscard]] std::vector<Statement> Parser::parse_multiline_code_block() {
+std::vector<Statement> Parser::parse_multiline_code_block() {
     assert_token_matches(source_tokens, iterator++, "{");
     std::vector<Statement> code;
     while (iterator != source_tokens.end() && iterator->sourcetext != "}") {
@@ -52,7 +52,7 @@
     return code;
 }
 
-[[nodiscard]] std::vector<Statement> Parser::parse_code_block() {
+std::vector<Statement> Parser::parse_code_block() {
     assert_tokens_not_ended(iterator, source_tokens);
     return (iterator->sourcetext == "{")
         ? parse_multiline_code_block() 

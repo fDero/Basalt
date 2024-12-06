@@ -9,7 +9,7 @@
 #include "frontend/parser.hpp"
 #include "language/expressions.hpp"
 
-[[nodiscard]] Expression Parser::rotate_binary_operator_to_match_operators_priority(const BinaryOperator& binary_operator) {
+Expression Parser::rotate_binary_operator_to_match_operators_priority(const BinaryOperator& binary_operator) {
     if (!binary_operator.left_operand.is_wrapped_in_in_parenthesis()) {
         if (binary_operator.left_operand.is<BinaryOperator>()) {
             return rotate_binary_operator_on_binary_operator_if_needed( 
@@ -25,7 +25,7 @@
     return binary_operator;
 }
 
-[[nodiscard]] Expression Parser::rotate_binary_operator_on_binary_operator_if_needed(const BinaryOperator& parent, const BinaryOperator& left) {
+Expression Parser::rotate_binary_operator_on_binary_operator_if_needed(const BinaryOperator& parent, const BinaryOperator& left) {
     short parent_priority = infix_operators_priority.find(parent.operator_text)->second;
     short left_priority = infix_operators_priority.find(left.operator_text)->second;
     if (parent_priority <= left_priority) return parent;
@@ -36,7 +36,7 @@
     };
 }
 
-[[nodiscard]] Expression Parser::rotate_binary_operator_on_unary_operator_if_needed(const BinaryOperator& parent, const UnaryOperator& left) {
+Expression Parser::rotate_binary_operator_on_unary_operator_if_needed(const BinaryOperator& parent, const UnaryOperator& left) {
     short parent_priority = infix_operators_priority.find(parent.operator_text)->second;
     short left_priority = prefix_operators_priority.find(left.operator_text)->second;
     if (parent_priority <= left_priority) return parent;
@@ -47,7 +47,7 @@
     };
 }
 
-[[nodiscard]] Expression Parser::rotate_to_match_type_operator_priority(const TypeOperator& type_operator) {
+Expression Parser::rotate_to_match_type_operator_priority(const TypeOperator& type_operator) {
     if (type_operator.expression.is<BinaryOperator>()) {
         BinaryOperator rotated_expression = type_operator.expression.get<BinaryOperator>();
         rotated_expression.right_operand = rotate_to_match_type_operator_priority (
@@ -65,7 +65,7 @@
     return type_operator;
 }
 
-[[nodiscard]] Expression Parser::rotate_to_match_dot_member_access_priority(const DotMemberAccess& dot_member_access) {
+Expression Parser::rotate_to_match_dot_member_access_priority(const DotMemberAccess& dot_member_access) {
     const DebugInformationsAwareEntity& debug_info = dot_member_access.as_debug_informations_aware_entity();
     if (dot_member_access.struct_value.is<BinaryOperator>()) {
         BinaryOperator rotated_expression = dot_member_access.struct_value.get<BinaryOperator>();
@@ -84,7 +84,7 @@
     return dot_member_access;
 }
 
-[[nodiscard]] Expression Parser::rotate_to_match_square_brackets_access_priority(const SquareBracketsAccess& square_brackets_access) {
+Expression Parser::rotate_to_match_square_brackets_access_priority(const SquareBracketsAccess& square_brackets_access) {
     const DebugInformationsAwareEntity& debug_info = square_brackets_access.as_debug_informations_aware_entity();
     if (square_brackets_access.storage.is<BinaryOperator>()) {
         BinaryOperator rotated_expression = square_brackets_access.storage.get<BinaryOperator>();

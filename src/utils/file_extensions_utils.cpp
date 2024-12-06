@@ -6,7 +6,7 @@
 #include "misc/file_extensions.hpp"
 #include "errors/commandline_errors.hpp"
 
-[[nodiscard]] bool check_for_specific_file_extension(const std::string& filename, const std::string& extension) {
+bool check_for_specific_file_extension(const std::string& filename, const std::string& extension) {
     const size_t size = filename.size();
     const size_t extension_size = extension.size();
     if (size < extension_size) {
@@ -16,7 +16,7 @@
     return (filename.substr(prefix_size, extension_size) == extension);
 }
 
-[[nodiscard]] FileExtension extract_file_extension(const std::string& filename) {
+FileExtension extract_file_extension(const std::string& filename) {
     if (check_for_specific_file_extension(filename, ".basalt")) return FileExtension::basalt;
     if (check_for_specific_file_extension(filename, ".bt"))     return FileExtension::basalt;
     if (check_for_specific_file_extension(filename, ".elf"))    return FileExtension::elf;

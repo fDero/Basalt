@@ -11,7 +11,7 @@
 #include "frontend/parser.hpp"
 #include "language/expressions.hpp"
 
-[[nodiscard]] TypeSignature Parser::parse_simple_typesignature() {
+TypeSignature Parser::parse_simple_typesignature() {
     if (iterator->sourcetext == pointer_type_symbol) return parse_pointer_type();
     if (iterator->sourcetext == array_type_first_symbol) return parse_array_type();
     if (iterator->sourcetext == slice_type_symbol) return parse_slice_type();
@@ -23,7 +23,7 @@
         : parse_custom_type();
 }
 
-[[nodiscard]] TypeSignature Parser::parse_typesignature() {
+TypeSignature Parser::parse_typesignature() {
     ensure_there_are_still_tokens(source_tokens, iterator);
     const Token& first_type_token = *iterator;
     TypeSignature type_signature = parse_simple_typesignature();
@@ -32,7 +32,7 @@
         : parse_inline_union(first_type_token, type_signature);
 }
 
-[[nodiscard]] TypeSignature Parser::parse_inline_union(const Token& first_type_token, const TypeSignature& first_type) {
+TypeSignature Parser::parse_inline_union(const Token& first_type_token, const TypeSignature& first_type) {
     std::vector<TypeSignature> alternatives { first_type };
     while (iterator != source_tokens.end() && iterator->sourcetext == "|") {
         assert_token_matches(source_tokens, iterator++, "|");
@@ -41,27 +41,27 @@
     return InlineUnion(first_type_token, alternatives);
 }
 
-[[nodiscard]] bool Parser::is_template_type(const std::string& type_name) {
+bool Parser::is_template_type(const std::string& type_name) {
     if (template_generics_encountered_so_far.empty()) return false;
     auto template_type_search_outcome = std::find(template_generics_encountered_so_far.begin(), template_generics_encountered_so_far.end(), type_name);
     return template_type_search_outcome != template_generics_encountered_so_far.end();
 }
 
-[[nodiscard]] TypeSignature Parser::parse_template_type() {
+TypeSignature Parser::parse_template_type() {
     return TemplateType { *(iterator++) };
 }
 
-[[nodiscard]] TypeSignature Parser::parse_primitive_type() {
+TypeSignature Parser::parse_primitive_type() {
     return PrimitiveType { *(iterator++) };
 }
 
-[[nodiscard]] TypeSignature Parser::parse_pointer_type() {
+TypeSignature Parser::parse_pointer_type() {
     const Token& pointer_type_symbol_token = *iterator;
     assert_token_matches(source_tokens, iterator++, pointer_type_symbol);
     return PointerType { pointer_type_symbol_token, parse_typesignature() };
 }
 
-[[nodiscard]] TypeSignature Parser::parse_array_type() {
+TypeSignature Parser::parse_array_type() {
     const Token& array_square_bracket_token = *iterator;
     assert (array_type_first_symbol == "[");
     assert_token_matches(source_tokens, iterator++, array_type_first_symbol);
@@ -73,14 +73,14 @@
     return ArrayType { array_square_bracket_token, array_length, array_stored_type };
 }
 
-[[nodiscard]] TypeSignature Parser::parse_slice_type() {
+TypeSignature Parser::parse_slice_type() {
     const Token& slice_type_symbol_token = *iterator;
     assert_token_matches(source_tokens, iterator++, slice_type_symbol);
     const TypeSignature slice_stored_type = parse_typesignature();
     return SliceType { slice_type_symbol_token, slice_stored_type };
 }
 
-[[nodiscard]] TypeSignature Parser::parse_custom_type() {
+TypeSignature Parser::parse_custom_type() {
     std::string package_prefix = parse_package_prefix();
     ensure_token_is_typesignature(source_tokens, iterator);
     assert_type_is_properly_formatted(iterator);
@@ -91,7 +91,7 @@
     return custom_type;
 }
 
-[[nodiscard]] std::vector<std::string> Parser::parse_template_generics() {
+std::vector<std::string> Parser::parse_template_generics() {
     template_generics_encountered_so_far.clear();
     if (iterator == source_tokens.end() || iterator->sourcetext != "<") return {};
     assert_token_matches(source_tokens, iterator, "<");
@@ -106,7 +106,7 @@
     return template_generics_encountered_so_far;
 }
 
-[[nodiscard]] std::vector<TypeSignature> Parser::parse_concrete_generics() {
+std::vector<TypeSignature> Parser::parse_concrete_generics() {
     if (iterator == source_tokens.end() || iterator->sourcetext != "<") return {};
     assert_token_matches(source_tokens, iterator, "<");
     const Token& angular_brackets_opening = *(iterator++);

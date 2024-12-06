@@ -6,7 +6,7 @@
 #include "core/generics_substitution_rules.hpp"
 #include "errors/internal_errors.hpp"
 
-[[nodiscard]] GenericSubstitutionRule::Set GenericSubstitutionRule::Set::zip_components_vectors (
+GenericSubstitutionRule::Set GenericSubstitutionRule::Set::zip_components_vectors (
     const std::vector<std::string>& template_generics,
     const std::vector<TypeSignature>& type_parameters
 ) {

@@ -22,7 +22,8 @@ class CommonFeatureAdoptionPlanGenerationEngine : public CachingAwareRegister {
             TypeDefinitionsRegister& type_definitions_register
         );
 
-        CommonFeatureAdoptionPlanDescriptor generate_common_feature_adoption_plan(
+        [[nodiscard]] CommonFeatureAdoptionPlanDescriptor 
+        generate_common_feature_adoption_plan(
             const FunctionCall& function_call, 
             const std::vector<TypeSignature>& arg_types
         );
@@ -31,30 +32,35 @@ class CommonFeatureAdoptionPlanGenerationEngine : public CachingAwareRegister {
         using CachingAwareRegister::get_cache_search_key_for_func_def_retrieval_from_func_call;
 
     private:
-        std::optional<TypeSignature> compute_recursive_adoption_plan_return_type(
+        [[nodiscard]] std::optional<TypeSignature> 
+        compute_recursive_adoption_plan_return_type(
             const FunctionCall& function_call, 
             std::vector<std::optional<TypeSignature>>& return_types
         );
 
-        CommonFeatureAdoptionPlanDescriptor generate_common_feature_adoption_iterating_over_arg_types(
+        [[nodiscard]] CommonFeatureAdoptionPlanDescriptor 
+        generate_common_feature_adoption_iterating_over_arg_types(
             const FunctionCall& function_call, 
             const std::vector<TypeSignature>& arg_types,
             std::vector<TypeSignature>::const_iterator current_arg_type
         );
 
-        CommonFeatureAdoptionPlanDescriptor generate_common_feature_adoption_for_inline_union(
+        [[nodiscard]] CommonFeatureAdoptionPlanDescriptor 
+        generate_common_feature_adoption_for_inline_union(
             const FunctionCall& function_call, 
             const std::vector<TypeSignature>& arg_types,
             std::vector<TypeSignature>::const_iterator current_arg_type
         );
 
-        CommonFeatureAdoptionPlanDescriptor generate_common_feature_adoption_for_custom_type(
+        [[nodiscard]] CommonFeatureAdoptionPlanDescriptor 
+        generate_common_feature_adoption_for_custom_type(
             const FunctionCall& function_call, 
             const std::vector<TypeSignature>& arg_types,
             std::vector<TypeSignature>::const_iterator current_arg_type
         );
 
-        CommonFeatureAdoptionPlanDescriptor generate_common_feature_adoption_for_current_multicase_arg(
+        [[nodiscard]] CommonFeatureAdoptionPlanDescriptor 
+        generate_common_feature_adoption_for_current_multicase_arg(
             const FunctionCall& function_call, 
             const std::vector<TypeSignature>& arg_types,
             std::vector<TypeSignature>::const_iterator current_arg_type,

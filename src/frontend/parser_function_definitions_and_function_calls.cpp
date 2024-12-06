@@ -11,7 +11,7 @@
 #include "language/functions.hpp"
 
 
-[[nodiscard]] FunctionDefinition Parser::parse_function_definition() {
+FunctionDefinition Parser::parse_function_definition() {
     assert_token_matches(source_tokens, iterator++, "func");
     FunctionDefinition function(*iterator);
     std::advance(iterator, 1);
@@ -22,7 +22,7 @@
     return function;
 }
 
-[[nodiscard]] FunctionCall Parser::parse_function_call() {
+FunctionCall Parser::parse_function_call() {
     std::string package_prefix = parse_package_prefix();
     assert_token_is_text(source_tokens, iterator);
     assert_identifier_is_properly_formatted(iterator);
@@ -33,7 +33,7 @@
     return FunctionCall { function_name_token, package_prefix, call_arguments, concrete_generics };
 }
 
-[[nodiscard]] std::vector<Expression> Parser::parse_function_call_arguments() {
+std::vector<Expression> Parser::parse_function_call_arguments() {
     std::vector<Expression> call_arguments;
     while (iterator != source_tokens.end() && iterator->sourcetext != ")") {
         call_arguments.push_back(parse_expression());
@@ -44,7 +44,7 @@
     return call_arguments;
 }
 
-[[nodiscard]] std::vector<Statement> Parser::parse_function_def_body() {
+std::vector<Statement> Parser::parse_function_def_body() {
     ensure_token_matches(source_tokens, iterator++, "{");
     std::vector<Statement> code;
     while (iterator->sourcetext != "}") {
@@ -55,7 +55,7 @@
     return code;
 }
 
-[[nodiscard]] std::optional<TypeSignature> Parser::parse_function_return_type() {
+std::optional<TypeSignature> Parser::parse_function_return_type() {
     if (iterator->sourcetext != "->") {
         return std::nullopt;
     }
@@ -63,7 +63,7 @@
     return parse_typesignature(); 
 }
 
-[[nodiscard]] std::vector<FunctionDefinition::Argument> Parser::parse_function_def_arguments() {
+std::vector<FunctionDefinition::Argument> Parser::parse_function_def_arguments() {
     ensure_token_matches(source_tokens, iterator, "(");
     std::vector<FunctionDefinition::Argument> arguments;
     if (std::next(iterator) != source_tokens.end() && std::next(iterator)->sourcetext == ")") {   

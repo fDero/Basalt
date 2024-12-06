@@ -11,7 +11,7 @@
 
 #include "errors/preprocessing_errors.hpp" // <-- ensure_typesignature_is
 
-[[nodiscard]] StructDefinition::Field Parser::parse_struct_field() {
+StructDefinition::Field Parser::parse_struct_field() {
     assert_token_is_text(source_tokens, iterator);
     std::string field_name = iterator->sourcetext;
     std::advance(iterator, 1);
@@ -21,7 +21,7 @@
     return StructDefinition::Field {field_name, field_type};
 }
 
-[[nodiscard]] StructDefinition Parser::parse_struct_definition() {
+StructDefinition Parser::parse_struct_definition() {
     assert_token_matches(source_tokens, iterator++, "struct");
     ensure_token_is_struct_name(source_tokens, iterator);
     StructDefinition struct_def(*iterator);
@@ -37,7 +37,7 @@
     return struct_def;
 }
 
-[[nodiscard]] UnionDefinition Parser::parse_union_definition() {
+UnionDefinition Parser::parse_union_definition() {
     assert_token_matches(source_tokens, iterator++, "union");
     ensure_token_is_struct_name(source_tokens, iterator);
     UnionDefinition union_def(*iterator);
@@ -51,7 +51,7 @@
     return union_def;
 }
 
-[[nodiscard]] TypeAlias Parser::parse_type_alias() {
+TypeAlias Parser::parse_type_alias() {
     assert_token_matches(source_tokens, iterator++, "alias");
     const Token& alias_token = *iterator;
     ensure_token_is_typesignature(source_tokens, iterator++);

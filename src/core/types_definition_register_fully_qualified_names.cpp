@@ -8,7 +8,7 @@
 #include "errors/internal_errors.hpp"
 #include "core/generics_substitution_rules.hpp"
 
-[[nodiscard]] std::string TypeDefinitionsRegister::get_type_definition_match_pattern(
+std::string TypeDefinitionsRegister::get_type_definition_match_pattern(
     const std::string& package_name,
     const TypeDefinition& type_definition
 ) {
@@ -18,7 +18,7 @@
     return pattern_tag_name + generics_section;
 }
 
-[[nodiscard]] std::string TypeDefinitionsRegister::get_type_signature_match_pattern(
+std::string TypeDefinitionsRegister::get_type_signature_match_pattern(
     const std::string& package_name,
     const CustomType& type_signature
 ) {
@@ -64,7 +64,7 @@ std::string TypeDefinitionsRegister::get_fully_qualified_typesignature_name(cons
     assert_unreachable();
 }
 
-[[nodiscard]] std::optional<std::string> TypeDefinitionsRegister::search_fully_qualified_typesignature_name(
+std::optional<std::string> TypeDefinitionsRegister::search_fully_qualified_typesignature_name(
     const CustomType& type_signature, 
     const std::string& package_name
 ) {
@@ -92,7 +92,7 @@ std::string TypeDefinitionsRegister::get_fully_qualified_typesignature_name(cons
     }
 }
 
-[[nodiscard]] std::string TypeDefinitionsRegister::infer_possible_fully_qualified_typesignature_name(
+std::string TypeDefinitionsRegister::infer_possible_fully_qualified_typesignature_name(
     const std::string& package_name,
     const TypeSignature& type_signature
 ) {
@@ -128,7 +128,7 @@ std::string TypeDefinitionsRegister::get_fully_qualified_typesignature_name(cons
     assert_unreachable();
 }
 
-[[nodiscard]] std::string TypeDefinitionsRegister::infer_possible_fully_qualified_customtype_name(
+std::string TypeDefinitionsRegister::infer_possible_fully_qualified_customtype_name(
     const std::string& packageName, 
     const CustomType& custom_type
 ) {

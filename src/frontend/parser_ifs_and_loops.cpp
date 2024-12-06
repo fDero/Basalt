@@ -10,7 +10,7 @@
 #include "language/definitions.hpp"
 #include "language/expressions.hpp"
 
-[[nodiscard]] Statement Parser::parse_if_statement() {
+Statement Parser::parse_if_statement() {
     const Token& if_token = *iterator;
     assert_token_matches(source_tokens, iterator++, "if");
     ensure_token_matches(source_tokens, iterator++, "(");
@@ -25,7 +25,7 @@
     return Conditional {condition, then_brench, else_branch, if_token};
 }
 
-[[nodiscard]] Statement Parser::parse_while_loop() {
+Statement Parser::parse_while_loop() {
     const Token& while_token = *iterator;
     assert_token_matches(source_tokens, iterator++, "while");
     ensure_token_matches(source_tokens, iterator++, "(");
@@ -35,7 +35,7 @@
     return WhileLoop {condition, loop_body, while_token};
 }
 
-[[nodiscard]] Statement Parser::parse_until_loop() {
+Statement Parser::parse_until_loop() {
     const Token& until_token = *iterator;
     assert_token_matches(source_tokens, iterator++, "until");
     ensure_token_matches(source_tokens, iterator++, "(");

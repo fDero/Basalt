@@ -8,7 +8,7 @@
 #include "language/statements.hpp"
 #include "errors/internal_errors.hpp"
 
-[[nodiscard]] Statement GenericsInstantiationEngine::instantiate_generic_statement(const Statement& statement) const {
+Statement GenericsInstantiationEngine::instantiate_generic_statement(const Statement& statement) const {
     switch (statement.statement_kind()) {
         case StatementBody::Kind::function_call: return instantiate_generic_function_call(statement.get<FunctionCall>());
         case StatementBody::Kind::variable_declaration: return instantiate_generic_variable_declaration(statement.get<VariableDeclaration>()); 

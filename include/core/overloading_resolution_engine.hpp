@@ -24,12 +24,12 @@ class OverloadingResolutionEngine : public CachingAwareRegister {
             ProjectFileStructure& project_file_structure
         );
 
-        FunctionDefinition::Ref retrieve_function_definition(
+        [[nodiscard]] FunctionDefinition::Ref retrieve_function_definition(
             const FunctionCall& function_call, 
             const std::vector<TypeSignature>& arg_types
         );
 
-        GenericSubstitutionRule::Set::Ref check_function_compatibility(
+        [[nodiscard]] GenericSubstitutionRule::Set::Ref check_function_compatibility(
             const FunctionDefinition::Ref func_def_ref,
             const FunctionCall& func_call,
             const std::vector<TypeSignature>& arg_types
@@ -39,7 +39,7 @@ class OverloadingResolutionEngine : public CachingAwareRegister {
         using CachingAwareRegister::get_cache_search_key_for_func_def_retrieval_from_func_call;
 
     private:
-        FunctionDefinition::Ref cache_unaware_function_definition_retrieval(
+        [[nodiscard]] FunctionDefinition::Ref cache_unaware_function_definition_retrieval(
             const FunctionCall& function_call, 
             const std::vector<TypeSignature>& arg_types
         );

@@ -5,7 +5,7 @@
 
 #include "core/caching_aware_register.hpp"
 
-[[nodiscard]] std::string CachingAwareRegister::get_cache_search_key_for_func_def_retrieval_from_func_call(
+std::string CachingAwareRegister::get_cache_search_key_for_func_def_retrieval_from_func_call(
     TypeDefinitionsRegister& type_definitions_register,
     const FunctionCall& function_call,
     const std::vector<TypeSignature>& arg_types
@@ -23,7 +23,7 @@
     return search_key;
 }
 
-[[nodiscard]] std::string CachingAwareRegister::get_function_definition_overload_set_id(
+std::string CachingAwareRegister::get_function_definition_overload_set_id(
     const std::string& package_name, 
     const FunctionDefinition::Ref function_definition_ref
 ) {
@@ -35,7 +35,7 @@
     return package_name + namespace_concatenation + function_name + generics_string + args_string;
 }
 
-[[nodiscard]] std::string CachingAwareRegister::get_generics_unaware_function_definition_overload_set_id(
+std::string CachingAwareRegister::get_generics_unaware_function_definition_overload_set_id(
     const std::string& package_name, 
     const FunctionDefinition::Ref function_definition_ref
 ) {
@@ -45,7 +45,7 @@
     return package_name + namespace_concatenation + function_name + "<0>" + args_string;
 }
 
-[[nodiscard]] std::string CachingAwareRegister::get_function_call_overload_set_id(
+std::string CachingAwareRegister::get_function_call_overload_set_id(
     const std::string& package_name, 
     const FunctionCall& original_function_call
 ) {
@@ -59,7 +59,7 @@
     return overload_set_id;
 }
 
-[[nodiscard]] std::string CachingAwareRegister::get_overload_set_default_search_key(
+std::string CachingAwareRegister::get_overload_set_default_search_key(
     ProjectFileStructure project_file_structure, 
     const FunctionCall& function_call
 ) {

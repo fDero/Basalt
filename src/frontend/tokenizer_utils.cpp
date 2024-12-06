@@ -48,7 +48,7 @@ void Tokenizer::ignore_discardable_characters() {
     }
 }
 
-[[nodiscard]] Token Tokenizer::make_token(const std::string& sourcetext, const Token::Type token_type) {
+Token Tokenizer::make_token(const std::string& sourcetext, const Token::Type token_type) {
     return Token {
         sourcetext, filename, line_number, tok_number,
         static_cast<unsigned int>(char_pos - sourcetext.size() + 1),
@@ -56,7 +56,7 @@ void Tokenizer::ignore_discardable_characters() {
     };
 }
 
-[[nodiscard]] Token::Type Tokenizer::get_textual_token_type(const std::string& sourcetext) {
+Token::Type Tokenizer::get_textual_token_type(const std::string& sourcetext) {
     if (sourcetext == "true" || sourcetext == "false") return Token::Type::boolean_literal;
     if (isupper(sourcetext[0])) return Token::Type::type;
     auto keyword_search_outcome = keywords.find(sourcetext);
@@ -65,7 +65,7 @@ void Tokenizer::ignore_discardable_characters() {
         keyword_search_outcome->second : Token::Type::text;
 }
 
-[[nodiscard]] TokenizedFile Tokenizer::tokenize() {
+TokenizedFile Tokenizer::tokenize() {
     TokenizedFile tokenized_file;
     tokenized_file.filename = filename;
     std::vector<Token>& tokens = tokenized_file.tokens;
@@ -86,22 +86,22 @@ void Tokenizer::ignore_discardable_characters() {
     return tokenized_file;
 }
 
-[[nodiscard]] std::string Tokenizer::get_current_line() const {
+std::string Tokenizer::get_current_line() const {
     return current_line;
 }
 
-[[nodiscard]] std::string Tokenizer::get_filename() const {
+std::string Tokenizer::get_filename() const {
     return filename;
 }
 
-[[nodiscard]] size_t Tokenizer::get_line_number() const {
+size_t Tokenizer::get_line_number() const {
     return line_number;
 }
 
-[[nodiscard]] size_t Tokenizer::get_tok_number() const {
+size_t Tokenizer::get_tok_number() const {
     return tok_number;
 }
 
-[[nodiscard]] size_t Tokenizer::get_char_pos() const {
+size_t Tokenizer::get_char_pos() const {
     return char_pos;
 }

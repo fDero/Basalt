@@ -9,7 +9,7 @@
 #include "errors/preprocessing_errors.hpp"
 #include "errors/internal_errors.hpp"
 
-[[nodiscard]] std::optional<TypeSignature> ExpressionTypeDeducer::deduce_address_operator_type(const UnaryOperator& expression) {
+std::optional<TypeSignature> ExpressionTypeDeducer::deduce_address_operator_type(const UnaryOperator& expression) {
     assert_unary_operator_is(expression, address_operator);
     ensure_not_tryng_to_dereference_a_literal(expression);
     std::optional<TypeSignature> operand_type = deduce_expression_type(expression.operand);
@@ -18,7 +18,7 @@
         : std::nullopt;
 }
 
-[[nodiscard]] std::optional<TypeSignature> ExpressionTypeDeducer::deduce_pointer_dereference_operator_type(const UnaryOperator& expression) {
+std::optional<TypeSignature> ExpressionTypeDeducer::deduce_pointer_dereference_operator_type(const UnaryOperator& expression) {
     assert_unary_operator_is(expression, pointer_dereference_operator);
     std::optional<TypeSignature> operand_type = deduce_expression_type(expression.operand);
     if (!operand_type.has_value()) {
@@ -28,7 +28,7 @@
     return operand_type.value().get<PointerType>().pointed_type;
 }
 
-[[nodiscard]] std::optional<TypeSignature> ExpressionTypeDeducer::deduce_boolean_not_operator_type(const UnaryOperator& expression) {
+std::optional<TypeSignature> ExpressionTypeDeducer::deduce_boolean_not_operator_type(const UnaryOperator& expression) {
     assert_unary_operator_is(expression, "!");
     std::optional<TypeSignature> operand_type = deduce_expression_type(expression.operand);
     if (!operand_type.has_value()) {
@@ -38,7 +38,7 @@
     return operand_type.value();
 }
 
-[[nodiscard]] std::optional<TypeSignature> ExpressionTypeDeducer::deduce_math_prefix_operator_type(const UnaryOperator& expression) {
+std::optional<TypeSignature> ExpressionTypeDeducer::deduce_math_prefix_operator_type(const UnaryOperator& expression) {
     std::optional<TypeSignature> operand_type = deduce_expression_type(expression.operand);
     if (!operand_type.has_value()) {
         return std::nullopt;
@@ -47,7 +47,7 @@
     return operand_type.value(); 
 }
 
-[[nodiscard]] std::optional<TypeSignature> ExpressionTypeDeducer::deduce_type_from_comparison_operator(const BinaryOperator& expression) {
+std::optional<TypeSignature> ExpressionTypeDeducer::deduce_type_from_comparison_operator(const BinaryOperator& expression) {
     std::optional<TypeSignature> left_operand_type = deduce_expression_type(expression.left_operand);
     std::optional<TypeSignature> right_operand_type = deduce_expression_type(expression.right_operand);
     if (!left_operand_type.has_value() || !right_operand_type.has_value()) {
@@ -60,7 +60,7 @@
     return deduce_primtive_type("Bool", expression);
 }
 
-[[nodiscard]] std::optional<TypeSignature> ExpressionTypeDeducer::deduce_type_from_square_brackets_access(const Expression& square_brackets_access_expr) {
+std::optional<TypeSignature> ExpressionTypeDeducer::deduce_type_from_square_brackets_access(const Expression& square_brackets_access_expr) {
     assert_expression_is<SquareBracketsAccess>(square_brackets_access_expr);
     const SquareBracketsAccess& square_brackets_access = square_brackets_access_expr.get<SquareBracketsAccess>();
     std::optional<TypeSignature> left_operand_type = deduce_expression_type(square_brackets_access.storage);
@@ -78,7 +78,7 @@
     }
 }
 
-[[nodiscard]] std::optional<TypeSignature> ExpressionTypeDeducer::deduce_type_from_dot_member_access(const Expression& dot_member_access_expr) {
+std::optional<TypeSignature> ExpressionTypeDeducer::deduce_type_from_dot_member_access(const Expression& dot_member_access_expr) {
     assert_expression_is<DotMemberAccess>(dot_member_access_expr);
     const DotMemberAccess& dot_member_access = dot_member_access_expr.get<DotMemberAccess>();
     std::optional<TypeSignature> left_operand_type_opt = deduce_expression_type(dot_member_access.struct_value);
@@ -100,7 +100,7 @@
     throw_no_such_struct_field(member_name, struct_type_definition, dot_member_access);
 }
 
-[[nodiscard]] std::optional<TypeSignature> ExpressionTypeDeducer::deduce_type_from_math_binary_operator(const BinaryOperator& expression) {
+std::optional<TypeSignature> ExpressionTypeDeducer::deduce_type_from_math_binary_operator(const BinaryOperator& expression) {
     std::optional<TypeSignature> left_operand_type = deduce_expression_type(expression.left_operand);
     std::optional<TypeSignature> right_operand_type = deduce_expression_type(expression.right_operand);
     if (left_operand_type.has_value()) {

@@ -15,7 +15,7 @@ Parser::Parser(const TokenizedFile& tokenized_file) {
     filename = tokenized_file.filename; 
 }
 
-[[nodiscard]] FileRepresentation Parser::parse_everything() {
+FileRepresentation Parser::parse_everything() {
     FileRepresentation output;
     output.file_metadata.filename = filename;
     output.file_metadata.packagename = parse_package_name();

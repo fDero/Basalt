@@ -9,16 +9,16 @@ void Expression::wrap_in_parenthesis() {
     wrapped_in_parenthesis = true;
 }
 
-[[nodiscard]] bool Expression::is_wrapped_in_in_parenthesis() const {
+bool Expression::is_wrapped_in_in_parenthesis() const {
     return wrapped_in_parenthesis;
 }
 
-[[nodiscard]] const DebugInformationsAwareEntity& 
+const DebugInformationsAwareEntity& 
 Expression::as_debug_informations_aware_entity() const {
     return ptr->as_debug_informations_aware_entity();
 }
 
-[[nodiscard]] bool Expression::is_literal() const {
+bool Expression::is_literal() const {
     switch (expression_kind()) {
         case ExpressionBody::Kind::int_literal: 
         case ExpressionBody::Kind::float_literal:

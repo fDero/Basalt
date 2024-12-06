@@ -9,7 +9,7 @@
 #include "frontend/parser.hpp"
 #include "language/expressions.hpp"
 
-[[nodiscard]] Expression Parser::parse_array_literal() {
+Expression Parser::parse_array_literal() {
     const Token& array_token = *iterator;
     assert_token_matches(source_tokens, iterator++, "[");
     ensure_there_are_still_tokens(source_tokens, iterator);
@@ -35,7 +35,7 @@
     return ArrayLiteral { array_length, stored_type, elements, array_token };
 }
 
-[[nodiscard]] Expression Parser::parse_expression_wrapped_in_square_brackets() {
+Expression Parser::parse_expression_wrapped_in_square_brackets() {
     assert_token_matches(source_tokens, iterator, "[");
     const Token& open_bracket_token = *(iterator++);
     Expression expression = parse_expression();
@@ -44,7 +44,7 @@
     return expression;
 }
 
-[[nodiscard]] Expression Parser::parse_expression_wrapped_in_parenthesis() {
+Expression Parser::parse_expression_wrapped_in_parenthesis() {
     assert_token_matches(source_tokens, iterator, "(");
     const Token& open_paren_token = *(iterator++);
     Expression expression = parse_expression();
@@ -53,7 +53,7 @@
     return expression;
 }
 
-[[nodiscard]] Expression Parser::parse_terminal_expression() {
+Expression Parser::parse_terminal_expression() {
     ensure_there_are_still_tokens(source_tokens, iterator);
     switch(iterator->type) {
         break; case Token::Type::text: {
@@ -88,7 +88,7 @@
     }
 }
 
-[[nodiscard]] Expression Parser::parse_prefix_operator() {
+Expression Parser::parse_prefix_operator() {
     assert_token_is_prefix_operator(iterator);
     const Token& operator_token = *iterator;
     std::advance(iterator, 1);
@@ -96,7 +96,7 @@
     return UnaryOperator { operator_token, operand };
 }
 
-[[nodiscard]] Expression Parser::parse_expression() {
+Expression Parser::parse_expression() {
     Expression expression = parse_terminal_expression();
     while(!expression_ended()) {
         if (is_dot_member_access())    expression = compose_dot_member_access(expression);
@@ -108,31 +108,31 @@
     return expression;
 }
 
-[[nodiscard]] bool Parser::is_type_operator() {
+bool Parser::is_type_operator() {
     return (
         iterator->type == Token::Type::as_keyword || 
         iterator->type == Token::Type::is_keyword 
     );
 }
 
-[[nodiscard]] bool Parser::is_binary_operator() {
+bool Parser::is_binary_operator() {
     if (iterator == source_tokens.end()) return false;
     auto binary_operator_search_outcome =  infix_operators_priority.find(iterator->sourcetext);
     auto not_found = infix_operators_priority.end();
     return (binary_operator_search_outcome != not_found);
 }
 
-[[nodiscard]] bool Parser::is_dot_member_access() {
+bool Parser::is_dot_member_access() {
     if (iterator == source_tokens.end()) return false;
     return (iterator->sourcetext == ".");
 }
 
-[[nodiscard]] bool Parser::is_square_bracket() {
+bool Parser::is_square_bracket() {
     if (iterator == source_tokens.end()) return false;
     return (iterator->sourcetext == "[");
 }
 
-[[nodiscard]] bool Parser::expression_ended() {
+bool Parser::expression_ended() {
     if (iterator == source_tokens.end()) return true;
     if (iterator->sourcetext == ")")     return true;
     if (iterator->sourcetext == "]")     return true;

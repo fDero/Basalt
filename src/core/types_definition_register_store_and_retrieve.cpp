@@ -50,7 +50,7 @@ void TypeDefinitionsRegister::store_type_definition(const TypeDefinition& type_d
     type_definitions_ids.push_back(match_pattern);
 }
 
-[[nodiscard]] TypeDefinition TypeDefinitionsRegister::retrieve_type_definition(const CustomType& type_signature) {
+TypeDefinition TypeDefinitionsRegister::retrieve_type_definition(const CustomType& type_signature) {
     const std::string fully_qualified_name = get_fully_qualified_customtype_name(type_signature);
     auto search_outcome = type_definitions.find(fully_qualified_name);
     if (search_outcome != type_definitions.end()) {
@@ -59,7 +59,7 @@ void TypeDefinitionsRegister::store_type_definition(const TypeDefinition& type_d
     throw_no_type_definition_found(type_signature);
 }
 
-[[nodiscard]] TypeSignature TypeDefinitionsRegister::unalias_type(const TypeSignature& type_signature) {
+TypeSignature TypeDefinitionsRegister::unalias_type(const TypeSignature& type_signature) {
     if (!type_signature.is<CustomType>()) {
         return type_signature;
     }

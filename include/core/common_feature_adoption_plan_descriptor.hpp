@@ -27,23 +27,23 @@ struct CommonFeatureAdoptionPlanDescriptor
     using std::variant<RecursiveAdoptionPlan, FunctionDefinition::Ref>::variant;
     using std::variant<RecursiveAdoptionPlan, FunctionDefinition::Ref>::operator=;
 
-    bool is_direct_adoption() const {
+    [[nodiscard]] bool is_direct_adoption() const {
         return std::holds_alternative<FunctionDefinition::Ref>(*this);
     }
 
-    bool is_recursive_adoption() const {
+    [[nodiscard]] bool is_recursive_adoption() const {
         return std::holds_alternative<RecursiveAdoptionPlan>(*this);
     }
 
-    FunctionDefinition::Ref get_direct_adoption() const {
+    [[nodiscard]] FunctionDefinition::Ref get_direct_adoption() const {
         return std::get<FunctionDefinition::Ref>(*this);
     }
 
-    RecursiveAdoptionPlan get_recursive_adoption() const {
+    [[nodiscard]] RecursiveAdoptionPlan get_recursive_adoption() const {
         return std::get<RecursiveAdoptionPlan>(*this);
     }
 
-    std::optional<TypeSignature> get_return_type() const {
+    [[nodiscard]] std::optional<TypeSignature> get_return_type() const {
         return (is_direct_adoption())
             ? get_direct_adoption()->return_type
             : get_recursive_adoption().return_type;

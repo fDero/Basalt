@@ -46,7 +46,7 @@ TypeDefinition GenericsInstantiationEngine::instantiate_generic_typedefinition(c
     assert_unreachable();
 }
 
-[[nodiscard]] FunctionDefinition::Ref GenericsInstantiationEngine::instantiate_generic_function(const FunctionDefinition& function_definition) const {
+FunctionDefinition::Ref GenericsInstantiationEngine::instantiate_generic_function(const FunctionDefinition& function_definition) const {
     FunctionDefinition::Ref instantiated_function = std::make_shared<FunctionDefinition>(function_definition);
     instantiated_function->template_generics_names.clear();
     if (function_definition.return_type.has_value()) {

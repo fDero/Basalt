@@ -6,7 +6,7 @@
 #include "errors/tokenization_errors.hpp"
 #include "frontend/syntax.hpp"
 
-[[nodiscard]] std::string get_sourcetext_from_tokenizer(const Tokenizer& tokenizer) {
+std::string get_sourcetext_from_tokenizer(const Tokenizer& tokenizer) {
     std::string extracted;
     std::string current_line = tokenizer.get_current_line();
     for (size_t i = tokenizer.get_char_pos(); i < current_line.size(); i++) {
