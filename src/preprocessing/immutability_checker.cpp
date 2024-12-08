@@ -17,6 +17,8 @@ bool ImmutabilityChecker::is_weakly_immutable_expression(const Expression& expre
     switch (expression.expression_kind()) {
         case ExpressionBody::Kind::function_call: 
             return is_function_call_weakly_immutable(expression.get<FunctionCall>());
+        case ExpressionBody::Kind::unary_operator: 
+            return is_unary_weakly_operator_immutable(expression.get<UnaryOperator>());
         default: 
             return is_strictly_immutable_expression(expression);
     }
@@ -45,7 +47,8 @@ bool ImmutabilityChecker::is_identifier_immutable(const Identifier& identifier) 
 }
 
 bool ImmutabilityChecker::is_unary_operator_immutable(const UnaryOperator& unary_operator) {
-    return unary_operator.operator_text != "#";
+    return unary_operator.operator_text != "#" || 
+        is_weakly_immutable_expression(unary_operator.operand);
 }
 
 bool ImmutabilityChecker::is_square_bracket_access_immutable(const SquareBracketsAccess& square_brackets_access) {
@@ -63,4 +66,9 @@ bool ImmutabilityChecker::is_type_operator_immutable(const TypeOperator& type_op
 bool ImmutabilityChecker::is_function_call_weakly_immutable(const FunctionCall& function_call) {
     std::optional<TypeSignature> return_type = program_representation.resolve_expression_type(function_call, scope_context);
     return !return_type.has_value() || (!return_type->is<PointerType>() && !return_type->is<SliceType>());
+}
+
+bool ImmutabilityChecker::is_unary_weakly_operator_immutable(const UnaryOperator& unary_operator) {
+    return (unary_operator.operator_text != "#" && unary_operator.operator_text != "&") ||
+        is_weakly_immutable_expression(unary_operator.operand);
 }
