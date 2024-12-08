@@ -21,6 +21,7 @@ class ConstConstraintValidator {
     protected:
         struct SingleFunctionConstConstraintValidator {
             SingleFunctionConstConstraintValidator(
+                ScopeContext& scope_context,
                 ProgramRepresentation& program_representation,
                 ImmutabilityChecker& immutability_checker,
                 BondInspector& bond_inspector
@@ -46,6 +47,7 @@ class ConstConstraintValidator {
             void visit_function_call(const FunctionCall& function_call, ScopeContext& scope_context);
             void visit_assignment(const Assignment& assignment, ScopeContext& scope_context);
 
+            ScopeContext& scope_context;
             ProgramRepresentation& program_representation;
             ImmutabilityChecker& immutability_checker;
             BondInspector& bond_inspector;

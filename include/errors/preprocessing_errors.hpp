@@ -237,6 +237,6 @@ inline void ensure_assignment_complies_with_const_qualifiers(
     bool assignment_discard_qualifiers
 ) {
     if (assignment_discard_qualifiers) {
-        throw std::runtime_error("use as function argument does not comply with const qualifiers");
+        throw std::runtime_error("assignment discards qualifiers");
     }
 }
