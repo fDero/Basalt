@@ -233,7 +233,7 @@ inline void ensure_use_as_function_argument_complies_with_const_qualifiers(
 }
 
 inline void ensure_assignment_complies_with_const_qualifiers(
-    const Assignment& function_call,
+    const Statement& function_call,
     bool assignment_discard_qualifiers
 ) {
     if (assignment_discard_qualifiers) {

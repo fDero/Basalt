@@ -75,7 +75,13 @@ void CCV::SingleFunctionConstConstraintValidator::visit_variable_declaration(
     ScopeContext& scope_context
 ) {
     if (variable_declaration.initial_value.has_value()) {
+        Expression value = variable_declaration.initial_value.value();
         visit_expression(variable_declaration.initial_value.value(), scope_context);
+        bool assignment_of_immutable_value = immutability_checker.is_weakly_immutable_expression(value);
+        std::optional<TypeSignature> type = program_representation.resolve_expression_type(value, scope_context);
+        bool assignment_implies_bound = type.has_value() && bond_inspector.does_the_type_of_this_expr_imply_a_bond(*type);
+        bool assignment_discard_qualifiers = assignment_of_immutable_value && assignment_implies_bound;
+        ensure_assignment_complies_with_const_qualifiers(variable_declaration, assignment_discard_qualifiers);
     }
     scope_context.store_local_variable(variable_declaration);
 }
