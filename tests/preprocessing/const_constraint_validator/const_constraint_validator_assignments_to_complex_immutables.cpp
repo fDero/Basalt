@@ -87,7 +87,7 @@ TEST(Preprocessing, Const_Constraint_Validator_Assignment_Of_Literal_To_Member_O
                     {
                         Assignment {
                             DotMemberAccess {
-                                Token { "x", "test.basalt", 1, 1, 1, Token::Type::text },
+                                Token { ".", "test.basalt", 1, 1, 1, Token::Type::symbol },
                                 FunctionCall {
                                    Token { "f", "test.basalt", 1, 1, 1, Token::Type::text },
                                     "",
@@ -121,9 +121,7 @@ TEST(Preprocessing, Const_Constraint_Validator_Assignment_Of_Literal_To_Element_
             .func_defs = { 
                 FunctionDefinitionFactory::make_function_definition(
                     "f", "test.basalt", {}, {}, 
-                    CustomType {
-                        Token { "IntWrapper", "test.basalt", 1, 1, 1, Token::Type::type }, {}
-                    },
+                    std::nullopt,
                     {
                         Assignment {
                             SquareBracketsAccess {
