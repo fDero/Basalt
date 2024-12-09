@@ -96,7 +96,7 @@ void CCV::SingleFunctionConstConstraintValidator::visit_function_call(
         visit_expression(argument, scope_context);
         bool assignment_of_immutable_value = immutability_checker.is_strictly_immutable_expression(argument);
         std::optional<TypeSignature> type = program_representation.resolve_expression_type(argument, scope_context);
-        bool assignment_implies_bound = type.has_value() && bond_inspector.does_the_type_of_this_expr_imply_a_bound(*type);
+        bool assignment_implies_bound = type.has_value() && bond_inspector.does_the_type_of_this_expr_imply_a_bond(*type);
         bool assignment_discard_qualifiers = assignment_of_immutable_value && assignment_implies_bound;
         ensure_use_as_function_argument_complies_with_const_qualifiers(function_call, argument, assignment_discard_qualifiers);
     }
@@ -110,7 +110,7 @@ void CCV::SingleFunctionConstConstraintValidator::visit_assignment(
     bool assignment_to_immutable_target = immutability_checker.is_strictly_immutable_expression(assignment.assignment_target);
     bool assignment_of_immutable_value = immutability_checker.is_weakly_immutable_expression(assignment.assigned_value);
     std::optional<TypeSignature> type = program_representation.resolve_expression_type(assignment.assigned_value, scope_context);
-    bool assignment_implies_bound = type.has_value() && bond_inspector.does_the_type_of_this_expr_imply_a_bound(*type);
+    bool assignment_implies_bound = type.has_value() && bond_inspector.does_the_type_of_this_expr_imply_a_bond(*type);
     bool assignment_discard_qualifiers = assignment_to_immutable_target || (assignment_of_immutable_value && assignment_implies_bound);
     ensure_assignment_complies_with_const_qualifiers(assignment, assignment_discard_qualifiers);
 }

@@ -20,9 +20,9 @@ class BondInspector {
             ProgramRepresentation& program_representation
         );
 
-        [[nodiscard]] bool does_the_type_of_this_expr_imply_a_bound(const TypeSignature& expression_type);
-        [[nodiscard]] bool does_this_inline_union_imply_a_bound(const InlineUnion& inline_union);
-        [[nodiscard]] bool does_this_custom_type_imply_a_bound(const CustomType& custom_type);
+        [[nodiscard]] bool does_the_type_of_this_expr_imply_a_bond(const TypeSignature& expression_type);
+        [[nodiscard]] bool does_this_inline_union_imply_a_bond(const InlineUnion& inline_union);
+        [[nodiscard]] bool does_this_custom_type_imply_a_bond(const CustomType& custom_type);
 
     private:
         ScopeContext& scope_context;
