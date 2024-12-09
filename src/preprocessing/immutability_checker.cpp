@@ -4,6 +4,7 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 #include "preprocessing/immutability_checker.hpp"
+#include "errors/internal_errors.hpp"
 
 ImmutabilityChecker::ImmutabilityChecker(
     ScopeContext& scope_context, 
@@ -40,6 +41,7 @@ bool ImmutabilityChecker::is_strictly_immutable_expression(const Expression& exp
         case ExpressionBody::Kind::int_literal:           return true;
         case ExpressionBody::Kind::bool_literal:          return true;
     }
+    assert_unreachable();
 }
 
 bool ImmutabilityChecker::is_identifier_immutable(const Identifier& identifier) {

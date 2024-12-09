@@ -58,6 +58,7 @@ EPK FunctionExitPathNavigator::visit_statement(
         case StatementBody::Kind::break_statement: return visit_loop_blocking_statement(scope_kind);
         case StatementBody::Kind::continue_statement: return visit_loop_blocking_statement(scope_kind);
     }
+    assert_unreachable();
 }
 
 EPK FunctionExitPathNavigator::visit_loop_blocking_statement(

@@ -24,6 +24,7 @@ bool BondInspector::does_the_type_of_this_expr_imply_a_bond(const TypeSignature&
         case TypeSignatureBody::Kind::slice_type: return true;
         case TypeSignatureBody::Kind::template_type: return true;
     }
+    assert_unreachable();
 }
 
 bool BondInspector::does_this_inline_union_imply_a_bond(const InlineUnion& inline_union) {

@@ -79,6 +79,7 @@ target_compile_options(
   -Wunused
   -Wall
   -Wpedantic
+  -Wswitch
   -Wfloat-equal
   -DDEBUG_BUILD
 )
