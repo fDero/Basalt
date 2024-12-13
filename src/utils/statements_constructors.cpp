@@ -47,8 +47,8 @@ Conditional::Conditional(
 )
     : StatementBody(if_token)
     , condition(cond)
-    , then_brench(then_branch)
-    , else_brench(else_branch)
+    , then_branch(then_branch)
+    , else_branch(else_branch)
 {}
 
 WhileLoop::WhileLoop(

@@ -31,10 +31,10 @@ void CCV::SingleFunctionConstConstraintValidator::visit_if_statement(
     visit_expression(conditional.condition, scope_context);
     ScopeContext then_scope_context = scope_context.create_nested_scope();
     ScopeContext else_scope_context = scope_context.create_nested_scope();
-    for (const Statement& statement : conditional.then_brench) {
+    for (const Statement& statement : conditional.then_branch) {
         visit_statement(statement, then_scope_context);
     }
-    for (const Statement& statement : conditional.else_brench) {
+    for (const Statement& statement : conditional.else_branch) {
         visit_statement(statement, else_scope_context);
     }
 }

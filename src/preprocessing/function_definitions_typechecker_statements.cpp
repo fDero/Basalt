@@ -46,8 +46,8 @@ void FDTC::SingleFunctionTypeChecker::visit_assignment(const Assignment& assignm
 
 void FDTC::SingleFunctionTypeChecker::visit_conditional(const Conditional& conditional) {
     visit_expression(conditional.condition);
-    visit_code_block(conditional.then_brench);
-    visit_code_block(conditional.else_brench);
+    visit_code_block(conditional.then_branch);
+    visit_code_block(conditional.else_branch);
 }
 
 void FDTC::SingleFunctionTypeChecker::visit_while_loop(const WhileLoop& loop) {

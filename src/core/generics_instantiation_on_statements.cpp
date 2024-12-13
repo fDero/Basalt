@@ -50,10 +50,10 @@ Assignment GenericsInstantiationEngine::instantiate_generic_assignment(const Ass
 Conditional GenericsInstantiationEngine::instantiate_generic_conditional(const Conditional& statement) const {
     Conditional instantiated_conditional = statement;
     instantiated_conditional.condition = instantiate_generic_expression(statement.condition);
-    for (Statement& statement : instantiated_conditional.then_brench) {
+    for (Statement& statement : instantiated_conditional.then_branch) {
         statement = instantiate_generic_statement(statement);
     }
-    for (Statement& statement : instantiated_conditional.else_brench) {
+    for (Statement& statement : instantiated_conditional.else_branch) {
         statement = instantiate_generic_statement(statement);
     }
     return instantiated_conditional;

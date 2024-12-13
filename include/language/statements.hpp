@@ -111,8 +111,8 @@ struct Conditional : public StatementBody {
     [[nodiscard]] StatementBody::Kind statement_kind() const override;
 
     Expression condition;
-    std::vector<Statement> then_brench;
-    std::vector<Statement> else_brench;
+    std::vector<Statement> then_branch;
+    std::vector<Statement> else_branch;
 };
 
 struct WhileLoop : public StatementBody {

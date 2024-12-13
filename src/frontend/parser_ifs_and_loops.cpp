@@ -16,13 +16,13 @@ Statement Parser::parse_if_statement() {
     ensure_token_matches(source_tokens, iterator++, "(");
     Expression condition = parse_expression();
     ensure_token_matches(source_tokens, iterator++, ")");
-    std::vector<Statement> then_brench = parse_code_block();
+    std::vector<Statement> then_branch = parse_code_block();
     if (iterator == source_tokens.end() || iterator->sourcetext != "else") {
-        return Conditional {condition, then_brench, {}, if_token};
+        return Conditional {condition, then_branch, {}, if_token};
     }
     assert_token_matches(source_tokens, iterator++, "else");
     std::vector<Statement> else_branch = parse_code_block();
-    return Conditional {condition, then_brench, else_branch, if_token};
+    return Conditional {condition, then_branch, else_branch, if_token};
 }
 
 Statement Parser::parse_while_loop() {

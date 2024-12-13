@@ -16,9 +16,9 @@ TEST(Frontend, Parse_If_Statement_Inline_Then_No_Else) {
     Parser parser = Parser({ "inline-tests.basalt", tokens });
     Statement statement = parser.parse_statement();
     ASSERT_TRUE(statement.is<Conditional>());
-    ASSERT_TRUE(statement.get<Conditional>().else_brench.empty());
-    ASSERT_EQ(statement.get<Conditional>().then_brench.size(), 1);
-    EXPECT_TRUE(statement.get<Conditional>().then_brench.back().is<Break>());
+    ASSERT_TRUE(statement.get<Conditional>().else_branch.empty());
+    ASSERT_EQ(statement.get<Conditional>().then_branch.size(), 1);
+    EXPECT_TRUE(statement.get<Conditional>().then_branch.back().is<Break>());
     EXPECT_TRUE(statement.get<Conditional>().condition.is<Identifier>());
 }
 
@@ -37,10 +37,10 @@ TEST(Frontend, Parse_If_Statement_Inline_Then_Inline_Else) {
     Parser parser = Parser(TokenizedFile{ "inline-tests.basalt", tokens });
     Statement statement = parser.parse_statement();
     ASSERT_TRUE(statement.is<Conditional>());
-    ASSERT_EQ(statement.get<Conditional>().then_brench.size(), 1);
-    ASSERT_EQ(statement.get<Conditional>().else_brench.size(), 1);
-    EXPECT_TRUE(statement.get<Conditional>().then_brench.back().is<Break>());
-    EXPECT_TRUE(statement.get<Conditional>().else_brench.back().is<Continue>());
+    ASSERT_EQ(statement.get<Conditional>().then_branch.size(), 1);
+    ASSERT_EQ(statement.get<Conditional>().else_branch.size(), 1);
+    EXPECT_TRUE(statement.get<Conditional>().then_branch.back().is<Break>());
+    EXPECT_TRUE(statement.get<Conditional>().else_branch.back().is<Continue>());
     EXPECT_TRUE(statement.get<Conditional>().condition.is<Identifier>());
 }
 
@@ -63,10 +63,10 @@ TEST(Frontend, Parse_If_Statement_Block_Then_Block_Else) {
     Parser parser = Parser({ "inline-tests.basalt", tokens });
     Statement statement = parser.parse_statement();
     ASSERT_TRUE(statement.is<Conditional>());
-    ASSERT_EQ(statement.get<Conditional>().then_brench.size(), 1);
-    ASSERT_EQ(statement.get<Conditional>().else_brench.size(), 1);
-    EXPECT_TRUE(statement.get<Conditional>().then_brench.back().is<Break>());
-    EXPECT_TRUE(statement.get<Conditional>().else_brench.back().is<Continue>());
+    ASSERT_EQ(statement.get<Conditional>().then_branch.size(), 1);
+    ASSERT_EQ(statement.get<Conditional>().else_branch.size(), 1);
+    EXPECT_TRUE(statement.get<Conditional>().then_branch.back().is<Break>());
+    EXPECT_TRUE(statement.get<Conditional>().else_branch.back().is<Continue>());
     EXPECT_TRUE(statement.get<Conditional>().condition.is<Identifier>());
 }
 
@@ -93,12 +93,12 @@ TEST(Frontend, Parse_If_Statement_Block_Then_Block_Else_More_Then_One_Statement_
     Parser parser = Parser({ "inline-tests.basalt", tokens });
     Statement statement = parser.parse_statement();
     ASSERT_TRUE(statement.is<Conditional>());
-    ASSERT_EQ(statement.get<Conditional>().then_brench.size(), 2);
-    ASSERT_EQ(statement.get<Conditional>().else_brench.size(), 2);
-    EXPECT_TRUE(statement.get<Conditional>().then_brench.back().is<Break>());
-    EXPECT_TRUE(statement.get<Conditional>().else_brench.back().is<Continue>());
-    EXPECT_TRUE(statement.get<Conditional>().then_brench.front().is<Break>());
-    EXPECT_TRUE(statement.get<Conditional>().else_brench.front().is<Continue>());
+    ASSERT_EQ(statement.get<Conditional>().then_branch.size(), 2);
+    ASSERT_EQ(statement.get<Conditional>().else_branch.size(), 2);
+    EXPECT_TRUE(statement.get<Conditional>().then_branch.back().is<Break>());
+    EXPECT_TRUE(statement.get<Conditional>().else_branch.back().is<Continue>());
+    EXPECT_TRUE(statement.get<Conditional>().then_branch.front().is<Break>());
+    EXPECT_TRUE(statement.get<Conditional>().else_branch.front().is<Continue>());
     EXPECT_TRUE(statement.get<Conditional>().condition.is<Identifier>());
 }
 
@@ -116,9 +116,9 @@ TEST(Frontend, Parse_If_Statement_Inline_Then_No_Else_Condition_Is_Function_Call
     Parser parser = Parser({ "inline-tests.basalt", tokens });
     Statement statement = parser.parse_statement();
     ASSERT_TRUE(statement.is<Conditional>());
-    ASSERT_TRUE(statement.get<Conditional>().else_brench.empty());
-    ASSERT_EQ(statement.get<Conditional>().then_brench.size(), 1);
-    EXPECT_TRUE(statement.get<Conditional>().then_brench.back().is<Break>());
+    ASSERT_TRUE(statement.get<Conditional>().else_branch.empty());
+    ASSERT_EQ(statement.get<Conditional>().then_branch.size(), 1);
+    EXPECT_TRUE(statement.get<Conditional>().then_branch.back().is<Break>());
     EXPECT_TRUE(statement.get<Conditional>().condition.is<FunctionCall>());
 }
 
@@ -136,10 +136,10 @@ TEST(Frontend, Parse_If_Statement_Inline_Then_No_Else_Condition_Is_Binary_Operat
     Parser parser = Parser({ "inline-tests.basalt", tokens });
     Statement statement = parser.parse_statement();
     ASSERT_TRUE(statement.is<Conditional>());
-    ASSERT_TRUE(statement.get<Conditional>().else_brench.empty());
+    ASSERT_TRUE(statement.get<Conditional>().else_branch.empty());
     ASSERT_TRUE(statement.get<Conditional>().condition.is<BinaryOperator>());
-    ASSERT_EQ(statement.get<Conditional>().then_brench.size(), 1);
-    EXPECT_TRUE(statement.get<Conditional>().then_brench.back().is<Break>());
+    ASSERT_EQ(statement.get<Conditional>().then_branch.size(), 1);
+    EXPECT_TRUE(statement.get<Conditional>().then_branch.back().is<Break>());
     EXPECT_EQ(statement.get<Conditional>().condition.get<BinaryOperator>().operator_text, "||");
     ASSERT_TRUE(statement.get<Conditional>().condition.get<BinaryOperator>().left_operand.is<Identifier>());
     ASSERT_TRUE(statement.get<Conditional>().condition.get<BinaryOperator>().left_operand.is<Identifier>());   

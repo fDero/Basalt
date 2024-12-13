@@ -73,8 +73,8 @@ EPK FunctionExitPathNavigator::visit_if_statement(
     const Conditional& if_statement, 
     ScopeKind scope_kind
 ) {
-    EPK then_ok = visit_code_block(if_statement.then_brench, scope_kind);            
-    EPK else_ok = visit_code_block(if_statement.else_brench, scope_kind);
+    EPK then_ok = visit_code_block(if_statement.then_branch, scope_kind);            
+    EPK else_ok = visit_code_block(if_statement.else_branch, scope_kind);
     if (then_ok == EPK::definitive_exit && else_ok == EPK::definitive_exit) {
         return EPK::definitive_exit;
     }
