@@ -35,6 +35,11 @@ class ProgramRepresentation {
         void verify_that_the_type_exists(const TypeSignature& type_signature);
         void foreach_package(const std::function<void(const std::string&)>& func);
 
+        [[nodiscard]] bool validate_assignment(
+            const std::optional<TypeSignature>& target,
+            const std::optional<TypeSignature>& source
+        );
+
     private:
         ProjectFileStructure project_file_structure;
         TypeDefinitionsRegister type_definitions_register;

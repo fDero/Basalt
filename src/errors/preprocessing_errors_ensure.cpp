@@ -87,6 +87,14 @@ void ensure_typesignature_is_int(const TypeSignature& type_signature) {
     }
 }
 
+void ensure_typesignature_is_either_array_or_slice_for_square_brackets_access(
+    const TypeSignature& type_signature
+) {
+    if (!type_signature.is<ArrayType>() && !type_signature.is<SliceType>()) {
+        throw InternalError("type must be either array or slice");
+    }
+}
+
 void ensure_typesignatures_are_mutually_compatibile_for_structure_comparison(
     bool lx_compatible_with_rx,
     bool rx_compatible_with_lx,

@@ -5,6 +5,7 @@
 
 #include "core/program_representation.hpp"
 #include "core/expression_type_deducer.hpp"
+#include "core/assignment_type_checker.hpp"
 
 ProgramRepresentation::ProgramRepresentation(
     const ProjectFileStructure& input_project_file_structure
@@ -88,4 +89,16 @@ std::list<FileRepresentation>& ProgramRepresentation::get_files_by_package(
     const std::string& package_name
 ) {
     return project_file_structure.get_files_by_package(package_name);
+}
+
+bool ProgramRepresentation::validate_assignment(
+    const std::optional<TypeSignature>& target,
+    const std::optional<TypeSignature>& source
+) {
+    AssignmentTypeChecker assignment_type_checker(
+        type_definitions_register, 
+        project_file_structure
+    );
+    return !target.has_value() || !source.has_value() ||
+        assignment_type_checker.validate_assignment(*target, *source);
 }

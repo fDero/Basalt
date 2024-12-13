@@ -133,6 +133,10 @@ void ensure_typesignature_is_boolean(const TypeSignature& type_signature);
 
 void ensure_typesignature_is_int(const TypeSignature& type_signature);
 
+void ensure_typesignature_is_either_array_or_slice_for_square_brackets_access(
+    const TypeSignature& type_signature
+);
+
 void ensure_typesignatures_are_mutually_compatibile_for_structure_comparison(
     bool lx_compatible_with_rx,
     bool rx_compatible_with_lx,
@@ -165,6 +169,75 @@ inline void ensure_return_statement_is_congruent_to_function_definition(
 ) {
     if (return_value_is_expected != return_value_is_provided) {
         throw std::runtime_error("return statement is not congruent to function definition");
+    }
+}
+
+inline void ensure_return_statement_is_valid(
+    bool assignment_is_valid,
+    const Return& return_statement
+) {
+    if (!assignment_is_valid) {
+        throw std::runtime_error("return value type is not congruent to function definition");
+    }
+}
+
+inline void ensure_assignment_is_valid(
+    bool assignment_is_valid,
+    const Assignment& assignment
+) {
+    if (!assignment_is_valid) {
+        throw std::runtime_error("assignment is invalid");
+    }
+}
+
+inline void ensure_return_value_of_function_is_treated_correctly_during_fcall(
+    const FunctionCall& function_call,
+    bool should_return_something,
+    const std::optional<TypeSignature>& return_type
+) {
+    if (should_return_something != return_type.has_value()) {
+        throw std::runtime_error("invalid return statement");
+    }
+}
+
+inline void ensure_array_literal_contains_the_right_number_of_elements(
+    const ArrayLiteral& array_literal
+) {
+    if (!array_literal.array_length.has_value()) {
+        return;
+    }
+    if (array_literal.elements.size() != *array_literal.array_length) {
+        throw std::runtime_error(
+            "array literal contains the wrong number of elements"
+        );
+    }
+}
+
+inline void ensure_element_is_compatible_with_array_literal(
+    bool element_can_be_analyzed,
+    bool element_is_compatible,
+    const ArrayLiteral& array_literal,
+    const Expression& element
+) {
+    if (!element_is_compatible) {
+        throw std::runtime_error("element is not compatible with array literal");
+    }
+}
+
+inline void ensure_type_operator_union_operand_can_be_queried_for_the_given_type(
+    bool can_assign_values_of_given_type_to_the_given_union
+) {
+    if (!can_assign_values_of_given_type_to_the_given_union) {
+        throw std::runtime_error("not valid use of type operator");
+    }
+}
+
+inline void ensure_identifier_exists(
+    bool identifier_exists, 
+    const Identifier& identifier
+) {
+    if (!identifier_exists) {
+        throw std::runtime_error("");
     }
 }
 
