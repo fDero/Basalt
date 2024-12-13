@@ -96,14 +96,14 @@ void FDTC::SingleFunctionTypeChecker::visit_array_literal(
             element, 
             scope_context
         );
-        bool element_can_be_analyzed = element_type.has_value() 
-            && !element_type->is_generic() 
-            && !array_literal.stored_type.is_generic();
-        bool element_is_compatible = element_can_be_analyzed 
-            && program_representation.validate_assignment(
-                array_literal.stored_type, 
-                *element_type
-            );
+        bool element_can_be_analyzed = element_type.has_value();
+        element_can_be_analyzed &= !element_type->is_generic(); 
+        element_can_be_analyzed &= !array_literal.stored_type.is_generic();
+        bool element_is_compatible = element_can_be_analyzed;
+        element_is_compatible &= program_representation.validate_assignment(
+            array_literal.stored_type, 
+            *element_type
+        );
         ensure_element_is_compatible_with_array_literal(
             element_can_be_analyzed,
             element_is_compatible, 
