@@ -6,6 +6,7 @@
 #include "core/program_representation.hpp"
 #include "core/expression_type_deducer.hpp"
 #include "core/assignment_type_checker.hpp"
+#include "core/function_call_resolver.hpp"
 
 ProgramRepresentation::ProgramRepresentation(
     const ProjectFileStructure& input_project_file_structure
@@ -101,4 +102,24 @@ bool ProgramRepresentation::validate_assignment(
     );
     return !target.has_value() || !source.has_value() ||
         assignment_type_checker.validate_assignment(*target, *source);
+}
+
+bool ProgramRepresentation::is_void_procedure(
+    const FunctionCall& function_call,
+    ScopeContext& scope_context
+) {
+    ExpressionTypeDeducer expression_type_deducer(
+        type_definitions_register, 
+        overloading_resolution_engine,
+        common_feature_adoption_plan_generation_engine, 
+        project_file_structure, 
+        scope_context
+    );
+    FunctionCallResolver function_call_resolver(
+        overloading_resolution_engine,
+        common_feature_adoption_plan_generation_engine
+    );
+    auto arg_types = expression_type_deducer.deduce_argument_types_from_function_call(function_call);
+    auto return_type = function_call_resolver.resolve_function_call_return_type(function_call, arg_types);
+    return return_type.is<FunctionCallResolver::Void>();
 }

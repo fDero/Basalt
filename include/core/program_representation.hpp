@@ -40,6 +40,11 @@ class ProgramRepresentation {
             const std::optional<TypeSignature>& source
         );
 
+        [[nodiscard]] bool is_void_procedure(
+            const FunctionCall& function_call,
+            ScopeContext& scope_context
+        );
+
     private:
         ProjectFileStructure project_file_structure;
         TypeDefinitionsRegister type_definitions_register;

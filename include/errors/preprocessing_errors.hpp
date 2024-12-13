@@ -105,7 +105,10 @@ void ensure_function_overload_was_successfully_retrieved(
     const std::optional<FunctionDefinition::Ref>& retrieved
 );
 
-void ensure_function_has_a_return_type(const std::optional<TypeSignature>& function_definition);
+void ensure_function_has_a_return_type(
+    const FunctionCall& function_call, 
+    const std::optional<TypeSignature>& return_type
+);
 
 void ensure_operator_kind_was_found(
     const std::map<std::string, OperatorKind>::const_iterator& operator_kind_search_outcome,
@@ -193,9 +196,9 @@ inline void ensure_assignment_is_valid(
 inline void ensure_return_value_of_function_is_treated_correctly_during_fcall(
     const FunctionCall& function_call,
     bool should_return_something,
-    const std::optional<TypeSignature>& return_type
+    bool is_void
 ) {
-    if (should_return_something != return_type.has_value()) {
+    if (should_return_something == is_void) {
         throw std::runtime_error("invalid return statement");
     }
 }

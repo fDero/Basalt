@@ -4,6 +4,7 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 #include "core/expression_type_deducer.hpp"
+#include "core/function_call_resolver.hpp"
 #include "errors/preprocessing_errors.hpp"
 #include "errors/internal_errors.hpp"
 
@@ -60,43 +61,33 @@ ExpressionTypeDeducer::deduce_type_from_identifier(const Expression& expression)
     return type_definitions_register.unalias_type(type);
 }
 
-std::optional<TypeSignature> 
-ExpressionTypeDeducer::deduce_type_from_function_call(
-    const FunctionCall& function_call, 
-    const std::vector<TypeSignature>& argument_types
-) {
-    FunctionDefinition::Ref retrieved = 
-        overloading_resolution_engine
-            .retrieve_function_definition(function_call, argument_types);
-    if (retrieved != nullptr) {
-        std::optional<TypeSignature> func_return_type = retrieved->return_type;
-        return func_return_type;
+std::vector<TypeSignature> 
+ExpressionTypeDeducer::deduce_argument_types_from_function_call(const FunctionCall& function_call) {
+    std::vector<TypeSignature> argument_types;
+    for (const Expression& argument : function_call.arguments) {
+        std::optional<TypeSignature> argument_type = deduce_expression_type(argument);
+        if (argument_type.has_value()) {
+            argument_types.push_back(argument_type.value());
+        }
     }
-    CommonFeatureAdoptionPlanDescriptor cfa = 
-        common_feature_adoption_plan_generation_engine
-            .generate_common_feature_adoption_plan(function_call, argument_types);
-    return cfa.get_return_type();
+    return argument_types;
 }
 
 std::optional<TypeSignature> 
 ExpressionTypeDeducer::deduce_type_from_function_call(const Expression& expression) {
     assert_expression_is<FunctionCall>(expression);
     const FunctionCall& function_call = expression.get<FunctionCall>();
-    const std::vector<Expression>& arguments = function_call.arguments;
-    std::vector<TypeSignature> argument_types;
-    bool attempt_retrieve = true;
-    for (const Expression& argument : arguments) {
-        std::optional<TypeSignature> argument_type = deduce_expression_type(argument);
-        attempt_retrieve &= argument_type.has_value() && !argument_type.value().is<TemplateType>();
-        if (attempt_retrieve) {
-            argument_types.push_back(argument_type.value());
-        }
-    }
-    std::optional<TypeSignature> return_type = (attempt_retrieve)
-        ? deduce_type_from_function_call(function_call, argument_types)
-        : std::nullopt;
-    ensure_function_has_a_return_type(return_type);
-    return type_definitions_register.unalias_type(*return_type);
+    FunctionCallResolver resolver(
+        overloading_resolution_engine, 
+        common_feature_adoption_plan_generation_engine
+    );
+    auto argument_types = deduce_argument_types_from_function_call(function_call);
+    auto return_type = resolver.resolve_function_call_return_type(function_call, argument_types);
+    auto opt_return_type = return_type.is<TypeSignature>() 
+        ? (std::optional<TypeSignature>) return_type.get<TypeSignature>() 
+        : (std::optional<TypeSignature>) std::nullopt;
+    ensure_function_has_a_return_type(function_call, opt_return_type);
+    return type_definitions_register.unalias_type(opt_return_type.value());
 }
 
 std::optional<TypeSignature> 

@@ -78,8 +78,8 @@ void FDTC::SingleFunctionTypeChecker::visit_function_call(
     if (encountered_generics) {
         return;
     }
-    auto return_type = program_representation.resolve_expression_type(fcall, scope_context);
+    bool is_void = program_representation.is_void_procedure(fcall, scope_context);
     ensure_return_value_of_function_is_treated_correctly_during_fcall(
-        fcall, should_return_something, return_type
+        fcall, should_return_something, is_void
     );
 }

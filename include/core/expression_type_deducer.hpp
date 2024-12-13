@@ -23,11 +23,6 @@ class ExpressionTypeDeducer {
             ScopeContext& scope_context
         );
 
-        [[nodiscard]] std::optional<TypeSignature> deduce_type_from_function_call(
-            const FunctionCall& function_call, 
-            const std::vector<TypeSignature>& argument_types
-        );
-
         [[nodiscard]] std::optional<TypeSignature> deduce_expression_type(const Expression& expression);
         [[nodiscard]] std::optional<TypeSignature> deduce_primtive_type(const std::string& type_name, const Expression& expression);
         [[nodiscard]] std::optional<TypeSignature> deduce_type_from_array_literal(const Expression& expression);
@@ -36,6 +31,8 @@ class ExpressionTypeDeducer {
         [[nodiscard]] std::optional<TypeSignature> deduce_type_from_type_operator(const Expression& expression);
         [[nodiscard]] std::optional<TypeSignature> deduce_type_from_binary_operator(const Expression& expression);
         [[nodiscard]] std::optional<TypeSignature> deduce_type_from_unary_operator(const Expression& expression);
+
+        [[nodiscard]] std::vector<TypeSignature> deduce_argument_types_from_function_call(const FunctionCall& function_call);
 
         [[nodiscard]] std::optional<TypeSignature> deduce_address_operator_type(const UnaryOperator& unary_op);
         [[nodiscard]] std::optional<TypeSignature> deduce_pointer_dereference_operator_type(const UnaryOperator& unary_op);
