@@ -29,6 +29,26 @@ inline void ensure_assignment_is_valid(
     }
 }
 
+inline void ensure_variable_declaration_is_valid(
+    bool assignment_is_valid, 
+    const VariableDeclaration& variable_declaration, 
+    const std::optional<TypeSignature>& expr_type
+) {
+    if (!assignment_is_valid) {
+        throw std::runtime_error("variable declaration is invalid");
+    }
+}
+
+inline void ensure_const_declaration_is_valid(
+    bool assignment_is_valid, 
+    const ConstDeclaration& const_declaration, 
+    const std::optional<TypeSignature>& expr_type
+) {
+    if (!assignment_is_valid) {
+        throw std::runtime_error("variable declaration is invalid");
+    }
+}
+
 void ensure_no_multiple_definition_of_the_same_type(
     const std::pair<std::unordered_map<std::string, TypeDefinition>::iterator, bool>& 
         type_definition_insertion_outcome

@@ -25,6 +25,9 @@ void FDTC::SingleFunctionTypeChecker::visit_variable_declaration(const VariableD
     program_representation.verify_that_the_type_exists(variable_declaration.typesignature);
     if (variable_declaration.initial_value.has_value()) {
         visit_expression(variable_declaration.initial_value.value());
+        auto expr_type = program_representation.resolve_expression_type(variable_declaration.initial_value.value(), scope_context);
+        bool assignment_is_valid = program_representation.validate_assignment(variable_declaration.typesignature, expr_type);
+        ensure_variable_declaration_is_valid(assignment_is_valid, variable_declaration, expr_type);
     }
     scope_context.store_local_variable(variable_declaration);
 }
@@ -32,6 +35,9 @@ void FDTC::SingleFunctionTypeChecker::visit_variable_declaration(const VariableD
 void FDTC::SingleFunctionTypeChecker::visit_const_declaration(const ConstDeclaration& const_declaration) {
     program_representation.verify_that_the_type_exists(const_declaration.typesignature);
     visit_expression(const_declaration.value);
+    auto expr_type = program_representation.resolve_expression_type(const_declaration.value, scope_context);
+    bool assignment_is_valid = program_representation.validate_assignment(const_declaration.typesignature, expr_type);
+    ensure_const_declaration_is_valid(assignment_is_valid, const_declaration, expr_type);
     scope_context.store_local_constant(const_declaration);
 }
 

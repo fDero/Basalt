@@ -7,6 +7,8 @@
 #include "errors/preprocessing_errors.hpp"
 #include "errors/internal_errors.hpp"
 
+#include <iostream>
+
 AssignmentTypeChecker::AssignmentTypeChecker(
     TypeDefinitionsRegister& type_definitions_register, 
     ProjectFileStructure& project_file_structure
@@ -69,8 +71,11 @@ bool AssignmentTypeChecker::validate_assignment_to_primitive_type(const TypeSign
 }
 
 bool AssignmentTypeChecker::validate_assignment_to_array_type(const TypeSignature& source, const ArrayType& dest) {
+    std::cerr << "HERE!!!\n";
     bool assignment_makes_sense = (source.is<ArrayType>());
-    return assignment_makes_sense && validate_assignment(source.get<ArrayType>().stored_type, dest.stored_type);
+    assignment_makes_sense &= validate_assignment(source.get<ArrayType>().stored_type, dest.stored_type);
+    assignment_makes_sense &= source.get<ArrayType>().array_length == dest.array_length;
+    return assignment_makes_sense;
 }
 
 bool AssignmentTypeChecker::validate_assignment_to_pointer_type(const TypeSignature& source, const PointerType& dest) {
