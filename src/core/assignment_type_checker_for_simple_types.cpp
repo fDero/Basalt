@@ -7,8 +7,6 @@
 #include "errors/preprocessing_errors.hpp"
 #include "errors/internal_errors.hpp"
 
-#include <iostream>
-
 AssignmentTypeChecker::AssignmentTypeChecker(
     TypeDefinitionsRegister& type_definitions_register, 
     ProjectFileStructure& project_file_structure
@@ -71,7 +69,6 @@ bool AssignmentTypeChecker::validate_assignment_to_primitive_type(const TypeSign
 }
 
 bool AssignmentTypeChecker::validate_assignment_to_array_type(const TypeSignature& source, const ArrayType& dest) {
-    std::cerr << "HERE!!!\n";
     bool assignment_makes_sense = (source.is<ArrayType>());
     assignment_makes_sense &= validate_assignment(source.get<ArrayType>().stored_type, dest.stored_type);
     assignment_makes_sense &= source.get<ArrayType>().array_length == dest.array_length;
@@ -84,9 +81,17 @@ bool AssignmentTypeChecker::validate_assignment_to_pointer_type(const TypeSignat
 }
 
 bool AssignmentTypeChecker::validate_assignment_to_slice_type(const TypeSignature& source, const SliceType& dest) {
+    const PointerType slice_as_pointer(
+        source.get<SliceType>().as_debug_informations_aware_entity(),
+        source.get<SliceType>().stored_type
+    );
     switch (source.typesiganture_kind()) {
-        case TypeSignatureBody::Kind::slice_type: return validate_assignment_very_strictly(source.get<SliceType>().stored_type, dest.stored_type);
-        case TypeSignatureBody::Kind::array_type: return validate_assignment(source.get<ArrayType>().stored_type, dest.stored_type);
+        case TypeSignatureBody::Kind::slice_type: return validate_assignment_very_strictly(
+            source.get<SliceType>().stored_type, dest.stored_type
+        );
+        case TypeSignatureBody::Kind::pointer_type: return validate_assignment(
+            source, slice_as_pointer
+        );
         default: return false;
     }
 }

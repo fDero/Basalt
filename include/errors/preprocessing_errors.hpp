@@ -114,9 +114,9 @@ inline void ensure_statement_is(const Statement& statement) {
     }
 }
 
-inline void ensure_not_tryng_to_dereference_a_literal(const Expression& expression) {
-    if (expression.is_literal()) {
-        throw std::runtime_error("tryng to dereference a literal");
+inline void ensure_not_tryng_to_dereference_a_literal(const Expression& expression, bool is_addressable) {
+    if (!is_addressable) {
+        throw std::runtime_error("tryng to address a non addressable expression");
     }
 }
 

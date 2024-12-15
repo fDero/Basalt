@@ -19,11 +19,11 @@ void FunctionSpecificityDescriptor::update_indices_based_on_argument_type(
     switch (arg_type.typesiganture_kind()) {
         break; case TypeSignatureBody::Kind::primitive_type: update_indicies_based_on_primitive_type(input_arg_type, reg, flag);
         break; case TypeSignatureBody::Kind::pointer_type: update_indicies_based_on_pointer_type(input_arg_type, reg, flag);
-        break; case TypeSignatureBody::Kind::array_type: update_indicies_based_on_array_type(input_arg_type, reg, flag);
-        break; case TypeSignatureBody::Kind::slice_type: update_indicies_based_on_slice_type(input_arg_type, reg, flag);
         break; case TypeSignatureBody::Kind::template_type: number_of_uses_of_its_generic_parameters++;
         break; case TypeSignatureBody::Kind::inline_union: update_indicies_based_on_inline_union_type(input_arg_type, reg, flag);
         break; case TypeSignatureBody::Kind::custom_type: update_indicies_based_on_custom_type(input_arg_type, reg, flag);
+        break; case TypeSignatureBody::Kind::array_type: return;
+        break; case TypeSignatureBody::Kind::slice_type: return;
     }
 }
 
@@ -54,33 +54,6 @@ void FunctionSpecificityDescriptor::update_indicies_based_on_pointer_type(
         type_definitions_register, 
         current_type_is_fixed_and_cannot_be_an_upcasting_target
     );
-}
-
-void FunctionSpecificityDescriptor::update_indicies_based_on_array_type(
-    const TypeSignature& typesignature, 
-    TypeDefinitionsRegister& type_definitions_register,
-    bool current_type_is_fixed_and_cannot_be_an_upcasting_target
-) {
-    assert_typesignature_is<ArrayType>(typesignature);
-    const ArrayType& inner_type = typesignature.get<ArrayType>();
-    current_type_is_fixed_and_cannot_be_an_upcasting_target = false;
-    update_indices_based_on_argument_type(
-        inner_type, 
-        type_definitions_register, 
-        current_type_is_fixed_and_cannot_be_an_upcasting_target
-    );
-}
-
-void FunctionSpecificityDescriptor::update_indicies_based_on_slice_type(
-    const TypeSignature& typesignature, 
-    TypeDefinitionsRegister& type_definitions_register,
-    bool current_type_is_fixed_and_cannot_be_an_upcasting_target
-) {
-    assert_typesignature_is<SliceType>(typesignature);
-    const SliceType& slice_type = typesignature.get<SliceType>();
-    arguments_types_complexity_score += !current_type_is_fixed_and_cannot_be_an_upcasting_target;
-    TypeSignature inner_type = slice_type.stored_type; 
-    update_indices_based_on_argument_type(inner_type, type_definitions_register, true);
 }
 
 void FunctionSpecificityDescriptor::update_indicies_based_on_inline_union_type(
