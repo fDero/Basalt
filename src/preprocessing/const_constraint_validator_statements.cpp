@@ -111,9 +111,8 @@ void CCV::SingleFunctionConstConstraintValidator::visit_assignment(
 ) {
     visit_expression(assignment.assigned_value, scope_context);
     bool assignment_to_immutable_target = immutability_checker.is_strictly_immutable_expression(assignment.assignment_target);
-    bool assignment_of_immutable_value = immutability_checker.is_weakly_immutable_expression(assignment.assigned_value);
-    std::optional<TypeSignature> type = program_representation.resolve_expression_type(assignment.assigned_value, scope_context);
-    bool assignment_implies_bound = type.has_value() && bond_inspector.does_the_type_of_this_expr_imply_a_bond(*type);
-    bool assignment_discard_qualifiers = assignment_to_immutable_target || (assignment_of_immutable_value && assignment_implies_bound);
+    AssignabilityChecker assignability_checker(scope_context, program_representation, bond_inspector, immutability_checker);
+    bool expression_not_assignable = !assignability_checker.is_expression_assignable_to_var(assignment.assigned_value);
+    bool assignment_discard_qualifiers = assignment_to_immutable_target || expression_not_assignable;
     ensure_assignment_complies_with_const_qualifiers(assignment, assignment_discard_qualifiers);
 }
