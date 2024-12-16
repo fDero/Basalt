@@ -336,3 +336,15 @@ inline void ensure_assignment_complies_with_const_qualifiers(
         throw std::runtime_error("assignment discards qualifiers");
     }
 }
+
+inline void ensure_condition_expression_is_boolean(
+    const std::optional<TypeSignature>& condition_type,
+    const Expression& condition
+) {
+    if (!condition_type.has_value()) {
+        throw std::runtime_error("condition expression is not boolean");
+    }
+    if (!condition_type->is<PrimitiveType>() || condition_type->get<PrimitiveType>().type_name != "Bool") {
+        throw std::runtime_error("condition expression is not boolean");
+    }
+}

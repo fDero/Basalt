@@ -38,7 +38,7 @@ bool AssignabilityChecker::is_expression_assignable_to_var(const Expression& exp
 
 bool AssignabilityChecker::is_potentially_bonding_expression_assignable_to_var(const Expression& expression) {
     auto expr_type = program_representation.resolve_expression_type(expression, scope_context);
-    return !immutability_checker.is_weakly_immutable_expression(expression) 
-        || expr_type.has_value() 
-        || !bond_inspector.does_the_type_of_this_expr_imply_a_bond(expr_type.value());
+    bool assignment_of_immutable_expr = immutability_checker.is_weakly_immutable_expression(expression);
+    bool assignment_implies_bond = expr_type.has_value() && bond_inspector.does_the_type_of_this_expr_imply_a_bond(*expr_type);
+    return !assignment_of_immutable_expr || !assignment_implies_bond;
 }

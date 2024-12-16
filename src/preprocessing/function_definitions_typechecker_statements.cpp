@@ -52,17 +52,23 @@ void FDTC::SingleFunctionTypeChecker::visit_assignment(const Assignment& assignm
 
 void FDTC::SingleFunctionTypeChecker::visit_conditional(const Conditional& conditional) {
     visit_expression(conditional.condition);
+    auto condition_type = program_representation.resolve_expression_type(conditional.condition, scope_context);
+    ensure_condition_expression_is_boolean(condition_type, conditional.condition);
     visit_code_block(conditional.then_branch);
     visit_code_block(conditional.else_branch);
 }
 
 void FDTC::SingleFunctionTypeChecker::visit_while_loop(const WhileLoop& loop) {
     visit_expression(loop.condition);
+    auto condition_type = program_representation.resolve_expression_type(loop.condition, scope_context);
+    ensure_condition_expression_is_boolean(condition_type, loop.condition);
     visit_code_block(loop.loop_body);
 }
 
 void FDTC::SingleFunctionTypeChecker::visit_until_loop(const UntilLoop& loop) {
     visit_expression(loop.condition);
+    auto condition_type = program_representation.resolve_expression_type(loop.condition, scope_context);
+    ensure_condition_expression_is_boolean(condition_type, loop.condition);
     visit_code_block(loop.loop_body);
 }
 
