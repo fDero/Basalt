@@ -3,6 +3,7 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include "preprocessing/assignability_checker.hpp"
 #include "preprocessing/const_constraint_validator.hpp"
 using CCV = ConstConstraintValidator;
 
@@ -77,10 +78,8 @@ void CCV::SingleFunctionConstConstraintValidator::visit_variable_declaration(
     if (variable_declaration.initial_value.has_value()) {
         Expression value = variable_declaration.initial_value.value();
         visit_expression(variable_declaration.initial_value.value(), scope_context);
-        bool assignment_of_immutable_value = immutability_checker.is_weakly_immutable_expression(value);
-        std::optional<TypeSignature> type = program_representation.resolve_expression_type(value, scope_context);
-        bool assignment_implies_bound = type.has_value() && bond_inspector.does_the_type_of_this_expr_imply_a_bond(*type);
-        bool assignment_discard_qualifiers = assignment_of_immutable_value && assignment_implies_bound;
+        AssignabilityChecker assignability_checker(scope_context, program_representation, bond_inspector, immutability_checker);
+        bool assignment_discard_qualifiers = !assignability_checker.is_expression_assignable_to_var(value);
         ensure_assignment_complies_with_const_qualifiers(variable_declaration, assignment_discard_qualifiers);
     }
     scope_context.store_local_variable(variable_declaration);
@@ -100,10 +99,8 @@ void CCV::SingleFunctionConstConstraintValidator::visit_function_call(
 ) {
     for (const Expression& argument : function_call.arguments) {
         visit_expression(argument, scope_context);
-        bool assignment_of_immutable_value = immutability_checker.is_strictly_immutable_expression(argument);
-        std::optional<TypeSignature> type = program_representation.resolve_expression_type(argument, scope_context);
-        bool assignment_implies_bound = type.has_value() && bond_inspector.does_the_type_of_this_expr_imply_a_bond(*type);
-        bool assignment_discard_qualifiers = assignment_of_immutable_value && assignment_implies_bound;
+        AssignabilityChecker assignability_checker(scope_context, program_representation, bond_inspector, immutability_checker);
+        bool assignment_discard_qualifiers = !assignability_checker.is_expression_assignable_to_var(argument);
         ensure_use_as_function_argument_complies_with_const_qualifiers(function_call, argument, assignment_discard_qualifiers);
     }
 }
