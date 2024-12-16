@@ -4,7 +4,7 @@
 #include "../../tests_utilities/typesignature_factory.hpp"
 #include "../../tests_utilities/struct_definition_factory.hpp"
 
-TEST(Preprocessing, Bond_Inspector_On_Struct_No_Bound) {
+TEST(Preprocessing, Bond_Inspector_On_Struct_No_Bond) {
     ProjectFileStructure example_project({
         FileRepresentation {
             .file_metadata = {
@@ -33,7 +33,7 @@ TEST(Preprocessing, Bond_Inspector_On_Struct_No_Bound) {
     ));
 }
 
-TEST(Preprocessing, Bond_Inspector_On_Struct_With_Bound) {
+TEST(Preprocessing, Bond_Inspector_On_Struct_With_Bond) {
     ProjectFileStructure example_project({
         FileRepresentation {
             .file_metadata = {
@@ -62,7 +62,7 @@ TEST(Preprocessing, Bond_Inspector_On_Struct_With_Bound) {
     ));
 }
 
-TEST(Preprocessing, Bond_Inspector_On_Generic_Struct_No_Bound) {
+TEST(Preprocessing, Bond_Inspector_On_Generic_Struct_No_Bond) {
     ProjectFileStructure example_project({
         FileRepresentation {
             .file_metadata = {
@@ -94,7 +94,7 @@ TEST(Preprocessing, Bond_Inspector_On_Generic_Struct_No_Bound) {
 }
 
 
-TEST(Preprocessing, Bond_Inspector_On_Generic_Struct_With_Bound) {
+TEST(Preprocessing, Bond_Inspector_On_Generic_Struct_With_Bond) {
     ProjectFileStructure example_project({
         FileRepresentation {
             .file_metadata = {
