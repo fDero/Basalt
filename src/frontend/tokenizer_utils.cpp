@@ -73,13 +73,13 @@ TokenizedFile Tokenizer::tokenize() {
         line_number = line_number + 1;
         tok_number = char_pos = 0;
         while (char_pos < current_line.size()) {
+            ignore_discardable_characters();
             std::optional<Token> token = extract();
             if (token.has_value()) {
                 tokens.push_back(*token);
             }
             tok_number += (token.has_value() && token->type != Token::Type::multiline_comment);
             char_pos += ( (token.has_value())? token->sourcetext.size() : 0 );
-            ignore_discardable_characters();
         }
     }
     ensure_multiline_comments_get_closed(multiline_comments_tracker, *this);

@@ -26,4 +26,5 @@ dependencies
 *.snap
 *.msi
 *.nix
+*.o
 result
