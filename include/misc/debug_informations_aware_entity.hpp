@@ -29,6 +29,13 @@ struct DebugInformationsAwareEntity {
         , char_pos(char_pos)
     {}
 
+    std::string unique_string_id() const {
+        return filename 
+            + ":" + std::to_string(line_number) 
+            + ":" + std::to_string(tok_number) 
+            + ":" + std::to_string(char_pos);
+    }
+
     DebugInformationsAwareEntity(const DebugInformationsAwareEntity& other) = default;
     DebugInformationsAwareEntity& operator=(const DebugInformationsAwareEntity& other) = default;
 
