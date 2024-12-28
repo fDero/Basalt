@@ -11,6 +11,7 @@
 #include "backend/type_definitions_llvm_translator.hpp"
 #include "language/definitions.hpp"
 
+#include <llvm/IR/IRBuilder.h>
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/Module.h>
 
@@ -23,9 +24,17 @@ class FunctionDefinitionsLLVMTranslator {
             llvm::Module& llvm_module
         );
         
-        [[nodiscard]] llvm::Function* translate_function_definition_to_llvm(const FunctionDefinition::Ref& func_def);
         [[nodiscard]] llvm::Type* translate_return_type_to_llvm_type(const FunctionDefinition::Ref& func_def);
         [[nodiscard]] std::vector<llvm::Type*> translate_arguments_to_llvm_types(const FunctionDefinition::Ref& func_def);
+
+        void translate_function_definition_to_llvm(
+            const FunctionDefinition::Ref& func_def
+        );
+        
+        void translate_function_body_to_llvm(
+            const FunctionDefinition::Ref& function_definition,
+            llvm::Function* function
+        );
 
     private:
         TypeDefinitionsLLVMTranslator& type_definitions_llvm_translator;

@@ -4,6 +4,7 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 #include "backend/function_definitions_llvm_translator.hpp"
+#include "backend/statement_llvm_translator.hpp"
 #include "errors/internal_errors.hpp"
 
 FunctionDefinitionsLLVMTranslator::FunctionDefinitionsLLVMTranslator(
@@ -40,7 +41,23 @@ std::vector<llvm::Type*> FunctionDefinitionsLLVMTranslator::translate_arguments_
     return llvm_arg_types;
 }
 
-llvm::Function* FunctionDefinitionsLLVMTranslator::translate_function_definition_to_llvm(
+void FunctionDefinitionsLLVMTranslator::translate_function_body_to_llvm(
+    const FunctionDefinition::Ref& function_definition,
+    llvm::Function* function
+) {
+    llvm::BasicBlock* entry_code_block = llvm::BasicBlock::Create(context, "entry", function);
+	llvm::BasicBlock* exit_code_block = llvm::BasicBlock::Create(context, "exit", function);
+    StatementLLVMTranslator statement_llvm_translator(
+        program_representation, 
+        entry_code_block, 
+        exit_code_block
+    );
+    for (const Statement& statement : function_definition->code) {
+        statement_llvm_translator.translate_statement_into_llvm(statement);
+    }
+}
+
+void FunctionDefinitionsLLVMTranslator::translate_function_definition_to_llvm(
     const FunctionDefinition::Ref& function_definition
 ){
     llvm::Type* llvm_return_type = translate_return_type_to_llvm_type(function_definition);
@@ -49,11 +66,11 @@ llvm::Function* FunctionDefinitionsLLVMTranslator::translate_function_definition
     auto function_signature = llvm::FunctionType::get(llvm_return_type, is_vararg);
 	auto linkage_policy = llvm::Function::ExternalLinkage;
     const std::string llvm_function_name = function_definition->as_debug_informations_aware_entity().unique_string_id();
-    llvm::Function* function = llvm::Function::Create(
+    llvm::Function* llvm_function = llvm::Function::Create(
         function_signature, 
         linkage_policy, 
         llvm_function_name, 
         llvm_module
     );
-    return function;
+    translate_function_body_to_llvm(function_definition, llvm_function);
 }
