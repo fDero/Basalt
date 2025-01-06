@@ -23,7 +23,7 @@ void FunctionDefinitionsTypeChecker::visit_all_function_definitions() {
 void FunctionDefinitionsTypeChecker::visit_function_definition(
     const FunctionDefinition& function_definition
 ) {
-    ScopeContext scope_context(function_definition.arguments);
+    ScopeContext scope_context(function_definition);
     SingleFunctionTypeChecker single_function_type_checker(
         function_definition.return_type,
         scope_context,

@@ -61,10 +61,10 @@ void ensure_identifier_not_ambiguous_in_given_scope(
 }
 
 void ensure_parent_scope_exists_for_further_local_object_search(
-    const ScopeContext* parent_scope, 
+    const bool success, 
     const std::string& identifier
 ) {
-    if (parent_scope == nullptr) {
+    if (!success) {
         throw std::runtime_error {
             "Cannot find object: " + identifier + "\n"
         };

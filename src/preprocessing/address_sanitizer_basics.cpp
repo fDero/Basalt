@@ -23,7 +23,7 @@ void AddressSanitizer::visit_all_function_definitions() {
 void AddressSanitizer::visit_function_definition(
     const FunctionDefinition& function_definition
 ) {
-    ScopeContext scope_context(function_definition.arguments);
+    ScopeContext scope_context(function_definition);
     SingleFunctionAddressSanitizer single_function_address_sanitizer(
         scope_context,
         program_representation

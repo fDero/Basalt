@@ -16,7 +16,7 @@ void ConstConstraintValidator::visit_all_function_definitions() {
 }
 
 void ConstConstraintValidator::visit_function_definition(const FunctionDefinition& function_definition) {
-    ScopeContext scope_context(function_definition.arguments);
+    ScopeContext scope_context(function_definition);
     ImmutabilityChecker immutability_checker(scope_context, program_representation);
     BondInspector bond_inspector(scope_context, program_representation);
     SingleFunctionConstConstraintValidator single_function_const_constraint_validator(

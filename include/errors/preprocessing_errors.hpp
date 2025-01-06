@@ -72,7 +72,7 @@ void ensure_identifier_not_ambiguous_in_given_scope(
 );
 
 void ensure_parent_scope_exists_for_further_local_object_search(
-    const ScopeContext* parent_scope,
+    const bool parent_scope,
     const std::string& identifier
 );
 
