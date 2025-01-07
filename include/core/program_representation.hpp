@@ -11,6 +11,8 @@
 #include "core/overloading_resolution_engine.hpp"
 #include "core/common_feature_adoption_plan_generation_engine.hpp"
 #include "core/scope_context.hpp"
+#include "core/caching_aware_register.hpp"
+#include "core/callable_code_block.hpp"
 
 class ProgramRepresentation {
     
@@ -41,6 +43,11 @@ class ProgramRepresentation {
         );
 
         [[nodiscard]] bool is_void_procedure(
+            const FunctionCall& function_call,
+            ScopeContext& scope_context
+        );
+
+        [[nodiscard]] CallableCodeBlock resolve_function_call(
             const FunctionCall& function_call,
             ScopeContext& scope_context
         );

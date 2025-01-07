@@ -78,6 +78,7 @@ ExpressionTypeDeducer::deduce_type_from_function_call(const Expression& expressi
     assert_expression_is<FunctionCall>(expression);
     const FunctionCall& function_call = expression.get<FunctionCall>();
     FunctionCallResolver resolver(
+        type_definitions_register,
         overloading_resolution_engine, 
         common_feature_adoption_plan_generation_engine
     );
