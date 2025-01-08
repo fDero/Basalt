@@ -51,32 +51,7 @@ Finalizer::Finalizer(
 }
 
 void Finalizer::generate_llvm_ir() {
-    auto int32_type = llvm_builder.getInt32Ty();
-	auto byte_pointer_type = llvm_builder.getInt8Ty()->getPointerTo();
-
-    bool constexpr VARARG = true;
-    bool constexpr NON_VARARG = false;
-
-	llvm::Constant* hello_world_str = llvm::ConstantDataArray::getString(llvm_context, "Hello, World!\n", true);
-	auto hello_world_var = new llvm::GlobalVariable(llvm_module, hello_world_str->getType(), true, llvm::GlobalValue::PrivateLinkage, hello_world_str);
-	auto hello_world_ptr = llvm_builder.CreateConstGEP2_32(hello_world_var->getValueType(), hello_world_var, 0, 0);
-
-	llvm::Type* printf_types[] = {byte_pointer_type};
-	llvm::FunctionType* printf_type = llvm::FunctionType::get(int32_type, printf_types, VARARG);
-	llvm_module.getOrInsertFunction("printf", printf_type);
-
-	auto main_function_type = llvm::FunctionType::get(int32_type, NON_VARARG);
-	auto linkage_policy = llvm::Function::ExternalLinkage;
-	auto main_function = llvm::Function::Create(main_function_type, linkage_policy, "main", llvm_module);
-
-	auto main_function_code_block = llvm::BasicBlock::Create(llvm_context, "entry", main_function);
-	llvm_builder.SetInsertPoint(main_function_code_block);
-
-	llvm_builder.CreateCall(llvm_module.getFunction("printf"), {hello_world_ptr});
-
-	auto result = llvm_builder.getInt32(EXIT_SUCCESS);
-    auto i32Result = llvm_builder.CreateIntCast(result, llvm_builder.getInt32Ty(), true);
-    llvm_builder.CreateRet(i32Result);
+    std::runtime_error("not implemented");
 }
 
 void Finalizer::emit_llvm_ir(const std::string& output_file_name) {
