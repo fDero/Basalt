@@ -148,8 +148,8 @@ TEST(Core, CFA_Success_Resolving_One_Union_As_First_Arg) {
     CommonFeatureAdoptionPlan nested_plan_2 = cfa_plan.get_recursive_adoption().nested_plans[1];
     EXPECT_TRUE(nested_plan_1.is_direct_adoption());
     EXPECT_TRUE(nested_plan_2.is_direct_adoption());
-    ASSERT_TRUE(cfa_plan.get_return_type().has_value());
-    EXPECT_TRUE(cfa_plan.get_return_type().value().is<InlineUnion>());
+    ASSERT_TRUE(cfa_plan_descriptor.return_type.has_value());
+    EXPECT_TRUE(cfa_plan_descriptor.return_type.value().is<InlineUnion>());
 }
 
 
@@ -187,8 +187,8 @@ TEST(Core, CFA_Success_Resolving_Two_Unions) {
     EXPECT_EQ(nested_plan_2.get_recursive_adoption().alternatives.size(), 2);
     EXPECT_EQ(nested_plan_2.get_recursive_adoption().nested_plans.size(), 2);
     EXPECT_EQ(nested_plan_2.get_recursive_adoption().argument_index, 1);
-    ASSERT_TRUE(cfa_plan.get_return_type().has_value());
-    EXPECT_TRUE(cfa_plan.get_return_type().value().is<InlineUnion>());
+    ASSERT_TRUE(cfa_plan_descriptor.return_type.has_value());
+    EXPECT_TRUE(cfa_plan_descriptor.return_type.value().is<InlineUnion>());
 }
 
 TEST(Core, CFA_Success_Resolving_One_Union_As_Second_Arg) {
@@ -221,6 +221,6 @@ TEST(Core, CFA_Success_Resolving_One_Union_As_Second_Arg) {
     CommonFeatureAdoptionPlan nested_plan_2 = cfa_plan.get_recursive_adoption().nested_plans[1];
     EXPECT_TRUE(nested_plan_1.is_direct_adoption());
     EXPECT_TRUE(nested_plan_2.is_direct_adoption());
-    ASSERT_TRUE(cfa_plan.get_return_type().has_value());
-    EXPECT_TRUE(cfa_plan.get_return_type().value().is<InlineUnion>());
+    ASSERT_TRUE(cfa_plan_descriptor.return_type.has_value());
+    EXPECT_TRUE(cfa_plan_descriptor.return_type.value().is<InlineUnion>());
 }

@@ -22,10 +22,12 @@ CommonFeatureAdoptionPlanGenerationEngine::generate_common_feature_adoption_plan
     const std::vector<TypeSignature>& arg_types
 ) {
     CommonFeatureAdoptionPlan plan = generate_common_feature_adoption_plan(function_call, arg_types);
+    std::vector<std::optional<TypeSignature>> return_types = isolate_return_types(plan);
+    std::optional<TypeSignature> return_type = compute_recursive_adoption_plan_return_type(function_call, return_types);
     return CommonFeatureAdoptionPlanDescriptor {
         function_call.function_name,
         arg_types,
-        plan.get_return_type(),
+        return_type,
         function_call.as_debug_informations_aware_entity().filename,
         plan
     };
@@ -131,7 +133,6 @@ CommonFeatureAdoptionPlanGenerationEngine::generate_common_feature_adoption_for_
 ) {
     assert_current_arg_type_is_not_generic(*current_arg_type_iterator);
     RecursiveAdoptionPlan plan;
-    std::vector<std::optional<TypeSignature>> return_types;
     plan.argument_index = static_cast<size_t>(std::distance(arg_types.begin(), current_arg_type_iterator));
     for (const TypeSignature& alternative : alternatives) { 
         std::vector<TypeSignature> new_arg_types;
@@ -144,12 +145,29 @@ CommonFeatureAdoptionPlanGenerationEngine::generate_common_feature_adoption_for_
         CommonFeatureAdoptionPlan nested_plan = generate_common_feature_adoption_iterating_over_arg_types(
             function_call, new_arg_types, new_arg_type_iterator
         );
-        return_types.push_back(nested_plan.get_return_type());
+        
         plan.alternatives.push_back(alternative);
         plan.nested_plans.emplace_back(std::move(nested_plan));
     }
-    plan.return_type = compute_recursive_adoption_plan_return_type(function_call, return_types);
     return plan;
+}
+
+std::vector<std::optional<TypeSignature>> 
+CommonFeatureAdoptionPlanGenerationEngine::isolate_return_types(
+    const CommonFeatureAdoptionPlan& plan
+){
+    if (plan.is_direct_adoption()) {
+        FunctionDefinition::Ref direct_adoption = plan.get_direct_adoption();
+        return { direct_adoption->return_type };
+    }
+    assert_is_recursive_cfa_plan(plan);
+    std::vector<std::optional<TypeSignature>> return_types;
+    for (const CommonFeatureAdoptionPlan& nested_plan : plan.get_recursive_adoption().nested_plans) {
+        for (const std::optional<TypeSignature>& return_type : isolate_return_types(nested_plan)) {
+            return_types.push_back(return_type);
+        }
+    }
+    return return_types;
 }
 
 std::optional<TypeSignature> 

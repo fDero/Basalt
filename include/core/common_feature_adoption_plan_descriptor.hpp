@@ -17,7 +17,6 @@ struct RecursiveAdoptionPlan {
     size_t argument_index;
     std::vector<TypeSignature> alternatives;
     std::vector<CommonFeatureAdoptionPlan> nested_plans;
-    std::optional<TypeSignature> return_type;
 };
 
 struct CommonFeatureAdoptionPlan 
@@ -40,12 +39,6 @@ struct CommonFeatureAdoptionPlan
 
     [[nodiscard]] RecursiveAdoptionPlan get_recursive_adoption() const {
         return std::get<RecursiveAdoptionPlan>(*this);
-    }
-
-    [[nodiscard]] std::optional<TypeSignature> get_return_type() const {
-        return (is_direct_adoption())
-            ? get_direct_adoption()->return_type
-            : get_recursive_adoption().return_type;
     }
 };
 

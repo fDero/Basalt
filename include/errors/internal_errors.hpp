@@ -17,6 +17,7 @@
 #include "language/definitions.hpp"
 #include "frontend/file_representation.hpp"
 #include "errors/error-types.hpp"
+#include "core/common_feature_adoption_plan_descriptor.hpp"
 
 [[noreturn]] void assert_unreachable();
 
@@ -171,7 +172,19 @@ void assert_overload_set_exists(
 );
 
 inline void assert_current_arg_type_is_not_generic(const TypeSignature& current_arg_type) {
+    #ifndef DEBUG_BUILD
     if (current_arg_type.is_generic()) {
         throw std::runtime_error("the compiler expected this type to be non-generic, the assumption was false");
     }
+    #endif
+}
+
+inline void assert_is_recursive_cfa_plan(
+    const CommonFeatureAdoptionPlan& plan
+) {
+    #ifndef DEBUG_BUILD
+    if (!plan.is_recursive_adoption()) {
+        throw std::runtime_error("the compiler expected this cfa plan to be recursive, and it wasn't");
+    }
+    #endif
 }

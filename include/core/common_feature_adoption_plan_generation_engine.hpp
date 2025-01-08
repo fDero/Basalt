@@ -38,6 +38,11 @@ class CommonFeatureAdoptionPlanGenerationEngine : public CachingAwareRegister {
         using CachingAwareRegister::get_cache_search_key_for_func_def_retrieval_from_func_call;
 
     private:
+        [[nodiscard]] std::vector<std::optional<TypeSignature>> 
+        isolate_return_types(
+            const CommonFeatureAdoptionPlan& plan
+        );
+
         [[nodiscard]] std::optional<TypeSignature> 
         compute_recursive_adoption_plan_return_type(
             const FunctionCall& function_call, 
