@@ -5,6 +5,7 @@
 
 #pragma once
 
+#include "core/type_definitions_register.hpp"
 #include "language/typesignatures.hpp"
 #include "language/definitions.hpp"
 #include "misc/smart_variant.hpp"
@@ -24,14 +25,6 @@ struct CallableCodeBlock : public SmartVariant<
     
     const std::string unique_context_independent_id;
 
-    CallableCodeBlock(const ParentVariant& variant, const std::string& id)
-        : ParentVariant(variant)
-        , unique_context_independent_id(id)
-    {}
-
-    [[nodiscard]] std::optional<TypeSignature> get_return_type() {
-        return (ParentVariant::is<FunctionDefinition::Ref>())
-            ? ParentVariant::get<FunctionDefinition::Ref>()->return_type
-            : ParentVariant::get<CommonFeatureAdoptionPlanDescriptor>().return_type;
-    }
+    CallableCodeBlock(const ParentVariant& variant, TypeDefinitionsRegister& type_definitions_register);
+    [[nodiscard]] std::optional<TypeSignature> get_return_type();
 };

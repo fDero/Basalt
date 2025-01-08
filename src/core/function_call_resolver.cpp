@@ -40,14 +40,12 @@ CallableCodeBlock FunctionCallResolver::resolve_function_call(
     const FunctionCall& function_call,
     const std::vector <TypeSignature>& argument_types
 ) {
-    std::string unique_code_block_id =
-        get_cache_search_key_for_func_def_retrieval_from_func_call(type_definitions_register, function_call,argument_types);
     FunctionDefinition::Ref retrieved = overloading_resolution_engine
         .retrieve_function_definition(function_call, argument_types);
     if (retrieved != nullptr) {
-        return {retrieved, unique_code_block_id};
+        return {retrieved, type_definitions_register};
     }
     auto cfa = common_feature_adoption_plan_generation_engine
         .generate_common_feature_adoption_plan_descriptor(function_call, argument_types);
-    return {cfa, unique_code_block_id};
+    return {cfa, type_definitions_register};
 }

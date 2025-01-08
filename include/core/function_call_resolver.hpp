@@ -14,7 +14,7 @@
 #include "core/callable_code_block.hpp"
 #include "core/caching_aware_register.hpp"
 
-class FunctionCallResolver : public CachingAwareRegister {
+class FunctionCallResolver {
 
     public:
         FunctionCallResolver(
