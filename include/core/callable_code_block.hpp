@@ -29,9 +29,9 @@ struct CallableCodeBlock : public SmartVariant<
         , unique_context_independent_id(id)
     {}
 
-    std::optional<TypeSignature> get_return_type() {
+    [[nodiscard]] std::optional<TypeSignature> get_return_type() {
         return (ParentVariant::is<FunctionDefinition::Ref>())
             ? ParentVariant::get<FunctionDefinition::Ref>()->return_type
-            : ParentVariant::get<CommonFeatureAdoptionPlanDescriptor>().get_return_type();
+            : ParentVariant::get<CommonFeatureAdoptionPlanDescriptor>().return_type;
     }
 };

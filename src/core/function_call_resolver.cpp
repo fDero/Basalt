@@ -47,7 +47,7 @@ CallableCodeBlock FunctionCallResolver::resolve_function_call(
     if (retrieved != nullptr) {
         return {retrieved, unique_code_block_id};
     }
-    CommonFeatureAdoptionPlanDescriptor cfa = common_feature_adoption_plan_generation_engine
-        .generate_common_feature_adoption_plan(function_call, argument_types);
+    auto cfa = common_feature_adoption_plan_generation_engine
+        .generate_common_feature_adoption_plan_descriptor(function_call, argument_types);
     return {cfa, unique_code_block_id};
 }

@@ -16,11 +16,11 @@
 struct RecursiveAdoptionPlan {
     size_t argument_index;
     std::vector<TypeSignature> alternatives;
-    std::vector<CommonFeatureAdoptionPlanDescriptor> nested_plans;
+    std::vector<CommonFeatureAdoptionPlan> nested_plans;
     std::optional<TypeSignature> return_type;
 };
 
-struct CommonFeatureAdoptionPlanDescriptor 
+struct CommonFeatureAdoptionPlan 
     : public std::variant<RecursiveAdoptionPlan, FunctionDefinition::Ref>
 {
     using std::variant<RecursiveAdoptionPlan, FunctionDefinition::Ref>::variant;
@@ -47,4 +47,12 @@ struct CommonFeatureAdoptionPlanDescriptor
             ? get_direct_adoption()->return_type
             : get_recursive_adoption().return_type;
     }
+};
+
+struct CommonFeatureAdoptionPlanDescriptor {
+    std::string function_name;
+    std::vector<TypeSignature> arg_types;
+    std::optional<TypeSignature> return_type;
+    std::string filename;
+    CommonFeatureAdoptionPlan plan;
 };

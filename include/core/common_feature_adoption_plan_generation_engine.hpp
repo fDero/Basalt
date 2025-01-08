@@ -22,8 +22,14 @@ class CommonFeatureAdoptionPlanGenerationEngine : public CachingAwareRegister {
             TypeDefinitionsRegister& type_definitions_register
         );
 
-        [[nodiscard]] CommonFeatureAdoptionPlanDescriptor 
+        [[nodiscard]] CommonFeatureAdoptionPlan 
         generate_common_feature_adoption_plan(
+            const FunctionCall& function_call, 
+            const std::vector<TypeSignature>& arg_types
+        );
+
+        [[nodiscard]] CommonFeatureAdoptionPlanDescriptor
+        generate_common_feature_adoption_plan_descriptor(
             const FunctionCall& function_call, 
             const std::vector<TypeSignature>& arg_types
         );
@@ -38,28 +44,28 @@ class CommonFeatureAdoptionPlanGenerationEngine : public CachingAwareRegister {
             std::vector<std::optional<TypeSignature>>& return_types
         );
 
-        [[nodiscard]] CommonFeatureAdoptionPlanDescriptor 
+        [[nodiscard]] CommonFeatureAdoptionPlan 
         generate_common_feature_adoption_iterating_over_arg_types(
             const FunctionCall& function_call, 
             const std::vector<TypeSignature>& arg_types,
             std::vector<TypeSignature>::const_iterator current_arg_type
         );
 
-        [[nodiscard]] CommonFeatureAdoptionPlanDescriptor 
+        [[nodiscard]] CommonFeatureAdoptionPlan 
         generate_common_feature_adoption_for_inline_union(
             const FunctionCall& function_call, 
             const std::vector<TypeSignature>& arg_types,
             std::vector<TypeSignature>::const_iterator current_arg_type
         );
 
-        [[nodiscard]] CommonFeatureAdoptionPlanDescriptor 
+        [[nodiscard]] CommonFeatureAdoptionPlan 
         generate_common_feature_adoption_for_custom_type(
             const FunctionCall& function_call, 
             const std::vector<TypeSignature>& arg_types,
             std::vector<TypeSignature>::const_iterator current_arg_type
         );
 
-        [[nodiscard]] CommonFeatureAdoptionPlanDescriptor 
+        [[nodiscard]] CommonFeatureAdoptionPlan 
         generate_common_feature_adoption_for_current_multicase_arg(
             const FunctionCall& function_call, 
             const std::vector<TypeSignature>& arg_types,
@@ -67,7 +73,7 @@ class CommonFeatureAdoptionPlanGenerationEngine : public CachingAwareRegister {
             const std::vector<TypeSignature>& alternatives
         );
 
-        std::unordered_map<std::string, CommonFeatureAdoptionPlanDescriptor> fast_retrieve_cache;
+        std::unordered_map<std::string, CommonFeatureAdoptionPlan> fast_retrieve_cache;
         OverloadingResolutionEngine& overloading_resolution_engine;
         TypeDefinitionsRegister& type_definitions_register;
 };

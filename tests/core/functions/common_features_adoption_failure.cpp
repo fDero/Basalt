@@ -52,7 +52,7 @@ TEST(Core, CFA_Failure_Not_Every_Case_Is_Covered) {
     OverloadingResolutionEngine overloading_resolution_engine(function_register, type_register, project_with_single_file_containing_two_overload_of_the_add_function);
     CommonFeatureAdoptionPlanGenerationEngine common_feature_adoption_plan_generator(overloading_resolution_engine, type_register);
     EXPECT_ANY_THROW(
-        common_feature_adoption_plan_generator.generate_common_feature_adoption_plan(
+        common_feature_adoption_plan_generator.generate_common_feature_adoption_plan_descriptor(
             FunctionCall {
                 Token { "add", "a.basalt", 1, 1, 1, Token::Type::text },
                 { 
@@ -111,7 +111,7 @@ TEST(Core, CFA_Failure_Incompatible_Return_Types) {
     OverloadingResolutionEngine overloading_resolution_engine(function_register, type_register, project_with_single_file_containing_two_overload_of_the_f_function_with_incompatible_return_types);
     CommonFeatureAdoptionPlanGenerationEngine common_feature_adoption_plan_generator(overloading_resolution_engine, type_register);
     EXPECT_ANY_THROW(
-        common_feature_adoption_plan_generator.generate_common_feature_adoption_plan(
+        common_feature_adoption_plan_generator.generate_common_feature_adoption_plan_descriptor(
             FunctionCall {
                 Token { "f", "f.basalt", 1, 1, 1, Token::Type::text },
                 { 

@@ -16,7 +16,22 @@ CommonFeatureAdoptionPlanGenerationEngine::CommonFeatureAdoptionPlanGenerationEn
     , type_definitions_register(type_definitions_register)
 { }
 
-CommonFeatureAdoptionPlanDescriptor 
+CommonFeatureAdoptionPlanDescriptor
+CommonFeatureAdoptionPlanGenerationEngine::generate_common_feature_adoption_plan_descriptor(
+    const FunctionCall& function_call, 
+    const std::vector<TypeSignature>& arg_types
+) {
+    CommonFeatureAdoptionPlan plan = generate_common_feature_adoption_plan(function_call, arg_types);
+    return CommonFeatureAdoptionPlanDescriptor {
+        function_call.function_name,
+        arg_types,
+        plan.get_return_type(),
+        function_call.as_debug_informations_aware_entity().filename,
+        plan
+    };
+}
+
+CommonFeatureAdoptionPlan 
 CommonFeatureAdoptionPlanGenerationEngine::generate_common_feature_adoption_plan(
     const FunctionCall& function_call, 
     const std::vector<TypeSignature>& arg_types
@@ -37,14 +52,14 @@ CommonFeatureAdoptionPlanGenerationEngine::generate_common_feature_adoption_plan
     return cfa_plan;
 }
 
-CommonFeatureAdoptionPlanDescriptor
+CommonFeatureAdoptionPlan
 CommonFeatureAdoptionPlanGenerationEngine::generate_common_feature_adoption_iterating_over_arg_types(
     const FunctionCall& function_call, 
     const std::vector<TypeSignature>& arg_types,
     std::vector<TypeSignature>::const_iterator current_arg_type_iterator
 ) { 
     FunctionDefinition::Ref retrieved = overloading_resolution_engine.retrieve_function_definition(function_call, arg_types);
-    CommonFeatureAdoptionPlanDescriptor direct_adoption_plan = retrieved;
+    CommonFeatureAdoptionPlan direct_adoption_plan = retrieved;
     if (retrieved != nullptr) {
         return direct_adoption_plan;
     }
@@ -64,7 +79,7 @@ CommonFeatureAdoptionPlanGenerationEngine::generate_common_feature_adoption_iter
     }
 }
 
-CommonFeatureAdoptionPlanDescriptor
+CommonFeatureAdoptionPlan
 CommonFeatureAdoptionPlanGenerationEngine::generate_common_feature_adoption_for_inline_union(
     const FunctionCall& function_call, 
     const std::vector<TypeSignature>& arg_types,
@@ -79,7 +94,7 @@ CommonFeatureAdoptionPlanGenerationEngine::generate_common_feature_adoption_for_
     );
 }
 
-CommonFeatureAdoptionPlanDescriptor
+CommonFeatureAdoptionPlan
 CommonFeatureAdoptionPlanGenerationEngine::generate_common_feature_adoption_for_custom_type(
     const FunctionCall& function_call, 
     const std::vector<TypeSignature>& arg_types,
@@ -107,7 +122,7 @@ CommonFeatureAdoptionPlanGenerationEngine::generate_common_feature_adoption_for_
     );
 }
 
-CommonFeatureAdoptionPlanDescriptor
+CommonFeatureAdoptionPlan
 CommonFeatureAdoptionPlanGenerationEngine::generate_common_feature_adoption_for_current_multicase_arg(
     const FunctionCall& function_call, 
     const std::vector<TypeSignature>& arg_types,
@@ -126,7 +141,7 @@ CommonFeatureAdoptionPlanGenerationEngine::generate_common_feature_adoption_for_
         std::vector<TypeSignature>::const_iterator new_arg_type_iterator = new_arg_types.begin();
         size_t new_arg_type_iterator_offset = std::distance(arg_types.begin(), current_arg_type_iterator);
         new_arg_type_iterator += new_arg_type_iterator_offset;
-        CommonFeatureAdoptionPlanDescriptor nested_plan = generate_common_feature_adoption_iterating_over_arg_types(
+        CommonFeatureAdoptionPlan nested_plan = generate_common_feature_adoption_iterating_over_arg_types(
             function_call, new_arg_types, new_arg_type_iterator
         );
         return_types.push_back(nested_plan.get_return_type());

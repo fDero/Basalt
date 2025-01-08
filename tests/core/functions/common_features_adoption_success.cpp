@@ -71,7 +71,7 @@ TEST(Core, CFA_Success_When_It_Is_Not_Necessary) {
     TypeDefinitionsRegister type_register(project_with_single_file_containing_four_overloads_of_the_add_function);
     OverloadingResolutionEngine overloading_resolution_engine(function_register, type_register, project_with_single_file_containing_four_overloads_of_the_add_function);
     CommonFeatureAdoptionPlanGenerationEngine common_feature_adoption_plan_generator(overloading_resolution_engine, type_register);
-    CommonFeatureAdoptionPlanDescriptor cfa_plan = common_feature_adoption_plan_generator.generate_common_feature_adoption_plan(
+    auto cfa_plan_description = common_feature_adoption_plan_generator.generate_common_feature_adoption_plan_descriptor(
         FunctionCall {
             Token { "add", "a.basalt", 1, 1, 1, Token::Type::text },
             { 
@@ -87,6 +87,7 @@ TEST(Core, CFA_Success_When_It_Is_Not_Necessary) {
             TypeSignatureFactory::Int
         }
     );
+    CommonFeatureAdoptionPlan cfa_plan = cfa_plan_description.plan;
     ASSERT_TRUE(cfa_plan.is_direct_adoption());
 }
 
@@ -96,7 +97,7 @@ TEST(Core, CFA_Success_When_It_Is_Not_Necessary2) {
     TypeDefinitionsRegister type_register(project_with_single_file_containing_four_overloads_of_the_add_function);
     OverloadingResolutionEngine overloading_resolution_engine(function_register, type_register, project_with_single_file_containing_four_overloads_of_the_add_function);
     CommonFeatureAdoptionPlanGenerationEngine common_feature_adoption_plan_generator(overloading_resolution_engine, type_register);
-    CommonFeatureAdoptionPlanDescriptor cfa_plan = common_feature_adoption_plan_generator.generate_common_feature_adoption_plan(
+    auto cfa_plan_descriptor = common_feature_adoption_plan_generator.generate_common_feature_adoption_plan_descriptor(
         FunctionCall {
             Token { "add", "a.basalt", 1, 1, 1, Token::Type::text },
             { 
@@ -112,6 +113,7 @@ TEST(Core, CFA_Success_When_It_Is_Not_Necessary2) {
             TypeSignatureFactory::Int
         }
     );
+    CommonFeatureAdoptionPlan& cfa_plan = cfa_plan_descriptor.plan;
     EXPECT_TRUE(cfa_plan.is_direct_adoption());
 }
 
@@ -121,7 +123,7 @@ TEST(Core, CFA_Success_Resolving_One_Union_As_First_Arg) {
     TypeDefinitionsRegister type_register(project_with_single_file_containing_four_overloads_of_the_add_function);
     OverloadingResolutionEngine overloading_resolution_engine(function_register, type_register, project_with_single_file_containing_four_overloads_of_the_add_function);
     CommonFeatureAdoptionPlanGenerationEngine common_feature_adoption_plan_generator(overloading_resolution_engine, type_register);
-    CommonFeatureAdoptionPlanDescriptor cfa_plan = common_feature_adoption_plan_generator.generate_common_feature_adoption_plan(
+    auto cfa_plan_descriptor = common_feature_adoption_plan_generator.generate_common_feature_adoption_plan_descriptor(
         FunctionCall {
             Token { "add", "a.basalt", 1, 1, 1, Token::Type::text },
             { 
@@ -137,24 +139,26 @@ TEST(Core, CFA_Success_Resolving_One_Union_As_First_Arg) {
             TypeSignatureFactory::Int
         }
     );
+    CommonFeatureAdoptionPlan cfa_plan = cfa_plan_descriptor.plan;
     ASSERT_TRUE(cfa_plan.is_recursive_adoption());
     EXPECT_EQ(cfa_plan.get_recursive_adoption().alternatives.size(), 2);
     EXPECT_EQ(cfa_plan.get_recursive_adoption().nested_plans.size(), 2);
     EXPECT_EQ(cfa_plan.get_recursive_adoption().argument_index, 0);
-    CommonFeatureAdoptionPlanDescriptor nested_plan_1 = cfa_plan.get_recursive_adoption().nested_plans[0];
-    CommonFeatureAdoptionPlanDescriptor nested_plan_2 = cfa_plan.get_recursive_adoption().nested_plans[1];
+    CommonFeatureAdoptionPlan nested_plan_1 = cfa_plan.get_recursive_adoption().nested_plans[0];
+    CommonFeatureAdoptionPlan nested_plan_2 = cfa_plan.get_recursive_adoption().nested_plans[1];
     EXPECT_TRUE(nested_plan_1.is_direct_adoption());
     EXPECT_TRUE(nested_plan_2.is_direct_adoption());
     ASSERT_TRUE(cfa_plan.get_return_type().has_value());
     EXPECT_TRUE(cfa_plan.get_return_type().value().is<InlineUnion>());
 }
 
+
 TEST(Core, CFA_Success_Resolving_Two_Unions) {
     FunctionOverloadsRegister function_register(project_with_single_file_containing_four_overloads_of_the_add_function);
     TypeDefinitionsRegister type_register(project_with_single_file_containing_four_overloads_of_the_add_function);
     OverloadingResolutionEngine overloading_resolution_engine(function_register, type_register, project_with_single_file_containing_four_overloads_of_the_add_function);
     CommonFeatureAdoptionPlanGenerationEngine common_feature_adoption_plan_generator(overloading_resolution_engine, type_register);
-    CommonFeatureAdoptionPlanDescriptor cfa_plan = common_feature_adoption_plan_generator.generate_common_feature_adoption_plan(
+    auto cfa_plan_descriptor = common_feature_adoption_plan_generator.generate_common_feature_adoption_plan_descriptor(
         FunctionCall {
             Token { "add", "a.basalt", 1, 1, 1, Token::Type::text },
             { 
@@ -170,12 +174,13 @@ TEST(Core, CFA_Success_Resolving_Two_Unions) {
             TypeSignatureFactory::IntOrFloat
         }
     );
+    CommonFeatureAdoptionPlan cfa_plan = cfa_plan_descriptor.plan;
     ASSERT_TRUE(cfa_plan.is_recursive_adoption());
     EXPECT_EQ(cfa_plan.get_recursive_adoption().alternatives.size(), 2);
     EXPECT_EQ(cfa_plan.get_recursive_adoption().nested_plans.size(), 2);
     EXPECT_EQ(cfa_plan.get_recursive_adoption().argument_index, 0);
-    CommonFeatureAdoptionPlanDescriptor nested_plan_1 = cfa_plan.get_recursive_adoption().nested_plans[0];
-    CommonFeatureAdoptionPlanDescriptor nested_plan_2 = cfa_plan.get_recursive_adoption().nested_plans[1];
+    CommonFeatureAdoptionPlan nested_plan_1 = cfa_plan.get_recursive_adoption().nested_plans[0];
+    CommonFeatureAdoptionPlan nested_plan_2 = cfa_plan.get_recursive_adoption().nested_plans[1];
     EXPECT_EQ(nested_plan_1.get_recursive_adoption().alternatives.size(), 2);
     EXPECT_EQ(nested_plan_1.get_recursive_adoption().nested_plans.size(), 2);
     EXPECT_EQ(nested_plan_1.get_recursive_adoption().argument_index, 1);
@@ -191,7 +196,7 @@ TEST(Core, CFA_Success_Resolving_One_Union_As_Second_Arg) {
     TypeDefinitionsRegister type_register(project_with_single_file_containing_four_overloads_of_the_add_function);
     OverloadingResolutionEngine overloading_resolution_engine(function_register, type_register, project_with_single_file_containing_four_overloads_of_the_add_function);
     CommonFeatureAdoptionPlanGenerationEngine common_feature_adoption_plan_generator(overloading_resolution_engine, type_register);
-    CommonFeatureAdoptionPlanDescriptor cfa_plan = common_feature_adoption_plan_generator.generate_common_feature_adoption_plan(
+    auto cfa_plan_descriptor = common_feature_adoption_plan_generator.generate_common_feature_adoption_plan_descriptor(
         FunctionCall {
             Token { "add", "a.basalt", 1, 1, 1, Token::Type::text },
             { 
@@ -207,12 +212,13 @@ TEST(Core, CFA_Success_Resolving_One_Union_As_Second_Arg) {
             TypeSignatureFactory::IntOrFloat
         }
     );
+    CommonFeatureAdoptionPlan cfa_plan = cfa_plan_descriptor.plan;
     ASSERT_TRUE(cfa_plan.is_recursive_adoption());
     EXPECT_EQ(cfa_plan.get_recursive_adoption().alternatives.size(), 2);
     EXPECT_EQ(cfa_plan.get_recursive_adoption().nested_plans.size(), 2);
     EXPECT_EQ(cfa_plan.get_recursive_adoption().argument_index, 1);
-    CommonFeatureAdoptionPlanDescriptor nested_plan_1 = cfa_plan.get_recursive_adoption().nested_plans[0];
-    CommonFeatureAdoptionPlanDescriptor nested_plan_2 = cfa_plan.get_recursive_adoption().nested_plans[1];
+    CommonFeatureAdoptionPlan nested_plan_1 = cfa_plan.get_recursive_adoption().nested_plans[0];
+    CommonFeatureAdoptionPlan nested_plan_2 = cfa_plan.get_recursive_adoption().nested_plans[1];
     EXPECT_TRUE(nested_plan_1.is_direct_adoption());
     EXPECT_TRUE(nested_plan_2.is_direct_adoption());
     ASSERT_TRUE(cfa_plan.get_return_type().has_value());
