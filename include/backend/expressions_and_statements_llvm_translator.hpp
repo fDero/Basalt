@@ -9,22 +9,29 @@
 
 #include "core/program_representation.hpp"
 #include "backend/type_definitions_llvm_translator.hpp"
+#include "backend/callable_codeblocks_llvm_translator.hpp"
 #include "language/definitions.hpp"
 
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/Module.h>
 
-class CodeBlockLLVMTranslator {
+class ExpressionsAndStatementsLLVMTranslator {
     public:
-        CodeBlockLLVMTranslator(
+        ExpressionsAndStatementsLLVMTranslator(
             ProgramRepresentation& program_representation, 
             TypeDefinitionsLLVMTranslator& type_definitions_llvm_translator,
+            CallableCodeBlocksLLVMTranslator& callable_codeblocks_llvm_translator,
             ScopeContext& scope_context,
             llvm::LLVMContext& context,
-            llvm::IRBuilder<>& builder
+            llvm::IRBuilder<>& builder,
+            llvm::Function* current_function,
+            llvm::BasicBlock* loop_entry_block = nullptr,
+            llvm::BasicBlock* loop_exit_block = nullptr
         );
-        
+
+        void translate_whole_block_into_llvm(const std::vector<Statement>& statements);
+
         void translate_statement_into_llvm(const Statement& statement);
         void translate_conditional_into_llvm(const Conditional& conditional);
         void translate_while_loop_into_llvm(const WhileLoop& while_loop);
@@ -50,10 +57,26 @@ class CodeBlockLLVMTranslator {
         [[nodiscard]] llvm::Value* translate_type_operator_into_llvm(const TypeOperator& expr);
         [[nodiscard]] llvm::Value* translate_unary_operator_into_llvm(const UnaryOperator& expr);
 
+        [[nodiscard]] llvm::Value* translate_is_operator_into_llvm(const TypeOperator& expr);
+        [[nodiscard]] llvm::Value* translate_as_operator_into_llvm(const TypeOperator& expr);
+        [[nodiscard]] llvm::Value* translate_pow_operator_into_llvm(const BinaryOperator& expr);
+
+    protected:
+        [[nodiscard]] ExpressionsAndStatementsLLVMTranslator create_translator_for_nested_loop(
+            llvm::BasicBlock* entry_block,
+            llvm::BasicBlock* exit_block
+        );
+
+        [[nodiscard]] ExpressionsAndStatementsLLVMTranslator create_translator_for_nested_conditional();
+
     private:
         ProgramRepresentation& program_representation;
         TypeDefinitionsLLVMTranslator& type_definitions_llvm_translator;
+        CallableCodeBlocksLLVMTranslator& callable_codeblocks_llvm_translator;
         ScopeContext& scope_context;
         llvm::LLVMContext& context;
         llvm::IRBuilder<>& builder;
+        llvm::BasicBlock* loop_entry_block;
+        llvm::BasicBlock* loop_exit_block;
+        llvm::Function* current_function;
 };

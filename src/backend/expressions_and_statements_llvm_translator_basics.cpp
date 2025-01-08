@@ -3,23 +3,54 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
-#include "backend/codeblock_llvm_translator.hpp"
+#include "backend/expressions_and_statements_llvm_translator.hpp"
 
-CodeBlockLLVMTranslator::CodeBlockLLVMTranslator(
+ExpressionsAndStatementsLLVMTranslator::ExpressionsAndStatementsLLVMTranslator(
     ProgramRepresentation& program_representation, 
     TypeDefinitionsLLVMTranslator& type_definitions_llvm_translator,
+    CallableCodeBlocksLLVMTranslator& callable_codeblocks_llvm_translator,
     ScopeContext& scope_context,
     llvm::LLVMContext& context,
-    llvm::IRBuilder<>& builder
+    llvm::IRBuilder<>& builder,
+    llvm::Function* current_function,
+    llvm::BasicBlock* entry_block,
+    llvm::BasicBlock* exit_block
 )
     : program_representation(program_representation)
     , type_definitions_llvm_translator(type_definitions_llvm_translator)
+    , callable_codeblocks_llvm_translator(callable_codeblocks_llvm_translator)
     , scope_context(scope_context)
     , context(context)
     , builder(builder)
+    , loop_entry_block(entry_block)
+    , loop_exit_block(exit_block)
+    , current_function(current_function)
 { }
 
-void CodeBlockLLVMTranslator::translate_statement_into_llvm(
+[[nodiscard]] ExpressionsAndStatementsLLVMTranslator 
+ExpressionsAndStatementsLLVMTranslator::create_translator_for_nested_loop(
+    llvm::BasicBlock* new_entry_block,
+    llvm::BasicBlock* new_exit_block
+){
+    return ExpressionsAndStatementsLLVMTranslator(
+        program_representation, 
+        type_definitions_llvm_translator, 
+        callable_codeblocks_llvm_translator, 
+        scope_context, 
+        context, 
+        builder,  
+        current_function,
+        new_entry_block, 
+        new_exit_block
+    );
+}
+
+[[nodiscard]] ExpressionsAndStatementsLLVMTranslator 
+ExpressionsAndStatementsLLVMTranslator::create_translator_for_nested_conditional(){
+    return create_translator_for_nested_loop(loop_entry_block, loop_exit_block);
+}
+
+void ExpressionsAndStatementsLLVMTranslator::translate_statement_into_llvm(
     const Statement& statement
 ){
     switch (statement.statement_kind()) {
@@ -36,7 +67,7 @@ void CodeBlockLLVMTranslator::translate_statement_into_llvm(
     }
 }
 
-llvm::Value* CodeBlockLLVMTranslator::translate_expression_into_llvm(const Expression& expression) {
+llvm::Value* ExpressionsAndStatementsLLVMTranslator::translate_expression_into_llvm(const Expression& expression) {
     switch (expression.expression_kind()) {
         case ExpressionBody::Kind::array_literal:          return translate_array_literal_into_llvm(expression.get<ArrayLiteral>());
         case ExpressionBody::Kind::binary_operator:        return translate_binary_operator_into_llvm(expression.get<BinaryOperator>());

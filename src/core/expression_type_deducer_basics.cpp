@@ -140,7 +140,7 @@ ExpressionTypeDeducer::deduce_type_from_unary_operator(const Expression& express
     ensure_operator_kind_was_found(operator_kind_search_outcome, operator_kinds);
     OperatorKind operator_kind = operator_kind_search_outcome->second;
     switch (operator_kind) {
-        case OperatorKind::address_op:             return deduce_address_operator_type(unary_operator);
+        case OperatorKind::address_of:             return deduce_address_operator_type(unary_operator);
         case OperatorKind::pointer_dereference_op: return deduce_pointer_dereference_operator_type(unary_operator);
         case OperatorKind::boolean_not:            return deduce_boolean_not_operator_type(unary_operator);
         case OperatorKind::math_increment:         return deduce_math_prefix_operator_type(unary_operator);

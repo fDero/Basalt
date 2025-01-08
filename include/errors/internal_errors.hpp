@@ -21,6 +21,18 @@
 
 [[noreturn]] void assert_unreachable();
 
+[[noreturn]] inline void throw_unrecognized_binary_operator(const BinaryOperator& bop) {
+    throw InternalError("unrecognized binary operator: " + bop.operator_text);
+}
+
+[[noreturn]] inline void throw_unrecognized_unary_operator(const UnaryOperator& uop) {
+    throw InternalError("unrecognized unary operator: " + uop.operator_text);
+}
+
+[[noreturn]] inline void throw_unrecognized_type_operator(const TypeOperator& top) {
+    throw InternalError("unrecognized type operator: " + top.operator_text);
+}
+
 void assert_integer_literal_properly_formatted(const std::vector<Token>::iterator& iterator);
 
 void assert_floating_literal_properly_formatted(const std::vector<Token>::iterator& iterator);
