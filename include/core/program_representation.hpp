@@ -52,6 +52,11 @@ class ProgramRepresentation {
             ScopeContext& scope_context
         );
 
+        [[nodiscard]] TypeSignature deduce_type_from_expression(
+            const Expression& expression,
+            ScopeContext& scope_context
+        );
+
     private:
         ProjectFileStructure project_file_structure;
         TypeDefinitionsRegister type_definitions_register;

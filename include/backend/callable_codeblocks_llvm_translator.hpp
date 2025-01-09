@@ -24,11 +24,7 @@ class CallableCodeBlocksLLVMTranslator {
             llvm::Module& llvm_module
         );
 
-        void translate_callable_code_block_into_llvm(const CallableCodeBlock& callable_code_block) {
-            throw std::runtime_error("not implemented yet");
-        }
-
-        llvm::Function* translate_function_call_into_llvm(const FunctionCall& function_call) {
+        llvm::Function* translate_callable_code_block_into_llvm(const CallableCodeBlock& callable_code_block) {
             throw std::runtime_error("not implemented yet");
         }
 
@@ -37,10 +33,6 @@ class CallableCodeBlocksLLVMTranslator {
         }
 
         llvm::Function* translate_is_builtin_operator_as_llvm_function(const TypeOperator& type_operator) {
-            throw std::runtime_error("not implemented yet");
-        }
-
-        llvm::Function* translate_as_builtin_operator_as_llvm_function(const TypeOperator& type_operator) {
             throw std::runtime_error("not implemented yet");
         }
 };

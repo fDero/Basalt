@@ -74,6 +74,11 @@ Identifier::Identifier(const Token& identifier_token)
     , name(identifier_token.sourcetext) 
 {}
 
+Identifier::Identifier(const DebugInformationsAwareEntity& debug_info, const std::string& name)
+    : ExpressionBody(debug_info) 
+    , name(name) 
+{}
+
 StringLiteral::StringLiteral(const Token& string_literal_token)
     : ExpressionBody(string_literal_token)
     , value(string_literal_token.sourcetext) 

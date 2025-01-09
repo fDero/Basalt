@@ -163,7 +163,8 @@ struct Identifier : public ExpressionBody {
     virtual ~Identifier() = default;
 
     Identifier(const Token& identifier_token);
-    
+    Identifier(const DebugInformationsAwareEntity& debug_info, const std::string& name);
+
     [[nodiscard]] ExpressionBody::Kind expression_kind() const override;
 
     std::string name;

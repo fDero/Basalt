@@ -19,7 +19,7 @@ void ExpressionsAndStatementsLLVMTranslator::translate_conditional_into_llvm(con
     auto if_else_block = llvm::BasicBlock::Create(context, "if:else@" + unique_conditional_id, current_function);
     auto if_exit_block = llvm::BasicBlock::Create(context, "if:exit@" + unique_conditional_id, current_function);
     builder.SetInsertPoint(if_cond_block);
-    llvm::Value* condition = translate_expression_into_llvm(conditional.condition);
+    llvm::Value* condition = translate_expression_into_llvm(conditional.condition).value;
     builder.CreateCondBr(condition, if_then_block, if_else_block);
     builder.SetInsertPoint(if_then_block);
     auto then_translator = create_translator_for_nested_conditional();
@@ -36,7 +36,7 @@ void ExpressionsAndStatementsLLVMTranslator::translate_while_loop_into_llvm(cons
     auto while_body_block = llvm::BasicBlock::Create(context, "while:body@" + unique_while_id, current_function);
     auto while_exit_block = llvm::BasicBlock::Create(context, "while:exit@" + unique_while_id, current_function);
     builder.SetInsertPoint(while_cond_block);
-    llvm::Value* condition = translate_expression_into_llvm(while_loop.condition);
+    llvm::Value* condition = translate_expression_into_llvm(while_loop.condition).value;
     builder.CreateCondBr(condition, while_body_block, while_exit_block);
     builder.SetInsertPoint(while_body_block);
     auto body_translator = create_translator_for_nested_loop(while_cond_block, while_exit_block);
@@ -54,7 +54,7 @@ void ExpressionsAndStatementsLLVMTranslator::translate_until_loop_into_llvm(cons
     auto body_translator = create_translator_for_nested_loop(until_body_block, until_exit_block);
     body_translator.translate_whole_block_into_llvm(until_loop.loop_body);
     builder.SetInsertPoint(until_cond_block);
-    llvm::Value* condition = translate_expression_into_llvm(until_loop.condition);
+    llvm::Value* condition = translate_expression_into_llvm(until_loop.condition).value;
     llvm::Value* negated_condition = builder.CreateNot(condition);
     builder.CreateCondBr(negated_condition, until_body_block, until_exit_block);
     builder.SetInsertPoint(until_exit_block);
@@ -62,7 +62,7 @@ void ExpressionsAndStatementsLLVMTranslator::translate_until_loop_into_llvm(cons
 
 void ExpressionsAndStatementsLLVMTranslator::translate_return_statement_into_llvm(const Return& return_statement) {
     if (return_statement.return_value.has_value()) {
-        llvm::Value* returned_value = translate_expression_into_llvm(return_statement.return_value.value());
+        llvm::Value* returned_value = translate_expression_into_llvm(return_statement.return_value.value()).value;
         builder.CreateRet(returned_value);
     } else {
         builder.CreateRetVoid();

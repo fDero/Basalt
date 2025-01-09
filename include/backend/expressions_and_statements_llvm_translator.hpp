@@ -6,10 +6,12 @@
 #pragma once
 
 #include <functional>
+#include <memory>
 
 #include "core/program_representation.hpp"
 #include "backend/type_definitions_llvm_translator.hpp"
 #include "backend/callable_codeblocks_llvm_translator.hpp"
+#include "backend/translation_aware_scope_context.hpp"
 #include "language/definitions.hpp"
 
 #include <llvm/IR/IRBuilder.h>
@@ -18,11 +20,25 @@
 
 class ExpressionsAndStatementsLLVMTranslator {
     public:
+        struct TranslatedExpression {
+            TranslatedExpression(llvm::Value* value, llvm::Value* address) 
+                : value(value)
+                , address(address) 
+            {}
+
+            TranslatedExpression(llvm::Value* value) 
+                : TranslatedExpression(value, nullptr)
+            {}
+
+            llvm::Value* value;
+            llvm::Value* address;
+        };
+
         ExpressionsAndStatementsLLVMTranslator(
             ProgramRepresentation& program_representation, 
             TypeDefinitionsLLVMTranslator& type_definitions_llvm_translator,
             CallableCodeBlocksLLVMTranslator& callable_codeblocks_llvm_translator,
-            ScopeContext& scope_context,
+            TranslationAwareScopeContext scope_context,
             llvm::LLVMContext& context,
             llvm::IRBuilder<>& builder,
             llvm::Function* current_function,
@@ -31,7 +47,6 @@ class ExpressionsAndStatementsLLVMTranslator {
         );
 
         void translate_whole_block_into_llvm(const std::vector<Statement>& statements);
-
         void translate_statement_into_llvm(const Statement& statement);
         void translate_conditional_into_llvm(const Conditional& conditional);
         void translate_while_loop_into_llvm(const WhileLoop& while_loop);
@@ -43,23 +58,24 @@ class ExpressionsAndStatementsLLVMTranslator {
         void translate_constant_declaration_into_llvm(const ConstDeclaration& const_declaration);
         void translate_assignment_into_llvm(const Assignment& assignment);
         void translate_void_function_call_into_llvm(const FunctionCall& function_call);
-        
-        [[nodiscard]] llvm::Value* translate_expression_into_llvm(const Expression& expression);
-        [[nodiscard]] llvm::Value* translate_expr_function_call_into_llvm(const FunctionCall& expr);
-        [[nodiscard]] llvm::Value* translate_array_literal_into_llvm(const ArrayLiteral& expr);
-        [[nodiscard]] llvm::Value* translate_binary_operator_into_llvm(const BinaryOperator& expr);
-        [[nodiscard]] llvm::Value* translate_boolean_literal_into_llvm(const BoolLiteral& expr);
-        [[nodiscard]] llvm::Value* translate_character_literal_into_llvm(const CharLiteral& expr);
-        [[nodiscard]] llvm::Value* translate_floating_literal_into_llvm(const FloatLiteral& expr);
-        [[nodiscard]] llvm::Value* translate_identifier_into_llvm(const Identifier& expr);
-        [[nodiscard]] llvm::Value* translate_integer_literal_into_llvm(const IntLiteral& expr);
-        [[nodiscard]] llvm::Value* translate_string_literal_into_llvm(const StringLiteral& expr);
-        [[nodiscard]] llvm::Value* translate_type_operator_into_llvm(const TypeOperator& expr);
-        [[nodiscard]] llvm::Value* translate_unary_operator_into_llvm(const UnaryOperator& expr);
+        void translate_assignment_into_llvm(const Expression& target, const Expression& source);
 
-        [[nodiscard]] llvm::Value* translate_is_operator_into_llvm(const TypeOperator& expr);
-        [[nodiscard]] llvm::Value* translate_as_operator_into_llvm(const TypeOperator& expr);
-        [[nodiscard]] llvm::Value* translate_pow_operator_into_llvm(const BinaryOperator& expr);
+        [[nodiscard]] TranslatedExpression translate_expression_into_llvm(const Expression& expression);
+        [[nodiscard]] TranslatedExpression translate_expr_function_call_into_llvm(const FunctionCall& expr);
+        [[nodiscard]] TranslatedExpression translate_array_literal_into_llvm(const ArrayLiteral& expr);
+        [[nodiscard]] TranslatedExpression translate_binary_operator_into_llvm(const BinaryOperator& expr);
+        [[nodiscard]] TranslatedExpression translate_boolean_literal_into_llvm(const BoolLiteral& expr);
+        [[nodiscard]] TranslatedExpression translate_character_literal_into_llvm(const CharLiteral& expr);
+        [[nodiscard]] TranslatedExpression translate_floating_literal_into_llvm(const FloatLiteral& expr);
+        [[nodiscard]] TranslatedExpression translate_identifier_into_llvm(const Identifier& expr);
+        [[nodiscard]] TranslatedExpression translate_integer_literal_into_llvm(const IntLiteral& expr);
+        [[nodiscard]] TranslatedExpression translate_string_literal_into_llvm(const StringLiteral& expr);
+        [[nodiscard]] TranslatedExpression translate_type_operator_into_llvm(const TypeOperator& expr);
+        [[nodiscard]] TranslatedExpression translate_unary_operator_into_llvm(const UnaryOperator& expr);
+
+        [[nodiscard]] TranslatedExpression translate_is_operator_into_llvm(const TypeOperator& expr);
+        [[nodiscard]] TranslatedExpression translate_as_operator_into_llvm(const TypeOperator& expr);
+        [[nodiscard]] TranslatedExpression translate_pow_operator_into_llvm(const BinaryOperator& expr);
 
     protected:
         [[nodiscard]] ExpressionsAndStatementsLLVMTranslator create_translator_for_nested_loop(
@@ -73,7 +89,7 @@ class ExpressionsAndStatementsLLVMTranslator {
         ProgramRepresentation& program_representation;
         TypeDefinitionsLLVMTranslator& type_definitions_llvm_translator;
         CallableCodeBlocksLLVMTranslator& callable_codeblocks_llvm_translator;
-        ScopeContext& scope_context;
+        TranslationAwareScopeContext scope_context;
         llvm::LLVMContext& context;
         llvm::IRBuilder<>& builder;
         llvm::BasicBlock* loop_entry_block;

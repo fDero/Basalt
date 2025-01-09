@@ -5,11 +5,13 @@
 
 #include "backend/expressions_and_statements_llvm_translator.hpp"
 
+using TranslatedExpression = ExpressionsAndStatementsLLVMTranslator::TranslatedExpression;
+
 ExpressionsAndStatementsLLVMTranslator::ExpressionsAndStatementsLLVMTranslator(
     ProgramRepresentation& program_representation, 
     TypeDefinitionsLLVMTranslator& type_definitions_llvm_translator,
     CallableCodeBlocksLLVMTranslator& callable_codeblocks_llvm_translator,
-    ScopeContext& scope_context,
+    TranslationAwareScopeContext scope_context,
     llvm::LLVMContext& context,
     llvm::IRBuilder<>& builder,
     llvm::Function* current_function,
@@ -36,7 +38,7 @@ ExpressionsAndStatementsLLVMTranslator::create_translator_for_nested_loop(
         program_representation, 
         type_definitions_llvm_translator, 
         callable_codeblocks_llvm_translator, 
-        scope_context, 
+        scope_context.create_nested_scope(), 
         context, 
         builder,  
         current_function,
@@ -67,7 +69,7 @@ void ExpressionsAndStatementsLLVMTranslator::translate_statement_into_llvm(
     }
 }
 
-llvm::Value* ExpressionsAndStatementsLLVMTranslator::translate_expression_into_llvm(const Expression& expression) {
+TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_expression_into_llvm(const Expression& expression) {
     switch (expression.expression_kind()) {
         case ExpressionBody::Kind::array_literal:          return translate_array_literal_into_llvm(expression.get<ArrayLiteral>());
         case ExpressionBody::Kind::binary_operator:        return translate_binary_operator_into_llvm(expression.get<BinaryOperator>());
@@ -80,5 +82,17 @@ llvm::Value* ExpressionsAndStatementsLLVMTranslator::translate_expression_into_l
         case ExpressionBody::Kind::string_literal:         return translate_string_literal_into_llvm(expression.get<StringLiteral>());
         case ExpressionBody::Kind::type_operator:          return translate_type_operator_into_llvm(expression.get<TypeOperator>());
         case ExpressionBody::Kind::unary_operator:         return translate_unary_operator_into_llvm(expression.get<UnaryOperator>());
+        //case ExpressionBody::Kind::dot_member_access:      return translate_dot_member_access_into_llvm(expression.get<DotMemberAccess>());
+        //case ExpressionBody::Kind::square_bracket_access:  return translate_square_bracket_access_into_llvm(expression.get<SquareBracketAccess>());
     }
+}
+
+TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_expr_function_call_into_llvm(const FunctionCall& expr) {
+    CallableCodeBlock ccb = program_representation.resolve_function_call(expr, scope_context.raw_scope_context);
+    llvm::Function* llvm_function = callable_codeblocks_llvm_translator.translate_callable_code_block_into_llvm(ccb);
+    return builder.CreateCall(llvm_function);
+}
+
+void ExpressionsAndStatementsLLVMTranslator::translate_void_function_call_into_llvm(const FunctionCall& function_call) {
+    std::ignore = translate_expr_function_call_into_llvm(function_call);
 }
