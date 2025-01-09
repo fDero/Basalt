@@ -47,8 +47,8 @@ void ExpressionsAndStatementsLLVMTranslator::translate_while_loop_into_llvm(cons
 
 void ExpressionsAndStatementsLLVMTranslator::translate_until_loop_into_llvm(const UntilLoop& until_loop) {
     std::string unique_until_id = until_loop.as_debug_informations_aware_entity().unique_string_id();
-    auto until_cond_block = llvm::BasicBlock::Create(context, "until:cond@" + unique_until_id, current_function);
     auto until_body_block = llvm::BasicBlock::Create(context, "until:body@" + unique_until_id, current_function);
+    auto until_cond_block = llvm::BasicBlock::Create(context, "until:cond@" + unique_until_id, current_function);
     auto until_exit_block = llvm::BasicBlock::Create(context, "until:exit@" + unique_until_id, current_function);
     builder.SetInsertPoint(until_body_block);
     auto body_translator = create_translator_for_nested_loop(until_body_block, until_exit_block);
