@@ -73,6 +73,11 @@ class ExpressionsAndStatementsLLVMTranslator {
         [[nodiscard]] TranslatedExpression translate_type_operator_into_llvm(const TypeOperator& expr);
         [[nodiscard]] TranslatedExpression translate_unary_operator_into_llvm(const UnaryOperator& expr);
 
+        [[nodiscard]] TranslatedExpression translate_square_bracket_access_into_llvm(const SquareBracketsAccess& expr);
+        [[nodiscard]] TranslatedExpression translate_square_bracket_access_from_array_into_llvm(const SquareBracketsAccess& expr);
+        [[nodiscard]] TranslatedExpression translate_square_bracket_access_from_slice_into_llvm(const SquareBracketsAccess& expr);
+        [[nodiscard]] TranslatedExpression translate_dot_member_access_into_llvm(const DotMemberAccess& expr);
+
         [[nodiscard]] TranslatedExpression translate_is_operator_into_llvm(const TypeOperator& expr);
         [[nodiscard]] TranslatedExpression translate_as_operator_into_llvm(const TypeOperator& expr);
         [[nodiscard]] TranslatedExpression translate_pow_operator_into_llvm(const BinaryOperator& expr);

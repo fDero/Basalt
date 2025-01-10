@@ -7,6 +7,8 @@
 #include "core/expression_type_deducer.hpp"
 #include "core/assignment_type_checker.hpp"
 #include "core/function_call_resolver.hpp"
+#include "core/dot_member_access_normalizer.hpp"
+#include "errors/internal_errors.hpp"
 
 ProgramRepresentation::ProgramRepresentation(
     const ProjectFileStructure& input_project_file_structure
@@ -143,4 +145,47 @@ CallableCodeBlock ProgramRepresentation::resolve_function_call(
     );
     auto arg_types = expression_type_deducer.deduce_argument_types_from_function_call(function_call);
     return function_call_resolver.resolve_function_call(function_call, arg_types);
+}
+
+DotMemberAccess ProgramRepresentation::normalize_dot_member_access(
+    const DotMemberAccess& dot_member_access, 
+    ScopeContext& scope_context
+) {
+    ExpressionTypeDeducer expression_type_deducer(
+        type_definitions_register,
+        overloading_resolution_engine,
+        common_feature_adoption_plan_generation_engine,
+        project_file_structure,
+        scope_context
+    );
+    DotMemberAccessNormalizer dot_member_access_normalizer(
+        expression_type_deducer,
+        dot_member_access
+    );
+    return dot_member_access_normalizer
+        .normalize_dot_member_access();
+}
+
+size_t ProgramRepresentation::resolve_field_index(
+    const DotMemberAccess& dot_member_access, 
+    ScopeContext& scope_context
+) {
+    std::optional<TypeSignature> target_type_opt = 
+        resolve_expression_type(dot_member_access.struct_value, scope_context);
+    assert_type_deduction_success_in_backend_layer(target_type_opt.has_value());
+    TypeSignature target_type = target_type_opt.value();
+    TypeSignature unaliased_target_type = unalias_type(target_type);
+    assert_typesignature_is<CustomType>(unaliased_target_type);
+    CustomType target_custom_type = unaliased_target_type.get<CustomType>();
+    TypeDefinition target_type_definition = retrieve_type_definition(target_custom_type);
+    assert_typedefinition_is<StructDefinition>(target_type_definition);
+    const StructDefinition& target_struct_definition = target_type_definition.get<StructDefinition>();
+    size_t field_index = 0;
+    for (size_t i = 0; i < target_struct_definition.fields.size(); i++) {
+        const StructDefinition::Field& field = target_struct_definition.fields[i];
+        if (field.field_name == dot_member_access.member_name) {
+            return field_index;
+        }
+    }
+    assert_unreachable();
 }

@@ -52,8 +52,13 @@ class ProgramRepresentation {
             ScopeContext& scope_context
         );
 
-        [[nodiscard]] TypeSignature deduce_type_from_expression(
-            const Expression& expression,
+        [[nodiscard]] DotMemberAccess normalize_dot_member_access(
+            const DotMemberAccess& dot_member_access, 
+            ScopeContext& scope_context
+        );
+
+        [[nodiscard]] size_t resolve_field_index(
+            const DotMemberAccess& dot_member_access, 
             ScopeContext& scope_context
         );
 

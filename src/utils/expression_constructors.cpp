@@ -61,6 +61,16 @@ BinaryOperator::BinaryOperator(
 {}
 
 UnaryOperator::UnaryOperator(
+    const DebugInformationsAwareEntity& debug_info, 
+    const std::string& operator_text,
+    const Expression& expr
+)
+    : ExpressionBody(debug_info)
+    , operator_text(operator_text)
+    , operand(expr) 
+{}
+
+UnaryOperator::UnaryOperator(
     const Token& operator_token, 
     const Expression& expr
 )

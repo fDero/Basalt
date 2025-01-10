@@ -6,6 +6,7 @@
 #pragma once
 
 #include "core/scope_context.hpp"
+#include "errors/internal_errors.hpp"
 
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/IR/LLVMContext.h>
@@ -42,7 +43,8 @@ struct TranslationAwareScopeContext {
     [[nodiscard]] llvm::AllocaInst* resolve_object_allocation(const std::string& identifier) {
         std::string unique_id = raw_scope_context.resolve_object_unique_id(identifier);
         auto search_outcome = local_variables->find(unique_id);
-        //assert search outcome ok
+        bool search_success = search_outcome != local_variables->end();
+        assert_local_variable_was_found_in_translation_aware_scope_context(search_success);
         return search_outcome->second;
     }
 

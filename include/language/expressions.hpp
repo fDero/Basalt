@@ -147,6 +147,12 @@ struct UnaryOperator : public ExpressionBody {
     virtual ~UnaryOperator() = default;
 
     UnaryOperator(
+        const DebugInformationsAwareEntity& debug_info, 
+        const std::string& operator_text,
+        const Expression& expr
+    );
+
+    UnaryOperator(
         const Token& operator_token, 
         const Expression& expr
     );

@@ -82,8 +82,8 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_expressio
         case ExpressionBody::Kind::string_literal:         return translate_string_literal_into_llvm(expression.get<StringLiteral>());
         case ExpressionBody::Kind::type_operator:          return translate_type_operator_into_llvm(expression.get<TypeOperator>());
         case ExpressionBody::Kind::unary_operator:         return translate_unary_operator_into_llvm(expression.get<UnaryOperator>());
-        //case ExpressionBody::Kind::dot_member_access:      return translate_dot_member_access_into_llvm(expression.get<DotMemberAccess>());
-        //case ExpressionBody::Kind::square_bracket_access:  return translate_square_bracket_access_into_llvm(expression.get<SquareBracketAccess>());
+        case ExpressionBody::Kind::dot_member_access:      return translate_dot_member_access_into_llvm(expression.get<DotMemberAccess>());
+        case ExpressionBody::Kind::square_bracket_access:  return translate_square_bracket_access_into_llvm(expression.get<SquareBracketsAccess>());
     }
 }
 

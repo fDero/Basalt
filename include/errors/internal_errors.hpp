@@ -108,6 +108,29 @@ inline void assert_typesignature_is(const TypeSignature& typesignature) {
 }
 
 template<typename T>
+inline void assert_typedefinition_is(const TypeDefinition& type_definition) {
+    #ifdef DEBUG_BUILD
+    if (!type_definition.is<T>()) {
+        std::string T_type_converted_to_string = typeid(T).name();
+        throw InternalError {
+            "somehow a typesignature was expected to be a " + 
+            T_type_converted_to_string + " instead it wasn't"    
+        };
+    }
+    #endif
+}
+
+inline void assert_type_deduction_success_in_backend_layer(bool success) {
+    #ifdef DEBUG_BUILD
+    if (!success) {
+        throw InternalError {
+            "type deduction failed in backend"    
+        };
+    }
+    #endif
+}
+
+template<typename T>
 inline void assert_expression_is(const Expression& expression) {
     #ifdef DEBUG_BUILD
     if (!expression.is<T>()) {
@@ -197,6 +220,14 @@ inline void assert_is_recursive_cfa_plan(
     #ifndef DEBUG_BUILD
     if (!plan.is_recursive_adoption()) {
         throw std::runtime_error("the compiler expected this cfa plan to be recursive, and it wasn't");
+    }
+    #endif
+}
+
+inline void assert_local_variable_was_found_in_translation_aware_scope_context(bool search_success) {
+    #ifndef DEBUG_BUILD
+    if (!search_success) {
+        throw std::runtime_error("the compiler expected this local variable to be found, and it wasn't");
     }
     #endif
 }
