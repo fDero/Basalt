@@ -5,6 +5,7 @@
 
 #include "frontend/syntax.hpp"
 #include "backend/expressions_and_statements_llvm_translator.hpp"
+#include "backend/callable_codeblocks_llvm_translator.hpp"
 #include "errors/internal_errors.hpp"
 
 using TranslatedExpression = ExpressionsAndStatementsLLVMTranslator::TranslatedExpression;
@@ -104,7 +105,10 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_is_operat
 }
 
 TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_as_operator_into_llvm(const TypeOperator& expr) {
-    return translate_expression_into_llvm(expr.expression);
+    llvm::Function* as_operator_function = callable_codeblocks_llvm_translator
+        .translate_as_builtin_operator_as_llvm_function(expr);
+    llvm::Value* operand = translate_expression_into_llvm(expr.expression).value;
+    return builder.CreateCall(as_operator_function, {operand});
 }
 
 TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_pow_operator_into_llvm(const BinaryOperator& expr) {

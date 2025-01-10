@@ -4,6 +4,7 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 #include "backend/expressions_and_statements_llvm_translator.hpp"
+#include "backend/callable_codeblocks_llvm_translator.hpp"
 
 void ExpressionsAndStatementsLLVMTranslator::translate_variable_declaration_into_llvm(const VariableDeclaration& variable_declaration) {
     llvm::Type* llvm_type = type_definitions_llvm_translator.translate_typesignature_to_llvm_type(variable_declaration.typesignature);

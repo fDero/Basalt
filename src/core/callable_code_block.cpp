@@ -47,9 +47,29 @@ CallableCodeBlock::CallableCodeBlock(
     )
 {}
 
-[[nodiscard]] std::optional<TypeSignature> 
-CallableCodeBlock::get_return_type() {
+[[nodiscard]] CallableCodeBlock::Kind 
+CallableCodeBlock::callable_codeblock_kind() const {
     return (ParentVariant::is<FunctionDefinition::Ref>())
+        ? Kind::function_definition
+        : Kind::common_feature_adoption_plan;
+}
+
+[[nodiscard]] std::optional<TypeSignature>
+CallableCodeBlock::get_return_type() const {
+    return (callable_codeblock_kind() == Kind::function_definition)
         ? ParentVariant::get<FunctionDefinition::Ref>()->return_type
         : ParentVariant::get<CommonFeatureAdoptionPlanDescriptor>().return_type;
+}
+
+[[nodiscard]] std::vector<TypeSignature>
+CallableCodeBlock::get_arg_types() const {
+    if (callable_codeblock_kind() == Kind::function_definition) {
+        return ParentVariant::get<CommonFeatureAdoptionPlanDescriptor>().arg_types;
+    }
+    std::vector<TypeSignature> arg_types;
+    const FunctionDefinition::Ref& fref = ParentVariant::get<FunctionDefinition::Ref>();
+    for (const FunctionDefinition::Argument& arg : fref->arguments) {
+        arg_types.push_back(arg.arg_type);
+    }
+    return arg_types;
 }

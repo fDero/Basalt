@@ -8,9 +8,9 @@
 #include <functional>
 #include <memory>
 
+#include "misc/forward_declarations.hpp"
 #include "core/program_representation.hpp"
 #include "backend/type_definitions_llvm_translator.hpp"
-#include "backend/callable_codeblocks_llvm_translator.hpp"
 #include "backend/translation_aware_scope_context.hpp"
 #include "language/definitions.hpp"
 
@@ -46,8 +46,8 @@ class ExpressionsAndStatementsLLVMTranslator {
             llvm::BasicBlock* loop_exit_block = nullptr
         );
 
-        void translate_whole_block_into_llvm(const std::vector<Statement>& statements);
         void translate_statement_into_llvm(const Statement& statement);
+        void translate_whole_codeblock_into_llvm(const std::vector<Statement>& codeblock);
         void translate_conditional_into_llvm(const Conditional& conditional);
         void translate_while_loop_into_llvm(const WhileLoop& while_loop);
         void translate_until_loop_into_llvm(const UntilLoop& until_loop);

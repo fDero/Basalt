@@ -4,10 +4,11 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 #include "backend/expressions_and_statements_llvm_translator.hpp"
+#include "backend/callable_codeblocks_llvm_translator.hpp"
 #include "errors/internal_errors.hpp"
 
-void ExpressionsAndStatementsLLVMTranslator::translate_whole_block_into_llvm(const std::vector<Statement>& statements) {
-    for (const Statement& statement : statements) {
+void ExpressionsAndStatementsLLVMTranslator::translate_whole_codeblock_into_llvm(const std::vector<Statement>& codeblock) {
+    for (const Statement& statement : codeblock) {
         translate_statement_into_llvm(statement);
     }
 }
@@ -23,10 +24,10 @@ void ExpressionsAndStatementsLLVMTranslator::translate_conditional_into_llvm(con
     builder.CreateCondBr(condition, if_then_block, if_else_block);
     builder.SetInsertPoint(if_then_block);
     auto then_translator = create_translator_for_nested_conditional();
-    then_translator.translate_whole_block_into_llvm(conditional.then_branch);
+    then_translator.translate_whole_codeblock_into_llvm(conditional.then_branch);
     builder.SetInsertPoint(if_else_block);
     auto else_translator = create_translator_for_nested_conditional();
-    else_translator.translate_whole_block_into_llvm(conditional.else_branch);
+    else_translator.translate_whole_codeblock_into_llvm(conditional.else_branch);
     builder.SetInsertPoint(if_exit_block);
 }
 
@@ -40,7 +41,7 @@ void ExpressionsAndStatementsLLVMTranslator::translate_while_loop_into_llvm(cons
     builder.CreateCondBr(condition, while_body_block, while_exit_block);
     builder.SetInsertPoint(while_body_block);
     auto body_translator = create_translator_for_nested_loop(while_cond_block, while_exit_block);
-    body_translator.translate_whole_block_into_llvm(while_loop.loop_body);
+    body_translator.translate_whole_codeblock_into_llvm(while_loop.loop_body);
     builder.CreateBr(while_cond_block);
     builder.SetInsertPoint(while_exit_block);
 }
@@ -52,7 +53,7 @@ void ExpressionsAndStatementsLLVMTranslator::translate_until_loop_into_llvm(cons
     auto until_exit_block = llvm::BasicBlock::Create(context, "until:exit@" + unique_until_id, current_function);
     builder.SetInsertPoint(until_body_block);
     auto body_translator = create_translator_for_nested_loop(until_body_block, until_exit_block);
-    body_translator.translate_whole_block_into_llvm(until_loop.loop_body);
+    body_translator.translate_whole_codeblock_into_llvm(until_loop.loop_body);
     builder.SetInsertPoint(until_cond_block);
     llvm::Value* condition = translate_expression_into_llvm(until_loop.condition).value;
     llvm::Value* negated_condition = builder.CreateNot(condition);

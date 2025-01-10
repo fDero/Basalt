@@ -141,3 +141,23 @@ llvm::Type* TypeDefinitionsLLVMTranslator::translate_struct_to_llvm_type(
     llvm_type_def->setBody(fields_types);
     return llvm_type_definitions.at(fully_qualified_name);
 }
+
+llvm::Type* TypeDefinitionsLLVMTranslator::translate_return_type_to_llvm_type(
+    const std::optional<TypeSignature>& ret
+) {
+    return (ret.has_value())
+        ? translate_typesignature_to_llvm_type(ret.value())
+        : llvm::Type::getVoidTy(context);
+}
+
+std::vector<llvm::Type*> TypeDefinitionsLLVMTranslator::translate_all_types_to_llvm_types(
+    const std::vector<TypeSignature>& types
+) {
+    std::vector<llvm::Type*> llvm_types;
+    llvm_types.reserve(types.size());
+    for (const TypeSignature& type : types) {
+        llvm::Type* llvm_type = translate_typesignature_to_llvm_type(type);
+        llvm_types.push_back(llvm_type);
+    }
+    return llvm_types;
+}

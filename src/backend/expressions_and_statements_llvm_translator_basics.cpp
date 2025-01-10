@@ -4,6 +4,7 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 #include "backend/expressions_and_statements_llvm_translator.hpp"
+#include "backend/callable_codeblocks_llvm_translator.hpp"
 
 using TranslatedExpression = ExpressionsAndStatementsLLVMTranslator::TranslatedExpression;
 
@@ -67,6 +68,7 @@ void ExpressionsAndStatementsLLVMTranslator::translate_statement_into_llvm(
         break; case StatementBody::Kind::while_loop: translate_while_loop_into_llvm(statement.get<WhileLoop>());
         break; case StatementBody::Kind::until_loop: translate_until_loop_into_llvm(statement.get<UntilLoop>());
     }
+    assert_unreachable();
 }
 
 TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_expression_into_llvm(const Expression& expression) {
@@ -85,6 +87,7 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_expressio
         case ExpressionBody::Kind::dot_member_access:      return translate_dot_member_access_into_llvm(expression.get<DotMemberAccess>());
         case ExpressionBody::Kind::square_bracket_access:  return translate_square_bracket_access_into_llvm(expression.get<SquareBracketsAccess>());
     }
+    assert_unreachable();
 }
 
 TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_expr_function_call_into_llvm(const FunctionCall& expr) {

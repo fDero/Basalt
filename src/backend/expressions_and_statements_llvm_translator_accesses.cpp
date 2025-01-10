@@ -4,6 +4,7 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 #include "backend/expressions_and_statements_llvm_translator.hpp"
+#include "backend/callable_codeblocks_llvm_translator.hpp"
 #include "errors/internal_errors.hpp"
 
 using TranslatedExpression = ExpressionsAndStatementsLLVMTranslator::TranslatedExpression;

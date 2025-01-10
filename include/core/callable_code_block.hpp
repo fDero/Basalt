@@ -15,6 +15,11 @@ struct CallableCodeBlock : public SmartVariant<
     FunctionDefinition::Ref,
     CommonFeatureAdoptionPlanDescriptor
 > {
+    enum class Kind {
+        function_definition,
+        common_feature_adoption_plan
+    };
+
     using FRef = FunctionDefinition::Ref;
     using CFAPlan = CommonFeatureAdoptionPlanDescriptor;
     using ParentVariant = SmartVariant<FRef, CFAPlan>;
@@ -23,8 +28,13 @@ struct CallableCodeBlock : public SmartVariant<
     using ParentVariant::is;
     using ParentVariant::get;
     
+    [[nodiscard]] std::optional<TypeSignature> get_return_type() const;
+    
+    [[nodiscard]] Kind callable_codeblock_kind() const;
+
+    [[nodiscard]] std::vector<TypeSignature> get_arg_types() const;
+
     const std::string unique_context_independent_id;
 
     CallableCodeBlock(const ParentVariant& variant, TypeDefinitionsRegister& type_definitions_register);
-    [[nodiscard]] std::optional<TypeSignature> get_return_type();
 };

@@ -26,11 +26,14 @@ class TypeDefinitionsLLVMTranslator {
         [[nodiscard]] llvm::Type* translate_custom_type_to_llvm_type(const CustomType& custom_type);
         [[nodiscard]] llvm::Type* translate_named_union_to_llvm_type(const UnionDefinition& union_definition);
         [[nodiscard]] llvm::Type* translate_struct_to_llvm_type(const StructDefinition& struct_definition);
+        [[nodiscard]] llvm::Type* translate_return_type_to_llvm_type(const std::optional<TypeSignature>& ret);
 
         [[nodiscard]] size_t compute_header_unaware_typesignature_memory_footprint(const TypeSignature& typesignature);
         [[nodiscard]] size_t compute_header_unaware_inline_union_memory_footprint(const InlineUnion& inline_union);
         [[nodiscard]] size_t compute_header_unaware_named_union_memory_footprint(const UnionDefinition& inline_union);
         [[nodiscard]] size_t compute_header_unaware_customtype_memory_footprint(const CustomType& custom_type);
+
+        [[nodiscard]] std::vector<llvm::Type*> translate_all_types_to_llvm_types(const std::vector<TypeSignature>& types);
 
     private:
         ProgramRepresentation& program_representation;
