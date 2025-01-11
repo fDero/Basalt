@@ -33,11 +33,12 @@ class DotMemberAccessNormalizer {
         [[nodiscard]] Expression normalize_dot_member_access_target(const Expression& target) {
             std::optional<TypeSignature> target_type_opt = expression_type_deducer.deduce_expression_type(target);
             if (target_type_opt.has_value() && target_type_opt.value().is<PointerType>()) {
-                return UnaryOperator(
+                UnaryOperator maybe_normalized_target(
                     dot_member_access.as_debug_informations_aware_entity(), 
                     pointer_dereference_operator,
-                    normalize_dot_member_access_target(target)
+                    target
                 );
+                return normalize_dot_member_access_target(maybe_normalized_target);
             }
             return target;
         }        
