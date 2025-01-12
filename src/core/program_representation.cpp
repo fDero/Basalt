@@ -180,9 +180,8 @@ size_t ProgramRepresentation::resolve_field_index(
     TypeDefinition target_type_definition = retrieve_type_definition(target_custom_type);
     assert_typedefinition_is<StructDefinition>(target_type_definition);
     const StructDefinition& target_struct_definition = target_type_definition.get<StructDefinition>();
-    size_t field_index = 0;
-    for (size_t i = 0; i < target_struct_definition.fields.size(); i++) {
-        const StructDefinition::Field& field = target_struct_definition.fields[i];
+    for (size_t field_index = 0; field_index < target_struct_definition.fields.size(); field_index++) {
+        const StructDefinition::Field& field = target_struct_definition.fields[field_index];
         if (field.field_name == dot_member_access.member_name) {
             return field_index;
         }
