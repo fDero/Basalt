@@ -4,6 +4,7 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 #include "core/callable_code_block.hpp"
+#include "core/program_representation.hpp"
 
 static std::string generate_function_definition_contexnt_independent_id(
     const FunctionDefinition::Ref& fref
@@ -14,9 +15,10 @@ static std::string generate_function_definition_contexnt_independent_id(
     return fref->function_name + "(" + coordinates + ")";
 }
 
+template <class FullyQualifiedTypeSignatureNameGenerator>
 static std::string generate_cfa_plan_context_independent_id(
     const CommonFeatureAdoptionPlanDescriptor& cfa_plan,
-    TypeDefinitionsRegister& type_definitions_register
+    FullyQualifiedTypeSignatureNameGenerator& type_definitions_register
 ) {
     std::string unique_context_independent_id;
     unique_context_independent_id = "[CFA::" + cfa_plan.filename + "]";
@@ -43,6 +45,21 @@ CallableCodeBlock::CallableCodeBlock(
         : generate_cfa_plan_context_independent_id(
             variant.get<CommonFeatureAdoptionPlanDescriptor>(), 
             type_definitions_register
+        )
+    )
+{}
+
+CallableCodeBlock::CallableCodeBlock(
+    const ParentVariant& variant, 
+    ProgramRepresentation& program_representation
+)
+    : ParentVariant(variant)
+    , unique_context_independent_id(
+        (variant.is<FunctionDefinition::Ref>())
+        ? generate_function_definition_contexnt_independent_id(variant.get<FunctionDefinition::Ref>())
+        : generate_cfa_plan_context_independent_id(
+            variant.get<CommonFeatureAdoptionPlanDescriptor>(), 
+            program_representation
         )
     )
 {}

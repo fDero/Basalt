@@ -49,6 +49,18 @@ TypeOperator::TypeOperator(
     , typesignature(typesignature)
 {}
 
+TypeOperator::TypeOperator(
+    const DebugInformationsAwareEntity& debug_info,
+    const std::string& operator_text,
+    const Expression& expression, 
+    const TypeSignature& typesignature
+)
+    : ExpressionBody(debug_info)
+    , operator_text(operator_text)
+    , expression(expression)
+    , typesignature(typesignature)
+{}
+
 BinaryOperator::BinaryOperator(
     const Token& operator_token, 
     const Expression& lx, 

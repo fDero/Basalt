@@ -25,10 +25,8 @@ class ProgramRepresentation {
         );
 
         [[nodiscard]] std::list<FileRepresentation>& get_files_by_package(const std::string& package_name);
-
         [[nodiscard]] TypeDefinition retrieve_type_definition(const CustomType& type_signature);
         [[nodiscard]] TypeSignature unalias_type(const TypeSignature& type_signature);
-
         [[nodiscard]] std::string get_fully_qualified_typesignature_name(const TypeSignature& typesignature);
         [[nodiscard]] std::string get_fully_qualified_typedefinition_name(const TypeDefinition& type_definition);
     
@@ -41,6 +39,8 @@ class ProgramRepresentation {
             const std::optional<TypeSignature>& target,
             const std::optional<TypeSignature>& source
         );
+
+        [[nodiscard]] bool is_union(const TypeSignature& maybe_union_type);
 
         [[nodiscard]] bool is_void_procedure(
             const FunctionCall& function_call,

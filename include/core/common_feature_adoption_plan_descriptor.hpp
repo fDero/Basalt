@@ -48,4 +48,5 @@ struct CommonFeatureAdoptionPlanDescriptor {
     std::optional<TypeSignature> return_type;
     std::string filename;
     CommonFeatureAdoptionPlan plan;
+    DebugInformationsAwareEntity debug_info;
 };

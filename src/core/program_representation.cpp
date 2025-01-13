@@ -106,6 +106,18 @@ bool ProgramRepresentation::validate_assignment(
         assignment_type_checker.validate_assignment(*target, *source);
 }
 
+bool ProgramRepresentation::is_union(
+    const TypeSignature& maybe_union_type
+) {
+    const TypeSignature& unaliased_maybe_union_type = unalias_type(maybe_union_type);
+    if (unaliased_maybe_union_type.is<CustomType>()) {
+        CustomType custom_type = unaliased_maybe_union_type.get<CustomType>();
+        TypeDefinition type_definition = retrieve_type_definition(custom_type);
+        return type_definition.is<UnionDefinition>();
+    }
+    return unaliased_maybe_union_type.is<InlineUnion>();
+}
+
 bool ProgramRepresentation::is_void_procedure(
     const FunctionCall& function_call,
     ScopeContext& scope_context

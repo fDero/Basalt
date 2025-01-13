@@ -116,6 +116,13 @@ struct TypeOperator : public ExpressionBody {
         const TypeSignature& typesignature
     );
 
+    TypeOperator(
+        const DebugInformationsAwareEntity& debug_info,
+        const std::string& operator_text,
+        const Expression& expression, 
+        const TypeSignature& typesignature
+    );
+
     [[nodiscard]] Token as_token() const;
     [[nodiscard]] ExpressionBody::Kind expression_kind() const override;
 

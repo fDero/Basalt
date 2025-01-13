@@ -26,22 +26,18 @@ class CallableCodeBlocksLLVMTranslator {
             llvm::Module& llvm_module
         );
 
-        llvm::Function* translate_callable_code_block_into_llvm(const CallableCodeBlock& callable_code_block);
+        llvm::Function* translate_callable_code_block_into_llvm(
+            const CallableCodeBlock& callable_code_block
+        );
 
-        llvm::Function* translate_common_feature_adoption_plan_into_llvm(
-            const CommonFeatureAdoptionPlanDescriptor& cfa_plan, 
+        llvm::Function* translate_cfa_descriptor_into_llvm(
+            const CommonFeatureAdoptionPlanDescriptor& cfa_plan_descriptor, 
             llvm::Function* llvm_function
         );
 
         llvm::Function* translate_function_definition_into_llvm(
             const FunctionDefinition::Ref& function_definition, 
             llvm::Function* llvm_function
-        );
-
-        ExpressionsAndStatementsLLVMTranslator get_function_body_translator(
-            TranslationAwareScopeContext scope_context,
-            llvm::Function* llvm_function,
-            llvm::IRBuilder<>& llvm_builder
         );
 
         [[nodiscard]] llvm::Function* translate_pow_builtin_operator_as_llvm_function(
@@ -54,6 +50,58 @@ class CallableCodeBlocksLLVMTranslator {
 
         [[nodiscard]] llvm::Function* translate_as_builtin_operator_as_llvm_function(
             const TypeOperator& type_operator
+        );
+
+    protected:
+        ExpressionsAndStatementsLLVMTranslator get_function_body_translator(
+            TranslationAwareScopeContext scope_context,
+            llvm::Function* llvm_function,
+            llvm::IRBuilder<>& llvm_builder
+        );
+
+        void translate_cfa_plan_into_llvm(
+            const CommonFeatureAdoptionPlanDescriptor& cfa_plan_descriptor, 
+            const CommonFeatureAdoptionPlan& cfa_plan,
+            const std::string& cfa_path_prefix, 
+            llvm::Function* llvm_function,
+            llvm::IRBuilder<>& llvm_builder
+        );
+
+        std::vector<llvm::BasicBlock*> create_necessary_cfa_cond_blocks(
+            const RecursiveAdoptionPlan& recursive_plan,
+            llvm::Function* llvm_function,
+            const std::string& cfa_path_prefix
+        );
+
+        std::vector<llvm::BasicBlock*> create_necessary_cfa_run_blocks(
+            const RecursiveAdoptionPlan& recursive_plan,
+            llvm::Function* llvm_function,
+            const std::string& cfa_path_prefix
+        );
+
+        void populate_cfa_cond_blocks(
+            const CommonFeatureAdoptionPlanDescriptor& cfa_plan_descriptor,
+            const RecursiveAdoptionPlan& recursive_plan,
+            const std::vector<llvm::BasicBlock*>& cond_blocks,
+            const std::vector<llvm::BasicBlock*>& run_blocks,
+            llvm::Function* llvm_function,
+            llvm::IRBuilder<>& llvm_builder
+        );
+
+        void populate_cfa_run_blocks(
+            const CommonFeatureAdoptionPlanDescriptor& cfa_plan_descriptor,
+            const RecursiveAdoptionPlan& recursive_plan,
+            const std::string& cfa_path_prefix, 
+            const std::vector<llvm::BasicBlock*>& run_blocks,
+            llvm::Function* llvm_function,
+            llvm::IRBuilder<>& llvm_builder
+        );
+
+        void handle_direct_cfa_adoption(
+            const CommonFeatureAdoptionPlanDescriptor& cfa_plan_descriptor,
+            const FunctionDefinition::Ref& selected_concrete_function,
+            llvm::Function* llvm_function,
+            llvm::IRBuilder<>& llvm_builder
         );
 
     private:

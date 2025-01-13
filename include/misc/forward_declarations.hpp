@@ -19,3 +19,4 @@ void assert_get_operation_is_possible(
 
 struct CommonFeatureAdoptionPlan;
 class CallableCodeBlocksLLVMTranslator;
+class ProgramRepresentation;

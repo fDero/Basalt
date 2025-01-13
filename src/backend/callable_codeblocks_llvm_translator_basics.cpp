@@ -57,7 +57,7 @@ llvm::Function* CallableCodeBlocksLLVMTranslator::translate_callable_code_block_
                 callable_code_block.get<FunctionDefinition::Ref>(), llvm_function
             );
         case CallableCodeBlock::Kind::common_feature_adoption_plan:
-            return translate_common_feature_adoption_plan_into_llvm(
+            return translate_cfa_descriptor_into_llvm(
                 callable_code_block.get<CommonFeatureAdoptionPlanDescriptor>(), llvm_function
             );
     }

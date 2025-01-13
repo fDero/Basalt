@@ -9,6 +9,7 @@
 #include "language/typesignatures.hpp"
 #include "language/definitions.hpp"
 #include "misc/smart_variant.hpp"
+#include "misc/forward_declarations.hpp"
 #include "core/common_feature_adoption_plan_descriptor.hpp"
 
 struct CallableCodeBlock : public SmartVariant<
@@ -37,4 +38,5 @@ struct CallableCodeBlock : public SmartVariant<
     const std::string unique_context_independent_id;
 
     CallableCodeBlock(const ParentVariant& variant, TypeDefinitionsRegister& type_definitions_register);
+    CallableCodeBlock(const ParentVariant& variant, ProgramRepresentation& type_definitions_register);
 };
