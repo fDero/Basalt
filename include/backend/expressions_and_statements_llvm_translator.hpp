@@ -42,6 +42,7 @@ class ExpressionsAndStatementsLLVMTranslator {
             llvm::LLVMContext& context,
             llvm::IRBuilder<>& builder,
             llvm::Function* current_function,
+            llvm::BasicBlock* current_block = nullptr,
             llvm::BasicBlock* loop_entry_block = nullptr,
             llvm::BasicBlock* loop_exit_block = nullptr
         );
@@ -84,11 +85,14 @@ class ExpressionsAndStatementsLLVMTranslator {
 
     protected:
         [[nodiscard]] ExpressionsAndStatementsLLVMTranslator create_translator_for_nested_loop(
-            llvm::BasicBlock* entry_block,
-            llvm::BasicBlock* exit_block
+            llvm::BasicBlock* new_current_block,
+            llvm::BasicBlock* new_loop_entry_block,
+            llvm::BasicBlock* new_loop_exit_block
         );
 
-        [[nodiscard]] ExpressionsAndStatementsLLVMTranslator create_translator_for_nested_conditional();
+        [[nodiscard]] ExpressionsAndStatementsLLVMTranslator create_translator_for_nested_conditional(
+            llvm::BasicBlock* new_current_block
+        );
 
     private:
         ProgramRepresentation& program_representation;
@@ -97,6 +101,7 @@ class ExpressionsAndStatementsLLVMTranslator {
         TranslationAwareScopeContext scope_context;
         llvm::LLVMContext& context;
         llvm::IRBuilder<>& builder;
+        llvm::BasicBlock* current_block;
         llvm::BasicBlock* loop_entry_block;
         llvm::BasicBlock* loop_exit_block;
         llvm::Function* current_function;

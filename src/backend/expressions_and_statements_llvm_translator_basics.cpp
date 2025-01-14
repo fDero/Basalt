@@ -16,6 +16,7 @@ ExpressionsAndStatementsLLVMTranslator::ExpressionsAndStatementsLLVMTranslator(
     llvm::LLVMContext& context,
     llvm::IRBuilder<>& builder,
     llvm::Function* current_function,
+    llvm::BasicBlock* current_block,
     llvm::BasicBlock* entry_block,
     llvm::BasicBlock* exit_block
 )
@@ -25,6 +26,7 @@ ExpressionsAndStatementsLLVMTranslator::ExpressionsAndStatementsLLVMTranslator(
     , scope_context(scope_context)
     , context(context)
     , builder(builder)
+    , current_block(current_block)
     , loop_entry_block(entry_block)
     , loop_exit_block(exit_block)
     , current_function(current_function)
@@ -32,6 +34,7 @@ ExpressionsAndStatementsLLVMTranslator::ExpressionsAndStatementsLLVMTranslator(
 
 [[nodiscard]] ExpressionsAndStatementsLLVMTranslator 
 ExpressionsAndStatementsLLVMTranslator::create_translator_for_nested_loop(
+    llvm::BasicBlock* current_block,
     llvm::BasicBlock* new_entry_block,
     llvm::BasicBlock* new_exit_block
 ){
@@ -43,14 +46,15 @@ ExpressionsAndStatementsLLVMTranslator::create_translator_for_nested_loop(
         context, 
         builder,  
         current_function,
+        current_block,
         new_entry_block, 
         new_exit_block
     );
 }
 
 [[nodiscard]] ExpressionsAndStatementsLLVMTranslator 
-ExpressionsAndStatementsLLVMTranslator::create_translator_for_nested_conditional(){
-    return create_translator_for_nested_loop(loop_entry_block, loop_exit_block);
+ExpressionsAndStatementsLLVMTranslator::create_translator_for_nested_conditional(llvm::BasicBlock* current_block){
+    return create_translator_for_nested_loop(current_block, loop_entry_block, loop_exit_block);
 }
 
 void ExpressionsAndStatementsLLVMTranslator::translate_statement_into_llvm(
