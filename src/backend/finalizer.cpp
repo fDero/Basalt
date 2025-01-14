@@ -72,8 +72,11 @@ void Finalizer::emit_object_file(const std::string& output_file_name) {
     //ensure no error
     llvm::legacy::PassManager pass_manager;
     auto file_type = llvm::CodeGenFileType::CGFT_ObjectFile;
-    bool compilation_pass_added_successfully = !llvm_target_machine->addPassesToEmitFile(pass_manager, output_file, nullptr, file_type);
+
+    /*bool compilation_pass_added_successfully = !*/
+    llvm_target_machine->addPassesToEmitFile(pass_manager, output_file, nullptr, file_type);
     //ensure no error
+    
     pass_manager.run(llvm_module);
     std::cout << "Binary emitted to " << output_file_name << std::endl;
     std::cout << "(target: " << target_triple << ")" << std::endl;

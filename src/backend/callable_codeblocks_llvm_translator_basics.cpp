@@ -21,6 +21,7 @@ ExpressionsAndStatementsLLVMTranslator
 CallableCodeBlocksLLVMTranslator::get_function_body_translator(
     TranslationAwareScopeContext scope_context,
     llvm::Function* llvm_function,
+    llvm::BasicBlock* function_entry_block,
     llvm::IRBuilder<>& llvm_builder
 ) {
     return ExpressionsAndStatementsLLVMTranslator(
@@ -29,8 +30,8 @@ CallableCodeBlocksLLVMTranslator::get_function_body_translator(
         *this,
         scope_context,
         llvm_context,
-        llvm_builder,
-        llvm_function
+        llvm_function,
+        function_entry_block
     );
 }
 

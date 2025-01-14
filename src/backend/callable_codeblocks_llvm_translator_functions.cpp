@@ -44,7 +44,7 @@ llvm::Function* CallableCodeBlocksLLVMTranslator::translate_function_definition_
     }
     TranslationAwareScopeContext scope_context(raw_scope_context, local_variables);
     ExpressionsAndStatementsLLVMTranslator body_translator = 
-        get_function_body_translator(scope_context, llvm_function, llvm_builder);
-    body_translator.translate_whole_codeblock_into_llvm(function_definition->code);
+        get_function_body_translator(scope_context, llvm_function, entry_block, llvm_builder);
+    body_translator.translate_whole_codeblock_into_llvm(entry_block, function_definition->code);
     return llvm_function;
 }
