@@ -97,7 +97,8 @@ void CallableCodeBlocksLLVMTranslator::populate_cfa_cond_blocks(
             recursive_plan.alternatives[alternative_counter]
         );
         llvm::Function* is_builtin_function = translate_is_builtin_operator_as_llvm_function(is_operator);
-        llvm::Value* is_result = llvm_builder.CreateCall(is_builtin_function, {}); // <---------- TODO: add argument
+        llvm::Value* llvm_argument = llvm_function->arg_begin() + recursive_plan.argument_index;
+        llvm::Value* is_result = llvm_builder.CreateCall(is_builtin_function, {llvm_argument});
         auto run_block = run_blocks[alternative_counter];
         auto next_cond_block = cond_blocks[alternative_counter + 1];
         llvm_builder.CreateCondBr(is_result, run_block, next_cond_block);
