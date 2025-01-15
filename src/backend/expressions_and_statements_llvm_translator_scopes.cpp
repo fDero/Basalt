@@ -37,16 +37,23 @@ llvm::BasicBlock* ExpressionsAndStatementsLLVMTranslator::translate_conditional_
     auto if_else_block = createBlockAfter(context, "if:cond@" + unique_conditional_id, if_then_block);
     auto if_exit_block = createBlockAfter(context, "if:cond@" + unique_conditional_id, if_else_block);
 
-    llvm::IRBuilder<> cond_builder(current_block);
+    llvm::IRBuilder<> current_builder(current_block);
+    current_builder.CreateBr(if_cond_block);
+
+    llvm::IRBuilder<> cond_builder(if_cond_block);
     llvm::Value* condition = translate_expression_into_llvm(if_cond_block, conditional.condition).value;
     cond_builder.CreateCondBr(condition, if_then_block, if_else_block);
     
+    llvm::IRBuilder<> then_builder(current_block);
     auto then_translator = create_translator_for_nested_conditional();
     then_translator.translate_whole_codeblock_into_llvm(if_then_block, conditional.then_branch);
-    
+    then_builder.CreateBr(if_exit_block);
+
+    llvm::IRBuilder<> else_builder(current_block);
     auto else_translator = create_translator_for_nested_conditional();
     else_translator.translate_whole_codeblock_into_llvm(if_else_block, conditional.else_branch);
-    
+    else_builder.CreateBr(if_exit_block);
+
     return if_exit_block;
 }
 
@@ -58,7 +65,10 @@ llvm::BasicBlock* ExpressionsAndStatementsLLVMTranslator::translate_while_loop_i
     auto while_cond_block = createBlockAfter(context, "while:cond@" + unique_while_id, current_block);
     auto while_body_block = createBlockAfter(context, "while:body@" + unique_while_id, while_cond_block);
     auto while_exit_block = createBlockAfter(context, "while:exit@" + unique_while_id, while_body_block);
-    
+
+    llvm::IRBuilder<> current_builder(current_block);
+    current_builder.CreateBr(while_cond_block);
+
     llvm::IRBuilder<> cond_builder(while_cond_block);
     llvm::Value* condition = translate_expression_into_llvm(while_cond_block, while_loop.condition).value;
     cond_builder.CreateCondBr(condition, while_body_block, while_exit_block);
@@ -80,8 +90,13 @@ llvm::BasicBlock* ExpressionsAndStatementsLLVMTranslator::translate_until_loop_i
     auto until_cond_block = createBlockAfter(context, "until:cond@" + unique_until_id, until_body_block);
     auto until_exit_block = createBlockAfter(context, "until:exit@" + unique_until_id, until_cond_block);
     
+    llvm::IRBuilder<> current_builder(current_block);
+    current_builder.CreateBr(until_body_block);
+
+    llvm::IRBuilder<> body_builder(until_body_block);
     auto body_translator = create_translator_for_nested_loop(until_body_block, until_exit_block);
     body_translator.translate_whole_codeblock_into_llvm(until_body_block, until_loop.loop_body);
+    body_builder.CreateBr(until_cond_block);
 
     llvm::IRBuilder<> cond_builder(until_cond_block);
     llvm::Value* condition = translate_expression_into_llvm(until_cond_block, until_loop.condition).value;

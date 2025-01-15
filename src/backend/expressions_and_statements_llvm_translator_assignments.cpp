@@ -51,25 +51,23 @@ llvm::BasicBlock* ExpressionsAndStatementsLLVMTranslator::translate_assignment_i
     const Expression& target, 
     const Expression& source
 ) {
-    throw std::runtime_error("not implemented yet");
-    /* std::optional<TypeSignature> target_type_opt = program_representation.resolve_expression_type(target, scope_context.raw_scope_context);
-    std::optional<TypeSignature> source_type_opt = program_representation.resolve_expression_type(source, scope_context.raw_scope_context);
-    assert_type_correctly_deduced_during_backend_llvm_translation(target_type_opt, target);
-    assert_type_correctly_deduced_during_backend_llvm_translation(source_type_opt, source);
-    TypeSignature target_type = program_representation.unalias_type(target_type_opt.value());
-    TypeSignature source_type = program_representation.unalias_type(source_type_opt.value());
-    if (target_type.is<InlineUnion>()) {
-        translate_assignment_to_union_into_llvm(target, target_type, source, source_type);
-        return;
+    auto target_type_opt = program_representation.resolve_expression_type(target, scope_context.raw_scope_context);
+    auto source_type_opt = program_representation.resolve_expression_type(source, scope_context.raw_scope_context);
+    assert_type_deduction_success_in_backend_layer(target_type_opt.has_value());
+    assert_type_deduction_success_in_backend_layer(source_type_opt.has_value());
+    TypeSignature target_type = target_type_opt.value();
+    TypeSignature source_type = source_type_opt.value();
+    bool is_union_target = program_representation.is_union(target_type);
+    bool is_union_source = program_representation.is_union(source_type);
+    llvm::IRBuilder<> builder(block);
+    TranslatedExpression llvm_source = translate_expression_into_llvm(block, source);
+    TranslatedExpression llvm_target = translate_expression_into_llvm(block, target);
+    if (is_union_target == is_union_source) {
+        builder.CreateStore(llvm_source.value,llvm_target.address);
+        return block;
     }
-    if (target_type.is<CustomType>()) {
-        TypeDefinition type_def = program_representation.retrieve_type_definition(target_type.get<CustomType>());
-        if (type_def.is<UnionDefinition>()) {
-            translate_assignment_to_union_into_llvm(target, target_type,source, source_type);
-            return;
-        }
-    }
-    llvm::Value* source_value = translate_expression_into_llvm(source).value;
-    TranslatedExpression target_expr = translate_expression_into_llvm(target);
-    builder.CreateStore(source_value, target_expr.address); */
+    assert_is_assignment_of_non_union_to_union(is_union_source, is_union_target);
+    llvm::Value* union_payload = builder.CreateGEP(llvm_target.value, {0, 1});
+    builder.CreateStore(llvm_source.value, union_payload);
+    return block;
 }

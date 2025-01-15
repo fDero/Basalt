@@ -232,9 +232,9 @@ inline void assert_local_variable_was_found_in_translation_aware_scope_context(b
     #endif
 }
 
-inline void assert_is_assignment_of_non_union_to_union(bool is_union_target) {
+inline void assert_is_assignment_of_non_union_to_union(bool is_union_source, bool is_union_target) {
     #ifndef DEBUG_BUILD
-    if (is_union_target) {
+    if (is_union_source || !is_union_target) {
         throw std::runtime_error("the compiler expected this assignment to be of a non-union type to a union type, and it wasn't");
     }
     #endif

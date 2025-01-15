@@ -141,8 +141,18 @@ inline const std::map<std::string, Token::Type> keywords {
     {"import",   Token::Type::import_keyword}
 };
 
+inline const std::string constexpr int_type        = "Int";
+inline const std::string constexpr float_type      = "Float";
+inline const std::string constexpr bool_type       = "Bool";
+inline const std::string constexpr char_type       = "Char";
+inline const std::string constexpr string_type     = "String";
+inline const std::string constexpr raw_string_type = "RawString";
+
 inline const std::set<std::string> primitive_types {
-    "Int", "Float", "Bool",
-    "String", "Char", 
-    "RawString"
+    int_type,
+    float_type,
+    bool_type,
+    char_type,
+    string_type,
+    raw_string_type
 };

@@ -3,6 +3,7 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include "frontend/syntax.hpp"
 #include "core/program_representation.hpp"
 #include "core/expression_type_deducer.hpp"
 #include "core/assignment_type_checker.hpp"
@@ -199,4 +200,16 @@ size_t ProgramRepresentation::resolve_field_index(
         }
     }
     assert_unreachable();
+}
+
+[[nodiscard]] bool ProgramRepresentation::is_binary_operator_over_float_operands(
+    const BinaryOperator& binary_op, 
+    ScopeContext& scope_context
+) {
+    auto lx_type_opt = resolve_expression_type(binary_op.left_operand, scope_context);
+    auto rx_type_opt = resolve_expression_type(binary_op.right_operand, scope_context);
+    return lx_type_opt.has_value() && rx_type_opt.has_value() 
+        && lx_type_opt.value().is<PrimitiveType>() || rx_type_opt.value().is<PrimitiveType>()
+        && lx_type_opt.value().get<PrimitiveType>().type_name == float_type
+        && rx_type_opt.value().get<PrimitiveType>().type_name == float_type;
 }

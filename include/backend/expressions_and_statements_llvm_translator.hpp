@@ -81,6 +81,21 @@ class ExpressionsAndStatementsLLVMTranslator {
         [[nodiscard]] TranslatedExpression translate_as_operator_into_llvm(llvm::BasicBlock* block, const TypeOperator& expr);
         [[nodiscard]] TranslatedExpression translate_pow_operator_into_llvm(llvm::BasicBlock* block, const BinaryOperator& expr);
 
+        [[nodiscard]] TranslatedExpression translate_plus_binary_operator(llvm::BasicBlock* block, const BinaryOperator& binary_op); 
+        [[nodiscard]] TranslatedExpression translate_minus_binary_operator(llvm::BasicBlock* block, const BinaryOperator& binary_op);
+        [[nodiscard]] TranslatedExpression translate_mul_binary_operator(llvm::BasicBlock* block, const BinaryOperator& binary_op);  
+        [[nodiscard]] TranslatedExpression translate_div_binary_operator(llvm::BasicBlock* block, const BinaryOperator& binary_op);  
+        [[nodiscard]] TranslatedExpression translate_mod_binary_operator(llvm::BasicBlock* block, const BinaryOperator& binary_op);  
+        [[nodiscard]] TranslatedExpression translate_LT_then_comparison(llvm::BasicBlock* block, const BinaryOperator& binary_op);   
+        [[nodiscard]] TranslatedExpression translate_GT_comparison(llvm::BasicBlock* block, const BinaryOperator& binary_op);        
+        [[nodiscard]] TranslatedExpression translate_LE_comparison(llvm::BasicBlock* block, const BinaryOperator& binary_op);        
+        [[nodiscard]] TranslatedExpression translate_GE_comparison(llvm::BasicBlock* block, const BinaryOperator& binary_op);        
+        [[nodiscard]] TranslatedExpression translate_EQ_comparison(llvm::BasicBlock* block, const BinaryOperator& binary_op);        
+        [[nodiscard]] TranslatedExpression translate_NE_comparison(llvm::BasicBlock* block, const BinaryOperator& binary_op);        
+        [[nodiscard]] TranslatedExpression translate_boolean_and(llvm::BasicBlock* block, const BinaryOperator& binary_op);          
+        [[nodiscard]] TranslatedExpression translate_boolean_or(llvm::BasicBlock* block, const BinaryOperator& binary_op);           
+        [[nodiscard]] TranslatedExpression translate_boolean_xor(llvm::BasicBlock* block, const BinaryOperator& binary_op);  
+
     protected:        
         [[nodiscard]] ExpressionsAndStatementsLLVMTranslator create_translator_for_nested_conditional();
 

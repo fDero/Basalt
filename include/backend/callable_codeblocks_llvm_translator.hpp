@@ -8,6 +8,7 @@
 #include <functional>
 
 #include "core/program_representation.hpp"
+#include "core/scope_context.hpp"
 #include "backend/type_definitions_llvm_translator.hpp"
 #include "language/definitions.hpp"
 #include "backend/translation_aware_scope_context.hpp"
@@ -41,7 +42,8 @@ class CallableCodeBlocksLLVMTranslator {
         );
 
         [[nodiscard]] llvm::Function* translate_pow_builtin_operator_as_llvm_function(
-            const BinaryOperator& binary_operator
+            const BinaryOperator& binary_operator,
+            ScopeContext& scope_context
         );
 
         [[nodiscard]] llvm::Function* translate_is_builtin_operator_as_llvm_function(

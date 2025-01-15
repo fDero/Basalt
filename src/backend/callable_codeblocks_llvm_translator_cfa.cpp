@@ -86,23 +86,24 @@ void CallableCodeBlocksLLVMTranslator::populate_cfa_cond_blocks(
     llvm::Function* llvm_function,
     llvm::IRBuilder<>& llvm_builder
 ) {
-    for (size_t alternative_counter = 0; alternative_counter < recursive_plan.alternatives.size() - 1; ++alternative_counter) {
-        auto cond_block = cond_blocks[alternative_counter];
-        llvm_builder.SetInsertPoint(cond_block);
-        std::string argument_as_basalt_identifier = "arg_" + std::to_string(recursive_plan.argument_index);
-        TypeOperator is_operator(
-            cfa_plan_descriptor.debug_info, 
-            "is", 
-            Identifier(cfa_plan_descriptor.debug_info, argument_as_basalt_identifier),
-            recursive_plan.alternatives[alternative_counter]
-        );
-        llvm::Function* is_builtin_function = translate_is_builtin_operator_as_llvm_function(is_operator);
-        llvm::Value* llvm_argument = llvm_function->arg_begin() + recursive_plan.argument_index;
-        llvm::Value* is_result = llvm_builder.CreateCall(is_builtin_function, {llvm_argument});
-        auto run_block = run_blocks[alternative_counter];
-        auto next_cond_block = cond_blocks[alternative_counter + 1];
-        llvm_builder.CreateCondBr(is_result, run_block, next_cond_block);
-    }
+    throw std::runtime_error("Not implemented yet");
+    //for (size_t alternative_counter = 0; alternative_counter < recursive_plan.alternatives.size() - 1; ++alternative_counter) {
+    //    auto cond_block = cond_blocks[alternative_counter];
+    //    llvm_builder.SetInsertPoint(cond_block);
+    //    std::string argument_as_basalt_identifier = "arg_" + std::to_string(recursive_plan.argument_index);
+    //    TypeOperator is_operator(
+    //        cfa_plan_descriptor.debug_info, 
+    //        "is", 
+    //        Identifier(cfa_plan_descriptor.debug_info, argument_as_basalt_identifier),
+    //        recursive_plan.alternatives[alternative_counter]
+    //    );
+    //    llvm::Function* is_builtin_function = translate_is_builtin_operator_as_llvm_function(is_operator);
+    //    llvm::Value* llvm_argument = llvm_function->arg_begin() + recursive_plan.argument_index;
+    //    llvm::Value* is_result = llvm_builder.CreateCall(is_builtin_function, {llvm_argument});
+    //    auto run_block = run_blocks[alternative_counter];
+    //    auto next_cond_block = cond_blocks[alternative_counter + 1];
+    //    llvm_builder.CreateCondBr(is_result, run_block, next_cond_block);
+    //}
 }
 
 void CallableCodeBlocksLLVMTranslator::populate_cfa_run_blocks(
@@ -141,7 +142,9 @@ void CallableCodeBlocksLLVMTranslator::handle_direct_cfa_adoption(
             arguments.push_back(llvm_function->arg_begin() + arg_index);
             continue;
         }
-        assert_is_assignment_of_non_union_to_union(program_representation.is_union(actual_arg_type));
+        bool is_union_source = program_representation.is_union(actual_arg_type);
+        bool is_union_target = program_representation.is_union(expected_arg_type);
+        assert_is_assignment_of_non_union_to_union(is_union_source, is_union_target);
         llvm::Value* union_payload = llvm_builder.CreateGEP(llvm_function->arg_begin() + arg_index, {0, 1});
         arguments.push_back(union_payload);
     }

@@ -62,6 +62,11 @@ class ProgramRepresentation {
             ScopeContext& scope_context
         );
 
+        [[nodiscard]] bool is_binary_operator_over_float_operands(
+            const BinaryOperator& binary_op, 
+            ScopeContext& scope_context
+        );
+
     private:
         ProjectFileStructure project_file_structure;
         TypeDefinitionsRegister type_definitions_register;
