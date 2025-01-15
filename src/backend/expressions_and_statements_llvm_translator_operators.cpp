@@ -27,13 +27,6 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_as_operat
     return type_operators_llvm_translator.translate_as_operator_to_llvm_value(block, union_expression, as_operator.typesignature);
 }
 
-TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_pow_operator_into_llvm(
-    llvm::BasicBlock* block,
-    const BinaryOperator& expr
-) {
-    throw std::runtime_error("Not implemented yet");
-}
-
 TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_plus_binary_operator(
     llvm::BasicBlock* block,
     const BinaryOperator& binary_op

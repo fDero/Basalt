@@ -97,7 +97,6 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_binary_op
         case OperatorKind::and_operator:          return translate_boolean_and(block, expr);          
         case OperatorKind::or_operator:           return translate_boolean_or(block, expr);           
         case OperatorKind::xor_operator:          return translate_boolean_xor(block, expr);          
-        case OperatorKind::pow_operator:          return translate_pow_operator_into_llvm(block, expr);
         default: throw_unrecognized_binary_operator(expr);
     }
 }

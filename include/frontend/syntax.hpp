@@ -52,7 +52,7 @@ inline const std::set<std::string> prefixes{
 };
 
 inline const std::set<std::string> infixies {
-    "+","-","*","/","%","^",
+    "+","-","*","/","%",
     "<",">","<=",">=","==","!=",
     "&&","||","^^"
 };
@@ -77,7 +77,6 @@ enum class OperatorKind {
     mul_operator,
     div_operator,
     mod_operator,
-    pow_operator,
     is_operator,
     as_operator
 };
@@ -102,7 +101,6 @@ inline const std::map<std::string, OperatorKind> operator_kinds {
     { "*",                          OperatorKind::mul_operator              },
     { "/",                          OperatorKind::div_operator              },
     { "%",                          OperatorKind::mod_operator              },
-    { "^",                          OperatorKind::pow_operator              },
     { "is",                         OperatorKind::is_operator               },
     { "as",                         OperatorKind::as_operator               }
 };
@@ -113,7 +111,7 @@ inline const std::set<std::string> type_operators {
 
 inline const std::map<std::string, short> infix_operators_priority {
     { "||", 1 }, { "&&", 1 }, { "^^", 1 }, { "<", 2 }, { ">", 2 }, { "<=", 2 }, { ">=", 2 }, 
-    { "!=", 2 }, { "==", 2 }, { "+", 3 }, { "-", 3 }, { "*", 4 }, { "/", 4 }, { "%", 4 }, { "^", 6 } 
+    { "!=", 2 }, { "==", 2 }, { "+", 3 }, { "-", 3 }, { "*", 4 }, { "/", 4 }, { "%", 4 }
 };
 
 inline const std::map<std::string, short> prefix_operators_priority {

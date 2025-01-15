@@ -67,7 +67,6 @@ class ExpressionsAndStatementsLLVMTranslator {
 
         [[nodiscard]] TranslatedExpression translate_is_operator_into_llvm(llvm::BasicBlock* block, const TypeOperator& expr);
         [[nodiscard]] TranslatedExpression translate_as_operator_into_llvm(llvm::BasicBlock* block, const TypeOperator& expr);
-        [[nodiscard]] TranslatedExpression translate_pow_operator_into_llvm(llvm::BasicBlock* block, const BinaryOperator& expr);
 
         [[nodiscard]] TranslatedExpression translate_plus_binary_operator(llvm::BasicBlock* block, const BinaryOperator& binary_op); 
         [[nodiscard]] TranslatedExpression translate_minus_binary_operator(llvm::BasicBlock* block, const BinaryOperator& binary_op);

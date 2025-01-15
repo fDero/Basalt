@@ -127,7 +127,6 @@ std::optional<TypeSignature> ExpressionTypeDeducer::deduce_type_from_binary_oper
         case OperatorKind::mul_operator:              return deduce_type_from_math_binary_operator(binary_operator);
         case OperatorKind::div_operator:              return deduce_type_from_math_binary_operator(binary_operator);
         case OperatorKind::mod_operator:              return deduce_type_from_math_binary_operator(binary_operator);
-        case OperatorKind::pow_operator:              return deduce_type_from_math_binary_operator(binary_operator);
         default: assert_unreachable();
     }
 }
