@@ -5,9 +5,6 @@
 
 #include <iostream>
 
-#include "misc/file_extensions.hpp"
-#include "frontend/parser.hpp"
-#include "frontend/tokenizer.hpp"
 #include "backend/finalizer.hpp"
 
 Finalizer::Finalizer(ProgramRepresentation& program_representation) 
@@ -48,36 +45,4 @@ Finalizer::Finalizer(
         llvm::Optional<llvm::Reloc::Model>()
     );
     llvm_module.setDataLayout(llvm_target_machine->createDataLayout());
-}
-
-void Finalizer::generate_llvm_ir() {
-    std::runtime_error("not implemented");
-}
-
-void Finalizer::emit_llvm_ir(const std::string& output_file_name) {
-    std::cout << "Emitting LLVM..." << std::endl;
-	std::error_code error_code;
-	llvm::raw_fd_ostream output_file (output_file_name, error_code);
-	llvm_module.print(output_file, nullptr);
-	llvm_module.print(llvm::outs(), nullptr);
-}
-
-void Finalizer::emit_object_file(const std::string& output_file_name) {
-    std::error_code error_code;
-    llvm::raw_fd_ostream output_file(
-        output_file_name, 
-        error_code, 
-        llvm::sys::fs::OpenFlags::OF_None
-    );
-    //ensure no error
-    llvm::legacy::PassManager pass_manager;
-    auto file_type = llvm::CodeGenFileType::CGFT_ObjectFile;
-
-    /*bool compilation_pass_added_successfully = !*/
-    llvm_target_machine->addPassesToEmitFile(pass_manager, output_file, nullptr, file_type);
-    //ensure no error
-    
-    pass_manager.run(llvm_module);
-    std::cout << "Binary emitted to " << output_file_name << std::endl;
-    std::cout << "(target: " << target_triple << ")" << std::endl;
 }
