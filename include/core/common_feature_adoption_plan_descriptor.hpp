@@ -11,6 +11,7 @@
 #include <variant>
 
 #include "misc/forward_declarations.hpp"
+#include "misc/smart_variant.hpp"
 #include "language/definitions.hpp"
 
 struct RecursiveAdoptionPlan {
@@ -20,10 +21,12 @@ struct RecursiveAdoptionPlan {
 };
 
 struct CommonFeatureAdoptionPlan 
-    : public std::variant<RecursiveAdoptionPlan, FunctionDefinition::Ref>
+    : public SmartVariant<RecursiveAdoptionPlan, FunctionDefinition::Ref>
 {
-    using std::variant<RecursiveAdoptionPlan, FunctionDefinition::Ref>::variant;
-    using std::variant<RecursiveAdoptionPlan, FunctionDefinition::Ref>::operator=;
+    using SmartVariant<RecursiveAdoptionPlan, FunctionDefinition::Ref>::is;
+    using SmartVariant<RecursiveAdoptionPlan, FunctionDefinition::Ref>::get;
+    using SmartVariant<RecursiveAdoptionPlan, FunctionDefinition::Ref>::SmartVariant;
+    using SmartVariant<RecursiveAdoptionPlan, FunctionDefinition::Ref>::operator=;
 
     [[nodiscard]] bool is_direct_adoption() const {
         return std::holds_alternative<FunctionDefinition::Ref>(*this);

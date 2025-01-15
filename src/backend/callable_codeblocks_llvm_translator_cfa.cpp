@@ -8,123 +8,71 @@
 #include "errors/internal_errors.hpp"
 
 llvm::Function* CallableCodeBlocksLLVMTranslator::translate_cfa_descriptor_into_llvm(
-    const CommonFeatureAdoptionPlanDescriptor& cfa_plan_descriptor, 
+    const CommonFeatureAdoptionPlanDescriptor& descriptor, 
     llvm::Function* llvm_function
 ) {
-    llvm::IRBuilder<> llvm_builder(llvm_context);
     llvm::BasicBlock* entry_block = llvm::BasicBlock::Create(llvm_context, "entry", llvm_function);
-    llvm_builder.SetInsertPoint(entry_block);
-    const std::string cfa_path_prefix = cfa_plan_descriptor.function_name + "_";
-    translate_cfa_plan_into_llvm(
-        cfa_plan_descriptor, 
-        cfa_plan_descriptor.plan, 
-        cfa_path_prefix,
-        llvm_function, 
-        llvm_builder
-    );
+    translate_cfa_plan_into_llvm(descriptor, descriptor.plan, llvm_function, entry_block);
     return llvm_function;
 }
 
 void CallableCodeBlocksLLVMTranslator::translate_cfa_plan_into_llvm(
-    const CommonFeatureAdoptionPlanDescriptor& cfa_plan_descriptor,
-    const CommonFeatureAdoptionPlan& cfa_plan, 
-    const std::string& cfa_path_prefix,
+    const CommonFeatureAdoptionPlanDescriptor& cfa_plan_descriptor, 
+    const CommonFeatureAdoptionPlan& cfa_plan,
     llvm::Function* llvm_function,
-    llvm::IRBuilder<>& llvm_builder
+    llvm::BasicBlock* block
 ) {
     if (cfa_plan.is_direct_adoption()) {
-        const FunctionDefinition::Ref& concrete_func = cfa_plan.get_direct_adoption();
-        handle_direct_cfa_adoption(cfa_plan_descriptor, concrete_func, llvm_function, llvm_builder);
+        FunctionDefinition::Ref selected_concrete_function = cfa_plan.get_direct_adoption();
+        translate_cfa_direct_adoption_into_llvm(cfa_plan_descriptor, selected_concrete_function, llvm_function, block);
         return;
     }
-    const RecursiveAdoptionPlan& recursive_plan = cfa_plan.get_recursive_adoption();
-    std::vector<llvm::BasicBlock*> cond_blocks = create_necessary_cfa_cond_blocks(recursive_plan, llvm_function, cfa_path_prefix);
-    std::vector<llvm::BasicBlock*> run_blocks = create_necessary_cfa_run_blocks(recursive_plan, llvm_function, cfa_path_prefix);
-    cond_blocks.push_back(run_blocks.back());
-    populate_cfa_cond_blocks(
-        cfa_plan_descriptor, recursive_plan, cond_blocks, 
-        run_blocks, llvm_function, llvm_builder
-    );
-    populate_cfa_run_blocks(
-        cfa_plan_descriptor, recursive_plan, cfa_path_prefix,
-        run_blocks, llvm_function, llvm_builder
-    );
+    assert(cfa_plan.is_recursive_adoption());
+    RecursiveAdoptionPlan recursive_plan = cfa_plan.get_recursive_adoption();
+    translate_cfa_recursive_adoption_into_llvm(cfa_plan_descriptor, recursive_plan, llvm_function, block);
 }
 
-std::vector<llvm::BasicBlock*> CallableCodeBlocksLLVMTranslator::create_necessary_cfa_cond_blocks(
+void CallableCodeBlocksLLVMTranslator::translate_cfa_recursive_adoption_into_llvm(
+    const CommonFeatureAdoptionPlanDescriptor& cfa_plan_descriptor, 
     const RecursiveAdoptionPlan& recursive_plan,
     llvm::Function* llvm_function,
-    const std::string& cfa_path_prefix
+    llvm::BasicBlock* block
 ) {
-    std::vector<llvm::BasicBlock*> cond_blocks;
-    for (size_t alternative_counter = 0; alternative_counter < recursive_plan.alternatives.size() - 1; ++alternative_counter) {
-        const std::string cond_block_name = cfa_path_prefix + "cond_" + std::to_string(alternative_counter) + "_";
-        auto alternative_specific_cond_block = llvm::BasicBlock::Create(llvm_context, cond_block_name, llvm_function);   
-        cond_blocks.push_back(alternative_specific_cond_block);
+    std::vector<llvm::BasicBlock*> alternative_blocks { block };
+    for (size_t alternative_index = 1; alternative_index < recursive_plan.alternatives.size(); alternative_index++) {
+        llvm::BasicBlock* prev_block = alternative_blocks.back();
+        llvm::BasicBlock* alternative_block = llvm::BasicBlock::Create(llvm_context);
+        alternative_block->moveAfter(prev_block);
+        alternative_blocks.push_back(alternative_block);
     }
-    return cond_blocks;
-}
-
-std::vector<llvm::BasicBlock*> CallableCodeBlocksLLVMTranslator::create_necessary_cfa_run_blocks(
-    const RecursiveAdoptionPlan& recursive_plan,
-    llvm::Function* llvm_function,
-    const std::string& cfa_path_prefix
-) {
-    std::vector<llvm::BasicBlock*> cond_blocks;
-    for (size_t alternative_counter = 0; alternative_counter < recursive_plan.alternatives.size(); ++alternative_counter) {
-        const std::string cond_block_name = cfa_path_prefix + "run_" + std::to_string(alternative_counter) + "_";
-        auto alternative_specific_cond_block = llvm::BasicBlock::Create(llvm_context, cond_block_name, llvm_function);   
-        cond_blocks.push_back(alternative_specific_cond_block);
-    }
-    return cond_blocks;
-}
-
-void CallableCodeBlocksLLVMTranslator::populate_cfa_cond_blocks(
-    const CommonFeatureAdoptionPlanDescriptor& cfa_plan_descriptor,
-    const RecursiveAdoptionPlan& recursive_plan,
-    const std::vector<llvm::BasicBlock*>& cond_blocks,
-    const std::vector<llvm::BasicBlock*>& run_blocks,
-    llvm::Function* llvm_function,
-    llvm::IRBuilder<>& llvm_builder
-) {
-    for (size_t alternative_counter = 0; alternative_counter < recursive_plan.alternatives.size() - 1; ++alternative_counter) {
-        auto cond_block = cond_blocks[alternative_counter];
-        llvm_builder.SetInsertPoint(cond_block);
-        std::string argument_as_basalt_identifier = "arg_" + std::to_string(recursive_plan.argument_index);
+    for (size_t alternative_index = 0; alternative_index < recursive_plan.alternatives.size() - 1; alternative_index++) {
+        llvm::BasicBlock* alternative_block = alternative_blocks[alternative_index];
+        llvm::IRBuilder<> alternative_block_builder(alternative_block);
         llvm::Value* llvm_argument = llvm_function->arg_begin() + recursive_plan.argument_index;
         TypeOperatorsLLVMTranslator type_operators_llvm_translator(program_representation, type_definitions_llvm_translator);
-        auto alternative = recursive_plan.alternatives[alternative_counter];
-        TranslatedExpression is_operator = type_operators_llvm_translator.translate_is_operator_to_llvm_value(cond_block, llvm_argument, alternative);
-        auto run_block = run_blocks[alternative_counter];
-        auto next_cond_block = cond_blocks[alternative_counter + 1];
-        llvm_builder.CreateCondBr(is_operator.value, run_block, next_cond_block);
+        TranslatedExpression is_operator = type_operators_llvm_translator.translate_is_operator_to_llvm_value(
+            alternative_block, 
+            llvm_argument, 
+            recursive_plan.alternatives[alternative_index]
+        );
+        llvm::BasicBlock* success_block = llvm::BasicBlock::Create(llvm_context);
+        success_block->moveAfter(alternative_block);
+        alternative_block_builder.CreateCondBr(is_operator.value, success_block, alternative_blocks[alternative_index + 1]);
+        const CommonFeatureAdoptionPlan& successful_plan = recursive_plan.nested_plans[alternative_index];
+        translate_cfa_plan_into_llvm(cfa_plan_descriptor, successful_plan, llvm_function, success_block);
     }
+    llvm::BasicBlock* last_alternative_block = alternative_blocks.back();
+    const CommonFeatureAdoptionPlan& last_alternative_plan = recursive_plan.nested_plans.back();
+    translate_cfa_plan_into_llvm(cfa_plan_descriptor, last_alternative_plan, llvm_function, last_alternative_block);
 }
 
-void CallableCodeBlocksLLVMTranslator::populate_cfa_run_blocks(
-    const CommonFeatureAdoptionPlanDescriptor& cfa_plan_descriptor,
-    const RecursiveAdoptionPlan& recursive_plan,
-    const std::string& cfa_path_prefix,
-    const std::vector<llvm::BasicBlock*>& run_blocks,
-    llvm::Function* llvm_function,
-    llvm::IRBuilder<>& llvm_builder
-) {
-    for (size_t alternative_counter = 0; alternative_counter < recursive_plan.alternatives.size(); ++alternative_counter) {
-        auto run_block = run_blocks[alternative_counter];
-        llvm_builder.SetInsertPoint(run_block);
-        std::string new_path_prefix = cfa_path_prefix + "arg_" + std::to_string(recursive_plan.argument_index) + "_";
-        new_path_prefix = cfa_path_prefix + "choice_" + std::to_string(alternative_counter) + "_";
-        const CommonFeatureAdoptionPlan& plan = recursive_plan.nested_plans[alternative_counter];
-        translate_cfa_plan_into_llvm(cfa_plan_descriptor, plan, cfa_path_prefix, llvm_function, llvm_builder);
-    }
-}
-
-void CallableCodeBlocksLLVMTranslator::handle_direct_cfa_adoption(
+void CallableCodeBlocksLLVMTranslator::translate_cfa_direct_adoption_into_llvm(
     const CommonFeatureAdoptionPlanDescriptor& cfa_plan_descriptor,
     const FunctionDefinition::Ref& selected_concrete_function,
     llvm::Function* llvm_function,
-    llvm::IRBuilder<>& llvm_builder
+    llvm::BasicBlock* block
 ) {
+    llvm::IRBuilder<> llvm_builder(block);
     auto ccblock = CallableCodeBlock(selected_concrete_function, program_representation);
     llvm::Function* concrete_function = translate_callable_code_block_into_llvm(ccblock);
     std::vector<llvm::Value*> arguments;
