@@ -42,6 +42,14 @@ class ProgramRepresentation {
 
         [[nodiscard]] bool is_union(const TypeSignature& maybe_union_type);
 
+        [[nodiscard]] std::vector<TypeSignature> fetch_union_alternatives(
+            const TypeSignature& maybe_union_type
+        );
+
+        [[nodiscard]] std::vector<TypeSignature> fetch_union_compatible_types(
+            const TypeSignature& maybe_union_type
+        );
+
         [[nodiscard]] bool is_void_procedure(
             const FunctionCall& function_call,
             ScopeContext& scope_context

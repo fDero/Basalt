@@ -8,8 +8,6 @@
 #include "backend/callable_codeblocks_llvm_translator.hpp"
 #include "errors/internal_errors.hpp"
 
-using TranslatedExpression = ExpressionsAndStatementsLLVMTranslator::TranslatedExpression;
-
 TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_LT_then_comparison(
     llvm::BasicBlock* block,
     const BinaryOperator& binary_op

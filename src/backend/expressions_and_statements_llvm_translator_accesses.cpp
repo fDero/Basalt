@@ -7,8 +7,6 @@
 #include "backend/callable_codeblocks_llvm_translator.hpp"
 #include "errors/internal_errors.hpp"
 
-using TranslatedExpression = ExpressionsAndStatementsLLVMTranslator::TranslatedExpression;
-
 TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_square_bracket_access_into_llvm(
     llvm::BasicBlock* block,
     const SquareBracketsAccess& expr

@@ -4,6 +4,7 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 #include "backend/callable_codeblocks_llvm_translator.hpp"
+#include "backend/type_operators_llvm_translator.hpp"
 #include "errors/internal_errors.hpp"
 
 llvm::Function* CallableCodeBlocksLLVMTranslator::translate_cfa_descriptor_into_llvm(
@@ -86,24 +87,18 @@ void CallableCodeBlocksLLVMTranslator::populate_cfa_cond_blocks(
     llvm::Function* llvm_function,
     llvm::IRBuilder<>& llvm_builder
 ) {
-    throw std::runtime_error("Not implemented yet");
-    //for (size_t alternative_counter = 0; alternative_counter < recursive_plan.alternatives.size() - 1; ++alternative_counter) {
-    //    auto cond_block = cond_blocks[alternative_counter];
-    //    llvm_builder.SetInsertPoint(cond_block);
-    //    std::string argument_as_basalt_identifier = "arg_" + std::to_string(recursive_plan.argument_index);
-    //    TypeOperator is_operator(
-    //        cfa_plan_descriptor.debug_info, 
-    //        "is", 
-    //        Identifier(cfa_plan_descriptor.debug_info, argument_as_basalt_identifier),
-    //        recursive_plan.alternatives[alternative_counter]
-    //    );
-    //    llvm::Function* is_builtin_function = translate_is_builtin_operator_as_llvm_function(is_operator);
-    //    llvm::Value* llvm_argument = llvm_function->arg_begin() + recursive_plan.argument_index;
-    //    llvm::Value* is_result = llvm_builder.CreateCall(is_builtin_function, {llvm_argument});
-    //    auto run_block = run_blocks[alternative_counter];
-    //    auto next_cond_block = cond_blocks[alternative_counter + 1];
-    //    llvm_builder.CreateCondBr(is_result, run_block, next_cond_block);
-    //}
+    for (size_t alternative_counter = 0; alternative_counter < recursive_plan.alternatives.size() - 1; ++alternative_counter) {
+        auto cond_block = cond_blocks[alternative_counter];
+        llvm_builder.SetInsertPoint(cond_block);
+        std::string argument_as_basalt_identifier = "arg_" + std::to_string(recursive_plan.argument_index);
+        llvm::Value* llvm_argument = llvm_function->arg_begin() + recursive_plan.argument_index;
+        TypeOperatorsLLVMTranslator type_operators_llvm_translator(program_representation, type_definitions_llvm_translator);
+        auto alternative = recursive_plan.alternatives[alternative_counter];
+        TranslatedExpression is_operator = type_operators_llvm_translator.translate_is_operator_to_llvm_value(cond_block, llvm_argument, alternative);
+        auto run_block = run_blocks[alternative_counter];
+        auto next_cond_block = cond_blocks[alternative_counter + 1];
+        llvm_builder.CreateCondBr(is_operator.value, run_block, next_cond_block);
+    }
 }
 
 void CallableCodeBlocksLLVMTranslator::populate_cfa_run_blocks(
@@ -134,19 +129,14 @@ void CallableCodeBlocksLLVMTranslator::handle_direct_cfa_adoption(
     llvm::Function* concrete_function = translate_callable_code_block_into_llvm(ccblock);
     std::vector<llvm::Value*> arguments;
     for (size_t arg_index = 0; arg_index < selected_concrete_function->arguments.size(); arg_index++) {
-        const TypeSignature& actual_arg_type = cfa_plan_descriptor.arg_types[arg_index];
         const TypeSignature& expected_arg_type = selected_concrete_function->arguments[arg_index].arg_type;
-        bool is_assignable = program_representation.validate_assignment(expected_arg_type, actual_arg_type);
-        bool is_union = program_representation.is_union(expected_arg_type);
-        if (is_assignable || is_union) {
-            arguments.push_back(llvm_function->arg_begin() + arg_index);
-            continue;
-        }
-        bool is_union_source = program_representation.is_union(actual_arg_type);
-        bool is_union_target = program_representation.is_union(expected_arg_type);
-        assert_is_assignment_of_non_union_to_union(is_union_source, is_union_target);
-        llvm::Value* union_payload = llvm_builder.CreateGEP(llvm_function->arg_begin() + arg_index, {0, 1});
-        arguments.push_back(union_payload);
+        TypeOperatorsLLVMTranslator type_operators_llvm_translator(program_representation, type_definitions_llvm_translator);
+        TranslatedExpression as_operator = type_operators_llvm_translator.translate_as_operator_to_llvm_value(
+            llvm_builder.GetInsertBlock(), 
+            llvm_function->arg_begin() + arg_index, 
+            expected_arg_type
+        );
+        arguments.push_back(as_operator.value);
     }
     llvm::Value* return_value = llvm_builder.CreateCall(concrete_function, arguments);
     if (cfa_plan_descriptor.return_type.has_value()) {

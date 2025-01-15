@@ -27,6 +27,10 @@ class TypeDefinitionsRegister {
         [[nodiscard]] std::string get_fully_qualified_typedefinition_name(const TypeDefinition& type_definition);
         [[nodiscard]] std::string get_fully_qualified_typesignature_name(const TypeSignature& type_signature);
         
+        [[nodiscard]] bool is_union(const TypeSignature& maybe_union_type);
+        [[nodiscard]] std::vector<TypeSignature> fetch_union_alternatives(const TypeSignature& maybe_union_type);
+        [[nodiscard]] std::vector<TypeSignature> fetch_union_compatible_types(const TypeSignature& maybe_union_type);
+        
     protected:
         [[nodiscard]] std::string get_fully_qualified_customtype_name(const CustomType& type_signature);
         [[nodiscard]] std::optional<std::string> search_fully_qualified_typesignature_name(const CustomType&, const std::string&);

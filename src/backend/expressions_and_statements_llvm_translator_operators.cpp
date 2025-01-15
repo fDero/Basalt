@@ -6,29 +6,25 @@
 #include "frontend/syntax.hpp"
 #include "backend/expressions_and_statements_llvm_translator.hpp"
 #include "backend/callable_codeblocks_llvm_translator.hpp"
+#include "backend/type_operators_llvm_translator.hpp"
 #include "errors/internal_errors.hpp"
-
-using TranslatedExpression = ExpressionsAndStatementsLLVMTranslator::TranslatedExpression;
 
 TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_is_operator_into_llvm(
     llvm::BasicBlock* block,
-    const TypeOperator& expr
+    const TypeOperator& is_operator
 ) {
-    throw std::runtime_error("Not implemented yet");
+    TranslatedExpression union_expression = translate_expression_into_llvm(block, is_operator.expression);
+    TypeOperatorsLLVMTranslator type_operators_llvm_translator(program_representation, type_definitions_llvm_translator);
+    return type_operators_llvm_translator.translate_is_operator_to_llvm_value(block, union_expression, is_operator.typesignature);
 }
 
 TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_as_operator_into_llvm(
     llvm::BasicBlock* block,
     const TypeOperator& as_operator
 ) {
-    if (program_representation.is_union(as_operator.typesignature)) {
-        return translate_expression_into_llvm(block, as_operator.expression);
-    }
-    llvm::IRBuilder<> builder(block);
     TranslatedExpression union_expression = translate_expression_into_llvm(block, as_operator.expression);
-    llvm::Value* union_payload_address = builder.CreateGEP(union_expression.address, {0, 1});
-    llvm::Value* union_payload_value = builder.CreateLoad(union_payload_address);
-    return TranslatedExpression(union_payload_value, union_expression.address);
+    TypeOperatorsLLVMTranslator type_operators_llvm_translator(program_representation, type_definitions_llvm_translator);
+    return type_operators_llvm_translator.translate_as_operator_to_llvm_value(block, union_expression, as_operator.typesignature);
 }
 
 TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_pow_operator_into_llvm(

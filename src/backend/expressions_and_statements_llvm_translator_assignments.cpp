@@ -69,5 +69,8 @@ llvm::BasicBlock* ExpressionsAndStatementsLLVMTranslator::translate_assignment_i
     assert_is_assignment_of_non_union_to_union(is_union_source, is_union_target);
     llvm::Value* union_payload = builder.CreateGEP(llvm_target.value, {0, 1});
     builder.CreateStore(llvm_source.value, union_payload);
+    llvm::Value* union_type_info = builder.CreateGEP(llvm_target.value, {0, 0});
+    llvm::GlobalVariable* source_type_info = type_definitions_llvm_translator.fetch_type_info(source_type);
+    builder.CreateStore(source_type_info, union_type_info);
     return block;
 }

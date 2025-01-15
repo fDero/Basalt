@@ -6,8 +6,6 @@
 #include "backend/expressions_and_statements_llvm_translator.hpp"
 #include "backend/callable_codeblocks_llvm_translator.hpp"
 
-using TranslatedExpression = ExpressionsAndStatementsLLVMTranslator::TranslatedExpression;
-
 ExpressionsAndStatementsLLVMTranslator::ExpressionsAndStatementsLLVMTranslator(
     ProgramRepresentation& program_representation, 
     TypeDefinitionsLLVMTranslator& type_definitions_llvm_translator,

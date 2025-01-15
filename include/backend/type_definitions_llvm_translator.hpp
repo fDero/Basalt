@@ -5,13 +5,12 @@
 
 #pragma once
 
-#include <functional>
-
 #include "core/program_representation.hpp"
 #include "language/definitions.hpp"
 
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/Module.h>
+#include <llvm/IR/Constants.h>
 
 class TypeDefinitionsLLVMTranslator {
     public:
@@ -35,9 +34,15 @@ class TypeDefinitionsLLVMTranslator {
 
         [[nodiscard]] std::vector<llvm::Type*> translate_all_types_to_llvm_types(const std::vector<TypeSignature>& types);
 
+        [[nodiscard]] llvm::GlobalVariable* fetch_type_info(const TypeSignature& type_signature);
+        [[nodiscard]] std::vector<llvm::GlobalVariable*> fetch_all_compatible_type_infos(const TypeSignature& type_signature);
+
     private:
         ProgramRepresentation& program_representation;
         llvm::LLVMContext& context;
         llvm::Module& llvm_module;
+
         std::unordered_map<std::string, llvm::Type*> llvm_type_definitions;
+        std::unordered_map<std::string, llvm::GlobalVariable*> llvm_exact_type_infos;
+        std::unordered_map<std::string, std::vector<llvm::GlobalVariable*>> llvm_compatible_type_infos;
 };

@@ -9,10 +9,12 @@
 #include <memory>
 
 #include "misc/forward_declarations.hpp"
+#include "language/definitions.hpp"
 #include "core/program_representation.hpp"
 #include "backend/type_definitions_llvm_translator.hpp"
 #include "backend/translation_aware_scope_context.hpp"
-#include "language/definitions.hpp"
+#include "backend/translated_expression.hpp"
+
 
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/IR/LLVMContext.h>
@@ -20,20 +22,6 @@
 
 class ExpressionsAndStatementsLLVMTranslator {
     public:
-        struct TranslatedExpression {
-            TranslatedExpression(llvm::Value* value, llvm::Value* address) 
-                : value(value)
-                , address(address) 
-            {}
-
-            TranslatedExpression(llvm::Value* value) 
-                : TranslatedExpression(value, nullptr)
-            {}
-
-            llvm::Value* value;
-            llvm::Value* address;
-        };
-
         ExpressionsAndStatementsLLVMTranslator(
             ProgramRepresentation& program_representation, 
             TypeDefinitionsLLVMTranslator& type_definitions_llvm_translator,

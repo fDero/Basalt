@@ -110,13 +110,19 @@ bool ProgramRepresentation::validate_assignment(
 bool ProgramRepresentation::is_union(
     const TypeSignature& maybe_union_type
 ) {
-    const TypeSignature& unaliased_maybe_union_type = unalias_type(maybe_union_type);
-    if (unaliased_maybe_union_type.is<CustomType>()) {
-        CustomType custom_type = unaliased_maybe_union_type.get<CustomType>();
-        TypeDefinition type_definition = retrieve_type_definition(custom_type);
-        return type_definition.is<UnionDefinition>();
-    }
-    return unaliased_maybe_union_type.is<InlineUnion>();
+    return type_definitions_register.is_union(maybe_union_type);
+}
+
+std::vector<TypeSignature> ProgramRepresentation::fetch_union_alternatives(
+    const TypeSignature& maybe_union_type
+) {
+    return type_definitions_register.fetch_union_alternatives(maybe_union_type);
+}
+
+std::vector<TypeSignature> ProgramRepresentation::fetch_union_compatible_types(
+    const TypeSignature& maybe_union_type
+) {
+    return type_definitions_register.fetch_union_compatible_types(maybe_union_type);
 }
 
 bool ProgramRepresentation::is_void_procedure(
@@ -209,7 +215,8 @@ size_t ProgramRepresentation::resolve_field_index(
     auto lx_type_opt = resolve_expression_type(binary_op.left_operand, scope_context);
     auto rx_type_opt = resolve_expression_type(binary_op.right_operand, scope_context);
     return lx_type_opt.has_value() && rx_type_opt.has_value() 
-        && lx_type_opt.value().is<PrimitiveType>() || rx_type_opt.value().is<PrimitiveType>()
+        && lx_type_opt.value().is<PrimitiveType>() 
+        && rx_type_opt.value().is<PrimitiveType>()
         && lx_type_opt.value().get<PrimitiveType>().type_name == float_type
         && rx_type_opt.value().get<PrimitiveType>().type_name == float_type;
 }
