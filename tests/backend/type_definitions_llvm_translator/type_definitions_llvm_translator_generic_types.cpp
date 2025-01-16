@@ -18,7 +18,7 @@ static StructDefinition pair_generic_struct =
         }
 );
 
-static ProjectFileStructure project_with_definition_of_the_pair_generic_struct({
+static ProjectFileStructure project_with_a_couple_of_simple_functions({
         FileRepresentation {
         .file_metadata = {
             .filename = "main.basalt",
@@ -33,7 +33,7 @@ static ProjectFileStructure project_with_definition_of_the_pair_generic_struct({
 });
 
 TEST(Backend, GenericPairInstantiatedWithIntTranslatedCorrectly) {
-    ProgramRepresentation program_representation(project_with_definition_of_the_pair_generic_struct);
+    ProgramRepresentation program_representation(project_with_a_couple_of_simple_functions);
     llvm::LLVMContext context;
     llvm::Module llvm_module("IntTranslatedCorrectly", context);
     TypeDefinitionsLLVMTranslator type_definitions_llvm_translator(
@@ -55,7 +55,7 @@ TEST(Backend, GenericPairInstantiatedWithIntTranslatedCorrectly) {
 }
 
 TEST(Backend, GenericPairInstantiatedWithCharTranslatedCorrectly) {
-    ProgramRepresentation program_representation(project_with_definition_of_the_pair_generic_struct);
+    ProgramRepresentation program_representation(project_with_a_couple_of_simple_functions);
     llvm::LLVMContext context;
     llvm::Module llvm_module("IntTranslatedCorrectly", context);
     TypeDefinitionsLLVMTranslator type_definitions_llvm_translator(

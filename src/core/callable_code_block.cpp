@@ -10,9 +10,9 @@ static std::string generate_function_definition_contexnt_independent_id(
     const FunctionDefinition::Ref& fref
 ) {
     std::string coordinates = fref->filename;
-    coordinates += "@" + std::to_string(fref->line_number);
+    coordinates += ":" + std::to_string(fref->line_number);
     coordinates += ":" + std::to_string(fref->tok_number);
-    return fref->function_name + "(" + coordinates + ")";
+    return fref->function_name + "@" + coordinates;
 }
 
 template <class FullyQualifiedTypeSignatureNameGenerator>
@@ -21,8 +21,7 @@ static std::string generate_cfa_plan_context_independent_id(
     FullyQualifiedTypeSignatureNameGenerator& type_definitions_register
 ) {
     std::string unique_context_independent_id;
-    unique_context_independent_id = "[CFA::" + cfa_plan.filename + "]";
-    unique_context_independent_id += cfa_plan.function_name + "("; 
+    unique_context_independent_id = "[CFA::" + cfa_plan.filename + "::";
     for (const TypeSignature& ts : cfa_plan.arg_types) {
         unique_context_independent_id += type_definitions_register
             .get_fully_qualified_typesignature_name(ts) + ",";
@@ -30,7 +29,6 @@ static std::string generate_cfa_plan_context_independent_id(
     if (!cfa_plan.arg_types.empty()) {
         unique_context_independent_id.pop_back();
     }
-    unique_context_independent_id += ")";
     return unique_context_independent_id;
 }
 
@@ -80,7 +78,7 @@ CallableCodeBlock::get_return_type() const {
 
 [[nodiscard]] std::vector<TypeSignature>
 CallableCodeBlock::get_arg_types() const {
-    if (callable_codeblock_kind() == Kind::function_definition) {
+    if (callable_codeblock_kind() == Kind::common_feature_adoption_plan) {
         return ParentVariant::get<CommonFeatureAdoptionPlanDescriptor>().arg_types;
     }
     std::vector<TypeSignature> arg_types;
