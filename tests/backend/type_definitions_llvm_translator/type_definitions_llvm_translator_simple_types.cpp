@@ -9,7 +9,6 @@
 #include "../../tests_utilities/type_alias_factory.hpp"
 
 #include <llvm/Support/raw_ostream.h>
-#include <iostream>
 
 static UnionDefinition number_union_definition = 
     UnionDefinitionFactory::make_union_definition(
@@ -26,14 +25,7 @@ static ProjectFileStructure project_with_definition_of_the_number_union({
             .packagename = "testpackage",
             .imports = { }
         },
-        .type_defs = { 
-            UnionDefinitionFactory::make_union_definition(
-                "Number", "main.basalt", { }, {
-                    TypeSignatureFactory::Int,
-                    TypeSignatureFactory::Float
-                }
-            )
-        },
+        .type_defs = { number_union_definition },
         .func_defs = { }
     }
 });

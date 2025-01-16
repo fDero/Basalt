@@ -73,24 +73,3 @@ TypeSignature TypeDefinitionsRegister::unalias_type(const TypeSignature& type_si
         return type_signature;
     }
 }
-
-std::string TypeDefinitionsRegister::get_fully_qualified_customtype_name(const CustomType& type_signature) {
-    if (!type_signature.package_prefix.empty()) {
-        const std::string& package = type_signature.package_prefix;
-        std::optional<std::string> retrieved = search_fully_qualified_typesignature_name(type_signature, package);
-        ensure_type_was_successfully_retrieved(retrieved);
-        return retrieved.value();
-    }
-    const std::string& target_package_name = project_file_structure.get_package_name_by_file_name(type_signature.filename);
-    std::optional<std::string> retrieved = search_fully_qualified_typesignature_name(type_signature, target_package_name);
-    if (retrieved.has_value()) {
-        return retrieved.value();
-    }
-    for (const std::string& package : project_file_structure.get_imports_by_file(type_signature.filename)) {
-        retrieved = search_fully_qualified_typesignature_name(type_signature, package);
-        if (retrieved.has_value()) {
-            return retrieved.value();
-        }
-    }
-    throw_no_type_definition_found(type_signature);
-}

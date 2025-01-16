@@ -3,29 +3,32 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include <regex>
+
 #include "core/type_definitions_register.hpp"
 #include "errors/preprocessing_errors.hpp"
 #include "errors/internal_errors.hpp"
 #include "core/generics_substitution_rules.hpp"
 
-std::string TypeDefinitionsRegister::get_type_definition_match_pattern(
-    const std::string& package_name,
-    const TypeDefinition& type_definition
-) {
-    std::string pattern_tag_name = package_name + namespace_concatenation + type_definition.get_simple_name();
-    size_t number_of_generics = type_definition.get_number_of_generics();
-    std::string generics_section = (number_of_generics > 0)? "<" + std::to_string(number_of_generics) + ">" : "";
-    return pattern_tag_name + generics_section;
-}
-
-std::string TypeDefinitionsRegister::get_type_signature_match_pattern(
-    const std::string& package_name,
-    const CustomType& type_signature
-) {
-    std::string pattern_tag_name = package_name + namespace_concatenation + type_signature.type_name;
-    size_t number_of_generics = type_signature.type_parameters.size();
-    std::string generics_section = (number_of_generics > 0)? "<" + std::to_string(number_of_generics) + ">" : "";
-    return pattern_tag_name + generics_section;
+std::string TypeDefinitionsRegister::get_fully_qualified_customtype_name(const CustomType& type_signature) {
+    if (!type_signature.package_prefix.empty()) {
+        const std::string& package = type_signature.package_prefix;
+        std::optional<std::string> retrieved = search_fully_qualified_typesignature_name(type_signature, package);
+        ensure_type_was_successfully_retrieved(retrieved);
+        return retrieved.value();
+    }
+    const std::string& target_package_name = project_file_structure.get_package_name_by_file_name(type_signature.filename);
+    std::optional<std::string> retrieved = search_fully_qualified_typesignature_name(type_signature, target_package_name);
+    if (retrieved.has_value()) {
+        return retrieved.value();
+    }
+    for (const std::string& package : project_file_structure.get_imports_by_file(type_signature.filename)) {
+        retrieved = search_fully_qualified_typesignature_name(type_signature, package);
+        if (retrieved.has_value()) {
+            return retrieved.value();
+        }
+    }
+    throw_no_type_definition_found(type_signature);
 }
 
 std::string TypeDefinitionsRegister::get_fully_qualified_typedefinition_name(const TypeDefinition& type_defintion) {
@@ -86,7 +89,9 @@ std::optional<std::string> TypeDefinitionsRegister::search_fully_qualified_types
         );
         GenericsInstantiationEngine generic_instantiation_engine(rules);
         TypeDefinition instantiated = generic_instantiation_engine.instantiate_generic_typedefinition(to_be_instantiated);
-        instantiated.set_name(instantiated_concrete_type_key);
+        std::regex package_prefix("(.*?::)+");
+        std::string new_name = std::regex_replace(instantiated_concrete_type_key, package_prefix, "");
+        instantiated.set_name(new_name);
         type_definitions.insert({instantiated_concrete_type_key, instantiated});
         return instantiated_concrete_type_key;
     }
@@ -148,4 +153,24 @@ std::string TypeDefinitionsRegister::infer_possible_fully_qualified_customtype_n
     }
     generics_section.back() = '>';
     return non_generic_aware_name + generics_section;
+}
+
+std::string TypeDefinitionsRegister::get_type_definition_match_pattern(
+    const std::string& package_name,
+    const TypeDefinition& type_definition
+) {
+    std::string pattern_tag_name = package_name + namespace_concatenation + type_definition.get_simple_name();
+    size_t number_of_generics = type_definition.get_number_of_generics();
+    std::string generics_section = (number_of_generics > 0)? "<" + std::to_string(number_of_generics) + ">" : "";
+    return pattern_tag_name + generics_section;
+}
+
+std::string TypeDefinitionsRegister::get_type_signature_match_pattern(
+    const std::string& package_name,
+    const CustomType& type_signature
+) {
+    std::string pattern_tag_name = package_name + namespace_concatenation + type_signature.type_name;
+    size_t number_of_generics = type_signature.type_parameters.size();
+    std::string generics_section = (number_of_generics > 0)? "<" + std::to_string(number_of_generics) + ">" : "";
+    return pattern_tag_name + generics_section;
 }
