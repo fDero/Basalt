@@ -9,14 +9,15 @@
 
 #include <llvm/Support/raw_ostream.h>
 
-static FunctionDefinition f_function = FunctionDefinitionFactory::make_void_function_definition(
+static FunctionDefinition f_function = FunctionDefinitionFactory::make_function_definition(
     "f",
     "main.basalt",
     FunctionDefinitionFactory::no_generics,
-    FunctionDefinitionFactory::no_args
+    FunctionDefinitionFactory::no_args,
+    TypeSignatureFactory::Float
 );
 
-static FunctionDefinition g_function = FunctionDefinitionFactory::make_void_function_definition(
+static FunctionDefinition g_function = FunctionDefinitionFactory::make_function_definition(
     "g",
     "main.basalt",
     FunctionDefinitionFactory::no_generics,
@@ -25,10 +26,11 @@ static FunctionDefinition g_function = FunctionDefinitionFactory::make_void_func
             .arg_name = "x",
             .arg_type = TypeSignatureFactory::Int
         }
-    }
+    },
+    TypeSignatureFactory::Int
 );
 
-static FunctionDefinition h_function = FunctionDefinitionFactory::make_void_function_definition(
+static FunctionDefinition h_function = FunctionDefinitionFactory::make_function_definition(
     "h",
     "main.basalt",
     FunctionDefinitionFactory::no_generics,
@@ -40,8 +42,9 @@ static FunctionDefinition h_function = FunctionDefinitionFactory::make_void_func
         FunctionDefinition::Argument {
             .arg_name = "y",
             .arg_type = TypeSignatureFactory::Char
-        }
-    }
+        },
+    },
+    TypeSignatureFactory::Char
 );
 
 static ProjectFileStructure project_with_a_couple_of_simple_functions({
@@ -56,7 +59,7 @@ static ProjectFileStructure project_with_a_couple_of_simple_functions({
     }
 });
 
-TEST(Backend, VoidFunctionNoBodyNoArgsTranslatedSuccessfully) {
+TEST(Backend, ReturningFunctionNoBodyNoArgsTranslatedSuccessfully) {
     ProgramRepresentation program_representation(project_with_a_couple_of_simple_functions);
     llvm::LLVMContext context;
     llvm::Module llvm_module("test", context);
@@ -68,10 +71,10 @@ TEST(Backend, VoidFunctionNoBodyNoArgsTranslatedSuccessfully) {
     std::string llvm_func_translation_str;
     llvm::raw_string_ostream llvm_ostream(llvm_func_translation_str);
     translated->print(llvm_ostream);
-    EXPECT_EQ(llvm_func_translation_str, "define void @\"f@main.basalt:1:2\"() {\nentry:\n}\n");
+    EXPECT_EQ(llvm_func_translation_str, "define double @\"f@main.basalt:1:2\"() {\nentry:\n}\n");
 }
 
-TEST(Backend, VoidFunctionNoBodyOneIntArgTranslatedSuccessfully) {
+TEST(Backend, ReturningFunctionNoBodyOneIntArgTranslatedSuccessfully) {
     ProgramRepresentation program_representation(project_with_a_couple_of_simple_functions);
     llvm::LLVMContext context;
     llvm::Module llvm_module("test", context);
@@ -84,7 +87,7 @@ TEST(Backend, VoidFunctionNoBodyOneIntArgTranslatedSuccessfully) {
     llvm::raw_string_ostream llvm_ostream(llvm_func_translation_str);
     translated->print(llvm_ostream);
     EXPECT_EQ(llvm_func_translation_str, 
-        "define void @\"g@main.basalt:1:2\"(i64 %0) {"   "\n"
+        "define i64 @\"g@main.basalt:1:2\"(i64 %0) {"    "\n"
         "entry:"                                         "\n"
         "  %1 = alloca i64, align 8"                     "\n"
         "  store i64 %0, i64* %1, align 4"               "\n"
@@ -92,7 +95,7 @@ TEST(Backend, VoidFunctionNoBodyOneIntArgTranslatedSuccessfully) {
     );
 }
 
-TEST(Backend, VoidFunctionNoBodyOneIntArgAndOneCharTranslatedSuccessfully) {
+TEST(Backend, ReturingFunctionNoBodyOneIntArgAndOneCharTranslatedSuccessfully) {
     ProgramRepresentation program_representation(project_with_a_couple_of_simple_functions);
     llvm::LLVMContext context;
     llvm::Module llvm_module("test", context);
@@ -105,7 +108,7 @@ TEST(Backend, VoidFunctionNoBodyOneIntArgAndOneCharTranslatedSuccessfully) {
     llvm::raw_string_ostream llvm_ostream(llvm_func_translation_str);
     translated->print(llvm_ostream);
     EXPECT_EQ(llvm_func_translation_str, 
-        "define void @\"h@main.basalt:1:2\"(i64 %0, i8 %1) {"    "\n"
+        "define i8 @\"h@main.basalt:1:2\"(i64 %0, i8 %1) {"      "\n"
         "entry:"                                                 "\n"
         "  %2 = alloca i64, align 8"                             "\n"
         "  store i64 %0, i64* %2, align 4"                       "\n"
