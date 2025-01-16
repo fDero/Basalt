@@ -18,7 +18,7 @@ static UnionDefinition number_union_definition =
         }
 );
 
-static ProjectFileStructure project_with_definition_of_the_number_union({
+static ProjectFileStructure empty_project({
         FileRepresentation {
         .file_metadata = {
             .filename = "main.basalt",
@@ -31,7 +31,7 @@ static ProjectFileStructure project_with_definition_of_the_number_union({
 });
 
 TEST(Backend, IntTranslatedCorrectly) {
-    ProgramRepresentation program_representation(project_with_definition_of_the_number_union);
+    ProgramRepresentation program_representation(empty_project);
     llvm::LLVMContext context;
     llvm::Module llvm_module("IntTranslatedCorrectly", context);
     TypeDefinitionsLLVMTranslator type_definitions_llvm_translator(
@@ -48,7 +48,7 @@ TEST(Backend, IntTranslatedCorrectly) {
 }
 
 TEST(Backend, FloatTranslatedCorrectly) {
-    ProgramRepresentation program_representation(project_with_definition_of_the_number_union);
+    ProgramRepresentation program_representation(empty_project);
     llvm::LLVMContext context;
     llvm::Module llvm_module("FloatTranslatedCorrectly", context);
     TypeDefinitionsLLVMTranslator type_definitions_llvm_translator(
@@ -65,7 +65,7 @@ TEST(Backend, FloatTranslatedCorrectly) {
 }
 
 TEST(Backend, NumberUnionTranslatedCorrectlyFromDefinition) {
-    ProgramRepresentation program_representation(project_with_definition_of_the_number_union);
+    ProgramRepresentation program_representation(empty_project);
     llvm::LLVMContext context;
     llvm::Module llvm_module("NumberUnionTranslatedCorrectlyFromDefinition", context);
     TypeDefinitionsLLVMTranslator type_definitions_llvm_translator(
@@ -81,8 +81,8 @@ TEST(Backend, NumberUnionTranslatedCorrectlyFromDefinition) {
     EXPECT_EQ(llvm_number_union_translation_str, R"(%"testpackage::Number" = type { i8*, [8 x i8] })");
 }
 
-TEST(Backend, IntOrFloatTranslatedCorrectlyFromDefinition) {
-    ProgramRepresentation program_representation(project_with_definition_of_the_number_union);
+TEST(Backend, IntOrFloatTranslatedCorrectlyFromTypeSignature) {
+    ProgramRepresentation program_representation(empty_project);
     llvm::LLVMContext context;
     llvm::Module llvm_module("IntOrFloatTranslatedCorrectlyFromDefinition", context);
     TypeDefinitionsLLVMTranslator type_definitions_llvm_translator(

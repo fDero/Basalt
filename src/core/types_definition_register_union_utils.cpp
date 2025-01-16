@@ -30,7 +30,7 @@ std::vector<TypeSignature> TypeDefinitionsRegister::fetch_union_alternatives(
         : std::vector<TypeSignature>();
 }
 
-std::vector<TypeSignature> TypeDefinitionsRegister::fetch_union_compatible_types(
+std::vector<TypeSignature> TypeDefinitionsRegister::fetch_non_union_compatible_types_for_union_assignment(
     const TypeSignature& maybe_union_type
 ) {
     std::vector<TypeSignature> alternatives = fetch_union_alternatives(maybe_union_type);
@@ -41,7 +41,7 @@ std::vector<TypeSignature> TypeDefinitionsRegister::fetch_union_compatible_types
             compatible_types.push_back(alternative);
             continue;
         } 
-        std::vector<TypeSignature> sub_compatible_types = fetch_union_compatible_types(alternative);
+        std::vector<TypeSignature> sub_compatible_types = fetch_non_union_compatible_types_for_union_assignment(alternative);
         compatible_types.insert(compatible_types.end(), sub_compatible_types.begin(), sub_compatible_types.end());
     }
     return compatible_types;

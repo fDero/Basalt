@@ -28,14 +28,16 @@ llvm::GlobalVariable* TypeDefinitionsLLVMTranslator::fetch_type_info(
     return global_type_info_var;
 }
 
-std::vector<llvm::GlobalVariable*> TypeDefinitionsLLVMTranslator::fetch_all_compatible_type_infos(
+std::vector<llvm::GlobalVariable*> 
+TypeDefinitionsLLVMTranslator::fetch_all_type_infos_for_non_union_compatible_types(
     const TypeSignature& type_signature
 ) {
     std::string type_signature_name = program_representation.get_fully_qualified_typesignature_name(type_signature);
     if (llvm_compatible_type_infos.find(type_signature_name) != llvm_compatible_type_infos.end()) {
         return llvm_compatible_type_infos.at(type_signature_name);
     }
-    std::vector<TypeSignature> compatible_types = program_representation.fetch_union_compatible_types(type_signature);
+    std::vector<TypeSignature> compatible_types = program_representation
+        .fetch_non_union_compatible_types_for_union_assignment(type_signature);
     std::vector<llvm::GlobalVariable*> compatible_type_infos;
     for (const TypeSignature& compatible_type : compatible_types) {
         llvm::GlobalVariable* compatible_type_info = fetch_type_info(compatible_type);

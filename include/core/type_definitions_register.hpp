@@ -29,7 +29,7 @@ class TypeDefinitionsRegister {
         
         [[nodiscard]] bool is_union(const TypeSignature& maybe_union_type);
         [[nodiscard]] std::vector<TypeSignature> fetch_union_alternatives(const TypeSignature& maybe_union_type);
-        [[nodiscard]] std::vector<TypeSignature> fetch_union_compatible_types(const TypeSignature& maybe_union_type);
+        [[nodiscard]] std::vector<TypeSignature> fetch_non_union_compatible_types_for_union_assignment(const TypeSignature& maybe_union_type);
         
     protected:
         [[nodiscard]] std::string get_fully_qualified_customtype_name(const CustomType& type_signature);

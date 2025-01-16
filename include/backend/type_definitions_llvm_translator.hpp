@@ -35,7 +35,7 @@ class TypeDefinitionsLLVMTranslator {
         [[nodiscard]] std::vector<llvm::Type*> translate_all_types_to_llvm_types(const std::vector<TypeSignature>& types);
 
         [[nodiscard]] llvm::GlobalVariable* fetch_type_info(const TypeSignature& type_signature);
-        [[nodiscard]] std::vector<llvm::GlobalVariable*> fetch_all_compatible_type_infos(const TypeSignature& type_signature);
+        [[nodiscard]] std::vector<llvm::GlobalVariable*> fetch_all_type_infos_for_non_union_compatible_types(const TypeSignature& type_signature);
 
     private:
         ProgramRepresentation& program_representation;

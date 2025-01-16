@@ -119,10 +119,10 @@ std::vector<TypeSignature> ProgramRepresentation::fetch_union_alternatives(
     return type_definitions_register.fetch_union_alternatives(maybe_union_type);
 }
 
-std::vector<TypeSignature> ProgramRepresentation::fetch_union_compatible_types(
+std::vector<TypeSignature> ProgramRepresentation::fetch_non_union_compatible_types_for_union_assignment(
     const TypeSignature& maybe_union_type
 ) {
-    return type_definitions_register.fetch_union_compatible_types(maybe_union_type);
+    return type_definitions_register.fetch_non_union_compatible_types_for_union_assignment(maybe_union_type);
 }
 
 bool ProgramRepresentation::is_void_procedure(

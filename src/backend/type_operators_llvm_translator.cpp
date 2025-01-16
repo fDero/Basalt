@@ -24,7 +24,7 @@ TypeOperatorsLLVMTranslator::TypeOperatorsLLVMTranslator(
     llvm::GlobalVariable* expected_type_info = type_definitions_llvm_translator.fetch_type_info(type_to_check);
     llvm::Value* is_operator_result = builder.CreateICmpEQ(union_type_info_value, expected_type_info);
     std::vector<llvm::GlobalVariable*> alternative_type_infos = type_definitions_llvm_translator
-        .fetch_all_compatible_type_infos(type_to_check);
+        .fetch_all_type_infos_for_non_union_compatible_types(type_to_check);
     for (llvm::GlobalVariable* alternative_type_info : alternative_type_infos) {
         llvm::Value* is_current_type = builder.CreateICmpEQ(union_type_info_value, alternative_type_info);
         is_operator_result = builder.CreateOr(is_operator_result, is_current_type);
