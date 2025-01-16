@@ -31,7 +31,7 @@ llvm::Function* CallableCodeBlocksLLVMTranslator::translate_function_definition_
         llvm::Type* llvm_arg_type = type_definitions_llvm_translator
             .translate_typesignature_to_llvm_type(arg_type);
         llvm::AllocaInst* alloca_inst = llvm_builder.CreateAlloca(llvm_arg_type, nullptr);
-        llvm_builder.CreateStore(llvm_function->arg_begin() + arg_index, alloca_inst);
+        llvm_builder.CreateStore(llvm_function->getArg(arg_index), alloca_inst);
         std::string arg_id = raw_scope_context.resolve_object_unique_id(arg_name);
         local_variables->insert({arg_id, alloca_inst});
     }

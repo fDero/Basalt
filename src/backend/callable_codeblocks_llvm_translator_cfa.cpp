@@ -48,7 +48,7 @@ void CallableCodeBlocksLLVMTranslator::translate_cfa_recursive_adoption_into_llv
     for (size_t alternative_index = 0; alternative_index < recursive_plan.alternatives.size() - 1; alternative_index++) {
         llvm::BasicBlock* alternative_block = alternative_blocks[alternative_index];
         llvm::IRBuilder<> alternative_block_builder(alternative_block);
-        llvm::Value* llvm_argument = llvm_function->arg_begin() + recursive_plan.argument_index;
+        llvm::Value* llvm_argument = llvm_function->getArg(recursive_plan.argument_index);
         TypeOperatorsLLVMTranslator type_operators_llvm_translator(program_representation, type_definitions_llvm_translator);
         TranslatedExpression is_operator = type_operators_llvm_translator.translate_is_operator_to_llvm_value(
             alternative_block, 
@@ -81,7 +81,7 @@ void CallableCodeBlocksLLVMTranslator::translate_cfa_direct_adoption_into_llvm(
         TypeOperatorsLLVMTranslator type_operators_llvm_translator(program_representation, type_definitions_llvm_translator);
         TranslatedExpression as_operator = type_operators_llvm_translator.translate_as_operator_to_llvm_value(
             llvm_builder.GetInsertBlock(), 
-            llvm_function->arg_begin() + arg_index, 
+            llvm_function->getArg(arg_index), 
             expected_arg_type
         );
         arguments.push_back(as_operator.value);
