@@ -112,7 +112,10 @@ llvm::Type* TypeDefinitionsLLVMTranslator::translate_named_union_to_llvm_type(
     llvm_type_definitions.insert({fully_qualified_name, llvm_type_def});
     size_t union_payload_memory_size_in_bytes = 0;
     for (const TypeSignature& alternative : union_definition.types) {
-        union_payload_memory_size_in_bytes += compute_header_unaware_typesignature_memory_footprint(alternative);
+        union_payload_memory_size_in_bytes = std::max(
+            compute_header_unaware_typesignature_memory_footprint(alternative),
+            union_payload_memory_size_in_bytes
+        );
     }
     llvm::Type* union_payload = llvm::ArrayType::get(llvm::Type::getInt8Ty(context), union_payload_memory_size_in_bytes);
     llvm::Type* union_header = llvm::Type::getInt8Ty(context)->getPointerTo();
