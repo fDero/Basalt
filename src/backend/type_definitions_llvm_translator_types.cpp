@@ -30,6 +30,12 @@ TypeDefinitionsLLVMTranslator::TypeDefinitionsLLVMTranslator(
 llvm::Type* TypeDefinitionsLLVMTranslator::translate_typesignature_to_llvm_type(
     const TypeSignature& type_signature
 ) {
+    const TypeSignature unaliased_type = program_representation.unalias_type(type_signature);
+    std::string fully_qualified_typesignature_name = program_representation.get_fully_qualified_typesignature_name(unaliased_type);
+    auto search_outcome = llvm_type_definitions.find(fully_qualified_typesignature_name);
+    if (search_outcome != llvm_type_definitions.end()) {
+        return search_outcome->second;
+    }
     switch (type_signature.typesiganture_kind()) {
         case TypeSignatureBody::Kind::pointer_type: {
             const TypeSignature pointed_type = type_signature.get<PointerType>().pointed_type;
@@ -76,11 +82,15 @@ llvm::Type* TypeDefinitionsLLVMTranslator::translate_inline_union_to_llvm_type(
     llvm::StructType* llvm_type_def = llvm::StructType::create(context, inline_union_typename);
     size_t union_payload_memory_size_in_bytes = 0;
     for (const auto& alternative : inline_union.alternatives) {
-        union_payload_memory_size_in_bytes += compute_header_unaware_typesignature_memory_footprint(alternative);
+        union_payload_memory_size_in_bytes = std::max(
+            compute_header_unaware_typesignature_memory_footprint(alternative),
+            union_payload_memory_size_in_bytes
+        );
     }
     llvm::Type* union_payload = llvm::ArrayType::get(llvm::Type::getInt8Ty(context), union_payload_memory_size_in_bytes);
     llvm::Type* union_header = llvm::Type::getInt8Ty(context)->getPointerTo();
     llvm_type_def->setBody({ union_header, union_payload });
+    llvm_type_definitions.insert({inline_union_typename, llvm_type_def});
     return llvm_type_def;
 }
 
@@ -96,9 +106,8 @@ llvm::Type* TypeDefinitionsLLVMTranslator::translate_custom_type_to_llvm_type(
     if (type_definition.is<StructDefinition>()) {
         return translate_struct_to_llvm_type(type_definition.get<StructDefinition>());
     }
-    else {
-        return translate_named_union_to_llvm_type(type_definition.get<UnionDefinition>());
-    }
+    assert_typedefinition_is<UnionDefinition>(type_definition);
+    return translate_named_union_to_llvm_type(type_definition.get<UnionDefinition>());
 }
 
 llvm::Type* TypeDefinitionsLLVMTranslator::translate_named_union_to_llvm_type(

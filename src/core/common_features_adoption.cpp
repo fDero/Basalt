@@ -29,8 +29,8 @@ CommonFeatureAdoptionPlanGenerationEngine::generate_common_feature_adoption_plan
         arg_types,
         return_type,
         function_call.as_debug_informations_aware_entity().filename,
-        plan,
-        function_call.as_debug_informations_aware_entity()
+        function_call.as_debug_informations_aware_entity(),
+        plan
     };
 }
 

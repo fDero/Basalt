@@ -31,6 +31,7 @@ class TypeOperatorsLLVMTranslator {
         [[nodiscard]] TranslatedExpression translate_as_operator_to_llvm_value(
             llvm::BasicBlock* block,
             TranslatedExpression union_expression,
+            llvm::Type* llvm_type_to_cast_to,
             const TypeSignature& type_to_cast_to
         );
 

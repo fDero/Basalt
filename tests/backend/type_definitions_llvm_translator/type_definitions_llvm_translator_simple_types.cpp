@@ -81,6 +81,30 @@ TEST(Backend, NumberUnionTranslatedCorrectlyFromDefinition) {
     EXPECT_EQ(llvm_number_union_translation_str, R"(%"testpackage::Number" = type { i8*, [8 x i8] })");
 }
 
+TEST(Backend, NumberUnionTranslatedTwiceItsOk) {
+    ProgramRepresentation program_representation(empty_project);
+    llvm::LLVMContext context;
+    llvm::Module llvm_module("NumberUnionTranslatedCorrectlyFromDefinition", context);
+    TypeDefinitionsLLVMTranslator type_definitions_llvm_translator(
+        program_representation,
+        context,
+        llvm_module
+    );
+    llvm::Type* llvm_number_union_translation1 = type_definitions_llvm_translator
+        .translate_typesignature_to_llvm_type(TypeSignatureFactory::IntOrFloat);
+    llvm::Type* llvm_number_union_translation2 = type_definitions_llvm_translator
+        .translate_typesignature_to_llvm_type(TypeSignatureFactory::IntOrFloat);
+    std::string llvm_number_union_translation1_str;
+    std::string llvm_number_union_translation2_str;
+    llvm::raw_string_ostream llvm_ostream1(llvm_number_union_translation1_str);
+    llvm::raw_string_ostream llvm_ostream2(llvm_number_union_translation2_str);
+    llvm_number_union_translation1->print(llvm_ostream1);
+    llvm_number_union_translation2->print(llvm_ostream2);
+    EXPECT_EQ(llvm_number_union_translation1_str, llvm_number_union_translation2_str);
+    EXPECT_EQ(llvm_number_union_translation1_str, R"(%"Int | Float" = type { i8*, [8 x i8] })");
+    EXPECT_EQ(llvm_number_union_translation2_str, R"(%"Int | Float" = type { i8*, [8 x i8] })");
+}
+
 TEST(Backend, IntOrFloatTranslatedCorrectlyFromTypeSignature) {
     ProgramRepresentation program_representation(empty_project);
     llvm::LLVMContext context;
@@ -95,5 +119,5 @@ TEST(Backend, IntOrFloatTranslatedCorrectlyFromTypeSignature) {
     std::string llvm_int_or_float_union_translation_str;
     llvm::raw_string_ostream llvm_ostream(llvm_int_or_float_union_translation_str);
     llvm_int_or_float_union_translation->print(llvm_ostream);
-    EXPECT_EQ(llvm_int_or_float_union_translation_str, R"(%"Int | Float" = type { i8*, [16 x i8] })");
+    EXPECT_EQ(llvm_int_or_float_union_translation_str, R"(%"Int | Float" = type { i8*, [8 x i8] })");
 }

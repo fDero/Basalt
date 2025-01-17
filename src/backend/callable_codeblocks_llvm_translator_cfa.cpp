@@ -41,7 +41,7 @@ void CallableCodeBlocksLLVMTranslator::translate_cfa_recursive_adoption_into_llv
     std::vector<llvm::BasicBlock*> alternative_blocks { block };
     for (size_t alternative_index = 1; alternative_index < recursive_plan.alternatives.size(); alternative_index++) {
         llvm::BasicBlock* prev_block = alternative_blocks.back();
-        llvm::BasicBlock* alternative_block = llvm::BasicBlock::Create(llvm_context);
+        llvm::BasicBlock* alternative_block = llvm::BasicBlock::Create(llvm_context, "", llvm_function);
         alternative_block->moveAfter(prev_block);
         alternative_blocks.push_back(alternative_block);
     }
@@ -55,7 +55,7 @@ void CallableCodeBlocksLLVMTranslator::translate_cfa_recursive_adoption_into_llv
             llvm_argument, 
             recursive_plan.alternatives[alternative_index]
         );
-        llvm::BasicBlock* success_block = llvm::BasicBlock::Create(llvm_context);
+        llvm::BasicBlock* success_block = llvm::BasicBlock::Create(llvm_context, "", llvm_function);
         success_block->moveAfter(alternative_block);
         alternative_block_builder.CreateCondBr(is_operator.value, success_block, alternative_blocks[alternative_index + 1]);
         const CommonFeatureAdoptionPlan& successful_plan = recursive_plan.nested_plans[alternative_index];
@@ -79,9 +79,11 @@ void CallableCodeBlocksLLVMTranslator::translate_cfa_direct_adoption_into_llvm(
     for (size_t arg_index = 0; arg_index < selected_concrete_function->arguments.size(); arg_index++) {
         const TypeSignature& expected_arg_type = selected_concrete_function->arguments[arg_index].arg_type;
         TypeOperatorsLLVMTranslator type_operators_llvm_translator(program_representation, type_definitions_llvm_translator);
+        llvm::Type* expected_arg_llvm_type = type_definitions_llvm_translator.translate_typesignature_to_llvm_type(expected_arg_type);
         TranslatedExpression as_operator = type_operators_llvm_translator.translate_as_operator_to_llvm_value(
             llvm_builder.GetInsertBlock(), 
-            llvm_function->getArg(arg_index), 
+            llvm_function->getArg(arg_index),
+            expected_arg_llvm_type, 
             expected_arg_type
         );
         arguments.push_back(as_operator.value);

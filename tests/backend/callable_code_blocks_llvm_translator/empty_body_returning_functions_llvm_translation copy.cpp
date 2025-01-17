@@ -55,7 +55,7 @@ static ProjectFileStructure project_with_a_couple_of_simple_functions({
             .imports = { }
         },
         .type_defs = { },
-        .func_defs = { f_function }
+        .func_defs = { f_function, g_function, h_function }
     }
 });
 

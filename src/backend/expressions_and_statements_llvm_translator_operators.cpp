@@ -24,7 +24,8 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_as_operat
 ) {
     TranslatedExpression union_expression = translate_expression_into_llvm(block, as_operator.expression);
     TypeOperatorsLLVMTranslator type_operators_llvm_translator(program_representation, type_definitions_llvm_translator);
-    return type_operators_llvm_translator.translate_as_operator_to_llvm_value(block, union_expression, as_operator.typesignature);
+    llvm::Type* llvm_type_to_cast_to = type_definitions_llvm_translator.translate_typesignature_to_llvm_type(as_operator.typesignature);
+    return type_operators_llvm_translator.translate_as_operator_to_llvm_value(block, union_expression, llvm_type_to_cast_to, as_operator.typesignature);
 }
 
 TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_plus_binary_operator(

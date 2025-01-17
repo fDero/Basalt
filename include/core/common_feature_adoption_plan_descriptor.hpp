@@ -50,6 +50,6 @@ struct CommonFeatureAdoptionPlanDescriptor {
     std::vector<TypeSignature> arg_types;
     std::optional<TypeSignature> return_type;
     std::string filename;
-    CommonFeatureAdoptionPlan plan;
     DebugInformationsAwareEntity debug_info;
+    CommonFeatureAdoptionPlan plan;
 };
