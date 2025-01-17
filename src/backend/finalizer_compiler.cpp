@@ -11,17 +11,6 @@
 
 void Finalizer::generate_llvm_ir() {
     std::cout << "Generating LLVM IR..." << std::endl;
-    TypeDefinitionsLLVMTranslator type_definitions_llvm_translator(
-        program_representation, 
-        llvm_context, 
-        llvm_module
-    );
-    CallableCodeBlocksLLVMTranslator callable_codeblocks_llvm_translator(
-        program_representation, 
-        type_definitions_llvm_translator, 
-        llvm_context, 
-        llvm_module
-    );
     program_representation.foreach_function_definition(
         [&](const FunctionDefinition::Ref& function_definition) {
             if (function_definition->template_generics_names.empty()) {

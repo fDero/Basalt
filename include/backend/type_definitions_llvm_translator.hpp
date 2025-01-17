@@ -26,6 +26,10 @@ class TypeDefinitionsLLVMTranslator {
         [[nodiscard]] llvm::Type* translate_named_union_to_llvm_type(const UnionDefinition& union_definition);
         [[nodiscard]] llvm::Type* translate_struct_to_llvm_type(const StructDefinition& struct_definition);
         [[nodiscard]] llvm::Type* translate_return_type_to_llvm_type(const std::optional<TypeSignature>& ret);
+        [[nodiscard]] llvm::Type* translate_primitive_type_into_llvm(const PrimitiveType& primitive_type);
+        [[nodiscard]] llvm::Type* translate_array_type_into_llvm_type(const ArrayType& array_type);
+        [[nodiscard]] llvm::Type* translate_slice_type_into_llvm_type(const SliceType& slice_type);
+        [[nodiscard]] llvm::Type* translate_pointer_type_into_llvm_type(const PointerType& pointer_type);
 
         [[nodiscard]] size_t compute_header_unaware_typesignature_memory_footprint(const TypeSignature& typesignature);
         [[nodiscard]] size_t compute_header_unaware_inline_union_memory_footprint(const InlineUnion& inline_union);
@@ -36,6 +40,12 @@ class TypeDefinitionsLLVMTranslator {
 
         [[nodiscard]] llvm::GlobalVariable* fetch_type_info(const TypeSignature& type_signature);
         [[nodiscard]] std::vector<llvm::GlobalVariable*> fetch_all_type_infos_for_non_union_compatible_types(const TypeSignature& type_signature);
+
+    protected:
+        [[nodiscard]] llvm::Type* translate_union_to_llvm_type(
+            const std::vector<TypeSignature>& alternatives,
+            const std::string& fully_qualified_name
+        );
 
     private:
         ProgramRepresentation& program_representation;

@@ -12,6 +12,7 @@
 #include "core/program_representation.hpp"
 #include "preprocessing/preprocessor.hpp"
 #include "backend/type_definitions_llvm_translator.hpp"
+#include "backend/callable_codeblocks_llvm_translator.hpp"
 
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/IR/LLVMContext.h>
@@ -41,7 +42,7 @@ class Finalizer {
         std::string target_triple;
         llvm::LLVMContext llvm_context;
         llvm::Module llvm_module;
-        llvm::IRBuilder<> llvm_builder;
         llvm::TargetMachine* llvm_target_machine;
         TypeDefinitionsLLVMTranslator type_definitions_llvm_translator;
+        CallableCodeBlocksLLVMTranslator callable_codeblocks_llvm_translator;
 };

@@ -68,7 +68,7 @@ TEST(Backend, Void_Function_No_Body_No_Args_Translated_Successfully) {
     std::string llvm_func_translation_str;
     llvm::raw_string_ostream llvm_ostream(llvm_func_translation_str);
     translated->print(llvm_ostream);
-    EXPECT_EQ(llvm_func_translation_str, "define void @\"f@main.basalt:1:2\"() {\nentry:\n}\n");
+    EXPECT_EQ(llvm_func_translation_str, "define void @\"f@main.basalt:1:2\"() {\nentry:\n  ret void\n}\n");
 }
 
 TEST(Backend, Void_Function_No_Body_One_Int_Arg_Translated_Successfully) {
@@ -88,6 +88,7 @@ TEST(Backend, Void_Function_No_Body_One_Int_Arg_Translated_Successfully) {
         "entry:"                                         "\n"
         "  %1 = alloca i64, align 8"                     "\n"
         "  store i64 %0, i64* %1, align 4"               "\n"
+        "  ret void"                                     "\n"
         "}"                                              "\n"
     );
 }
@@ -111,6 +112,7 @@ TEST(Backend, Void_Function_No_Body_One_Int_Arg_And_One_Char_Translated_Successf
         "  store i64 %0, i64* %2, align 4"                       "\n"
         "  %3 = alloca i8, align 1"                              "\n"
         "  store i8 %1, i8* %3, align 1"                         "\n"
+        "  ret void"                                             "\n"
         "}"                                                      "\n"
     );
 }

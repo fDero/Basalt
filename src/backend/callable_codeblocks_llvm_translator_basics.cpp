@@ -24,21 +24,22 @@ llvm::Function* CallableCodeBlocksLLVMTranslator::translate_function_definition_
     ScopeContext raw_scope_context(*function_definition);
     auto local_variables = std::make_shared<std::map<std::string, llvm::AllocaInst*>>();
     llvm::BasicBlock* entry_block = llvm::BasicBlock::Create(llvm_context, "entry", llvm_function);
-    llvm::IRBuilder<> llvm_builder(entry_block);
+    llvm::IRBuilder<> entry_builder(entry_block);
     for (size_t arg_index = 0; arg_index < function_definition->arguments.size(); arg_index++) {
         const TypeSignature& arg_type = function_definition->arguments[arg_index].arg_type;
         const std::string& arg_name = function_definition->arguments[arg_index].arg_name;
         llvm::Type* llvm_arg_type = type_definitions_llvm_translator
             .translate_typesignature_to_llvm_type(arg_type);
-        llvm::AllocaInst* alloca_inst = llvm_builder.CreateAlloca(llvm_arg_type, nullptr);
-        llvm_builder.CreateStore(llvm_function->getArg(arg_index), alloca_inst);
+        llvm::AllocaInst* alloca_inst = entry_builder.CreateAlloca(llvm_arg_type, nullptr);
+        entry_builder.CreateStore(llvm_function->getArg(arg_index), alloca_inst);
         std::string arg_id = raw_scope_context.resolve_object_unique_id(arg_name);
         local_variables->insert({arg_id, alloca_inst});
     }
     TranslationAwareScopeContext scope_context(raw_scope_context, local_variables);
     ExpressionsAndStatementsLLVMTranslator body_translator = 
-        get_function_body_translator(scope_context, llvm_function, entry_block, llvm_builder);
-    body_translator.translate_whole_codeblock_into_llvm(entry_block, function_definition->code);
+        get_function_body_translator(scope_context, llvm_function, entry_block);
+    llvm::BasicBlock* exit_block = body_translator.translate_whole_codeblock_into_llvm(entry_block, function_definition->code);
+    inject_return_statement_if_needed(exit_block, function_definition->return_type);
     return llvm_function;
 }
 
@@ -76,8 +77,7 @@ ExpressionsAndStatementsLLVMTranslator
 CallableCodeBlocksLLVMTranslator::get_function_body_translator(
     TranslationAwareScopeContext scope_context,
     llvm::Function* llvm_function,
-    llvm::BasicBlock* function_entry_block,
-    llvm::IRBuilder<>& llvm_builder
+    llvm::BasicBlock* function_entry_block
 ) {
     return ExpressionsAndStatementsLLVMTranslator(
         program_representation, 
@@ -88,4 +88,16 @@ CallableCodeBlocksLLVMTranslator::get_function_body_translator(
         llvm_function,
         function_entry_block
     );
+}
+
+void CallableCodeBlocksLLVMTranslator::inject_return_statement_if_needed(
+    llvm::BasicBlock* exit_block,
+    const std::optional<TypeSignature>& return_type
+) {
+    bool missing_void_ret = exit_block->empty();
+    missing_void_ret |= exit_block->back().getOpcode() != llvm::Instruction::Ret;
+    if (!return_type.has_value() && missing_void_ret) {
+        llvm::IRBuilder<> exit_builder(exit_block);
+        exit_builder.CreateRetVoid();
+    }
 }

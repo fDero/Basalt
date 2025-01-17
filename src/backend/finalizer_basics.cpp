@@ -22,9 +22,14 @@ Finalizer::Finalizer(
     , target_triple(target_triple)
     , llvm_context()
     , llvm_module("basalt_program", llvm_context)
-    , llvm_builder(llvm_context)
     , type_definitions_llvm_translator(
         program_representation, 
+        llvm_context, 
+        llvm_module
+    )
+    , callable_codeblocks_llvm_translator(
+        program_representation, 
+        type_definitions_llvm_translator, 
         llvm_context, 
         llvm_module
     )

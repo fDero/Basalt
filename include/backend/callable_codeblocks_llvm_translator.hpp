@@ -45,8 +45,12 @@ class CallableCodeBlocksLLVMTranslator {
         [[nodiscard]] ExpressionsAndStatementsLLVMTranslator get_function_body_translator(
             TranslationAwareScopeContext scope_context,
             llvm::Function* llvm_function,
-            llvm::BasicBlock* function_entry_block,
-            llvm::IRBuilder<>& llvm_builder
+            llvm::BasicBlock* function_entry_block
+        );
+
+        void inject_return_statement_if_needed(
+            llvm::BasicBlock* block,
+            const std::optional<TypeSignature>& return_type
         );
 
         void translate_cfa_plan_into_llvm(

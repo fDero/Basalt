@@ -50,6 +50,10 @@ class ProgramRepresentation {
             const TypeSignature& maybe_union_type
         );
 
+        [[nodiscard]] std::vector<TypeSignature> fetch_non_union_compatible_types_for_union_assignment(
+            const UnionDefinition& union_definition
+        );
+
         [[nodiscard]] bool is_void_procedure(
             const FunctionCall& function_call,
             ScopeContext& scope_context

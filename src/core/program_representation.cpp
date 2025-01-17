@@ -125,6 +125,13 @@ std::vector<TypeSignature> ProgramRepresentation::fetch_non_union_compatible_typ
     return type_definitions_register.fetch_non_union_compatible_types_for_union_assignment(maybe_union_type);
 }
 
+
+std::vector<TypeSignature> ProgramRepresentation::fetch_non_union_compatible_types_for_union_assignment(
+    const UnionDefinition& union_definition
+) {
+    return type_definitions_register.fetch_non_union_compatible_types_for_union_assignment(union_definition);
+}
+
 bool ProgramRepresentation::is_void_procedure(
     const FunctionCall& function_call,
     ScopeContext& scope_context
