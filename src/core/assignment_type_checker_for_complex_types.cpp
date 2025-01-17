@@ -25,29 +25,15 @@ bool AssignmentTypeChecker::validate_assignment_to_union_alternatives(const Type
     return false;
 }
 
-std::vector<TypeSignature> AssignmentTypeChecker::try_to_get_union_alternatives(const TypeSignature& maybe_union_type_signature) {
-    if (maybe_union_type_signature.is<InlineUnion>()) {
-        return maybe_union_type_signature.get<InlineUnion>().alternatives;
-    }
-    if (!maybe_union_type_signature.is<CustomType>()) {
-        return {};
-    }
-    const CustomType& custom_type = maybe_union_type_signature.get<CustomType>();
-    const TypeDefinition& type_definition = type_definitions_register.retrieve_type_definition(custom_type);
-    return (type_definition.is<UnionDefinition>())
-        ? type_definition.get<UnionDefinition>().types
-        : std::vector<TypeSignature>();
-}
-
 bool AssignmentTypeChecker::structural_equivalence_assignment_validation(const TypeSignature& source, const TypeSignature& dest) {
-    std::vector<TypeSignature> dest_union_alternatives = try_to_get_union_alternatives(dest);
+    std::vector<TypeSignature> dest_union_alternatives = type_definitions_register.fetch_union_alternatives(dest);
     if (dest_union_alternatives.empty()) {
         return false;
     }
     if (validate_assignment_to_union_alternatives(source, dest_union_alternatives)) {
         return true;
     }
-    std::vector<TypeSignature> source_union_alternatives = try_to_get_union_alternatives(source);
+    std::vector<TypeSignature> source_union_alternatives = type_definitions_register.fetch_union_alternatives(source);
     if (source_union_alternatives.empty()) {
         return false;
     }
@@ -116,4 +102,3 @@ bool AssignmentTypeChecker::validate_assignment_to_generic_type_parameter(const 
     generic_substitution_rules->push_back({dest.type_name, source});
     return true;
 }
-

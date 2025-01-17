@@ -35,8 +35,6 @@ class AssignmentTypeChecker {
         [[nodiscard]] bool validate_assignment_to_string_from_array_type(const ArrayType& source, const PrimitiveType& dest);
         [[nodiscard]] bool type_parameters_assignment_validation(const CustomType &source, const CustomType &dest);
         [[nodiscard]] bool validate_assignment_to_union_alternatives(const TypeSignature& source, const std::vector<TypeSignature>& alternatives);
-
-        [[nodiscard]] std::vector<TypeSignature> try_to_get_union_alternatives(const TypeSignature& maybe_union_type_signature);
         
         TypeDefinitionsRegister& type_definitions_register;
         ProjectFileStructure& project_file_structure;
