@@ -93,7 +93,7 @@ entry:
 }
 )^";
 
-TEST(Backend, CFAForOneArgumentWithTwoAlternativesTranslatedSuccessfully) {
+TEST(Backend, CFA_For_One_Argument_With_Two_Alternatives_Translated_Successfully) {
     ProgramRepresentation program_representation(project_with_a_couple_of_simple_functions);
     llvm::LLVMContext context;
     llvm::Module llvm_module("test", context);
@@ -105,4 +105,5 @@ TEST(Backend, CFAForOneArgumentWithTwoAlternativesTranslatedSuccessfully) {
     llvm::raw_string_ostream llvm_ostream(llvm_func_translation_str);
     translated->print(llvm_ostream);
     EXPECT_EQ(llvm_func_translation_str, expected_cfa_llvm_translation);
+    llvm_module.print(llvm::outs(), nullptr);
 }

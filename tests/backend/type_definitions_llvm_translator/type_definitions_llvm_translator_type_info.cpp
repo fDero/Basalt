@@ -22,7 +22,7 @@ static ProjectFileStructure empty_project({
     }
 });
 
-TEST(Backend, TwoIntsSameTypeInfo) {
+TEST(Backend, Two_Ints_Same_TypeInfo) {
     ProgramRepresentation program_representation(empty_project);
     llvm::LLVMContext context;
     llvm::Module llvm_module("TwoIntsSameTypeInfo", context);
@@ -38,7 +38,7 @@ TEST(Backend, TwoIntsSameTypeInfo) {
     EXPECT_EQ(llvm_int_type_info_1, llvm_int_type_info_2);
 }
 
-TEST(Backend, CorrectIntOrFloatCompatibleTypeInfos) {
+TEST(Backend, Correct_IntOrFloat_Compatible_Type_Infos) {
     ProgramRepresentation program_representation(empty_project);
     llvm::LLVMContext context;
     llvm::Module llvm_module("TwoNumbersSameTypeInfo", context);

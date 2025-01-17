@@ -32,7 +32,7 @@ static ProjectFileStructure project_with_a_couple_of_simple_functions({
     }
 });
 
-TEST(Backend, GenericPairInstantiatedWithIntTranslatedCorrectly) {
+TEST(Backend, Generic_Pair_Instantiated_With_Int_Translated_Correctly) {
     ProgramRepresentation program_representation(project_with_a_couple_of_simple_functions);
     llvm::LLVMContext context;
     llvm::Module llvm_module("IntTranslatedCorrectly", context);
@@ -54,7 +54,7 @@ TEST(Backend, GenericPairInstantiatedWithIntTranslatedCorrectly) {
     EXPECT_EQ(llvm_pair_translation_str, R"(%"testpackage::Pair<Int>" = type { i64, i64 })");
 }
 
-TEST(Backend, GenericPairInstantiatedWithCharTranslatedCorrectly) {
+TEST(Backend, Generic_Pair_Instantiated_With_Char_Translated_Correctly) {
     ProgramRepresentation program_representation(project_with_a_couple_of_simple_functions);
     llvm::LLVMContext context;
     llvm::Module llvm_module("IntTranslatedCorrectly", context);

@@ -30,7 +30,7 @@ static ProjectFileStructure empty_project({
     }
 });
 
-TEST(Backend, IntTranslatedCorrectly) {
+TEST(Backend, Int_Translated_Correctly) {
     ProgramRepresentation program_representation(empty_project);
     llvm::LLVMContext context;
     llvm::Module llvm_module("IntTranslatedCorrectly", context);
@@ -47,7 +47,7 @@ TEST(Backend, IntTranslatedCorrectly) {
     EXPECT_EQ(llvm_int_translation_str, "i64");
 }
 
-TEST(Backend, FloatTranslatedCorrectly) {
+TEST(Backend, Float_Translated_Correctly) {
     ProgramRepresentation program_representation(empty_project);
     llvm::LLVMContext context;
     llvm::Module llvm_module("FloatTranslatedCorrectly", context);
@@ -64,7 +64,7 @@ TEST(Backend, FloatTranslatedCorrectly) {
     EXPECT_EQ(llvm_float_translation_str, "double");
 }
 
-TEST(Backend, NumberUnionTranslatedCorrectlyFromDefinition) {
+TEST(Backend, Number_Union_Translated_Correctly_From_Definition) {
     ProgramRepresentation program_representation(empty_project);
     llvm::LLVMContext context;
     llvm::Module llvm_module("NumberUnionTranslatedCorrectlyFromDefinition", context);
@@ -81,7 +81,7 @@ TEST(Backend, NumberUnionTranslatedCorrectlyFromDefinition) {
     EXPECT_EQ(llvm_number_union_translation_str, R"(%"testpackage::Number" = type { i8*, [8 x i8] })");
 }
 
-TEST(Backend, NumberUnionTranslatedTwiceItsOk) {
+TEST(Backend, IntOrFloat_Translated_Twice_Correctly) {
     ProgramRepresentation program_representation(empty_project);
     llvm::LLVMContext context;
     llvm::Module llvm_module("NumberUnionTranslatedCorrectlyFromDefinition", context);
@@ -105,7 +105,7 @@ TEST(Backend, NumberUnionTranslatedTwiceItsOk) {
     EXPECT_EQ(llvm_number_union_translation2_str, R"(%"Int | Float" = type { i8*, [8 x i8] })");
 }
 
-TEST(Backend, IntOrFloatTranslatedCorrectlyFromTypeSignature) {
+TEST(Backend, IntOrFloat_Translated_Correctly_From_TypeSignature) {
     ProgramRepresentation program_representation(empty_project);
     llvm::LLVMContext context;
     llvm::Module llvm_module("IntOrFloatTranslatedCorrectlyFromDefinition", context);

@@ -56,7 +56,7 @@ static ProjectFileStructure project_with_a_couple_of_simple_functions({
     }
 });
 
-TEST(Backend, VoidFunctionNoBodyNoArgsTranslatedSuccessfully) {
+TEST(Backend, Void_Function_No_Body_No_Args_Translated_Successfully) {
     ProgramRepresentation program_representation(project_with_a_couple_of_simple_functions);
     llvm::LLVMContext context;
     llvm::Module llvm_module("test", context);
@@ -71,7 +71,7 @@ TEST(Backend, VoidFunctionNoBodyNoArgsTranslatedSuccessfully) {
     EXPECT_EQ(llvm_func_translation_str, "define void @\"f@main.basalt:1:2\"() {\nentry:\n}\n");
 }
 
-TEST(Backend, VoidFunctionNoBodyOneIntArgTranslatedSuccessfully) {
+TEST(Backend, Void_Function_No_Body_One_Int_Arg_Translated_Successfully) {
     ProgramRepresentation program_representation(project_with_a_couple_of_simple_functions);
     llvm::LLVMContext context;
     llvm::Module llvm_module("test", context);
@@ -92,7 +92,7 @@ TEST(Backend, VoidFunctionNoBodyOneIntArgTranslatedSuccessfully) {
     );
 }
 
-TEST(Backend, VoidFunctionNoBodyOneIntArgAndOneCharTranslatedSuccessfully) {
+TEST(Backend, Void_Function_No_Body_One_Int_Arg_And_One_Char_Translated_Successfully) {
     ProgramRepresentation program_representation(project_with_a_couple_of_simple_functions);
     llvm::LLVMContext context;
     llvm::Module llvm_module("test", context);
