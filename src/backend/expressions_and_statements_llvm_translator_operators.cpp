@@ -9,20 +9,20 @@
 #include "backend/type_operators_llvm_translator.hpp"
 #include "errors/internal_errors.hpp"
 
-TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_is_operator_into_llvm(
+TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_is_operator_to_llvm(
     llvm::BasicBlock* block,
     const TypeOperator& is_operator
 ) {
-    TranslatedExpression union_expression = translate_expression_into_llvm(block, is_operator.expression);
+    TranslatedExpression union_expression = translate_expression_to_llvm(block, is_operator.expression);
     TypeOperatorsLLVMTranslator type_operators_llvm_translator(program_representation, type_definitions_llvm_translator);
     return type_operators_llvm_translator.translate_is_operator_to_llvm_value(block, union_expression, is_operator.typesignature);
 }
 
-TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_as_operator_into_llvm(
+TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_as_operator_to_llvm(
     llvm::BasicBlock* block,
     const TypeOperator& as_operator
 ) {
-    TranslatedExpression union_expression = translate_expression_into_llvm(block, as_operator.expression);
+    TranslatedExpression union_expression = translate_expression_to_llvm(block, as_operator.expression);
     TypeOperatorsLLVMTranslator type_operators_llvm_translator(program_representation, type_definitions_llvm_translator);
     llvm::Type* llvm_type_to_cast_to = type_definitions_llvm_translator.translate_typesignature_to_llvm_type(as_operator.typesignature);
     return type_operators_llvm_translator.translate_as_operator_to_llvm_value(block, union_expression, llvm_type_to_cast_to, as_operator.typesignature);
@@ -32,8 +32,8 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_plus_bina
     llvm::BasicBlock* block,
     const BinaryOperator& binary_op
 ) { 
-    TranslatedExpression left = translate_expression_into_llvm(block, binary_op.left_operand);
-    TranslatedExpression right = translate_expression_into_llvm(block, binary_op.right_operand);
+    TranslatedExpression left = translate_expression_to_llvm(block, binary_op.left_operand);
+    TranslatedExpression right = translate_expression_to_llvm(block, binary_op.right_operand);
     llvm::IRBuilder<> builder(block);
     ScopeContext& raw_scope_context = scope_context.raw_scope_context;
     return (program_representation.is_binary_operator_over_float_operands(binary_op, raw_scope_context)) 
@@ -45,8 +45,8 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_minus_bin
     llvm::BasicBlock* block,
     const BinaryOperator& binary_op
 ) { 
-    TranslatedExpression left = translate_expression_into_llvm(block, binary_op.left_operand);
-    TranslatedExpression right = translate_expression_into_llvm(block, binary_op.right_operand);
+    TranslatedExpression left = translate_expression_to_llvm(block, binary_op.left_operand);
+    TranslatedExpression right = translate_expression_to_llvm(block, binary_op.right_operand);
     llvm::IRBuilder<> builder(block);
     ScopeContext& raw_scope_context = scope_context.raw_scope_context;
     return (program_representation.is_binary_operator_over_float_operands(binary_op, raw_scope_context)) 
@@ -58,8 +58,8 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_mul_binar
     llvm::BasicBlock* block,
     const BinaryOperator& binary_op
 ) { 
-    TranslatedExpression left = translate_expression_into_llvm(block, binary_op.left_operand);
-    TranslatedExpression right = translate_expression_into_llvm(block, binary_op.right_operand);
+    TranslatedExpression left = translate_expression_to_llvm(block, binary_op.left_operand);
+    TranslatedExpression right = translate_expression_to_llvm(block, binary_op.right_operand);
     llvm::IRBuilder<> builder(block);
     ScopeContext& raw_scope_context = scope_context.raw_scope_context;
     return (program_representation.is_binary_operator_over_float_operands(binary_op, raw_scope_context)) 
@@ -71,8 +71,8 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_div_binar
     llvm::BasicBlock* block,
     const BinaryOperator& binary_op
 ) { 
-    TranslatedExpression left = translate_expression_into_llvm(block, binary_op.left_operand);
-    TranslatedExpression right = translate_expression_into_llvm(block, binary_op.right_operand);
+    TranslatedExpression left = translate_expression_to_llvm(block, binary_op.left_operand);
+    TranslatedExpression right = translate_expression_to_llvm(block, binary_op.right_operand);
     llvm::IRBuilder<> builder(block);
     ScopeContext& raw_scope_context = scope_context.raw_scope_context;
     return (program_representation.is_binary_operator_over_float_operands(binary_op, raw_scope_context)) 
@@ -84,8 +84,8 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_mod_binar
     llvm::BasicBlock* block,
     const BinaryOperator& binary_op
 ) { 
-    TranslatedExpression left = translate_expression_into_llvm(block, binary_op.left_operand);
-    TranslatedExpression right = translate_expression_into_llvm(block, binary_op.right_operand);
+    TranslatedExpression left = translate_expression_to_llvm(block, binary_op.left_operand);
+    TranslatedExpression right = translate_expression_to_llvm(block, binary_op.right_operand);
     llvm::IRBuilder<> builder(block);
     ScopeContext& raw_scope_context = scope_context.raw_scope_context;
     return (program_representation.is_binary_operator_over_float_operands(binary_op, raw_scope_context)) 
@@ -97,8 +97,8 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_boolean_a
     llvm::BasicBlock* block,
     const BinaryOperator& binary_op
 ) { 
-    TranslatedExpression left = translate_expression_into_llvm(block, binary_op.left_operand);
-    TranslatedExpression right = translate_expression_into_llvm(block, binary_op.right_operand);
+    TranslatedExpression left = translate_expression_to_llvm(block, binary_op.left_operand);
+    TranslatedExpression right = translate_expression_to_llvm(block, binary_op.right_operand);
     llvm::IRBuilder<> builder(block);
     return builder.CreateAnd(left.value, right.value);
 }   
@@ -107,8 +107,8 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_boolean_o
     llvm::BasicBlock* block,
     const BinaryOperator& binary_op
 ) { 
-    TranslatedExpression left = translate_expression_into_llvm(block, binary_op.left_operand);
-    TranslatedExpression right = translate_expression_into_llvm(block, binary_op.right_operand);
+    TranslatedExpression left = translate_expression_to_llvm(block, binary_op.left_operand);
+    TranslatedExpression right = translate_expression_to_llvm(block, binary_op.right_operand);
     llvm::IRBuilder<> builder(block);
     return builder.CreateOr(left.value, right.value);
 }   
@@ -117,8 +117,8 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_boolean_x
     llvm::BasicBlock* block,
     const BinaryOperator& binary_op
 ) { 
-    TranslatedExpression left = translate_expression_into_llvm(block, binary_op.left_operand);
-    TranslatedExpression right = translate_expression_into_llvm(block, binary_op.right_operand);
+    TranslatedExpression left = translate_expression_to_llvm(block, binary_op.left_operand);
+    TranslatedExpression right = translate_expression_to_llvm(block, binary_op.right_operand);
     llvm::IRBuilder<> builder(block);
     return builder.CreateXor(left.value, right.value);
 }

@@ -32,12 +32,12 @@ llvm::Type* TypeDefinitionsLLVMTranslator::translate_typesignature_to_llvm_type(
     const TypeSignature& type_signature
 ) {
     switch (type_signature.typesiganture_kind()) {
-        case TypeSignatureBody::Kind::pointer_type: return translate_pointer_type_into_llvm_type(type_signature.get<PointerType>());
-        case TypeSignatureBody::Kind::array_type: return translate_array_type_into_llvm_type(type_signature.get<ArrayType>());
-        case TypeSignatureBody::Kind::slice_type: return translate_slice_type_into_llvm_type(type_signature.get<SliceType>());
+        case TypeSignatureBody::Kind::pointer_type: return translate_pointer_type_to_llvm_type(type_signature.get<PointerType>());
+        case TypeSignatureBody::Kind::array_type: return translate_array_type_to_llvm_type(type_signature.get<ArrayType>());
+        case TypeSignatureBody::Kind::slice_type: return translate_slice_type_to_llvm_type(type_signature.get<SliceType>());
         case TypeSignatureBody::Kind::custom_type: return translate_custom_type_to_llvm_type(type_signature.get<CustomType>());
         case TypeSignatureBody::Kind::inline_union: return translate_inline_union_to_llvm_type(type_signature.get<InlineUnion>());
-        case TypeSignatureBody::Kind::primitive_type: return translate_primitive_type_into_llvm(type_signature.get<PrimitiveType>());
+        case TypeSignatureBody::Kind::primitive_type: return translate_primitive_type_to_llvm(type_signature.get<PrimitiveType>());
         case TypeSignatureBody::Kind::template_type: throw std::runtime_error("generics not allowed during llvm translation");
     }
     assert_unreachable();

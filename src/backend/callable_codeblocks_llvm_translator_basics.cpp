@@ -17,7 +17,7 @@ CallableCodeBlocksLLVMTranslator::CallableCodeBlocksLLVMTranslator(
     , llvm_module(llvm_module)
 { }
 
-llvm::Function* CallableCodeBlocksLLVMTranslator::translate_function_definition_into_llvm(
+llvm::Function* CallableCodeBlocksLLVMTranslator::translate_function_definition_to_llvm(
     const FunctionDefinition::Ref& function_definition, 
     llvm::Function* llvm_function
 ) {
@@ -38,12 +38,12 @@ llvm::Function* CallableCodeBlocksLLVMTranslator::translate_function_definition_
     TranslationAwareScopeContext scope_context(raw_scope_context, local_variables);
     ExpressionsAndStatementsLLVMTranslator body_translator = 
         get_function_body_translator(scope_context, llvm_function, entry_block);
-    llvm::BasicBlock* exit_block = body_translator.translate_whole_codeblock_into_llvm(entry_block, function_definition->code);
+    llvm::BasicBlock* exit_block = body_translator.translate_whole_codeblock_to_llvm(entry_block, function_definition->code);
     inject_return_statement_if_needed(exit_block, function_definition->return_type);
     return llvm_function;
 }
 
-llvm::Function* CallableCodeBlocksLLVMTranslator::translate_callable_code_block_into_llvm(
+llvm::Function* CallableCodeBlocksLLVMTranslator::translate_callable_code_block_to_llvm(
     const CallableCodeBlock& callable_code_block
 ) {
     const std::string& llvm_func_name = callable_code_block.unique_context_independent_id; 
@@ -62,11 +62,11 @@ llvm::Function* CallableCodeBlocksLLVMTranslator::translate_callable_code_block_
     llvm_functions.insert({llvm_func_name, llvm_function});
     switch (callable_code_block.callable_codeblock_kind()) {
         case CallableCodeBlock::Kind::function_definition: 
-            return translate_function_definition_into_llvm(
+            return translate_function_definition_to_llvm(
                 callable_code_block.get<FunctionDefinition::Ref>(), llvm_function
             );
         case CallableCodeBlock::Kind::common_feature_adoption_plan:
-            return translate_cfa_descriptor_into_llvm(
+            return translate_cfa_descriptor_to_llvm(
                 callable_code_block.get<CommonFeatureAdoptionPlanDescriptor>(), llvm_function
             );
     }

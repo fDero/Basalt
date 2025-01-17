@@ -33,40 +33,40 @@ class ExpressionsAndStatementsLLVMTranslator {
             llvm::BasicBlock* loop_exit_block = nullptr
         );
 
-        llvm::BasicBlock* translate_statement_into_llvm(llvm::BasicBlock* block, const Statement& statement);
-        llvm::BasicBlock* translate_whole_codeblock_into_llvm(llvm::BasicBlock* block, const std::vector<Statement>& codeblock);
-        llvm::BasicBlock* translate_conditional_into_llvm(llvm::BasicBlock* block, const Conditional& conditional);
-        llvm::BasicBlock* translate_while_loop_into_llvm(llvm::BasicBlock* block, const WhileLoop& while_loop);
-        llvm::BasicBlock* translate_until_loop_into_llvm(llvm::BasicBlock* block, const UntilLoop& until_loop);
-        llvm::BasicBlock* translate_return_statement_into_llvm(llvm::BasicBlock* block, const Return& return_statement);
-        llvm::BasicBlock* translate_break_statement_into_llvm(llvm::BasicBlock* block, const Break& break_statement);
-        llvm::BasicBlock* translate_continue_statement_into_llvm(llvm::BasicBlock* block, const Continue& continue_statement);
-        llvm::BasicBlock* translate_variable_declaration_into_llvm(llvm::BasicBlock* block, const VariableDeclaration& variable_declaration);
-        llvm::BasicBlock* translate_constant_declaration_into_llvm(llvm::BasicBlock* block, const ConstDeclaration& const_declaration);
-        llvm::BasicBlock* translate_assignment_into_llvm(llvm::BasicBlock* block, const Assignment& assignment);
-        llvm::BasicBlock* translate_void_function_call_into_llvm(llvm::BasicBlock* block, const FunctionCall& function_call);
-        llvm::BasicBlock* translate_assignment_into_llvm(llvm::BasicBlock* block, const Expression& target, const Expression& source);
+        llvm::BasicBlock* translate_statement_to_llvm(llvm::BasicBlock* block, const Statement& statement);
+        llvm::BasicBlock* translate_whole_codeblock_to_llvm(llvm::BasicBlock* block, const std::vector<Statement>& codeblock);
+        llvm::BasicBlock* translate_conditional_to_llvm(llvm::BasicBlock* block, const Conditional& conditional);
+        llvm::BasicBlock* translate_while_loop_to_llvm(llvm::BasicBlock* block, const WhileLoop& while_loop);
+        llvm::BasicBlock* translate_until_loop_to_llvm(llvm::BasicBlock* block, const UntilLoop& until_loop);
+        llvm::BasicBlock* translate_return_statement_to_llvm(llvm::BasicBlock* block, const Return& return_statement);
+        llvm::BasicBlock* translate_break_statement_to_llvm(llvm::BasicBlock* block, const Break& break_statement);
+        llvm::BasicBlock* translate_continue_statement_to_llvm(llvm::BasicBlock* block, const Continue& continue_statement);
+        llvm::BasicBlock* translate_variable_declaration_to_llvm(llvm::BasicBlock* block, const VariableDeclaration& variable_declaration);
+        llvm::BasicBlock* translate_constant_declaration_to_llvm(llvm::BasicBlock* block, const ConstDeclaration& const_declaration);
+        llvm::BasicBlock* translate_assignment_to_llvm(llvm::BasicBlock* block, const Assignment& assignment);
+        llvm::BasicBlock* translate_void_function_call_to_llvm(llvm::BasicBlock* block, const FunctionCall& function_call);
+        llvm::BasicBlock* translate_assignment_to_llvm(llvm::BasicBlock* block, const Expression& target, const Expression& source);
 
-        [[nodiscard]] TranslatedExpression translate_expression_into_llvm(llvm::BasicBlock* block, const Expression& expression);
-        [[nodiscard]] TranslatedExpression translate_expr_function_call_into_llvm(llvm::BasicBlock* block, const FunctionCall& expr);
-        [[nodiscard]] TranslatedExpression translate_array_literal_into_llvm(llvm::BasicBlock* block, const ArrayLiteral& expr);
-        [[nodiscard]] TranslatedExpression translate_binary_operator_into_llvm(llvm::BasicBlock* block, const BinaryOperator& expr);
-        [[nodiscard]] TranslatedExpression translate_boolean_literal_into_llvm(llvm::BasicBlock* block, const BoolLiteral& expr);
-        [[nodiscard]] TranslatedExpression translate_character_literal_into_llvm(llvm::BasicBlock* block, const CharLiteral& expr);
-        [[nodiscard]] TranslatedExpression translate_floating_literal_into_llvm(llvm::BasicBlock* block, const FloatLiteral& expr);
-        [[nodiscard]] TranslatedExpression translate_identifier_into_llvm(llvm::BasicBlock* block, const Identifier& expr);
-        [[nodiscard]] TranslatedExpression translate_integer_literal_into_llvm(llvm::BasicBlock* block, const IntLiteral& expr);
-        [[nodiscard]] TranslatedExpression translate_string_literal_into_llvm(llvm::BasicBlock* block, const StringLiteral& expr);
-        [[nodiscard]] TranslatedExpression translate_type_operator_into_llvm(llvm::BasicBlock* block, const TypeOperator& expr);
-        [[nodiscard]] TranslatedExpression translate_unary_operator_into_llvm(llvm::BasicBlock* block, const UnaryOperator& expr);
+        [[nodiscard]] TranslatedExpression translate_expression_to_llvm(llvm::BasicBlock* block, const Expression& expression);
+        [[nodiscard]] TranslatedExpression translate_expr_function_call_to_llvm(llvm::BasicBlock* block, const FunctionCall& expr);
+        [[nodiscard]] TranslatedExpression translate_array_literal_to_llvm(llvm::BasicBlock* block, const ArrayLiteral& expr);
+        [[nodiscard]] TranslatedExpression translate_binary_operator_to_llvm(llvm::BasicBlock* block, const BinaryOperator& expr);
+        [[nodiscard]] TranslatedExpression translate_boolean_literal_to_llvm(llvm::BasicBlock* block, const BoolLiteral& expr);
+        [[nodiscard]] TranslatedExpression translate_character_literal_to_llvm(llvm::BasicBlock* block, const CharLiteral& expr);
+        [[nodiscard]] TranslatedExpression translate_floating_literal_to_llvm(llvm::BasicBlock* block, const FloatLiteral& expr);
+        [[nodiscard]] TranslatedExpression translate_identifier_to_llvm(llvm::BasicBlock* block, const Identifier& expr);
+        [[nodiscard]] TranslatedExpression translate_integer_literal_to_llvm(llvm::BasicBlock* block, const IntLiteral& expr);
+        [[nodiscard]] TranslatedExpression translate_string_literal_to_llvm(llvm::BasicBlock* block, const StringLiteral& expr);
+        [[nodiscard]] TranslatedExpression translate_type_operator_to_llvm(llvm::BasicBlock* block, const TypeOperator& expr);
+        [[nodiscard]] TranslatedExpression translate_unary_operator_to_llvm(llvm::BasicBlock* block, const UnaryOperator& expr);
 
-        [[nodiscard]] TranslatedExpression translate_square_bracket_access_into_llvm(llvm::BasicBlock* block, const SquareBracketsAccess& expr);
-        [[nodiscard]] TranslatedExpression translate_square_bracket_access_from_array_into_llvm(llvm::BasicBlock* block, const SquareBracketsAccess& expr);
-        [[nodiscard]] TranslatedExpression translate_square_bracket_access_from_slice_into_llvm(llvm::BasicBlock* block, const SquareBracketsAccess& expr);
-        [[nodiscard]] TranslatedExpression translate_dot_member_access_into_llvm(llvm::BasicBlock* block, const DotMemberAccess& expr);
+        [[nodiscard]] TranslatedExpression translate_square_bracket_access_to_llvm(llvm::BasicBlock* block, const SquareBracketsAccess& expr);
+        [[nodiscard]] TranslatedExpression translate_square_bracket_access_from_array_to_llvm(llvm::BasicBlock* block, const SquareBracketsAccess& expr);
+        [[nodiscard]] TranslatedExpression translate_square_bracket_access_from_slice_to_llvm(llvm::BasicBlock* block, const SquareBracketsAccess& expr);
+        [[nodiscard]] TranslatedExpression translate_dot_member_access_to_llvm(llvm::BasicBlock* block, const DotMemberAccess& expr);
 
-        [[nodiscard]] TranslatedExpression translate_is_operator_into_llvm(llvm::BasicBlock* block, const TypeOperator& expr);
-        [[nodiscard]] TranslatedExpression translate_as_operator_into_llvm(llvm::BasicBlock* block, const TypeOperator& expr);
+        [[nodiscard]] TranslatedExpression translate_is_operator_to_llvm(llvm::BasicBlock* block, const TypeOperator& expr);
+        [[nodiscard]] TranslatedExpression translate_as_operator_to_llvm(llvm::BasicBlock* block, const TypeOperator& expr);
 
         [[nodiscard]] TranslatedExpression translate_plus_binary_operator(llvm::BasicBlock* block, const BinaryOperator& binary_op); 
         [[nodiscard]] TranslatedExpression translate_minus_binary_operator(llvm::BasicBlock* block, const BinaryOperator& binary_op);

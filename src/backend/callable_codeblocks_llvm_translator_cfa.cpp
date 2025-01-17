@@ -7,16 +7,16 @@
 #include "backend/type_operators_llvm_translator.hpp"
 #include "errors/internal_errors.hpp"
 
-llvm::Function* CallableCodeBlocksLLVMTranslator::translate_cfa_descriptor_into_llvm(
+llvm::Function* CallableCodeBlocksLLVMTranslator::translate_cfa_descriptor_to_llvm(
     const CommonFeatureAdoptionPlanDescriptor& descriptor, 
     llvm::Function* llvm_function
 ) {
     llvm::BasicBlock* entry_block = llvm::BasicBlock::Create(llvm_context, "entry", llvm_function);
-    translate_cfa_plan_into_llvm(descriptor, descriptor.plan, llvm_function, entry_block);
+    translate_cfa_plan_to_llvm(descriptor, descriptor.plan, llvm_function, entry_block);
     return llvm_function;
 }
 
-void CallableCodeBlocksLLVMTranslator::translate_cfa_plan_into_llvm(
+void CallableCodeBlocksLLVMTranslator::translate_cfa_plan_to_llvm(
     const CommonFeatureAdoptionPlanDescriptor& cfa_plan_descriptor, 
     const CommonFeatureAdoptionPlan& cfa_plan,
     llvm::Function* llvm_function,
@@ -24,15 +24,15 @@ void CallableCodeBlocksLLVMTranslator::translate_cfa_plan_into_llvm(
 ) {
     if (cfa_plan.is_direct_adoption()) {
         FunctionDefinition::Ref selected_concrete_function = cfa_plan.get_direct_adoption();
-        translate_cfa_direct_adoption_into_llvm(cfa_plan_descriptor, selected_concrete_function, llvm_function, block);
+        translate_cfa_direct_adoption_to_llvm(cfa_plan_descriptor, selected_concrete_function, llvm_function, block);
         return;
     }
     assert(cfa_plan.is_recursive_adoption());
     RecursiveAdoptionPlan recursive_plan = cfa_plan.get_recursive_adoption();
-    translate_cfa_recursive_adoption_into_llvm(cfa_plan_descriptor, recursive_plan, llvm_function, block);
+    translate_cfa_recursive_adoption_to_llvm(cfa_plan_descriptor, recursive_plan, llvm_function, block);
 }
 
-void CallableCodeBlocksLLVMTranslator::translate_cfa_recursive_adoption_into_llvm(
+void CallableCodeBlocksLLVMTranslator::translate_cfa_recursive_adoption_to_llvm(
     const CommonFeatureAdoptionPlanDescriptor& cfa_plan_descriptor, 
     const RecursiveAdoptionPlan& recursive_plan,
     llvm::Function* llvm_function,
@@ -59,14 +59,14 @@ void CallableCodeBlocksLLVMTranslator::translate_cfa_recursive_adoption_into_llv
         success_block->moveAfter(alternative_block);
         alternative_block_builder.CreateCondBr(is_operator.value, success_block, alternative_blocks[alternative_index + 1]);
         const CommonFeatureAdoptionPlan& successful_plan = recursive_plan.nested_plans[alternative_index];
-        translate_cfa_plan_into_llvm(cfa_plan_descriptor, successful_plan, llvm_function, success_block);
+        translate_cfa_plan_to_llvm(cfa_plan_descriptor, successful_plan, llvm_function, success_block);
     }
     llvm::BasicBlock* last_alternative_block = alternative_blocks.back();
     const CommonFeatureAdoptionPlan& last_alternative_plan = recursive_plan.nested_plans.back();
-    translate_cfa_plan_into_llvm(cfa_plan_descriptor, last_alternative_plan, llvm_function, last_alternative_block);
+    translate_cfa_plan_to_llvm(cfa_plan_descriptor, last_alternative_plan, llvm_function, last_alternative_block);
 }
 
-void CallableCodeBlocksLLVMTranslator::translate_cfa_direct_adoption_into_llvm(
+void CallableCodeBlocksLLVMTranslator::translate_cfa_direct_adoption_to_llvm(
     const CommonFeatureAdoptionPlanDescriptor& cfa_plan_descriptor,
     const FunctionDefinition::Ref& selected_concrete_function,
     llvm::Function* llvm_function,
@@ -74,7 +74,7 @@ void CallableCodeBlocksLLVMTranslator::translate_cfa_direct_adoption_into_llvm(
 ) {
     llvm::IRBuilder<> llvm_builder(block);
     auto ccblock = CallableCodeBlock(selected_concrete_function, program_representation);
-    llvm::Function* concrete_function = translate_callable_code_block_into_llvm(ccblock);
+    llvm::Function* concrete_function = translate_callable_code_block_to_llvm(ccblock);
     std::vector<llvm::Value*> arguments;
     for (size_t arg_index = 0; arg_index < selected_concrete_function->arguments.size(); arg_index++) {
         const TypeSignature& expected_arg_type = selected_concrete_function->arguments[arg_index].arg_type;

@@ -12,8 +12,8 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_LT_then_c
     llvm::BasicBlock* block,
     const BinaryOperator& binary_op
 ) { 
-    TranslatedExpression left = translate_expression_into_llvm(block, binary_op.left_operand);
-    TranslatedExpression right = translate_expression_into_llvm(block, binary_op.right_operand);
+    TranslatedExpression left = translate_expression_to_llvm(block, binary_op.left_operand);
+    TranslatedExpression right = translate_expression_to_llvm(block, binary_op.right_operand);
     llvm::IRBuilder<> builder(block);
     ScopeContext& raw_scope_context = scope_context.raw_scope_context;
     return (program_representation.is_binary_operator_over_float_operands(binary_op, raw_scope_context)) 
@@ -25,8 +25,8 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_GT_compar
     llvm::BasicBlock* block,
     const BinaryOperator& binary_op
 ) { 
-    TranslatedExpression left = translate_expression_into_llvm(block, binary_op.left_operand);
-    TranslatedExpression right = translate_expression_into_llvm(block, binary_op.right_operand);
+    TranslatedExpression left = translate_expression_to_llvm(block, binary_op.left_operand);
+    TranslatedExpression right = translate_expression_to_llvm(block, binary_op.right_operand);
     llvm::IRBuilder<> builder(block);
     ScopeContext& raw_scope_context = scope_context.raw_scope_context;
     return (program_representation.is_binary_operator_over_float_operands(binary_op, raw_scope_context)) 
@@ -38,8 +38,8 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_LE_compar
     llvm::BasicBlock* block,
     const BinaryOperator& binary_op
 ) { 
-    TranslatedExpression left = translate_expression_into_llvm(block, binary_op.left_operand);
-    TranslatedExpression right = translate_expression_into_llvm(block, binary_op.right_operand);
+    TranslatedExpression left = translate_expression_to_llvm(block, binary_op.left_operand);
+    TranslatedExpression right = translate_expression_to_llvm(block, binary_op.right_operand);
     llvm::IRBuilder<> builder(block);
     ScopeContext& raw_scope_context = scope_context.raw_scope_context;
     return (program_representation.is_binary_operator_over_float_operands(binary_op, raw_scope_context)) 
@@ -51,8 +51,8 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_GE_compar
     llvm::BasicBlock* block,
     const BinaryOperator& binary_op
 ) { 
-    TranslatedExpression left = translate_expression_into_llvm(block, binary_op.left_operand);
-    TranslatedExpression right = translate_expression_into_llvm(block, binary_op.right_operand);
+    TranslatedExpression left = translate_expression_to_llvm(block, binary_op.left_operand);
+    TranslatedExpression right = translate_expression_to_llvm(block, binary_op.right_operand);
     llvm::IRBuilder<> builder(block);
     ScopeContext& raw_scope_context = scope_context.raw_scope_context;
     return (program_representation.is_binary_operator_over_float_operands(binary_op, raw_scope_context)) 
@@ -64,8 +64,8 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_EQ_compar
     llvm::BasicBlock* block,
     const BinaryOperator& binary_op
 ) {
-    TranslatedExpression left = translate_expression_into_llvm(block, binary_op.left_operand);
-    TranslatedExpression right = translate_expression_into_llvm(block, binary_op.right_operand);
+    TranslatedExpression left = translate_expression_to_llvm(block, binary_op.left_operand);
+    TranslatedExpression right = translate_expression_to_llvm(block, binary_op.right_operand);
     llvm::IRBuilder<> builder(block);
     ScopeContext& raw_scope_context = scope_context.raw_scope_context;
     return (program_representation.is_binary_operator_over_float_operands(binary_op, raw_scope_context)) 
@@ -77,8 +77,8 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_NE_compar
     llvm::BasicBlock* block,
     const BinaryOperator& binary_op
 ) {
-    TranslatedExpression left = translate_expression_into_llvm(block, binary_op.left_operand);
-    TranslatedExpression right = translate_expression_into_llvm(block, binary_op.right_operand);
+    TranslatedExpression left = translate_expression_to_llvm(block, binary_op.left_operand);
+    TranslatedExpression right = translate_expression_to_llvm(block, binary_op.right_operand);
     llvm::IRBuilder<> builder(block);
     ScopeContext& raw_scope_context = scope_context.raw_scope_context;
     return (program_representation.is_binary_operator_over_float_operands(binary_op, raw_scope_context))  

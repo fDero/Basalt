@@ -14,7 +14,13 @@ static FunctionDefinition f_function = FunctionDefinitionFactory::make_function_
     "main.basalt",
     FunctionDefinitionFactory::no_generics,
     FunctionDefinitionFactory::no_args,
-    TypeSignatureFactory::Float
+    TypeSignatureFactory::Float,
+    {
+        Return {
+            FloatLiteral { Token { "3.14", "main.basalt", 1, 1, 1, Token::Type::floating_literal } },
+            Token { "return", "main.basalt", 1, 1, 1, Token::Type::return_keyword }
+        }
+    }
 );
 
 static FunctionDefinition g_function = FunctionDefinitionFactory::make_function_definition(
@@ -27,7 +33,13 @@ static FunctionDefinition g_function = FunctionDefinitionFactory::make_function_
             .arg_type = TypeSignatureFactory::Int
         }
     },
-    TypeSignatureFactory::Int
+    TypeSignatureFactory::Int,
+    {
+        Return {
+            IntLiteral { Token { "6", "main.basalt", 1, 1, 1, Token::Type::integer_literal } },
+            Token { "return", "main.basalt", 1, 1, 1, Token::Type::return_keyword }
+        }
+    }
 );
 
 static FunctionDefinition h_function = FunctionDefinitionFactory::make_function_definition(
@@ -44,7 +56,13 @@ static FunctionDefinition h_function = FunctionDefinitionFactory::make_function_
             .arg_type = TypeSignatureFactory::Char
         },
     },
-    TypeSignatureFactory::Char
+    TypeSignatureFactory::Char,
+    {
+        Return {
+            CharLiteral { Token { "'x'", "main.basalt", 1, 1, 1, Token::Type::character_literal } },
+            Token { "return", "main.basalt", 1, 1, 1, Token::Type::return_keyword }
+        }
+    }
 );
 
 static ProjectFileStructure project_with_a_couple_of_simple_functions({
@@ -67,11 +85,16 @@ TEST(Backend, Returning_Function_No_Body_No_Args_Translated_Successfully) {
     CallableCodeBlocksLLVMTranslator func_translator(program_representation, type_translator, context, llvm_module);
     FunctionDefinition::Ref f_function_ref = std::make_shared<FunctionDefinition>(f_function);
     CallableCodeBlock f_function_as_callable_code_block(f_function_ref, program_representation);
-    llvm::Function* translated = func_translator.translate_callable_code_block_into_llvm(f_function_as_callable_code_block);
+    llvm::Function* translated = func_translator.translate_callable_code_block_to_llvm(f_function_as_callable_code_block);
     std::string llvm_func_translation_str;
     llvm::raw_string_ostream llvm_ostream(llvm_func_translation_str);
     translated->print(llvm_ostream);
-    EXPECT_EQ(llvm_func_translation_str, "define double @\"f@main.basalt:1:2\"() {\nentry:\n}\n");
+    EXPECT_EQ(llvm_func_translation_str, 
+        "define double @\"f@main.basalt:1:2\"() {"  "\n"
+        "entry:"                                    "\n"
+        "  ret double 3.140000e+00"                 "\n"
+        "}"                                         "\n"
+    );
 }
 
 TEST(Backend, Returning_Function_No_Body_One_Int_Arg_Translated_Successfully) {
@@ -82,7 +105,7 @@ TEST(Backend, Returning_Function_No_Body_One_Int_Arg_Translated_Successfully) {
     CallableCodeBlocksLLVMTranslator func_translator(program_representation, type_translator, context, llvm_module);
     FunctionDefinition::Ref g_function_ref = std::make_shared<FunctionDefinition>(g_function);
     CallableCodeBlock g_function_as_callable_code_block(g_function_ref, program_representation);
-    llvm::Function* translated = func_translator.translate_callable_code_block_into_llvm(g_function_as_callable_code_block);
+    llvm::Function* translated = func_translator.translate_callable_code_block_to_llvm(g_function_as_callable_code_block);
     std::string llvm_func_translation_str;
     llvm::raw_string_ostream llvm_ostream(llvm_func_translation_str);
     translated->print(llvm_ostream);
@@ -91,6 +114,7 @@ TEST(Backend, Returning_Function_No_Body_One_Int_Arg_Translated_Successfully) {
         "entry:"                                         "\n"
         "  %1 = alloca i64, align 8"                     "\n"
         "  store i64 %0, i64* %1, align 4"               "\n"
+        "  ret i64 6"                                    "\n"
         "}"                                              "\n"
     );
 }
@@ -103,7 +127,7 @@ TEST(Backend, Returing_Function_No_Body_One_Int_Arg_And_One_Char_Translated_Succ
     CallableCodeBlocksLLVMTranslator func_translator(program_representation, type_translator, context, llvm_module);
     FunctionDefinition::Ref h_function_ref = std::make_shared<FunctionDefinition>(h_function);
     CallableCodeBlock h_function_as_callable_code_block(h_function_ref, program_representation);
-    llvm::Function* translated = func_translator.translate_callable_code_block_into_llvm(h_function_as_callable_code_block);
+    llvm::Function* translated = func_translator.translate_callable_code_block_to_llvm(h_function_as_callable_code_block);
     std::string llvm_func_translation_str;
     llvm::raw_string_ostream llvm_ostream(llvm_func_translation_str);
     translated->print(llvm_ostream);
@@ -114,6 +138,7 @@ TEST(Backend, Returing_Function_No_Body_One_Int_Arg_And_One_Char_Translated_Succ
         "  store i64 %0, i64* %2, align 4"                       "\n"
         "  %3 = alloca i8, align 1"                              "\n"
         "  store i8 %1, i8* %3, align 1"                         "\n"
+        "  ret i8 120"                                           "\n"
         "}"                                                      "\n"
     );
 }

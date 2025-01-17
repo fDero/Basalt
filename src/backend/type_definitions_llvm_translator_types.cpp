@@ -22,7 +22,7 @@ llvm::Type* TypeDefinitionsLLVMTranslator::translate_custom_type_to_llvm_type(
     return translate_named_union_to_llvm_type(type_definition.get<UnionDefinition>());
 }
 
-llvm::Type* TypeDefinitionsLLVMTranslator::translate_pointer_type_into_llvm_type(
+llvm::Type* TypeDefinitionsLLVMTranslator::translate_pointer_type_to_llvm_type(
     const PointerType& pointer_type
 ) {
     const TypeSignature& pointed_type = pointer_type.pointed_type;
@@ -30,7 +30,7 @@ llvm::Type* TypeDefinitionsLLVMTranslator::translate_pointer_type_into_llvm_type
     return llvm_pointed_type->getPointerTo();
 }
 
-llvm::Type* TypeDefinitionsLLVMTranslator::translate_primitive_type_into_llvm(
+llvm::Type* TypeDefinitionsLLVMTranslator::translate_primitive_type_to_llvm(
     const PrimitiveType& primitive_type
 ) {
     const std::string primitive_type_name = primitive_type.type_name;
@@ -38,7 +38,7 @@ llvm::Type* TypeDefinitionsLLVMTranslator::translate_primitive_type_into_llvm(
     return primitive_llvm_type;
 }
 
-llvm::Type* TypeDefinitionsLLVMTranslator::translate_array_type_into_llvm_type(
+llvm::Type* TypeDefinitionsLLVMTranslator::translate_array_type_to_llvm_type(
     const ArrayType& array_type
 ) {
     const TypeSignature& stored_type = array_type.stored_type;
@@ -47,7 +47,7 @@ llvm::Type* TypeDefinitionsLLVMTranslator::translate_array_type_into_llvm_type(
     return llvm::ArrayType::get(llvm_stored_type, array_length);
 }
 
-llvm::Type* TypeDefinitionsLLVMTranslator::translate_slice_type_into_llvm_type(
+llvm::Type* TypeDefinitionsLLVMTranslator::translate_slice_type_to_llvm_type(
     const SliceType& slice_type
 ) {
     const std::string fully_qualified_name = program_representation.get_fully_qualified_typesignature_name(slice_type);

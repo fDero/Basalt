@@ -8,42 +8,43 @@
 #include "backend/callable_codeblocks_llvm_translator.hpp"
 #include "errors/internal_errors.hpp"
 
-TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_boolean_literal_into_llvm(
+TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_boolean_literal_to_llvm(
     llvm::BasicBlock* block,
     const BoolLiteral& expr
 ) {
     return llvm::ConstantInt::get(llvm::Type::getInt1Ty(context), expr.value);   
 }
 
-TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_character_literal_into_llvm(
+TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_character_literal_to_llvm(
     llvm::BasicBlock* block,
     const CharLiteral& expr
 ) {
     return llvm::ConstantInt::get(llvm::Type::getInt8Ty(context), expr.value);
 }
 
-TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_floating_literal_into_llvm(
+TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_floating_literal_to_llvm(
     llvm::BasicBlock* block, 
     const FloatLiteral& expr
 ) {
-    return llvm::ConstantFP::get(context, llvm::APFloat(expr.value));
+   
+    return llvm::ConstantFP::get(llvm::Type::getDoubleTy(context), expr.value);
 }
 
-TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_integer_literal_into_llvm(
+TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_integer_literal_to_llvm(
     llvm::BasicBlock* block, 
     const IntLiteral& expr
 ) {
-    return llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), expr.value);
+    return llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), expr.value);
 }
 
-TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_string_literal_into_llvm(
+TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_string_literal_to_llvm(
     llvm::BasicBlock* block,
     const StringLiteral& expr
 ) {
     return llvm::ConstantDataArray::getString(context, expr.value);
 }
 
-TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_identifier_into_llvm(
+TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_identifier_to_llvm(
     llvm::BasicBlock* block,
     const Identifier& identifier
 ) {
@@ -53,7 +54,7 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_identifie
     return {value, address};
 }
 
-TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_array_literal_into_llvm(
+TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_array_literal_to_llvm(
     llvm::BasicBlock* block,
     const ArrayLiteral& expr
 ) {
@@ -65,7 +66,7 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_array_lit
     for (size_t index = 0; index < expr.elements.size(); index++) {
         llvm::Value* element_index_as_expr = llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), index);
         const Expression& element = expr.elements[index];
-        llvm::Value* array_element = translate_expression_into_llvm(block, element).value;
+        llvm::Value* array_element = translate_expression_to_llvm(block, element).value;
         llvm::Value* ptr_to_array_cell = builder.CreateGEP(arrayType, llvm_array_reference, element_index_as_expr);
         builder.CreateStore(array_element, ptr_to_array_cell);
     }

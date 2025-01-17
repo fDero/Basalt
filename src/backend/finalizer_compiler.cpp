@@ -15,7 +15,7 @@ void Finalizer::generate_llvm_ir() {
         [&](const FunctionDefinition::Ref& function_definition) {
             if (function_definition->template_generics_names.empty()) {
                 CallableCodeBlock callable_code_block(function_definition, program_representation);
-                callable_codeblocks_llvm_translator.translate_callable_code_block_into_llvm(callable_code_block);
+                callable_codeblocks_llvm_translator.translate_callable_code_block_to_llvm(callable_code_block);
             }
         }
     );

@@ -48,20 +48,20 @@ ExpressionsAndStatementsLLVMTranslator::create_translator_for_nested_conditional
     return create_translator_for_nested_loop(loop_entry_block, loop_exit_block);
 }
 
-TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_expr_function_call_into_llvm(
+TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_expr_function_call_to_llvm(
     llvm::BasicBlock* block,
     const FunctionCall& fcall
 ) {
     CallableCodeBlock ccb = program_representation.resolve_function_call(fcall, scope_context.raw_scope_context);
-    llvm::Function* llvm_function = callable_codeblocks_llvm_translator.translate_callable_code_block_into_llvm(ccb);
+    llvm::Function* llvm_function = callable_codeblocks_llvm_translator.translate_callable_code_block_to_llvm(ccb);
     llvm::IRBuilder<> builder(block);
     return builder.CreateCall(llvm_function);
 }
 
-llvm::BasicBlock* ExpressionsAndStatementsLLVMTranslator::translate_void_function_call_into_llvm(
+llvm::BasicBlock* ExpressionsAndStatementsLLVMTranslator::translate_void_function_call_to_llvm(
     llvm::BasicBlock* block,
     const FunctionCall& function_call
 ) {
-    std::ignore = translate_expr_function_call_into_llvm(block, function_call);
+    std::ignore = translate_expr_function_call_to_llvm(block, function_call);
     return block;
 }

@@ -17,17 +17,17 @@ static llvm::BasicBlock* createBlockAfter(
     return new_block;
 }
 
-llvm::BasicBlock* ExpressionsAndStatementsLLVMTranslator::translate_whole_codeblock_into_llvm(
+llvm::BasicBlock* ExpressionsAndStatementsLLVMTranslator::translate_whole_codeblock_to_llvm(
     llvm::BasicBlock* block,
     const std::vector<Statement>& codeblock
 ) {
     for (const Statement& statement : codeblock) {
-        block = translate_statement_into_llvm(block, statement);
+        block = translate_statement_to_llvm(block, statement);
     }
     return block;
 }
 
-llvm::BasicBlock* ExpressionsAndStatementsLLVMTranslator::translate_conditional_into_llvm(
+llvm::BasicBlock* ExpressionsAndStatementsLLVMTranslator::translate_conditional_to_llvm(
     llvm::BasicBlock* current_block,
     const Conditional& conditional
 ) {
@@ -41,23 +41,23 @@ llvm::BasicBlock* ExpressionsAndStatementsLLVMTranslator::translate_conditional_
     current_builder.CreateBr(if_cond_block);
 
     llvm::IRBuilder<> cond_builder(if_cond_block);
-    llvm::Value* condition = translate_expression_into_llvm(if_cond_block, conditional.condition).value;
+    llvm::Value* condition = translate_expression_to_llvm(if_cond_block, conditional.condition).value;
     cond_builder.CreateCondBr(condition, if_then_block, if_else_block);
     
     llvm::IRBuilder<> then_builder(current_block);
     auto then_translator = create_translator_for_nested_conditional();
-    then_translator.translate_whole_codeblock_into_llvm(if_then_block, conditional.then_branch);
+    then_translator.translate_whole_codeblock_to_llvm(if_then_block, conditional.then_branch);
     then_builder.CreateBr(if_exit_block);
 
     llvm::IRBuilder<> else_builder(current_block);
     auto else_translator = create_translator_for_nested_conditional();
-    else_translator.translate_whole_codeblock_into_llvm(if_else_block, conditional.else_branch);
+    else_translator.translate_whole_codeblock_to_llvm(if_else_block, conditional.else_branch);
     else_builder.CreateBr(if_exit_block);
 
     return if_exit_block;
 }
 
-llvm::BasicBlock* ExpressionsAndStatementsLLVMTranslator::translate_while_loop_into_llvm(
+llvm::BasicBlock* ExpressionsAndStatementsLLVMTranslator::translate_while_loop_to_llvm(
     llvm::BasicBlock* current_block,
     const WhileLoop& while_loop
 ) {
@@ -70,18 +70,18 @@ llvm::BasicBlock* ExpressionsAndStatementsLLVMTranslator::translate_while_loop_i
     current_builder.CreateBr(while_cond_block);
 
     llvm::IRBuilder<> cond_builder(while_cond_block);
-    llvm::Value* condition = translate_expression_into_llvm(while_cond_block, while_loop.condition).value;
+    llvm::Value* condition = translate_expression_to_llvm(while_cond_block, while_loop.condition).value;
     cond_builder.CreateCondBr(condition, while_body_block, while_exit_block);
 
     llvm::IRBuilder<> body_builder(while_body_block);
     auto body_translator = create_translator_for_nested_loop(while_cond_block, while_exit_block);
-    body_translator.translate_whole_codeblock_into_llvm(while_body_block, while_loop.loop_body);
+    body_translator.translate_whole_codeblock_to_llvm(while_body_block, while_loop.loop_body);
     body_builder.CreateBr(while_cond_block);
 
     return while_exit_block;
 }
 
-llvm::BasicBlock* ExpressionsAndStatementsLLVMTranslator::translate_until_loop_into_llvm(
+llvm::BasicBlock* ExpressionsAndStatementsLLVMTranslator::translate_until_loop_to_llvm(
     llvm::BasicBlock* current_block,
     const UntilLoop& until_loop
 ) {
@@ -95,25 +95,25 @@ llvm::BasicBlock* ExpressionsAndStatementsLLVMTranslator::translate_until_loop_i
 
     llvm::IRBuilder<> body_builder(until_body_block);
     auto body_translator = create_translator_for_nested_loop(until_body_block, until_exit_block);
-    body_translator.translate_whole_codeblock_into_llvm(until_body_block, until_loop.loop_body);
+    body_translator.translate_whole_codeblock_to_llvm(until_body_block, until_loop.loop_body);
     body_builder.CreateBr(until_cond_block);
 
     llvm::IRBuilder<> cond_builder(until_cond_block);
-    llvm::Value* condition = translate_expression_into_llvm(until_cond_block, until_loop.condition).value;
+    llvm::Value* condition = translate_expression_to_llvm(until_cond_block, until_loop.condition).value;
     llvm::Value* negated_condition = cond_builder.CreateNot(condition);
     cond_builder.CreateCondBr(negated_condition, until_body_block, until_exit_block);
 
     return until_exit_block;
 }
 
-llvm::BasicBlock* ExpressionsAndStatementsLLVMTranslator::translate_return_statement_into_llvm(
+llvm::BasicBlock* ExpressionsAndStatementsLLVMTranslator::translate_return_statement_to_llvm(
     llvm::BasicBlock* block,
     const Return& return_statement
 ) {
     llvm::IRBuilder<> builder(block);
     if (return_statement.return_value.has_value()) {
         const Expression& ret = return_statement.return_value.value();
-        llvm::Value* returned_value = translate_expression_into_llvm(block, ret).value;
+        llvm::Value* returned_value = translate_expression_to_llvm(block, ret).value;
         builder.CreateRet(returned_value);
         return block;
     }   
@@ -121,7 +121,7 @@ llvm::BasicBlock* ExpressionsAndStatementsLLVMTranslator::translate_return_state
     return block;
 }
 
-llvm::BasicBlock* ExpressionsAndStatementsLLVMTranslator::translate_break_statement_into_llvm(
+llvm::BasicBlock* ExpressionsAndStatementsLLVMTranslator::translate_break_statement_to_llvm(
     llvm::BasicBlock* block,
     const Break& break_statement
 ) {
@@ -130,7 +130,7 @@ llvm::BasicBlock* ExpressionsAndStatementsLLVMTranslator::translate_break_statem
     return block;
 }
 
-llvm::BasicBlock* ExpressionsAndStatementsLLVMTranslator::translate_continue_statement_into_llvm(
+llvm::BasicBlock* ExpressionsAndStatementsLLVMTranslator::translate_continue_statement_to_llvm(
     llvm::BasicBlock* block,
     const Continue& continue_statement
 ) {

@@ -6,7 +6,7 @@
 #include "backend/expressions_and_statements_llvm_translator.hpp"
 #include "backend/callable_codeblocks_llvm_translator.hpp"
 
-llvm::BasicBlock* ExpressionsAndStatementsLLVMTranslator::translate_variable_declaration_into_llvm(
+llvm::BasicBlock* ExpressionsAndStatementsLLVMTranslator::translate_variable_declaration_to_llvm(
     llvm::BasicBlock* block,
     const VariableDeclaration& variable_declaration
 ) {
@@ -16,12 +16,12 @@ llvm::BasicBlock* ExpressionsAndStatementsLLVMTranslator::translate_variable_dec
     scope_context.store_local_variable(variable_declaration, alloca_inst);
     if (variable_declaration.initial_value.has_value()) {
         Identifier identifier(variable_declaration, variable_declaration.identifier_name);
-        translate_assignment_into_llvm(block, identifier, variable_declaration.initial_value.value());
+        translate_assignment_to_llvm(block, identifier, variable_declaration.initial_value.value());
     }
     return block;
 }
 
-llvm::BasicBlock* ExpressionsAndStatementsLLVMTranslator::translate_constant_declaration_into_llvm(
+llvm::BasicBlock* ExpressionsAndStatementsLLVMTranslator::translate_constant_declaration_to_llvm(
     llvm::BasicBlock* block,
     const ConstDeclaration& const_declaration
 ) {
@@ -30,15 +30,15 @@ llvm::BasicBlock* ExpressionsAndStatementsLLVMTranslator::translate_constant_dec
     llvm::AllocaInst* alloca_inst = builder.CreateAlloca(llvm_type, nullptr);
     scope_context.store_local_constant(const_declaration, alloca_inst);
     Identifier identifier(const_declaration, const_declaration.identifier_name);
-    translate_assignment_into_llvm(block, identifier, const_declaration.value);
+    translate_assignment_to_llvm(block, identifier, const_declaration.value);
     return block;
 }
 
-llvm::BasicBlock* ExpressionsAndStatementsLLVMTranslator::translate_assignment_into_llvm(
+llvm::BasicBlock* ExpressionsAndStatementsLLVMTranslator::translate_assignment_to_llvm(
     llvm::BasicBlock* block,
     const Assignment& assignment
 ) {
-    translate_assignment_into_llvm(
+    translate_assignment_to_llvm(
         block,
         assignment.assignment_target, 
         assignment.assigned_value
@@ -46,7 +46,7 @@ llvm::BasicBlock* ExpressionsAndStatementsLLVMTranslator::translate_assignment_i
     return block;
 }
 
-llvm::BasicBlock* ExpressionsAndStatementsLLVMTranslator::translate_assignment_into_llvm(
+llvm::BasicBlock* ExpressionsAndStatementsLLVMTranslator::translate_assignment_to_llvm(
     llvm::BasicBlock* block,
     const Expression& target, 
     const Expression& source
@@ -60,8 +60,8 @@ llvm::BasicBlock* ExpressionsAndStatementsLLVMTranslator::translate_assignment_i
     bool is_union_target = program_representation.is_union(target_type);
     bool is_union_source = program_representation.is_union(source_type);
     llvm::IRBuilder<> builder(block);
-    TranslatedExpression llvm_source = translate_expression_into_llvm(block, source);
-    TranslatedExpression llvm_target = translate_expression_into_llvm(block, target);
+    TranslatedExpression llvm_source = translate_expression_to_llvm(block, source);
+    TranslatedExpression llvm_target = translate_expression_to_llvm(block, target);
     if (is_union_target == is_union_source) {
         builder.CreateStore(llvm_source.value,llvm_target.address);
         return block;

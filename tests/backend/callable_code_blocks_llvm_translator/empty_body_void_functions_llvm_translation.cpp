@@ -64,7 +64,7 @@ TEST(Backend, Void_Function_No_Body_No_Args_Translated_Successfully) {
     CallableCodeBlocksLLVMTranslator func_translator(program_representation, type_translator, context, llvm_module);
     FunctionDefinition::Ref f_function_ref = std::make_shared<FunctionDefinition>(f_function);
     CallableCodeBlock f_function_as_callable_code_block(f_function_ref, program_representation);
-    llvm::Function* translated = func_translator.translate_callable_code_block_into_llvm(f_function_as_callable_code_block);
+    llvm::Function* translated = func_translator.translate_callable_code_block_to_llvm(f_function_as_callable_code_block);
     std::string llvm_func_translation_str;
     llvm::raw_string_ostream llvm_ostream(llvm_func_translation_str);
     translated->print(llvm_ostream);
@@ -79,7 +79,7 @@ TEST(Backend, Void_Function_No_Body_One_Int_Arg_Translated_Successfully) {
     CallableCodeBlocksLLVMTranslator func_translator(program_representation, type_translator, context, llvm_module);
     FunctionDefinition::Ref g_function_ref = std::make_shared<FunctionDefinition>(g_function);
     CallableCodeBlock g_function_as_callable_code_block(g_function_ref, program_representation);
-    llvm::Function* translated = func_translator.translate_callable_code_block_into_llvm(g_function_as_callable_code_block);
+    llvm::Function* translated = func_translator.translate_callable_code_block_to_llvm(g_function_as_callable_code_block);
     std::string llvm_func_translation_str;
     llvm::raw_string_ostream llvm_ostream(llvm_func_translation_str);
     translated->print(llvm_ostream);
@@ -101,7 +101,7 @@ TEST(Backend, Void_Function_No_Body_One_Int_Arg_And_One_Char_Translated_Successf
     CallableCodeBlocksLLVMTranslator func_translator(program_representation, type_translator, context, llvm_module);
     FunctionDefinition::Ref h_function_ref = std::make_shared<FunctionDefinition>(h_function);
     CallableCodeBlock h_function_as_callable_code_block(h_function_ref, program_representation);
-    llvm::Function* translated = func_translator.translate_callable_code_block_into_llvm(h_function_as_callable_code_block);
+    llvm::Function* translated = func_translator.translate_callable_code_block_to_llvm(h_function_as_callable_code_block);
     std::string llvm_func_translation_str;
     llvm::raw_string_ostream llvm_ostream(llvm_func_translation_str);
     translated->print(llvm_ostream);

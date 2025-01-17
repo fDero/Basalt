@@ -26,10 +26,10 @@ class TypeDefinitionsLLVMTranslator {
         [[nodiscard]] llvm::Type* translate_named_union_to_llvm_type(const UnionDefinition& union_definition);
         [[nodiscard]] llvm::Type* translate_struct_to_llvm_type(const StructDefinition& struct_definition);
         [[nodiscard]] llvm::Type* translate_return_type_to_llvm_type(const std::optional<TypeSignature>& ret);
-        [[nodiscard]] llvm::Type* translate_primitive_type_into_llvm(const PrimitiveType& primitive_type);
-        [[nodiscard]] llvm::Type* translate_array_type_into_llvm_type(const ArrayType& array_type);
-        [[nodiscard]] llvm::Type* translate_slice_type_into_llvm_type(const SliceType& slice_type);
-        [[nodiscard]] llvm::Type* translate_pointer_type_into_llvm_type(const PointerType& pointer_type);
+        [[nodiscard]] llvm::Type* translate_primitive_type_to_llvm(const PrimitiveType& primitive_type);
+        [[nodiscard]] llvm::Type* translate_array_type_to_llvm_type(const ArrayType& array_type);
+        [[nodiscard]] llvm::Type* translate_slice_type_to_llvm_type(const SliceType& slice_type);
+        [[nodiscard]] llvm::Type* translate_pointer_type_to_llvm_type(const PointerType& pointer_type);
 
         [[nodiscard]] size_t compute_header_unaware_typesignature_memory_footprint(const TypeSignature& typesignature);
         [[nodiscard]] size_t compute_header_unaware_inline_union_memory_footprint(const InlineUnion& inline_union);

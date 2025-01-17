@@ -100,7 +100,7 @@ TEST(Backend, CFA_For_One_Argument_With_Two_Alternatives_Translated_Successfully
     TypeDefinitionsLLVMTranslator type_translator(program_representation, context, llvm_module);
     CallableCodeBlocksLLVMTranslator func_translator(program_representation, type_translator, context, llvm_module);
     CallableCodeBlock f_function_block(f_function_descriptor, program_representation);
-    llvm::Function* translated = func_translator.translate_callable_code_block_into_llvm(f_function_block);
+    llvm::Function* translated = func_translator.translate_callable_code_block_to_llvm(f_function_block);
     std::string llvm_func_translation_str;
     llvm::raw_string_ostream llvm_ostream(llvm_func_translation_str);
     translated->print(llvm_ostream);
