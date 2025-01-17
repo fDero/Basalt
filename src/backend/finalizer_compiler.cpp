@@ -25,10 +25,8 @@ void Finalizer::generate_llvm_ir() {
     program_representation.foreach_function_definition(
         [&](const FunctionDefinition::Ref& function_definition) {
             if (function_definition->template_generics_names.empty()) {
-                callable_codeblocks_llvm_translator.translate_function_definition_into_llvm(
-                    function_definition, 
-                    nullptr
-                );
+                CallableCodeBlock callable_code_block(function_definition, program_representation);
+                callable_codeblocks_llvm_translator.translate_callable_code_block_into_llvm(callable_code_block);
             }
         }
     );
