@@ -101,7 +101,7 @@ void ensure_typesignatures_are_mutually_compatibile_for_structure_comparison(
     const BinaryOperator& expression
 ) {
     if (!lx_compatible_with_rx || !rx_compatible_with_lx) {
-        throw InternalError("types are not compatible");
+        throw std::runtime_error("types are not compatible");
     }
 }
 
