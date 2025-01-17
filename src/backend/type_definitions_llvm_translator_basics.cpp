@@ -38,7 +38,7 @@ llvm::Type* TypeDefinitionsLLVMTranslator::translate_typesignature_to_llvm_type(
         case TypeSignatureBody::Kind::custom_type: return translate_custom_type_to_llvm_type(type_signature.get<CustomType>());
         case TypeSignatureBody::Kind::inline_union: return translate_inline_union_to_llvm_type(type_signature.get<InlineUnion>());
         case TypeSignatureBody::Kind::primitive_type: return translate_primitive_type_to_llvm(type_signature.get<PrimitiveType>());
-        case TypeSignatureBody::Kind::template_type: throw std::runtime_error("generics not allowed during llvm translation");
+        case TypeSignatureBody::Kind::template_type: throw_generics_not_allowed_in_backend_layer(type_signature.get<TemplateType>());
     }
     assert_unreachable();
 }

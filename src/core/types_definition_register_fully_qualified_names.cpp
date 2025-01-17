@@ -88,10 +88,9 @@ std::optional<std::string> TypeDefinitionsRegister::search_fully_qualified_types
             type_signature.type_parameters
         );
         GenericsInstantiationEngine generic_instantiation_engine(rules);
-        TypeDefinition instantiated = generic_instantiation_engine.instantiate_generic_typedefinition(to_be_instantiated);
         std::regex package_prefix("(.*?::)+");
         std::string new_name = std::regex_replace(instantiated_concrete_type_key, package_prefix, "");
-        instantiated.set_name(new_name);
+        TypeDefinition instantiated = generic_instantiation_engine.instantiate_generic_typedefinition(to_be_instantiated, new_name);
         type_definitions.insert({instantiated_concrete_type_key, instantiated});
         return instantiated_concrete_type_key;
     }

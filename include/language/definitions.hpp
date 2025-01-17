@@ -22,6 +22,11 @@ struct FunctionDefinition : public DebugInformationsAwareEntity {
     using OverloadSet = std::vector<Ref>;
 
     FunctionDefinition(const Token& func_token);
+    
+    FunctionDefinition(
+        const std::string& function_name, 
+        const DebugInformationsAwareEntity& debug_info
+    );
 
     struct Argument {
         std::string arg_name;
@@ -39,6 +44,11 @@ struct StructDefinition : public DebugInformationsAwareEntity  {
 
     StructDefinition(const Token& struct_token);
 
+    StructDefinition(
+        const std::string& struct_name, 
+        const DebugInformationsAwareEntity& debug_info
+    );
+
     struct Field {
         std::string field_name;
         TypeSignature field_type;
@@ -55,6 +65,11 @@ struct UnionDefinition : public DebugInformationsAwareEntity  {
 
     UnionDefinition(const Token& union_token);
 
+    UnionDefinition(
+        const std::string& union_name, 
+        const DebugInformationsAwareEntity& debug_info
+    );
+
     std::string def_name;
     std::vector<TypeSignature> types;
     std::vector<std::string> template_generics_names;
@@ -67,6 +82,12 @@ struct TypeAlias : public DebugInformationsAwareEntity {
     TypeAlias(
         const Token& alias_token, 
         const std::vector<std::string>& template_generics_names, 
+        const TypeSignature& aliased_type
+    );
+
+    TypeAlias(
+        const std::string& alias_name, 
+        DebugInformationsAwareEntity debug_info,
         const TypeSignature& aliased_type
     );
 

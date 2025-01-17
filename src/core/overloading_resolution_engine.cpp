@@ -68,7 +68,7 @@ FunctionDefinition::Ref OverloadingResolutionEngine::cache_unaware_function_defi
     const FunctionDefinition& best_match = *best_maches_so_far[0].first; 
     GenericsInstantiationEngine generics_instantiation_engine(*best_maches_so_far[0].second);
     FunctionDefinition::Ref instanitated_func_def_ref = 
-        generics_instantiation_engine.instantiate_generic_function(best_match);
+        generics_instantiation_engine.instantiate_generic_function(best_match, best_match.function_name);
     return instanitated_func_def_ref;
 }
 

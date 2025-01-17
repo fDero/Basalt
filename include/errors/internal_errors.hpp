@@ -25,6 +25,10 @@
     throw InternalError("unrecognized binary operator: " + bop.operator_text);
 }
 
+[[noreturn]] inline void throw_generics_not_allowed_in_backend_layer(const TemplateType& template_type) {
+    throw InternalError("generics_not_allowed_in_backend_layer: " + template_type.type_name + " is a template type in " + std::to_string(template_type.as_debug_informations_aware_entity().line_number));
+}
+
 [[noreturn]] inline void throw_unrecognized_unary_operator(const UnaryOperator& uop) {
     throw InternalError("unrecognized unary operator: " + uop.operator_text);
 }

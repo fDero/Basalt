@@ -23,7 +23,7 @@ TEST(Core, Generic_Union_Instantiation) {
         GenericSubstitutionRule { "T", TypeSignatureFactory::Int },
         GenericSubstitutionRule { "U", TypeSignatureFactory::Float }
     });
-    UnionDefinition instantiated_union_definition = engine.instantiate_generic_union(generic_union_definition);
+    UnionDefinition instantiated_union_definition = engine.instantiate_generic_union(generic_union_definition, "InstantiatedMyUnion");
     ASSERT_EQ(instantiated_union_definition.types.size(), 4);
     EXPECT_TRUE(is_pointer_to_int(instantiated_union_definition.types[0]));
     CustomType pair_type = instantiated_union_definition.types[1].get<CustomType>();
@@ -46,7 +46,7 @@ TEST(Core, Non_Generic_Union_NoOp_Instantiation) {
         }
     );
     GenericsInstantiationEngine engine({});
-    UnionDefinition instantiated_union_definition = engine.instantiate_generic_union(generic_union_definition);
+    UnionDefinition instantiated_union_definition = engine.instantiate_generic_union(generic_union_definition, "InstantiatedMyUnion");
     ASSERT_EQ(instantiated_union_definition.types.size(), 2);
     EXPECT_TRUE(is_int(instantiated_union_definition.types[0]));
     EXPECT_TRUE(is_float(instantiated_union_definition.types[1]));
@@ -65,7 +65,7 @@ TEST(Core, Fake_Generic_Union_NoOp_Instantiation) {
     GenericsInstantiationEngine engine({
         GenericSubstitutionRule { "T", TypeSignatureFactory::Int }
     });
-    UnionDefinition instantiated_union_definition = engine.instantiate_generic_union(generic_union_definition);
+    UnionDefinition instantiated_union_definition = engine.instantiate_generic_union(generic_union_definition, "InstantiatedMyUnion");
     ASSERT_EQ(instantiated_union_definition.types.size(), 2);
     EXPECT_TRUE(is_int(instantiated_union_definition.types[0]));
     EXPECT_TRUE(is_float(instantiated_union_definition.types[1]));

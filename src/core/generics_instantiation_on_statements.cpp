@@ -8,7 +8,7 @@
 #include "language/statements.hpp"
 #include "errors/internal_errors.hpp"
 
-Statement GenericsInstantiationEngine::instantiate_generic_statement(const Statement& statement) const {
+Statement GenericsInstantiationEngine::instantiate_generic_statement(const Statement& statement) {
     switch (statement.statement_kind()) {
         case StatementBody::Kind::function_call: return instantiate_generic_function_call(statement.get<FunctionCall>());
         case StatementBody::Kind::variable_declaration: return instantiate_generic_variable_declaration(statement.get<VariableDeclaration>()); 
@@ -24,7 +24,7 @@ Statement GenericsInstantiationEngine::instantiate_generic_statement(const State
     assert_unreachable();
 }
 
-VariableDeclaration GenericsInstantiationEngine::instantiate_generic_variable_declaration(const VariableDeclaration& statement) const {
+VariableDeclaration GenericsInstantiationEngine::instantiate_generic_variable_declaration(const VariableDeclaration& statement) {
     VariableDeclaration instantiated_variable_declaration = statement;
     instantiated_variable_declaration.typesignature = instantiate_generic_typesignature(statement.typesignature);
     if (statement.initial_value.has_value()) {
@@ -33,21 +33,21 @@ VariableDeclaration GenericsInstantiationEngine::instantiate_generic_variable_de
     return instantiated_variable_declaration;
 }
 
-ConstDeclaration GenericsInstantiationEngine::instantiate_generic_const_declaration(const ConstDeclaration& statement) const {
+ConstDeclaration GenericsInstantiationEngine::instantiate_generic_const_declaration(const ConstDeclaration& statement) {
     ConstDeclaration instantiated_const_declaration = statement;
     instantiated_const_declaration.typesignature = instantiate_generic_typesignature(statement.typesignature);
     instantiated_const_declaration.value = instantiate_generic_expression(statement.value);
     return instantiated_const_declaration;
 }
 
-Assignment GenericsInstantiationEngine::instantiate_generic_assignment(const Assignment& statement) const {
+Assignment GenericsInstantiationEngine::instantiate_generic_assignment(const Assignment& statement) {
     Assignment instantiated_assignment = statement;
     instantiated_assignment.assignment_target = instantiate_generic_expression(statement.assignment_target);
     instantiated_assignment.assigned_value = instantiate_generic_expression(statement.assigned_value);
     return instantiated_assignment;
 }
 
-Conditional GenericsInstantiationEngine::instantiate_generic_conditional(const Conditional& statement) const {
+Conditional GenericsInstantiationEngine::instantiate_generic_conditional(const Conditional& statement) {
     Conditional instantiated_conditional = statement;
     instantiated_conditional.condition = instantiate_generic_expression(statement.condition);
     for (Statement& statement : instantiated_conditional.then_branch) {
@@ -59,7 +59,7 @@ Conditional GenericsInstantiationEngine::instantiate_generic_conditional(const C
     return instantiated_conditional;
 }
 
-WhileLoop GenericsInstantiationEngine::instantiate_generic_while_loop(const WhileLoop& statement) const {
+WhileLoop GenericsInstantiationEngine::instantiate_generic_while_loop(const WhileLoop& statement) {
     WhileLoop instantiated_while_loop = statement;
     instantiated_while_loop.condition = instantiate_generic_expression(statement.condition);
     for (Statement& statement : instantiated_while_loop.loop_body) {
@@ -68,7 +68,7 @@ WhileLoop GenericsInstantiationEngine::instantiate_generic_while_loop(const Whil
     return instantiated_while_loop;
 }
 
-UntilLoop GenericsInstantiationEngine::instantiate_generic_until_loop(const UntilLoop& statement) const {
+UntilLoop GenericsInstantiationEngine::instantiate_generic_until_loop(const UntilLoop& statement) {
     UntilLoop instantiated_until_loop = statement;
     instantiated_until_loop.condition = instantiate_generic_expression(statement.condition);
     for (Statement& statement : instantiated_until_loop.loop_body) {
@@ -77,7 +77,7 @@ UntilLoop GenericsInstantiationEngine::instantiate_generic_until_loop(const Unti
     return instantiated_until_loop;
 }
 
-Return GenericsInstantiationEngine::instantiate_generic_return_statement(const Return& statement) const {
+Return GenericsInstantiationEngine::instantiate_generic_return_statement(const Return& statement) {
     if (!statement.return_value.has_value()) {
         return statement;
     }
