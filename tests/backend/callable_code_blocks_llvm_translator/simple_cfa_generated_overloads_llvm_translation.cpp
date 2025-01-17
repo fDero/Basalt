@@ -9,8 +9,6 @@
 
 #include <llvm/Support/raw_ostream.h>
 
-#include <iostream>
-
 static FunctionDefinition f_Int_function = FunctionDefinitionFactory::make_void_function_definition(
     "f1",
     "main.basalt",
@@ -66,6 +64,35 @@ static CommonFeatureAdoptionPlanDescriptor f_function_descriptor = CommonFeature
     }
 };
 
+static std::string expected_cfa_llvm_translation = 
+R"^(define void @"[CFA::main.basalt::Int | Float"(%"Int | Float" %0) {
+entry:
+  %1 = alloca %"Int | Float", align 8
+  store %"Int | Float" %0, %"Int | Float"* %1, align 8
+  %2 = getelementptr inbounds %"Int | Float", %"Int | Float"* %1, i32 0, i32 0
+  %3 = icmp eq i8** %2, [4 x i8]* @Int
+  br i1 %3, label %4, label %9
+
+4:                                                ; preds = %entry
+  %5 = alloca %"Int | Float", align 8
+  store %"Int | Float" %0, %"Int | Float"* %5, align 8
+  %6 = getelementptr inbounds %"Int | Float", %"Int | Float"* %5, i32 0, i32 1
+  %7 = bitcast [8 x i8]* %6 to i64*
+  %8 = load i64, i64* %7, align 4
+  call void @"f1@main.basalt:1:2"(i64 %8)
+  ret void
+
+9:                                                ; preds = %entry
+  %10 = alloca %"Int | Float", align 8
+  store %"Int | Float" %0, %"Int | Float"* %10, align 8
+  %11 = getelementptr inbounds %"Int | Float", %"Int | Float"* %10, i32 0, i32 1
+  %12 = bitcast [8 x i8]* %11 to double*
+  %13 = load double, double* %12, align 8
+  call void @"f2@main.basalt:1:2"(double %13)
+  ret void
+}
+)^";
+
 TEST(Backend, CFAForOneArgumentWithTwoAlternativesTranslatedSuccessfully) {
     ProgramRepresentation program_representation(project_with_a_couple_of_simple_functions);
     llvm::LLVMContext context;
@@ -77,4 +104,5 @@ TEST(Backend, CFAForOneArgumentWithTwoAlternativesTranslatedSuccessfully) {
     std::string llvm_func_translation_str;
     llvm::raw_string_ostream llvm_ostream(llvm_func_translation_str);
     translated->print(llvm_ostream);
+    EXPECT_EQ(llvm_func_translation_str, expected_cfa_llvm_translation);
 }
