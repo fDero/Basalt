@@ -54,8 +54,13 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_expr_func
 ) {
     CallableCodeBlock ccb = program_representation.resolve_function_call(fcall, scope_context.raw_scope_context);
     llvm::Function* llvm_function = callable_codeblocks_llvm_translator.translate_callable_code_block_to_llvm(ccb);
+    std::vector<llvm::Value*> llvm_arguments;
+    for (const Expression& arg : fcall.arguments) {
+        TranslatedExpression arg_expr = translate_expression_to_llvm(block, arg);
+        llvm_arguments.push_back(arg_expr.value);
+    }
     llvm::IRBuilder<> builder(block);
-    return builder.CreateCall(llvm_function);
+    return builder.CreateCall(llvm_function, llvm_arguments);
 }
 
 llvm::BasicBlock* ExpressionsAndStatementsLLVMTranslator::translate_void_function_call_to_llvm(
