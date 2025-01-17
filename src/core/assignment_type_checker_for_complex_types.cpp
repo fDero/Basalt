@@ -13,8 +13,7 @@ bool AssignmentTypeChecker::validate_assignment_to_custom_type(const TypeSignatu
 }
 
 bool AssignmentTypeChecker::validate_assignment_to_inline_union(const TypeSignature& source, const InlineUnion& inline_union) {
-    bool direct_assignment = validate_assignment_to_union_alternatives(source, inline_union.alternatives);
-    return direct_assignment || structural_equivalence_assignment_validation(source, inline_union);
+    return structural_equivalence_assignment_validation(source, inline_union);
 }
 
 bool AssignmentTypeChecker::validate_assignment_to_union_alternatives(const TypeSignature& source, const std::vector<TypeSignature>& alternatives) {
