@@ -65,7 +65,9 @@ class ProgramRepresentation {
             const std::optional<TypeSignature>& source
         );
 
-        [[nodiscard]] bool is_union(const TypeSignature& maybe_union_type);
+        [[nodiscard]] bool is_union(
+            const TypeSignature& maybe_union_type
+        );
 
         [[nodiscard]] std::vector<TypeSignature> fetch_union_alternatives(
             const TypeSignature& maybe_union_type
@@ -101,6 +103,11 @@ class ProgramRepresentation {
 
         [[nodiscard]] bool is_binary_operator_over_float_operands(
             const BinaryOperator& binary_op, 
+            ScopeContext& scope_context
+        );
+
+        [[nodiscard]] bool is_unary_operator_over_float_operand(
+            const UnaryOperator& binary_op, 
             ScopeContext& scope_context
         );
 

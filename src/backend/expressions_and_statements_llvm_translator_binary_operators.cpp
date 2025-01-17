@@ -28,7 +28,7 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_as_operat
     return type_operators_llvm_translator.translate_as_operator_to_llvm_value(block, union_expression, llvm_type_to_cast_to, as_operator.typesignature);
 }
 
-TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_plus_binary_operator(
+TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_plus_binary_operator_to_llvm(
     llvm::BasicBlock* block,
     const BinaryOperator& binary_op
 ) { 
@@ -41,7 +41,7 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_plus_bina
         : builder.CreateAdd(left.value, right.value);
 } 
 
-TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_minus_binary_operator(
+TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_minus_binary_operator_to_llvm(
     llvm::BasicBlock* block,
     const BinaryOperator& binary_op
 ) { 
@@ -54,7 +54,7 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_minus_bin
         : builder.CreateSub(left.value, right.value);
 }
 
-TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_mul_binary_operator(
+TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_mul_binary_operator_to_llvm(
     llvm::BasicBlock* block,
     const BinaryOperator& binary_op
 ) { 
@@ -67,7 +67,7 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_mul_binar
         : builder.CreateMul(left.value, right.value);
 }  
 
-TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_div_binary_operator(
+TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_div_binary_operator_to_llvm(
     llvm::BasicBlock* block,
     const BinaryOperator& binary_op
 ) { 
@@ -80,7 +80,7 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_div_binar
         : builder.CreateSDiv(left.value, right.value);
 }  
 
-TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_mod_binary_operator(
+TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_mod_binary_operator_to_llvm(
     llvm::BasicBlock* block,
     const BinaryOperator& binary_op
 ) { 
@@ -93,7 +93,7 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_mod_binar
         : builder.CreateSRem(left.value, right.value);
 }     
 
-TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_boolean_and(
+TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_boolean_and_to_llvm(
     llvm::BasicBlock* block,
     const BinaryOperator& binary_op
 ) { 
@@ -103,7 +103,7 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_boolean_a
     return builder.CreateAnd(left.value, right.value);
 }   
 
-TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_boolean_or(
+TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_boolean_or_to_llvm(
     llvm::BasicBlock* block,
     const BinaryOperator& binary_op
 ) { 
@@ -113,7 +113,7 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_boolean_o
     return builder.CreateOr(left.value, right.value);
 }   
 
-TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_boolean_xor(
+TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_boolean_xor_to_llvm(
     llvm::BasicBlock* block,
     const BinaryOperator& binary_op
 ) { 

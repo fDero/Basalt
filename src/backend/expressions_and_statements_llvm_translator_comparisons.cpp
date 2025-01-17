@@ -8,7 +8,7 @@
 #include "backend/callable_codeblocks_llvm_translator.hpp"
 #include "errors/internal_errors.hpp"
 
-TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_LT_then_comparison(
+TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_LT_then_comparison_to_llvm(
     llvm::BasicBlock* block,
     const BinaryOperator& binary_op
 ) { 
@@ -21,7 +21,7 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_LT_then_c
         : builder.CreateICmpSLT(left.value, right.value);
 }   
 
-TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_GT_comparison(
+TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_GT_comparison_to_llvm(
     llvm::BasicBlock* block,
     const BinaryOperator& binary_op
 ) { 
@@ -34,7 +34,7 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_GT_compar
         : builder.CreateICmpSGT(left.value, right.value);
 }   
 
-TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_LE_comparison(
+TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_LE_comparison_to_llvm(
     llvm::BasicBlock* block,
     const BinaryOperator& binary_op
 ) { 
@@ -47,7 +47,7 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_LE_compar
         : builder.CreateICmpSLE(left.value, right.value);
 }   
 
-TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_GE_comparison(
+TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_GE_comparison_to_llvm(
     llvm::BasicBlock* block,
     const BinaryOperator& binary_op
 ) { 
@@ -60,7 +60,7 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_GE_compar
         : builder.CreateICmpSGE(left.value, right.value);
 }   
 
-TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_EQ_comparison(
+TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_EQ_comparison_to_llvm(
     llvm::BasicBlock* block,
     const BinaryOperator& binary_op
 ) {
@@ -73,7 +73,7 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_EQ_compar
         : builder.CreateICmpEQ(left.value, right.value);
 }   
 
-TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_NE_comparison(
+TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_NE_comparison_to_llvm(
     llvm::BasicBlock* block,
     const BinaryOperator& binary_op
 ) {

@@ -62,16 +62,15 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_unary_ope
     llvm::BasicBlock* block,
     const UnaryOperator& expr
 ) {
-    TranslatedExpression operand = translate_expression_to_llvm(block, expr.operand);
-    llvm::Value* operand_value = operand.value;
     OperatorKind operator_kind = operator_kinds.at(expr.operator_text);
-    llvm::IRBuilder<> builder(block);
     switch (operator_kind) {
-        case OperatorKind::boolean_not:            return builder.CreateNot(operand_value);
-        case OperatorKind::math_increment:         return builder.CreateAdd(operand_value, llvm::ConstantInt::get(operand_value->getType(), 1));
-        case OperatorKind::math_decrement:         return builder.CreateSub(operand_value, llvm::ConstantInt::get(operand_value->getType(), 1));
-        case OperatorKind::pointer_dereference_op: return { builder.CreateLoad(operand_value), operand_value };
-        case OperatorKind::address_of:             return operand.address;
+        case OperatorKind::boolean_not:            return translate_boolean_not_to_llvm(block, expr);
+        case OperatorKind::math_increment:         return translate_increment_prefix_to_llvm(block, expr);
+        case OperatorKind::math_decrement:         return translate_decrement_prefix_to_llvm(block, expr);
+        case OperatorKind::minus_operator:         return translate_minus_sign_to_llvm(block, expr);
+        case OperatorKind::plus_operator:          return translate_plus_sign_to_llvm(block, expr);
+        case OperatorKind::pointer_dereference_op: return translate_ptr_dereference_to_llvm(block, expr);
+        case OperatorKind::address_of:             return translate_addressof_to_llvm(block, expr);
         default: throw_unrecognized_unary_operator(expr);
     }
 }
@@ -81,22 +80,21 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_binary_op
     const BinaryOperator& expr
 ) {
     OperatorKind operator_kind = operator_kinds.at(expr.operator_text);
-    llvm::IRBuilder<> builder(block);
     switch (operator_kind) {
-        case OperatorKind::plus_operator:         return translate_plus_binary_operator(block, expr); 
-        case OperatorKind::minus_operator:        return translate_minus_binary_operator(block, expr);
-        case OperatorKind::mul_operator:          return translate_mul_binary_operator(block, expr);  
-        case OperatorKind::div_operator:          return translate_div_binary_operator(block, expr);  
-        case OperatorKind::mod_operator:          return translate_mod_binary_operator(block, expr);  
-        case OperatorKind::less_then:             return translate_LT_then_comparison(block, expr);   
-        case OperatorKind::greater_then:          return translate_GT_comparison(block, expr);        
-        case OperatorKind::less_then_or_equal:    return translate_LE_comparison(block, expr);        
-        case OperatorKind::greater_then_or_equal: return translate_GE_comparison(block, expr);        
-        case OperatorKind::equal:                 return translate_EQ_comparison(block, expr);        
-        case OperatorKind::not_equal:             return translate_NE_comparison(block, expr);        
-        case OperatorKind::and_operator:          return translate_boolean_and(block, expr);          
-        case OperatorKind::or_operator:           return translate_boolean_or(block, expr);           
-        case OperatorKind::xor_operator:          return translate_boolean_xor(block, expr);          
+        case OperatorKind::plus_operator:         return translate_plus_binary_operator_to_llvm(block, expr); 
+        case OperatorKind::minus_operator:        return translate_minus_binary_operator_to_llvm(block, expr);
+        case OperatorKind::mul_operator:          return translate_mul_binary_operator_to_llvm(block, expr);  
+        case OperatorKind::div_operator:          return translate_div_binary_operator_to_llvm(block, expr);  
+        case OperatorKind::mod_operator:          return translate_mod_binary_operator_to_llvm(block, expr);  
+        case OperatorKind::less_then:             return translate_LT_then_comparison_to_llvm(block, expr);   
+        case OperatorKind::greater_then:          return translate_GT_comparison_to_llvm(block, expr);        
+        case OperatorKind::less_then_or_equal:    return translate_LE_comparison_to_llvm(block, expr);        
+        case OperatorKind::greater_then_or_equal: return translate_GE_comparison_to_llvm(block, expr);        
+        case OperatorKind::equal:                 return translate_EQ_comparison_to_llvm(block, expr);        
+        case OperatorKind::not_equal:             return translate_NE_comparison_to_llvm(block, expr);        
+        case OperatorKind::and_operator:          return translate_boolean_and_to_llvm(block, expr);          
+        case OperatorKind::or_operator:           return translate_boolean_or_to_llvm(block, expr);           
+        case OperatorKind::xor_operator:          return translate_boolean_xor_to_llvm(block, expr);          
         default: throw_unrecognized_binary_operator(expr);
     }
 }

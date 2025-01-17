@@ -227,3 +227,13 @@ size_t ProgramRepresentation::resolve_field_index(
         && lx_type_opt.value().get<PrimitiveType>().type_name == float_type
         && rx_type_opt.value().get<PrimitiveType>().type_name == float_type;
 }
+
+[[nodiscard]] bool ProgramRepresentation::is_unary_operator_over_float_operand(
+    const UnaryOperator& binary_op, 
+    ScopeContext& scope_context
+) {
+    auto type_opt = resolve_expression_type(binary_op.operand, scope_context);
+    return type_opt.has_value()
+        && type_opt.value().is<PrimitiveType>() 
+        && type_opt.value().get<PrimitiveType>().type_name == float_type;
+}
