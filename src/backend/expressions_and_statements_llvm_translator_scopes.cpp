@@ -12,9 +12,22 @@ static llvm::BasicBlock* createBlockAfter(
     const std::string& block_name, 
     llvm::BasicBlock* prevBlock
 ) {
-    auto new_block = llvm::BasicBlock::Create(context, block_name);
+    auto new_block = llvm::BasicBlock::Create(context, block_name, prevBlock->getParent());
     new_block->moveAfter(prevBlock);
     return new_block;
+}
+
+static void translate_block_to_llvm_with_final_jump(
+    llvm::BasicBlock* block, 
+    const std::vector<Statement>& codeblock, 
+    ExpressionsAndStatementsLLVMTranslator& translator,
+    llvm::BasicBlock* final_jump_block
+) {
+    for (const Statement& statement : codeblock) {
+        block = translator.translate_statement_to_llvm(block, statement);
+    }
+    llvm::IRBuilder<> builder(block);
+    builder.CreateBr(final_jump_block);
 }
 
 llvm::BasicBlock* ExpressionsAndStatementsLLVMTranslator::translate_whole_codeblock_to_llvm(
@@ -33,9 +46,9 @@ llvm::BasicBlock* ExpressionsAndStatementsLLVMTranslator::translate_conditional_
 ) {
     std::string unique_conditional_id = conditional.as_debug_informations_aware_entity().unique_string_id();
     auto if_cond_block = createBlockAfter(context, "if:cond@" + unique_conditional_id, current_block);
-    auto if_then_block = createBlockAfter(context, "if:cond@" + unique_conditional_id, if_cond_block);
-    auto if_else_block = createBlockAfter(context, "if:cond@" + unique_conditional_id, if_then_block);
-    auto if_exit_block = createBlockAfter(context, "if:cond@" + unique_conditional_id, if_else_block);
+    auto if_then_block = createBlockAfter(context, "if:then@" + unique_conditional_id, if_cond_block);
+    auto if_else_block = createBlockAfter(context, "if:else@" + unique_conditional_id, if_then_block);
+    auto if_exit_block = createBlockAfter(context, "if:exit@" + unique_conditional_id, if_else_block);
 
     llvm::IRBuilder<> current_builder(current_block);
     current_builder.CreateBr(if_cond_block);
@@ -44,15 +57,11 @@ llvm::BasicBlock* ExpressionsAndStatementsLLVMTranslator::translate_conditional_
     llvm::Value* condition = translate_expression_to_llvm(if_cond_block, conditional.condition).value;
     cond_builder.CreateCondBr(condition, if_then_block, if_else_block);
     
-    llvm::IRBuilder<> then_builder(current_block);
     auto then_translator = create_translator_for_nested_conditional();
-    then_translator.translate_whole_codeblock_to_llvm(if_then_block, conditional.then_branch);
-    then_builder.CreateBr(if_exit_block);
+    translate_block_to_llvm_with_final_jump(if_then_block, conditional.then_branch, then_translator, if_exit_block);
 
-    llvm::IRBuilder<> else_builder(current_block);
     auto else_translator = create_translator_for_nested_conditional();
-    else_translator.translate_whole_codeblock_to_llvm(if_else_block, conditional.else_branch);
-    else_builder.CreateBr(if_exit_block);
+    translate_block_to_llvm_with_final_jump(if_else_block, conditional.else_branch, else_translator, if_exit_block);
 
     return if_exit_block;
 }
@@ -73,10 +82,8 @@ llvm::BasicBlock* ExpressionsAndStatementsLLVMTranslator::translate_while_loop_t
     llvm::Value* condition = translate_expression_to_llvm(while_cond_block, while_loop.condition).value;
     cond_builder.CreateCondBr(condition, while_body_block, while_exit_block);
 
-    llvm::IRBuilder<> body_builder(while_body_block);
     auto body_translator = create_translator_for_nested_loop(while_cond_block, while_exit_block);
-    body_translator.translate_whole_codeblock_to_llvm(while_body_block, while_loop.loop_body);
-    body_builder.CreateBr(while_cond_block);
+    translate_block_to_llvm_with_final_jump(while_body_block, while_loop.loop_body, body_translator, while_cond_block);
 
     return while_exit_block;
 }
@@ -93,10 +100,8 @@ llvm::BasicBlock* ExpressionsAndStatementsLLVMTranslator::translate_until_loop_t
     llvm::IRBuilder<> current_builder(current_block);
     current_builder.CreateBr(until_body_block);
 
-    llvm::IRBuilder<> body_builder(until_body_block);
     auto body_translator = create_translator_for_nested_loop(until_body_block, until_exit_block);
-    body_translator.translate_whole_codeblock_to_llvm(until_body_block, until_loop.loop_body);
-    body_builder.CreateBr(until_cond_block);
+    translate_block_to_llvm_with_final_jump(until_body_block, until_loop.loop_body, body_translator, until_cond_block);
 
     llvm::IRBuilder<> cond_builder(until_cond_block);
     llvm::Value* condition = translate_expression_to_llvm(until_cond_block, until_loop.condition).value;
