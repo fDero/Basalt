@@ -12,10 +12,18 @@ void CommandLineController::version_subcommand() {
     ensure_lack_of_output_files(outputs);
     ensure_lack_of_input_files(inputs);
     ensure_lack_of_target_triple(target_triple);
-    std::cout << "                                                                       " << std::endl;
-    std::cout << "`basalt` is a compiler for the Basalt programming language.            " << std::endl;
-    std::cout << "version: 0.0.0 pre-release                                             " << std::endl;
-    std::cout << "                                                                       " << std::endl;
+
+
+    std::cout << R"(                   ____                   ____                      )" << std::endl;
+    std::cout << R"(                  / __ \____ __________ _/ / /_                     )" << std::endl;
+    std::cout << R"(                 / __  / __ `/ ___/ __ `/ / __/                     )" << std::endl;
+    std::cout << R"(                / /_/ / /_/ (__  ) /_/ / / /_                       )" << std::endl;
+    std::cout << R"(               /_____/\__,_/____/\__,_/_/\__/                       )" << std::endl;
+    std::cout << R"(                                                                    )" << std::endl;
+    std::cout << R"(                                                                    )" << std::endl;
+    std::cout << R"(`basalt` is a compiler for the Basalt programming language.         )" << std::endl;
+    std::cout << R"(version: 0.0.0 pre-release                                          )" << std::endl;
+    std::cout << R"(                                                                    )" << std::endl;
 }
 
 void CommandLineController::help_subcommand() {
