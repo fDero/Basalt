@@ -49,7 +49,7 @@ void CommandLineController::compiler_subcommand() {
     preprocessor.preprocess_packages_typename_conflicts();
     preprocessor.preprocess_type_definitions();
     preprocessor.preprocess_function_definitions();
-    Finalizer finalizer(program_representation);
+    Finalizer finalizer(program_representation, target_triple);
     finalizer.generate_llvm_ir();
     for (const std::string& output_file : outputs) {
         switch (extract_file_extension(output_file)) {

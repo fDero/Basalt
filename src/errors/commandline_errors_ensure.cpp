@@ -49,3 +49,11 @@ void ensure_source_file_is_open(const std::fstream& input_file, const std::strin
         };
     }
 }
+
+void ensure_valid_target_triple(const std::string& target_triple, const std::string& error) {
+    if (!error.empty()) {
+        throw CommandLineError {
+            "target triple " + target_triple + " is invalid:\n" + error
+        };
+    }
+}

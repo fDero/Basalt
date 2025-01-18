@@ -6,6 +6,18 @@
 #include <iostream>
 
 #include "backend/finalizer.hpp"
+#include "errors/commandline_errors.hpp"
+
+Finalizer::Finalizer(
+    ProgramRepresentation& input_program_representation,
+    std::optional<std::string> target_triple
+) : Finalizer(
+        input_program_representation, 
+        target_triple.has_value()
+            ? target_triple.value() 
+            : llvm::sys::getDefaultTargetTriple()
+    )
+{}
 
 Finalizer::Finalizer(ProgramRepresentation& program_representation) 
     : Finalizer(
@@ -41,7 +53,8 @@ Finalizer::Finalizer(
     llvm::InitializeAllAsmPrinters();  
     std::string error;
     const llvm::Target* target(llvm::TargetRegistry::lookupTarget(target_triple, error));
-    //ensure no error
+    ensure_valid_target_triple(target_triple, error);
+
     llvm_target_machine = target->createTargetMachine(
         target_triple,
         "generic", 

@@ -57,7 +57,7 @@ void CommandLineController::dispatch_based_on_user_input() {
 
 void CommandLineController::parse_target_triple() {
     if (++arg_index < arg_counter) {
-        target_triple = arg_values[arg_index];
+        target_triple = arg_values[arg_index++];
     } 
     avoid_lack_of_target_triple(target_triple);
 }

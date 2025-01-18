@@ -30,6 +30,7 @@
 class Finalizer {
 
     public:
+        Finalizer(ProgramRepresentation& program_representation, std::optional<std::string> target_triple_opt);
         Finalizer(ProgramRepresentation& program_representation, const std::string& target_triple);
         Finalizer(ProgramRepresentation& program_representation);
 

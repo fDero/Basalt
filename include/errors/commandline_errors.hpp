@@ -40,13 +40,5 @@ void ensure_lack_of_input_files(const std::vector<std::string>& input_files);
 
 void ensure_source_file_is_open(const std::fstream& input_file, const std::string& file_name);
 
-void ensure_version_flag_is_the_only_one(
-    int current_flag_index, int arg_counter, const std::vector<std::string>& input_files, 
-    const std::vector<std::string>& output_files, const CommandLineController::SubCommand mode
-);
-
-void ensure_help_flag_is_the_only_one(
-    int current_flag_index, int arg_counter, const std::vector<std::string>& input_files, 
-    const std::vector<std::string>& output_files, const CommandLineController::SubCommand mode
-);
+void ensure_valid_target_triple(const std::string& target_triple, const std::string& error);
 
