@@ -17,7 +17,7 @@ void ensure_lack_of_target_triple(const std::optional<std::string>& target_tripl
     if (target_triple.has_value()) {
         throw CommandLineError {
             "target triple was given but it wasn't needed, \n"
-            "(please run `basalt help` for more informations)"
+            "(please run `basalt help` for more info)"
         };
     }
 }
@@ -26,7 +26,7 @@ void ensure_lack_of_output_files(const std::vector<std::string>& output_files) {
     if (!output_files.empty()) {
         throw CommandLineError {
             "output files were given but they weren't needed, \n"
-            "(please run `basalt help` for more informations)"
+            "(please run `basalt help` for more info)"
         };
     }
 }
@@ -35,7 +35,7 @@ void ensure_lack_of_input_files(const std::vector<std::string>& input_files) {
     if (!input_files.empty()) {
         throw CommandLineError {
             "input files were given but they weren't needed,  \n"
-            "(please run `basalt help` for more informations) \n"
+            "(please run `basalt help` for more info) \n"
         };
     }
 }

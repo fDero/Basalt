@@ -35,7 +35,7 @@ void display_error_context(const std::string& filename, size_t target_line_numbe
 
 void display_commandline_error(const CommandLineError& err) {
     std::cout << std::endl << bold_red("COMMANDLINE ERROR: ") << red(err.error_message + "\n\n")
-    << purple("type 'basalt --help' in your console to get more info\n\n");
+    << purple("type 'basalt help' in your console to get more info\n\n");
 }
 
 void display_tokenization_error(const TokenizationError& err) {
