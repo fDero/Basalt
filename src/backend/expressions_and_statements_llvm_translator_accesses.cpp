@@ -19,6 +19,17 @@ static llvm::Value* get_llvm_address(
     return address;
 }
 
+static llvm::Value* create_array_gep(
+    llvm::IRBuilder<>& builder,
+    llvm::Value* proper_array_address_not_ptr,
+    llvm::Value* index
+) {
+    std::vector<llvm::Value*> indices;
+    indices.push_back(llvm::ConstantInt::get(builder.getInt32Ty(), 0));
+    indices.push_back(index);
+    return builder.CreateGEP(proper_array_address_not_ptr, indices);
+}
+
 TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_square_bracket_access_to_llvm(
     llvm::BasicBlock* block,
     const SquareBracketsAccess& expr
@@ -43,7 +54,8 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_square_br
     llvm::IRBuilder<> builder(block);
     llvm::Value* storage_address = get_llvm_address(builder, storage);
     llvm::Value* index_value = index.value;
-    llvm::Value* element_address = builder.CreateGEP(storage_address, index_value);
+    std::vector<llvm::Value*> indices;
+    llvm::Value* element_address = create_array_gep(builder, storage_address, index_value);
     llvm::Value* element_value = builder.CreateLoad(element_address);
     return (storage.address == nullptr)
         ? TranslatedExpression(element_value)
@@ -59,7 +71,8 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_square_br
     llvm::IRBuilder<> builder(block);
     llvm::Value* slice_address = get_llvm_address(builder, slice);
     llvm::Value* index_value = index.value;
-    llvm::Value* storage_address = builder.CreateStructGEP(slice_address, 1);
+    llvm::Value* storage_address_address = builder.CreateStructGEP(slice_address, 1);
+    llvm::Value* storage_address = builder.CreateLoad(storage_address_address);
     llvm::Value* element_address = builder.CreateGEP(storage_address, index_value);
     llvm::Value* element_value = builder.CreateLoad(element_address);
     return (slice.address == nullptr)
