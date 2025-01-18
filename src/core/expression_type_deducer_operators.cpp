@@ -55,7 +55,8 @@ std::optional<TypeSignature> ExpressionTypeDeducer::deduce_type_from_comparison_
     AssignmentTypeChecker assignment_type_checker(type_definitions_register, project_file_structure);
     bool lx_compatible_with_rx = assignment_type_checker.validate_assignment(left_operand_type.value(), right_operand_type.value());
     bool rx_compatible_with_lx = assignment_type_checker.validate_assignment(right_operand_type.value(), left_operand_type.value());
-    ensure_typesignatures_are_mutually_compatibile_for_structure_comparison(lx_compatible_with_rx, rx_compatible_with_lx, expression);
+    ensure_typesignatures_are_mutually_compatible_for_structure_comparison(lx_compatible_with_rx, rx_compatible_with_lx,
+            expression);
     return deduce_primtive_type("Bool", expression);
 }
 

@@ -95,7 +95,7 @@ void ensure_typesignature_is_either_array_or_slice_for_square_brackets_access(
     }
 }
 
-void ensure_typesignatures_are_mutually_compatibile_for_structure_comparison(
+void ensure_typesignatures_are_mutually_compatible_for_structure_comparison(
     bool lx_compatible_with_rx,
     bool rx_compatible_with_lx,
     const BinaryOperator& expression

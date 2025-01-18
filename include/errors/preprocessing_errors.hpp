@@ -114,9 +114,9 @@ inline void ensure_statement_is(const Statement& statement) {
     }
 }
 
-inline void ensure_not_tryng_to_dereference_a_literal(const Expression& expression, bool is_addressable) {
+inline void ensure_not_trying_to_dereference_a_literal(const Expression& expression, bool is_addressable) {
     if (!is_addressable) {
-        throw std::runtime_error("tryng to address a non addressable expression");
+        throw std::runtime_error("trying to address a non addressable expression");
     }
 }
 
@@ -160,7 +160,7 @@ void ensure_typesignature_is_either_array_or_slice_for_square_brackets_access(
     const TypeSignature& type_signature
 );
 
-void ensure_typesignatures_are_mutually_compatibile_for_structure_comparison(
+void ensure_typesignatures_are_mutually_compatible_for_structure_comparison(
     bool lx_compatible_with_rx,
     bool rx_compatible_with_lx,
     const BinaryOperator& expression

@@ -60,7 +60,7 @@ void AS::SingleFunctionAddressSanitizer::visit_binary_operator(const BinaryOpera
 void AS::SingleFunctionAddressSanitizer::visit_unary_operator(const UnaryOperator& unary_operator) {
     if (unary_operator.operator_text == address_operator) {
         bool is_addressable = is_expression_addressable(unary_operator.operand);
-        ensure_not_tryng_to_dereference_a_literal(unary_operator, is_addressable);
+        ensure_not_trying_to_dereference_a_literal(unary_operator, is_addressable);
     }
     visit_expression(unary_operator.operand);
 }
