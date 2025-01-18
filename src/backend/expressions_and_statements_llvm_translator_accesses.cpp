@@ -7,6 +7,18 @@
 #include "backend/callable_codeblocks_llvm_translator.hpp"
 #include "errors/internal_errors.hpp"
 
+static llvm::Value* get_llvm_address(
+    llvm::IRBuilder<>& builder,
+    const TranslatedExpression& expr
+) {
+    llvm::Value* address = expr.address;
+    if (address == nullptr) {
+        address = builder.CreateAlloca(expr.value->getType());
+        builder.CreateStore(expr.value, address);
+    }
+    return address;
+}
+
 TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_square_bracket_access_to_llvm(
     llvm::BasicBlock* block,
     const SquareBracketsAccess& expr
@@ -28,14 +40,11 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_square_br
 ) {
     TranslatedExpression storage = translate_expression_to_llvm(block, expr.storage);
     TranslatedExpression index = translate_expression_to_llvm(block, expr.index);
-    llvm::Value* storage_address = storage.address;
     llvm::IRBuilder<> builder(block);
-    if (storage_address == nullptr) {
-        storage_address = builder.CreateLoad(storage.value, nullptr);
-    }
+    llvm::Value* storage_address = get_llvm_address(builder, storage);
     llvm::Value* index_value = index.value;
     llvm::Value* element_address = builder.CreateGEP(storage_address, index_value);
-    llvm::Value* element_value = builder.CreateLoad(element_address, nullptr);
+    llvm::Value* element_value = builder.CreateLoad(element_address);
     return (storage.address == nullptr)
         ? TranslatedExpression(element_value)
         : TranslatedExpression(element_value, element_address);
@@ -48,11 +57,14 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_square_br
     TranslatedExpression slice = translate_expression_to_llvm(block, expr.storage);
     TranslatedExpression index = translate_expression_to_llvm(block, expr.index);
     llvm::IRBuilder<> builder(block);
-    llvm::Value* storage_address = slice.value;
+    llvm::Value* slice_address = get_llvm_address(builder, slice);
     llvm::Value* index_value = index.value;
+    llvm::Value* storage_address = builder.CreateStructGEP(slice_address, 1);
     llvm::Value* element_address = builder.CreateGEP(storage_address, index_value);
-    llvm::Value* element_value = builder.CreateLoad(element_address, nullptr);
-    return { element_value, element_address };
+    llvm::Value* element_value = builder.CreateLoad(element_address);
+    return (slice.address == nullptr)
+        ? TranslatedExpression(element_value)
+        : TranslatedExpression(element_value, element_address);
 }
 
 TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_dot_member_access_to_llvm(
@@ -64,12 +76,8 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_dot_membe
     size_t field_index = program_representation
         .resolve_field_index(normalized_dot_member_access, scope_context.raw_scope_context);
     TranslatedExpression target = translate_expression_to_llvm(block, normalized_dot_member_access.struct_value);
-    llvm::Value* target_address = target.address;
     llvm::IRBuilder<> builder(block);
-    if (target_address == nullptr) {
-        target_address = builder.CreateAlloca(target.value->getType());
-        builder.CreateStore(target.value, target_address);
-    }
+    llvm::Value* target_address = get_llvm_address(builder, target);
     llvm::Value* field_address = builder.CreateStructGEP(target_address, field_index);
     llvm::Value* field_value = builder.CreateLoad(field_address);
     return (target.address == nullptr)
