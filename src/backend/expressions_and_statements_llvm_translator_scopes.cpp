@@ -26,8 +26,10 @@ static void translate_block_to_llvm_with_final_jump(
     for (const Statement& statement : codeblock) {
         block = translator.translate_statement_to_llvm(block, statement);
     }
-    llvm::IRBuilder<> builder(block);
-    builder.CreateBr(final_jump_block);
+    if (block->empty() || !block->getTerminator()) {
+        llvm::IRBuilder<> builder(block);
+        builder.CreateBr(final_jump_block);
+    }
 }
 
 llvm::BasicBlock* ExpressionsAndStatementsLLVMTranslator::translate_whole_codeblock_to_llvm(
