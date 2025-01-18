@@ -85,7 +85,11 @@ std::optional<TypeSignature> ExpressionTypeDeducer::deduce_type_from_dot_member_
     if (!left_operand_type_opt.has_value()) {
         return std::nullopt;
     }
-    const TypeSignature& left_operand_type = type_definitions_register.unalias_type(left_operand_type_opt.value());
+    TypeSignature left_operand_type = type_definitions_register.unalias_type(left_operand_type_opt.value());
+    while (left_operand_type.is<PointerType>()) {
+        left_operand_type = left_operand_type.get<PointerType>().pointed_type;
+        left_operand_type = type_definitions_register.unalias_type(left_operand_type);
+    }
     ensure_typesignature_is<CustomType>(left_operand_type);
     const CustomType& custom_type = left_operand_type.get<CustomType>();
     TypeDefinition type_definition = type_definitions_register.retrieve_type_definition(custom_type);

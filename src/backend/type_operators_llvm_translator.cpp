@@ -5,8 +5,6 @@
 
 #include "backend/type_operators_llvm_translator.hpp"
 
-#include <iostream>
-
 TypeOperatorsLLVMTranslator::TypeOperatorsLLVMTranslator(
     ProgramRepresentation& program_representation, 
     TypeDefinitionsLLVMTranslator& type_definitions_llvm_translator
