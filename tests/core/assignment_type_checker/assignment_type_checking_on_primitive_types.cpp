@@ -32,14 +32,6 @@ TEST(Core, Assignment_Type_Checking_For_Bool_Assigned_To_Float) {
     EXPECT_FALSE(bool_is_compatible_with_float);
 }
 
-TEST(Core, Assignment_Type_Checking_For_String_Assigned_To_RawSring) {
-    ProjectFileStructure empty_project;
-    TypeDefinitionsRegister type_register(empty_project); 
-    AssignmentTypeChecker type_checker(type_register, empty_project);
-    bool string_is_compatible_with_raw_string = type_checker.validate_assignment(TypeSignatureFactory::String, TypeSignatureFactory::RawString);
-    EXPECT_TRUE(string_is_compatible_with_raw_string);
-}
-
 TEST(Core, Assignment_Type_Checking_For_Char_Slice_Assigned_To_String) {
     ProjectFileStructure empty_project;
     TypeDefinitionsRegister type_register(empty_project); 

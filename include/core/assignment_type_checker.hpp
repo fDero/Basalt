@@ -17,6 +17,9 @@ class AssignmentTypeChecker {
         [[nodiscard]] GenericSubstitutionRule::Set::Ref get_generic_substitution_rules(); 
 
     private:
+        [[nodiscard]] bool name_equivalence_assignment_validation(const CustomType& source, const CustomType& dest);
+        [[nodiscard]] bool structural_equivalence_assignment_validation(const TypeSignature& source, const TypeSignature& dest);
+        
         [[nodiscard]] bool validate_type_alias_unaware_assignment(const TypeSignature& source, const TypeSignature& dest);
         [[nodiscard]] bool validate_assignment_to_slice_type(const TypeSignature& source, const SliceType& dest);
         [[nodiscard]] bool validate_assignment_to_pointer_type(const TypeSignature& source, const PointerType& dest);
@@ -24,8 +27,6 @@ class AssignmentTypeChecker {
         [[nodiscard]] bool validate_assignment_to_primitive_type(const TypeSignature& source, const PrimitiveType& dest);
         [[nodiscard]] bool validate_assignment_to_custom_type(const TypeSignature& source, const CustomType& dest);
         [[nodiscard]] bool validate_assignment_to_template_generic(const TypeSignature& source, const TemplateType& dest);
-        [[nodiscard]] bool name_equivalence_assignment_validation(const CustomType& source, const CustomType& dest);
-        [[nodiscard]] bool structural_equivalence_assignment_validation(const TypeSignature& source, const TypeSignature& dest);
         [[nodiscard]] bool validate_assignment_to_string(const TypeSignature& source, const PrimitiveType& dest);
         [[nodiscard]] bool validate_assignment_to_inline_union(const TypeSignature& source, const InlineUnion& inline_union);
         [[nodiscard]] bool validate_assignment_to_generic_type_parameter(const TypeSignature& source, const TemplateType& dest);
@@ -35,7 +36,9 @@ class AssignmentTypeChecker {
         [[nodiscard]] bool validate_assignment_to_string_from_array_type(const ArrayType& source, const PrimitiveType& dest);
         [[nodiscard]] bool type_parameters_assignment_validation(const CustomType &source, const CustomType &dest);
         [[nodiscard]] bool validate_assignment_to_union_alternatives(const TypeSignature& source, const std::vector<TypeSignature>& alternatives);
-        
+        [[nodiscard]] bool validate_assignment_to_string_from_pointer_type(const PointerType& pointer_type, const PrimitiveType& dest);
+        [[nodiscard]] bool validate_assignment_to_slice_from_pointer_type(const PointerType& pointer_type, const SliceType& dest);
+
         TypeDefinitionsRegister& type_definitions_register;
         ProjectFileStructure& project_file_structure;
         GenericSubstitutionRule::Set::Ref generic_substitution_rules 

@@ -60,14 +60,6 @@ bool AssignmentTypeChecker::validate_assignment_to_template_generic(const TypeSi
     return true;
 }
 
-bool AssignmentTypeChecker::validate_assignment_to_primitive_type(const TypeSignature& source, const PrimitiveType& dest) {
-    if (dest.type_name == "String" || dest.type_name == "RawString") {
-        return validate_assignment_to_string(source, dest);
-    }
-    bool assignment_makes_sense = source.is<PrimitiveType>();
-    return assignment_makes_sense && source.get<PrimitiveType>().type_name == dest.type_name;
-}
-
 bool AssignmentTypeChecker::validate_assignment_to_array_type(const TypeSignature& source, const ArrayType& dest) {
     bool assignment_makes_sense = (source.is<ArrayType>());
     assignment_makes_sense &= validate_assignment(source.get<ArrayType>().stored_type, dest.stored_type);
@@ -78,46 +70,4 @@ bool AssignmentTypeChecker::validate_assignment_to_array_type(const TypeSignatur
 bool AssignmentTypeChecker::validate_assignment_to_pointer_type(const TypeSignature& source, const PointerType& dest) {
     bool assignment_makes_sense = (source.is<PointerType>());
     return assignment_makes_sense && validate_assignment_very_strictly(source.get<PointerType>().pointed_type, dest.pointed_type);
-}
-
-bool AssignmentTypeChecker::validate_assignment_to_slice_type(const TypeSignature& source, const SliceType& dest) {
-    const PointerType slice_as_pointer(
-        source.get<SliceType>().as_debug_informations_aware_entity(),
-        source.get<SliceType>().stored_type
-    );
-    switch (source.typesiganture_kind()) {
-        case TypeSignatureBody::Kind::slice_type: return validate_assignment_very_strictly(
-            source.get<SliceType>().stored_type, dest.stored_type
-        );
-        case TypeSignatureBody::Kind::pointer_type: return validate_assignment(
-            source, slice_as_pointer
-        );
-        default: return false;
-    }
-}
-
-bool AssignmentTypeChecker::validate_assignment_to_string(const TypeSignature& source, const PrimitiveType& dest) {
-    switch (source.typesiganture_kind()) {
-        case TypeSignatureBody::Kind::primitive_type: return validate_assignment_to_string_from_primitive_type(source.get<PrimitiveType>(), dest);
-        case TypeSignatureBody::Kind::slice_type:     return validate_assignment_to_string_from_slice_type(source.get<SliceType>(), dest);
-        case TypeSignatureBody::Kind::array_type:     return validate_assignment_to_string_from_array_type(source.get<ArrayType>(), dest);
-        default: return false;
-    }
-}
-
-bool AssignmentTypeChecker::validate_assignment_to_string_from_primitive_type(const PrimitiveType& source, const PrimitiveType& dest) {
-    return (source.type_name == "RawString")
-        ? dest.type_name == "RawString"
-        : source.type_name == "String";
-}
-
-bool AssignmentTypeChecker::validate_assignment_to_string_from_slice_type(const SliceType& source, const PrimitiveType& dest) {
-    return source.stored_type.is<PrimitiveType>() && 
-        source.stored_type.get<PrimitiveType>().type_name == "Char";
-}
-
-
-bool AssignmentTypeChecker::validate_assignment_to_string_from_array_type(const ArrayType& source, const PrimitiveType& dest) {
-    return source.stored_type.is<PrimitiveType>() && 
-        source.stored_type.get<PrimitiveType>().type_name == "Char";
 }
