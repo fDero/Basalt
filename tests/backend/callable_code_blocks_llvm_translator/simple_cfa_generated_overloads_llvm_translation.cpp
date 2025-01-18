@@ -70,8 +70,9 @@ entry:
   %1 = alloca %"Int | Float", align 8
   store %"Int | Float" %0, %"Int | Float"* %1, align 8
   %2 = getelementptr inbounds %"Int | Float", %"Int | Float"* %1, i32 0, i32 0
-  %3 = icmp eq i8** %2, [4 x i8]* @Int
-  br i1 %3, label %4, label %9
+  %3 = load i8*, i8** %2, align 8
+  %4 = icmp eq i8* %3, getelementptr inbounds ([4 x i8], [4 x i8]* @Int, i32 0, i32 0)
+  br i1 %4, label %5, label %10
 
 4:                                                ; preds = %entry
   %5 = alloca %"Int | Float", align 8

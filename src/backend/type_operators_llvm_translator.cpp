@@ -24,13 +24,16 @@ TypeOperatorsLLVMTranslator::TypeOperatorsLLVMTranslator(
         union_address = builder.CreateAlloca(union_expression.value->getType());
         builder.CreateStore(union_expression.value, union_address);
     }
-    llvm::Value* union_header = builder.CreateStructGEP(union_address, 0);
+    llvm::Value* union_header_address = builder.CreateStructGEP(union_address, 0);
+    llvm::Value* union_header = builder.CreateLoad(union_header_address);
     llvm::GlobalVariable* expected_type_info = type_definitions_llvm_translator.fetch_type_info(type_to_check);
-    llvm::Value* is_operator_result = builder.CreateICmpEQ(union_header, expected_type_info);
+    llvm::Value* casted_expected_type_info = builder.CreateBitCast(expected_type_info, union_header->getType());
+    llvm::Value* is_operator_result = builder.CreateICmpEQ(union_header, casted_expected_type_info);
     std::vector<llvm::GlobalVariable*> alternative_type_infos = type_definitions_llvm_translator
         .fetch_all_type_infos_for_non_union_compatible_types(type_to_check);
     for (llvm::GlobalVariable* alternative_type_info : alternative_type_infos) {
-        llvm::Value* is_current_type = builder.CreateICmpEQ(union_header, alternative_type_info);
+        llvm::Value* casted_alternative_type_info = builder.CreateBitCast(alternative_type_info, union_header->getType());
+        llvm::Value* is_current_type = builder.CreateICmpEQ(union_header, casted_alternative_type_info);
         is_operator_result = builder.CreateOr(is_operator_result, is_current_type);
     }
     return is_operator_result;
