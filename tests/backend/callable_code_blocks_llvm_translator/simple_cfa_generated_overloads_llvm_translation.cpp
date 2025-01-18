@@ -74,22 +74,22 @@ entry:
   %4 = icmp eq i8* %3, getelementptr inbounds ([4 x i8], [4 x i8]* @Int, i32 0, i32 0)
   br i1 %4, label %5, label %10
 
-4:                                                ; preds = %entry
-  %5 = alloca %"Int | Float", align 8
-  store %"Int | Float" %0, %"Int | Float"* %5, align 8
-  %6 = getelementptr inbounds %"Int | Float", %"Int | Float"* %5, i32 0, i32 1
-  %7 = bitcast [8 x i8]* %6 to i64*
-  %8 = load i64, i64* %7, align 4
-  call void @"f1@main.basalt:1:2"(i64 %8)
+5:                                                ; preds = %entry
+  %6 = alloca %"Int | Float", align 8
+  store %"Int | Float" %0, %"Int | Float"* %6, align 8
+  %7 = getelementptr inbounds %"Int | Float", %"Int | Float"* %6, i32 0, i32 1
+  %8 = bitcast [8 x i8]* %7 to i64*
+  %9 = load i64, i64* %8, align 4
+  call void @"f1@main.basalt:1:2"(i64 %9)
   ret void
 
-9:                                                ; preds = %entry
-  %10 = alloca %"Int | Float", align 8
-  store %"Int | Float" %0, %"Int | Float"* %10, align 8
-  %11 = getelementptr inbounds %"Int | Float", %"Int | Float"* %10, i32 0, i32 1
-  %12 = bitcast [8 x i8]* %11 to double*
-  %13 = load double, double* %12, align 8
-  call void @"f2@main.basalt:1:2"(double %13)
+10:                                               ; preds = %entry
+  %11 = alloca %"Int | Float", align 8
+  store %"Int | Float" %0, %"Int | Float"* %11, align 8
+  %12 = getelementptr inbounds %"Int | Float", %"Int | Float"* %11, i32 0, i32 1
+  %13 = bitcast [8 x i8]* %12 to double*
+  %14 = load double, double* %13, align 8
+  call void @"f2@main.basalt:1:2"(double %14)
   ret void
 }
 )^";
