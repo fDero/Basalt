@@ -38,31 +38,31 @@ class FunctionSpecificityDescriptor {
         static FunctionSpecificityDescriptor worst_possible_specificity();
 
     protected:
-        void update_indices_based_on_argument_type(
+        void update_metrics_based_on_argument_type(
             const TypeSignature& arg_type, 
             TypeDefinitionsRegister& type_definitions_register,
             bool current_type_is_fixed_and_cannot_be_an_upcasting_target
         );
 
-        void update_indicies_based_on_primitive_type(
+        void update_metrics_based_on_primitive_type(
             const TypeSignature& arg_type, 
             TypeDefinitionsRegister& type_definitions_register,
             bool current_type_is_fixed_and_cannot_be_an_upcasting_target
         );
 
-        void update_indicies_based_on_pointer_type(
+        void update_metrics_based_on_pointer_type(
             const TypeSignature& arg_type, 
             TypeDefinitionsRegister& type_definitions_register,
             bool current_type_is_fixed_and_cannot_be_an_upcasting_target
         );
 
-        void update_indicies_based_on_inline_union_type(
+        void update_metrics_based_on_inline_union_type(
             const TypeSignature& arg_type, 
             TypeDefinitionsRegister& type_definitions_register,
             bool current_type_is_fixed_and_cannot_be_an_upcasting_target
         );
 
-        void update_indicies_based_on_custom_type(
+        void update_metrics_based_on_custom_type(
             const TypeSignature& arg_type, 
             TypeDefinitionsRegister& type_definitions_register,
             bool current_type_is_fixed_and_cannot_be_an_upcasting_target

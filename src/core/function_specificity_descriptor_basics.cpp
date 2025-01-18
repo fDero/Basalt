@@ -15,7 +15,7 @@ FunctionSpecificityDescriptor::FunctionSpecificityDescriptor(
     : is_generic(function_definition.template_generics_names.size() > 0)
 { 
     for (const auto& arg : function_definition.arguments) {
-        update_indices_based_on_argument_type(arg.arg_type, type_definitions_register, false);
+        update_metrics_based_on_argument_type(arg.arg_type, type_definitions_register, false);
     }
 }
 
