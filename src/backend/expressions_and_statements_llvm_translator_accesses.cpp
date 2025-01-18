@@ -67,10 +67,11 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_dot_membe
     llvm::Value* target_address = target.address;
     llvm::IRBuilder<> builder(block);
     if (target_address == nullptr) {
-        target_address = builder.CreateLoad(target.value, nullptr);
+        target_address = builder.CreateAlloca(target.value->getType());
+        builder.CreateStore(target.value, target_address);
     }
-    llvm::Value* field_address = builder.CreateGEP(target_address, {0, field_index});
-    llvm::Value* field_value = builder.CreateLoad(field_address, nullptr);
+    llvm::Value* field_address = builder.CreateStructGEP(target_address, field_index);
+    llvm::Value* field_value = builder.CreateLoad(field_address);
     return (target.address == nullptr)
         ? TranslatedExpression(field_value)
         : TranslatedExpression(field_value, field_address);
