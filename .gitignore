@@ -28,3 +28,5 @@ dependencies
 *.nix
 *.o
 result
+*.s
+*.asm

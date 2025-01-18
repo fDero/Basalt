@@ -34,6 +34,7 @@ class Finalizer {
         Finalizer(ProgramRepresentation& program_representation);
 
         void emit_object_file(const std::string& output_file);
+        void emit_assembly_file(const std::string& output_file_name);
         void emit_llvm_ir(const std::string& output_file);
         void generate_llvm_ir();
 

@@ -16,14 +16,9 @@
 
 [[noreturn]] void throw_basalt_used_as_output(const std::string& filename);
 
-[[noreturn]] void throw_unspecified_commandline_mode();
+[[noreturn]] void throw_unspecified_commandline_subcommand();
 
 [[noreturn]] void throw_unrecognized_file_extension(const std::string& filename);
-
-void avoid_conflicting_commandline_flags(
-    CommandLineController::Mode previous, 
-    CommandLineController::Mode current
-);
 
 void avoid_lack_of_input_files(const std::vector<std::string>& input_files);
 
@@ -31,24 +26,27 @@ void avoid_lack_of_output_files(const std::vector<std::string>& output_files);
 
 void avoid_duplicate_input_files(std::vector<std::string>& input_files);
 
+void avoid_duplicate_output_file_extensions(std::vector<FileExtension> extensions);
+
+void avoid_lack_of_target_triple(const std::optional<std::string>& target_triple);
+
+void ensure_lack_of_target_triple(const std::optional<std::string>& target_triple);
+
 void ensure_input_files_exist(std::vector<std::string>& input_files);
 
-void avoid_duplicate_output_file_extensions(
-    const std::vector<FileExtension>& already_encountered, 
-    const FileExtension file_ext
-);
-
 void ensure_lack_of_output_files(const std::vector<std::string>& output_files);
+
+void ensure_lack_of_input_files(const std::vector<std::string>& input_files);
 
 void ensure_source_file_is_open(const std::fstream& input_file, const std::string& file_name);
 
 void ensure_version_flag_is_the_only_one(
     int current_flag_index, int arg_counter, const std::vector<std::string>& input_files, 
-    const std::vector<std::string>& output_files, const CommandLineController::Mode mode
+    const std::vector<std::string>& output_files, const CommandLineController::SubCommand mode
 );
 
 void ensure_help_flag_is_the_only_one(
     int current_flag_index, int arg_counter, const std::vector<std::string>& input_files, 
-    const std::vector<std::string>& output_files, const CommandLineController::Mode mode
+    const std::vector<std::string>& output_files, const CommandLineController::SubCommand mode
 );
 

@@ -5,48 +5,6 @@
 
 #include "errors/commandline_errors.hpp"
 
-void avoid_conflicting_commandline_flags(
-    CommandLineController::Mode previous, 
-    CommandLineController::Mode current
-) {
-    if (previous != CommandLineController::Mode::unspecified) {
-        throw CommandLineError {
-            "conflicting compiler flags: the flags -v -h -r -c -d are mutually exclusive "
-            "(they cannot be used together)"
-        };
-    }
-}
-
-void avoid_lack_of_input_files(const std::vector<std::string>& input_files) {
-    if (input_files.empty()) {
-        throw CommandLineError {
-            "no input files specified, don't know what to do \n"
-            "(input files are supposed to be specified right after the -c/-r/-d flag \n"
-            "and their name should end with the .basalt file extension)"
-        };
-    }
-}
-
-void avoid_lack_of_output_files(const std::vector<std::string>& output_files) {
-    if (output_files.empty()) {
-        throw CommandLineError {
-            "no output files specified, don't know what to do \n"
-            "(output files are supposed to be specified right after the -o flag \n"
-            "and should have one of these extensions: json,xml,asm,exe,elf)"
-        };
-    }
-}
-
-void avoid_duplicate_input_files(std::vector<std::string>& input_files) {
-    std::sort(input_files.begin(), input_files.end());
-    if (std::unique(input_files.begin(), input_files.end()) != input_files.end()) {
-        throw CommandLineError {
-            "duplicate input files detected! \n"
-            "(input files must be specified only one single time)"
-        };
-    }
-}
-
 void ensure_input_files_exist(std::vector<std::string>& input_files) {
     for (const std::string& input_file_name : input_files) {
         std::fstream fstream_file_reader(input_file_name, std::ios::in);
@@ -55,14 +13,39 @@ void ensure_input_files_exist(std::vector<std::string>& input_files) {
     }
 }
 
-void avoid_duplicate_output_file_extensions(
-    const std::vector<FileExtension>& already_encountered, 
-    const FileExtension file_ext
-) {
-    if (std::find(already_encountered.begin(), already_encountered.end(), file_ext) != already_encountered.end()) {
+void ensure_lack_of_target_triple(const std::optional<std::string>& target_triple) {
+    if (target_triple.has_value()) {
         throw CommandLineError {
-            "duplicate output file extension detected! \n"
-            "(no pair output files should have the same file extension)"
+            "target triple was given but it wasn't needed, \n"
+            "(please run `basalt help` for more informations)"
+        };
+    }
+}
+
+void ensure_lack_of_output_files(const std::vector<std::string>& output_files) {
+    if (!output_files.empty()) {
+        throw CommandLineError {
+            "output files were given but they weren't needed, \n"
+            "(please run `basalt help` for more informations)"
+        };
+    }
+}
+
+void ensure_lack_of_input_files(const std::vector<std::string>& input_files) {
+    if (!input_files.empty()) {
+        throw CommandLineError {
+            "input files were given but they weren't needed,  \n"
+            "(please run `basalt help` for more informations) \n"
+        };
+    }
+}
+
+void ensure_source_file_is_open(const std::fstream& input_file, const std::string& file_name) {
+    if (!input_file.is_open()) {
+        throw CommandLineError {
+            "file " + file_name + " either is missing or is inaccessible \n"
+            "(please double-check the name of the file and make sure the \n"
+            "path to that file is fully and correctly specified)"
         };
     }
 }

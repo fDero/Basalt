@@ -32,7 +32,7 @@
     };
 }
 
-[[noreturn]] void throw_unspecified_commandline_mode() {
+[[noreturn]] void throw_unspecified_commandline_subcommand() {
     throw CommandLineError { 
         "unspecified mode: don't know what to do "
         "(to specify a mode please use -a --flag)" 

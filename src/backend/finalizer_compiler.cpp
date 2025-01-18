@@ -37,15 +37,30 @@ void Finalizer::emit_object_file(const std::string& output_file_name) {
         error_code, 
         llvm::sys::fs::OpenFlags::OF_None
     );
-    //ensure no error
+
     llvm::legacy::PassManager pass_manager;
     auto file_type = llvm::CodeGenFileType::CGFT_ObjectFile;
-
-    /*bool compilation_pass_added_successfully = !*/
-    llvm_target_machine->addPassesToEmitFile(pass_manager, output_file, nullptr, file_type);
-    //ensure no error
-    
+    llvm_target_machine->addPassesToEmitFile(pass_manager, output_file, nullptr, file_type);    
     pass_manager.run(llvm_module);
+
+    std::cout << "Result: " << output_file_name << std::endl;
+    std::cout << "(target: " << target_triple << ")" << std::endl;
+}
+
+void Finalizer::emit_assembly_file(const std::string& output_file_name) {
+    std::cout << "Emitting Assembly File..." << std::endl;
+    std::error_code error_code;
+    llvm::raw_fd_ostream output_file(
+        output_file_name, 
+        error_code, 
+        llvm::sys::fs::OpenFlags::OF_None
+    );
+
+    llvm::legacy::PassManager pass_manager;
+    auto file_type = llvm::CodeGenFileType::CGFT_AssemblyFile;
+    llvm_target_machine->addPassesToEmitFile(pass_manager, output_file, nullptr, file_type);
+    pass_manager.run(llvm_module);
+
     std::cout << "Result: " << output_file_name << std::endl;
     std::cout << "(target: " << target_triple << ")" << std::endl;
 }
