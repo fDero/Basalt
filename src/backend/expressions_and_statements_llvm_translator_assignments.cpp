@@ -5,6 +5,7 @@
 
 #include "backend/expressions_and_statements_llvm_translator.hpp"
 #include "backend/callable_codeblocks_llvm_translator.hpp"
+#include "backend/type_manipulations_llvm_translator.hpp"
 
 llvm::BasicBlock* ExpressionsAndStatementsLLVMTranslator::translate_variable_declaration_to_llvm(
     llvm::BasicBlock* block,
@@ -57,20 +58,17 @@ llvm::BasicBlock* ExpressionsAndStatementsLLVMTranslator::translate_assignment_t
     assert_type_deduction_success_in_backend_layer(source_type_opt.has_value());
     TypeSignature target_type = target_type_opt.value();
     TypeSignature source_type = source_type_opt.value();
-    bool is_union_target = program_representation.is_union(target_type);
-    bool is_union_source = program_representation.is_union(source_type);
+    TranslatedExpression translated_target = translate_expression_to_llvm(block, target);
+    TranslatedExpression translated_source = translate_expression_to_llvm(block, source);
     llvm::IRBuilder<> builder(block);
-    TranslatedExpression llvm_source = translate_expression_to_llvm(block, source);
-    TranslatedExpression llvm_target = translate_expression_to_llvm(block, target);
-    if (is_union_target == is_union_source) {
-        builder.CreateStore(llvm_source.value,llvm_target.address);
-        return block;
-    }
-    assert_is_assignment_of_non_union_to_union(is_union_source, is_union_target);
-    llvm::Value* union_payload = builder.CreateGEP(llvm_target.value, {0, 1});
-    builder.CreateStore(llvm_source.value, union_payload);
-    llvm::Value* union_type_info = builder.CreateGEP(llvm_target.value, {0, 0});
-    llvm::GlobalVariable* source_type_info = type_definitions_llvm_translator.fetch_type_info(source_type);
-    builder.CreateStore(source_type_info, union_type_info);
+    TypeManipulationsLLVMTranslator type_manipulations_llvm_translator(program_representation, type_definitions_llvm_translator);
+    TranslatedExpression casted_source = type_manipulations_llvm_translator.cast_translated_expression_to_another_type_in_llvm(
+        block,
+        translated_source,
+        source_type,
+        target_type
+    );
+    assert(translated_target.address != nullptr);
+    builder.CreateStore(casted_source.value, translated_target.address);
     return block;
 }
