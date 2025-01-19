@@ -25,7 +25,9 @@ TranslatedExpression TypeManipulationsLLVMTranslator::cast_pointer_to_array_to_s
     llvm::Type* llvm_int_type = type_definitions_llvm_translator.get_int_llvm_type();
     llvm::Value* llvm_slice_size = llvm::ConstantInt::get(llvm_int_type, array_length);
     builder.CreateStore(llvm_slice_size, newly_created_slice_len_address);
-    builder.CreateStore(pointer_to_array_expression.value, newly_created_slice_storage_address_address);
+    llvm::Value* index_0 = llvm::ConstantInt::get(llvm_int_type, 0);
+    llvm::Value* pointer_to_first = create_array_gep(builder, pointer_to_array_expression.value, index_0);
+    builder.CreateStore(pointer_to_first, newly_created_slice_storage_address_address);
     return builder.CreateLoad(newly_created_slice_address);
 }
 
@@ -36,8 +38,9 @@ TranslatedExpression TypeManipulationsLLVMTranslator::cast_slice_of_chars_to_str
     llvm::IRBuilder<> builder(block);
     llvm::Value* slice_address = get_llvm_address(builder, slice_of_chars_expression);
     llvm::Type* llvm_string_type = type_definitions_llvm_translator.get_string_llvm_type();
-    llvm::Value* casted_string_address = builder.CreateBitCast(slice_address, llvm_string_type->getPointerTo());
-    return builder.CreateLoad(casted_string_address);
+    llvm::Value* casted_slice_address = builder.CreateBitCast(slice_address, llvm_string_type->getPointerTo());
+    llvm::Value* casted_slice_value = builder.CreateLoad(casted_slice_address);
+    return casted_slice_value;
 }
 
 TranslatedExpression TypeManipulationsLLVMTranslator::cast_string_to_raw_string_in_llvm(
@@ -49,6 +52,6 @@ TranslatedExpression TypeManipulationsLLVMTranslator::cast_string_to_raw_string_
     llvm::Type* llvm_raw_string_type = type_definitions_llvm_translator.get_raw_string_llvm_type();
     llvm::Value* first_char_address_address = builder.CreateStructGEP(string_address, 1);
     llvm::Value* first_char_address = builder.CreateLoad(first_char_address_address);
-    llvm::Value* casted_raw_string_address = builder.CreateBitCast(first_char_address, llvm_raw_string_type);
-    return builder.CreateLoad(casted_raw_string_address);
+    llvm::Value* casted_raw_string = builder.CreateBitCast(first_char_address, llvm_raw_string_type);
+    return casted_raw_string;
 }

@@ -15,25 +15,6 @@ TypeManipulationsLLVMTranslator::TypeManipulationsLLVMTranslator(
     , type_definitions_llvm_translator(type_definitions_llvm_translator)
 { }
 
-std::vector<llvm::Value*> TypeManipulationsLLVMTranslator::cast_arguments_for_function_call_llvm(
-    llvm::BasicBlock* block,
-    std::vector<TranslatedExpression> arguments,
-    std::vector<TypeSignature> original_types,
-    std::vector<TypeSignature> expected_types
-) {
-    std::vector<llvm::Value*> llvm_casted_args;
-    llvm_casted_args.reserve(arguments.size());
-    for (size_t i = 0; i < arguments.size(); i++) {
-        TranslatedExpression casted_arg = cast_translated_expression_to_another_type_in_llvm(
-            block,
-            arguments[i],
-            original_types[i],
-            expected_types[i]
-        );
-        llvm_casted_args.push_back(casted_arg.value);
-    }
-    return llvm_casted_args;
-}
 
 TypeManipulationsLLVMTranslator::CastStrategy 
 TypeManipulationsLLVMTranslator::compute_cast_strategy(
@@ -53,8 +34,8 @@ TypeManipulationsLLVMTranslator::compute_cast_strategy(
     bool source_is_ptr = source.is<PointerType>();
     bool source_is_ptr_to_array = source_is_ptr && source.get<PointerType>().pointed_type.is<ArrayType>();
     bool dest_is_slice = dest.is<SliceType>();
-    bool dest_is_string = dest.is<CustomType>() && dest.get<CustomType>().type_name == "String";
-    bool dest_is_raw_string = dest.is<CustomType>() && dest.get<CustomType>().type_name == "RawString";
+    bool dest_is_string = dest.is<PrimitiveType>() && dest.get<PrimitiveType>().type_name == "String";
+    bool dest_is_raw_string = dest.is<PrimitiveType>() && dest.get<PrimitiveType>().type_name == "RawString";
     if (source_is_ptr_to_array && dest_is_slice) return CastStrategy::array_pointer_to_slice;
     if (source_is_ptr_to_array && dest_is_string) return CastStrategy::array_pointer_to_string;
     if (source_is_ptr_to_array && dest_is_raw_string) return CastStrategy::array_pointer_to_raw_string;
@@ -62,6 +43,9 @@ TypeManipulationsLLVMTranslator::compute_cast_strategy(
     bool source_is_slice = source.is<SliceType>();
     if (source_is_slice && dest_is_string) return CastStrategy::slice_to_string;
     if (source_is_slice && dest_is_raw_string) return CastStrategy::slice_to_raw_string;;
+
+    bool source_is_string = source.is<PrimitiveType>() && source.get<PrimitiveType>().type_name == "String";
+    if (source_is_string && dest_is_raw_string) return CastStrategy::string_to_raw_string;
 
     return CastStrategy::noop;
 }

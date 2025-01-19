@@ -35,13 +35,6 @@ class TypeManipulationsLLVMTranslator {
             const TypeSignature& dest_type
         );
 
-        [[nodiscard]] std::vector<llvm::Value*> cast_arguments_for_function_call_llvm(
-            llvm::BasicBlock* block,
-            std::vector<TranslatedExpression> arguments,
-            std::vector<TypeSignature> original_types,
-            std::vector<TypeSignature> expected_types
-        );
-
     protected:
         enum class CastStrategy {
             noop,
