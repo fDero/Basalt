@@ -30,7 +30,6 @@ bool AssignmentTypeChecker::validate_assignment_to_string(const TypeSignature& s
     switch (source.typesiganture_kind()) {
         case TypeSignatureBody::Kind::primitive_type: return validate_assignment_to_string_from_primitive_type(source.get<PrimitiveType>(), dest);
         case TypeSignatureBody::Kind::slice_type:     return validate_assignment_to_string_from_slice_type(source.get<SliceType>(), dest);
-        case TypeSignatureBody::Kind::array_type:     return validate_assignment_to_string_from_array_type(source.get<ArrayType>(), dest);
         case TypeSignatureBody::Kind::pointer_type:   return validate_assignment_to_string_from_pointer_type(source.get<PointerType>(), dest);
         default: return false;
     }
@@ -45,15 +44,13 @@ bool AssignmentTypeChecker::validate_assignment_to_string_from_slice_type(const 
         source.stored_type.get<PrimitiveType>().type_name == "Char";
 }
 
-
-bool AssignmentTypeChecker::validate_assignment_to_string_from_array_type(const ArrayType& source, const PrimitiveType& dest) {
-    return source.stored_type.is<PrimitiveType>() && 
-        source.stored_type.get<PrimitiveType>().type_name == "Char";
-}
-
 bool AssignmentTypeChecker::validate_assignment_to_string_from_pointer_type(const PointerType& pointer_type, const PrimitiveType& dest) {
-    return pointer_type.pointed_type.is<ArrayType>() && 
-        validate_assignment_to_string_from_array_type(pointer_type.pointed_type.get<ArrayType>(), dest);
+    if (!pointer_type.pointed_type.is<ArrayType>()) {
+        return false;
+    }
+    const ArrayType& array_type = pointer_type.pointed_type.get<ArrayType>();
+    return array_type.stored_type.is<PrimitiveType>() && 
+        array_type.stored_type.get<PrimitiveType>().type_name == "Char";
 }
 
 bool AssignmentTypeChecker::validate_assignment_to_slice_from_pointer_type(const PointerType& pointer_type, const SliceType& dest) {

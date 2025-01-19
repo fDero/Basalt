@@ -20,6 +20,8 @@ class AssignmentTypeChecker {
         [[nodiscard]] bool name_equivalence_assignment_validation(const CustomType& source, const CustomType& dest);
         [[nodiscard]] bool structural_equivalence_assignment_validation(const TypeSignature& source, const TypeSignature& dest);
         
+        [[nodiscard]] bool type_parameters_assignment_validation(const CustomType &source, const CustomType &dest);
+        
         [[nodiscard]] bool validate_type_alias_unaware_assignment(const TypeSignature& source, const TypeSignature& dest);
         [[nodiscard]] bool validate_assignment_to_slice_type(const TypeSignature& source, const SliceType& dest);
         [[nodiscard]] bool validate_assignment_to_pointer_type(const TypeSignature& source, const PointerType& dest);
@@ -33,8 +35,6 @@ class AssignmentTypeChecker {
         [[nodiscard]] bool validate_assignment_very_strictly(const TypeSignature& source_generic, const TypeSignature& dest_generic);
         [[nodiscard]] bool validate_assignment_to_string_from_primitive_type(const PrimitiveType& source, const PrimitiveType& dest);
         [[nodiscard]] bool validate_assignment_to_string_from_slice_type(const SliceType& source, const PrimitiveType& dest);
-        [[nodiscard]] bool validate_assignment_to_string_from_array_type(const ArrayType& source, const PrimitiveType& dest);
-        [[nodiscard]] bool type_parameters_assignment_validation(const CustomType &source, const CustomType &dest);
         [[nodiscard]] bool validate_assignment_to_union_alternatives(const TypeSignature& source, const std::vector<TypeSignature>& alternatives);
         [[nodiscard]] bool validate_assignment_to_string_from_pointer_type(const PointerType& pointer_type, const PrimitiveType& dest);
         [[nodiscard]] bool validate_assignment_to_slice_from_pointer_type(const PointerType& pointer_type, const SliceType& dest);
