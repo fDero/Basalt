@@ -30,7 +30,6 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_minus_sig
     llvm::Constant* llvm_double_0 = llvm::ConstantFP::get(llvm_double_type, 0.0);
     llvm::Constant* llvm_int_0 = llvm::ConstantInt::get(llvm_int_type, 0);
     llvm::IRBuilder<> builder(block);
-    operand.value->dump();
     return program_representation.is_unary_operator_over_float_operand(minus_sign, raw_scope_context)
         ? builder.CreateFSub(llvm_double_0, operand.value) 
         : builder.CreateSub(llvm_int_0, operand.value);
