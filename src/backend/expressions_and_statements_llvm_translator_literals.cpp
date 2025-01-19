@@ -4,8 +4,9 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 #include "frontend/syntax.hpp"
-#include "backend/expressions_and_statements_llvm_translator.hpp"
 #include "backend/callable_codeblocks_llvm_translator.hpp"
+#include "backend/type_manipulations_llvm_translator.hpp"
+#include "backend/llvm_wrappers.hpp"
 #include "errors/internal_errors.hpp"
 
 TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_boolean_literal_to_llvm(
@@ -58,17 +59,24 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_array_lit
     llvm::BasicBlock* block,
     const ArrayLiteral& expr
 ) {
-    llvm::Type* elementType = type_definitions_llvm_translator.translate_typesignature_to_llvm_type(expr.stored_type);
-    llvm::ArrayType* arrayType = llvm::ArrayType::get(elementType, expr.elements.size());
+    const TypeSignature& stored_type = expr.stored_type;
+    llvm::Type* llvm_stored_type = type_definitions_llvm_translator.translate_typesignature_to_llvm_type(stored_type);
+    llvm::ArrayType* llvm_array_type = llvm::ArrayType::get(llvm_stored_type, expr.elements.size());
     llvm::IRBuilder<> builder(block);
-    llvm::Value* llvm_array_reference = builder.CreateAlloca(arrayType);
-    std::vector<llvm::Value*> array_elements;
+    llvm::Value* llvm_array_address = builder.CreateAlloca(llvm_array_type);
+    TypeManipulationsLLVMTranslator type_manipulations_llvm_translator(program_representation, type_definitions_llvm_translator);
     for (size_t index = 0; index < expr.elements.size(); index++) {
         llvm::Value* element_index_as_expr = llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), index);
         const Expression& element = expr.elements[index];
-        llvm::Value* array_element = translate_expression_to_llvm(block, element).value;
-        llvm::Value* ptr_to_array_cell = builder.CreateGEP(arrayType, llvm_array_reference, element_index_as_expr);
-        builder.CreateStore(array_element, ptr_to_array_cell);
+        auto element_type_opt = program_representation.resolve_expression_type(element, scope_context.raw_scope_context);
+        assert_type_deduction_success_in_backend_layer(element_type_opt.has_value());
+        const TypeSignature& element_type = element_type_opt.value();
+        TranslatedExpression array_element = translate_expression_to_llvm(block, element);
+        TranslatedExpression casted_array_element = type_manipulations_llvm_translator
+            .cast_translated_expression_to_another_type_in_llvm(block, array_element, element_type, stored_type);
+        llvm::Value* ptr_to_array_cell = create_array_gep(builder, llvm_array_address, element_index_as_expr);
+        builder.CreateStore(casted_array_element.value, ptr_to_array_cell);
     }
-    return llvm_array_reference;
+    llvm::Value* llvm_array_value = builder.CreateLoad(llvm_array_address);
+    return {llvm_array_value, llvm_array_address};
 }
