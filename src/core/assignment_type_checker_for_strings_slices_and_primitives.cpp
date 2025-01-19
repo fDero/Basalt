@@ -14,7 +14,7 @@ bool AssignmentTypeChecker::validate_assignment_to_primitive_type(const TypeSign
 }
 
 bool AssignmentTypeChecker::validate_assignment_to_slice_type(const TypeSignature& source, const SliceType& dest) {
-    switch (source.typesiganture_kind()) {
+        switch (source.typesiganture_kind()) {
         case TypeSignatureBody::Kind::slice_type: return validate_assignment_very_strictly(
             source.get<SliceType>().stored_type, dest.stored_type
         );
@@ -53,5 +53,7 @@ bool AssignmentTypeChecker::validate_assignment_to_string_from_pointer_type(cons
 }
 
 bool AssignmentTypeChecker::validate_assignment_to_slice_from_pointer_type(const PointerType& pointer_type, const SliceType& dest) {
-    return validate_assignment_very_strictly(pointer_type.pointed_type, dest.stored_type);
+    ensure_typesignature_is<ArrayType>(pointer_type.pointed_type);
+    const ArrayType& array_type = pointer_type.pointed_type.get<ArrayType>();
+    return validate_assignment_very_strictly(array_type.stored_type, dest.stored_type);
 }
