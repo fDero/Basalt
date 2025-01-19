@@ -116,12 +116,12 @@ void FDTC::SingleFunctionTypeChecker::visit_array_literal(
 void FDTC::SingleFunctionTypeChecker::visit_type_operator(const TypeOperator& type_operator) {
     visit_expression(type_operator.expression);
     auto expression_type = program_representation.resolve_expression_type(type_operator.expression, scope_context);
-    TypeSignature typesignature = program_representation.unalias_type(type_operator.typesignature);
-    ensure_typesignature_is<CustomType>(typesignature);
-    const CustomType& custom_type = typesignature.get<CustomType>();
-    TypeDefinition type_definition = program_representation.retrieve_type_definition(custom_type);
-    ensure_type_definition_is<UnionDefinition>(type_definition);
-    bool can_assign = program_representation.validate_assignment(custom_type, expression_type);
+    if (!expression_type.has_value()) {
+        return;
+    }
+    bool type_operator_typesignature_is_union = program_representation.is_union(*expression_type);
+    ensure_type_is_union_for_type_operator(type_operator_typesignature_is_union);
+    bool can_assign = program_representation.validate_assignment(type_operator.typesignature, expression_type);
     ensure_type_operator_union_operand_can_be_queried_for_the_given_type(can_assign);
 }
 

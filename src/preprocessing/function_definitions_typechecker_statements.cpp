@@ -26,7 +26,7 @@ void FDTC::SingleFunctionTypeChecker::visit_variable_declaration(const VariableD
     if (variable_declaration.initial_value.has_value()) {
         visit_expression(variable_declaration.initial_value.value());
         auto expr_type = program_representation.resolve_expression_type(variable_declaration.initial_value.value(), scope_context);
-        bool assignment_is_valid = program_representation.validate_assignment(variable_declaration.typesignature, expr_type);
+        bool assignment_is_valid = program_representation.validate_assignment(expr_type, variable_declaration.typesignature);
         ensure_variable_declaration_is_valid(assignment_is_valid, variable_declaration, expr_type);
     }
     scope_context.store_local_variable(variable_declaration);
@@ -36,7 +36,7 @@ void FDTC::SingleFunctionTypeChecker::visit_const_declaration(const ConstDeclara
     program_representation.verify_that_the_type_exists(const_declaration.typesignature);
     visit_expression(const_declaration.value);
     auto expr_type = program_representation.resolve_expression_type(const_declaration.value, scope_context);
-    bool assignment_is_valid = program_representation.validate_assignment(const_declaration.typesignature, expr_type);
+    bool assignment_is_valid = program_representation.validate_assignment(expr_type, const_declaration.typesignature);
     ensure_const_declaration_is_valid(assignment_is_valid, const_declaration, expr_type);
     scope_context.store_local_constant(const_declaration);
 }
@@ -46,7 +46,7 @@ void FDTC::SingleFunctionTypeChecker::visit_assignment(const Assignment& assignm
     visit_expression(assignment.assigned_value);
     auto target_type = program_representation.resolve_expression_type(assignment.assignment_target, scope_context);
     auto assigned_value_type = program_representation.resolve_expression_type(assignment.assigned_value, scope_context);
-    bool assignment_is_valid = program_representation.validate_assignment(target_type, assigned_value_type);
+    bool assignment_is_valid = program_representation.validate_assignment(assigned_value_type, target_type);
     ensure_assignment_is_valid(assignment_is_valid, assignment);
 }
 

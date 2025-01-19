@@ -7,7 +7,6 @@
 #include "errors/preprocessing_errors.hpp"
 #include "errors/internal_errors.hpp"
 
-
 bool AssignmentTypeChecker::validate_assignment_to_primitive_type(const TypeSignature& source, const PrimitiveType& dest) {
     return (dest.type_name == "String" || dest.type_name == "RawString")
         ? validate_assignment_to_string(source, dest)

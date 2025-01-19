@@ -96,15 +96,15 @@ std::list<FileRepresentation>& ProgramRepresentation::get_files_by_package(
 }
 
 bool ProgramRepresentation::validate_assignment(
-    const std::optional<TypeSignature>& target,
-    const std::optional<TypeSignature>& source
+    const std::optional<TypeSignature>& source,
+    const std::optional<TypeSignature>& dest
 ) {
     AssignmentTypeChecker assignment_type_checker(
         type_definitions_register, 
         project_file_structure
     );
-    return !target.has_value() || !source.has_value() ||
-        assignment_type_checker.validate_assignment(*target, *source);
+    return !source.has_value() || !dest.has_value() ||
+        assignment_type_checker.validate_assignment(*source, *dest);
 }
 
 bool ProgramRepresentation::is_union(

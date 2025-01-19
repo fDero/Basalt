@@ -25,7 +25,13 @@ inline void ensure_assignment_is_valid(
     const Expression& source_expression
 ) {
     if (!assignment_is_valid) {
-        throw std::runtime_error("assignment is invalid");
+        throw std::runtime_error("assignment is invalid-1");
+    }
+}
+
+inline void ensure_type_is_union_for_type_operator(bool type_operator_typesignature_is_union) {
+    if (!type_operator_typesignature_is_union) {
+        throw std::runtime_error("type operator must be applied to a union type");
     }
 }
 
@@ -209,7 +215,7 @@ inline void ensure_assignment_is_valid(
     const Assignment& assignment
 ) {
     if (!assignment_is_valid) {
-        throw std::runtime_error("assignment is invalid");
+        throw std::runtime_error("assignment is invalid-2");
     }
 }
 

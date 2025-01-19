@@ -61,8 +61,8 @@ class ProgramRepresentation {
         );
 
         [[nodiscard]] bool validate_assignment(
-            const std::optional<TypeSignature>& target,
-            const std::optional<TypeSignature>& source
+            const std::optional<TypeSignature>& source,
+            const std::optional<TypeSignature>& dest
         );
 
         [[nodiscard]] bool is_union(
