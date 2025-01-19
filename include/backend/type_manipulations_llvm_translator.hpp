@@ -46,7 +46,8 @@ class TypeManipulationsLLVMTranslator {
             array_pointer_to_raw_string,
             slice_to_string,
             slice_to_raw_string,
-            string_to_raw_string
+            string_to_raw_string,
+            array_to_array,
         };
 
         [[nodiscard]] CastStrategy compute_cast_strategy(
@@ -88,6 +89,13 @@ class TypeManipulationsLLVMTranslator {
         [[nodiscard]] TranslatedExpression cast_string_to_raw_string_in_llvm(
             llvm::BasicBlock* block,
             TranslatedExpression string_expression
+        );
+
+        [[nodiscard]] TranslatedExpression cast_array_to_array_of_another_type_in_llvm(
+            llvm::BasicBlock* block,
+            TranslatedExpression array_expression,
+            const ArrayType& source_array_type,
+            const ArrayType& dest_array_type
         );
 
     private:

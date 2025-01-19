@@ -47,6 +47,10 @@ TypeManipulationsLLVMTranslator::compute_cast_strategy(
     bool source_is_string = source.is<PrimitiveType>() && source.get<PrimitiveType>().type_name == "String";
     if (source_is_string && dest_is_raw_string) return CastStrategy::string_to_raw_string;
 
+    bool source_is_array = source.is<ArrayType>();
+    bool dest_is_array = dest.is<ArrayType>();
+    if (source_is_array && dest_is_array) return CastStrategy::array_to_array;
+
     return CastStrategy::noop;
 }
 
@@ -80,6 +84,11 @@ TranslatedExpression TypeManipulationsLLVMTranslator::cast_translated_expression
         }
         case CastStrategy::string_to_raw_string: {
             return cast_string_to_raw_string_in_llvm(block, expression);
+        }
+        case CastStrategy::array_to_array: {
+            const ArrayType& src_array_type = soruce.get<ArrayType>();
+            const ArrayType& dest_array_type = dest.get<ArrayType>();
+            return cast_array_to_array_of_another_type_in_llvm(block, expression, src_array_type, dest_array_type);
         }
     }
     return expression;
