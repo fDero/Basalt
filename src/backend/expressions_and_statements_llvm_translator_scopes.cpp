@@ -5,17 +5,9 @@
 
 #include "backend/expressions_and_statements_llvm_translator.hpp"
 #include "backend/callable_codeblocks_llvm_translator.hpp"
+#include "backend/type_manipulations_llvm_translator.hpp"
+#include "backend/llvm_wrappers.hpp"
 #include "errors/internal_errors.hpp"
-
-static llvm::BasicBlock* createBlockAfter(
-    llvm::LLVMContext& context, 
-    const std::string& block_name, 
-    llvm::BasicBlock* prevBlock
-) {
-    auto new_block = llvm::BasicBlock::Create(context, block_name, prevBlock->getParent());
-    new_block->moveAfter(prevBlock);
-    return new_block;
-}
 
 static void translate_block_to_llvm_with_final_jump(
     llvm::BasicBlock* block, 
@@ -117,11 +109,21 @@ llvm::BasicBlock* ExpressionsAndStatementsLLVMTranslator::translate_return_state
     llvm::BasicBlock* block,
     const Return& return_statement
 ) {
+    TypeManipulationsLLVMTranslator type_manipulations_llvm_translator(program_representation, type_definitions_llvm_translator);
     llvm::IRBuilder<> builder(block);
     if (return_statement.return_value.has_value()) {
         const Expression& ret = return_statement.return_value.value();
-        llvm::Value* returned_value = translate_expression_to_llvm(block, ret).value;
-        builder.CreateRet(returned_value);
+        TranslatedExpression translated_ret = translate_expression_to_llvm(block, ret);
+        auto provided_ret_type_opt = program_representation.resolve_expression_type(ret, scope_context.raw_scope_context);
+        assert_type_deduction_success_in_backend_layer(provided_ret_type_opt.has_value());
+        TypeSignature provided_ret_type = provided_ret_type_opt.value();
+        TranslatedExpression casted_ret_expr = type_manipulations_llvm_translator.cast_translated_expression_to_another_type_in_llvm(
+            block,
+            translated_ret,
+            provided_ret_type,
+            expected_return_type.value()
+        );
+        builder.CreateRet(casted_ret_expr.value);
         return block;
     }   
     builder.CreateRetVoid();

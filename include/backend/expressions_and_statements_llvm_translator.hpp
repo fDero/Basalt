@@ -27,6 +27,7 @@ class ExpressionsAndStatementsLLVMTranslator {
             TypeDefinitionsLLVMTranslator& type_definitions_llvm_translator,
             CallableCodeBlocksLLVMTranslator& callable_codeblocks_llvm_translator,
             TranslationAwareScopeContext scope_context,
+            std::optional<TypeSignature> expected_return_type,
             llvm::LLVMContext& context,
             llvm::Function* current_function,
             llvm::BasicBlock* loop_entry_block = nullptr,
@@ -104,6 +105,8 @@ class ExpressionsAndStatementsLLVMTranslator {
         TypeDefinitionsLLVMTranslator& type_definitions_llvm_translator;
         CallableCodeBlocksLLVMTranslator& callable_codeblocks_llvm_translator;
         TranslationAwareScopeContext scope_context;
+        std::optional<TypeSignature> expected_return_type;
+
         llvm::LLVMContext& context;
         llvm::BasicBlock* loop_entry_block;
         llvm::BasicBlock* loop_exit_block;

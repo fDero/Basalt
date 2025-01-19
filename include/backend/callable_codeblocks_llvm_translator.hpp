@@ -44,6 +44,7 @@ class CallableCodeBlocksLLVMTranslator {
     protected:
         [[nodiscard]] ExpressionsAndStatementsLLVMTranslator get_function_body_translator(
             TranslationAwareScopeContext scope_context,
+            std::optional<TypeSignature> expected_return_type,
             llvm::Function* llvm_function,
             llvm::BasicBlock* function_entry_block
         );

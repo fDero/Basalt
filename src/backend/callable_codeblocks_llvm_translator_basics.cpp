@@ -36,8 +36,12 @@ llvm::Function* CallableCodeBlocksLLVMTranslator::translate_function_definition_
         local_variables->insert({arg_id, alloca_inst});
     }
     TranslationAwareScopeContext scope_context(raw_scope_context, local_variables);
-    ExpressionsAndStatementsLLVMTranslator body_translator = 
-        get_function_body_translator(scope_context, llvm_function, entry_block);
+    ExpressionsAndStatementsLLVMTranslator body_translator = get_function_body_translator(
+        scope_context, 
+        function_definition->return_type, 
+        llvm_function, 
+        entry_block
+    );
     llvm::BasicBlock* exit_block = body_translator.translate_whole_codeblock_to_llvm(entry_block, function_definition->code);
     inject_return_statement_if_needed(exit_block, function_definition->return_type);
     return llvm_function;
@@ -76,6 +80,7 @@ llvm::Function* CallableCodeBlocksLLVMTranslator::translate_callable_code_block_
 ExpressionsAndStatementsLLVMTranslator 
 CallableCodeBlocksLLVMTranslator::get_function_body_translator(
     TranslationAwareScopeContext scope_context,
+    std::optional<TypeSignature> expected_return_type,
     llvm::Function* llvm_function,
     llvm::BasicBlock* function_entry_block
 ) {
@@ -84,6 +89,7 @@ CallableCodeBlocksLLVMTranslator::get_function_body_translator(
         type_definitions_llvm_translator,
         *this,
         scope_context,
+        expected_return_type,
         llvm_context,
         llvm_function,
         function_entry_block

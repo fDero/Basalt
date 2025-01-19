@@ -4,7 +4,7 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 #include "backend/callable_codeblocks_llvm_translator.hpp"
-#include "backend/type_operators_llvm_translator.hpp"
+#include "backend/type_manipulations_llvm_translator.hpp"
 #include "errors/internal_errors.hpp"
 
 llvm::Function* CallableCodeBlocksLLVMTranslator::translate_cfa_descriptor_to_llvm(
@@ -49,8 +49,8 @@ void CallableCodeBlocksLLVMTranslator::translate_cfa_recursive_adoption_to_llvm(
         llvm::BasicBlock* alternative_block = alternative_blocks[alternative_index];
         llvm::IRBuilder<> alternative_block_builder(alternative_block);
         llvm::Value* llvm_argument = llvm_function->getArg(recursive_plan.argument_index);
-        TypeOperatorsLLVMTranslator type_operators_llvm_translator(program_representation, type_definitions_llvm_translator);
-        TranslatedExpression is_operator = type_operators_llvm_translator.translate_is_operator_to_llvm_value(
+        TypeManipulationsLLVMTranslator type_operators_llvm_translator(program_representation, type_definitions_llvm_translator);
+        TranslatedExpression is_operator = type_operators_llvm_translator.test_concrete_type_of_union_in_llvm(
             alternative_block, 
             llvm_argument, 
             recursive_plan.alternatives[alternative_index]
@@ -76,22 +76,27 @@ void CallableCodeBlocksLLVMTranslator::translate_cfa_direct_adoption_to_llvm(
     auto ccblock = CallableCodeBlock(selected_concrete_function, program_representation);
     llvm::Function* concrete_function = translate_callable_code_block_to_llvm(ccblock);
     std::vector<llvm::Value*> arguments;
+    TypeManipulationsLLVMTranslator type_operators_llvm_translator(program_representation, type_definitions_llvm_translator);
     for (size_t arg_index = 0; arg_index < selected_concrete_function->arguments.size(); arg_index++) {
         const TypeSignature& expected_arg_type = selected_concrete_function->arguments[arg_index].arg_type;
-        TypeOperatorsLLVMTranslator type_operators_llvm_translator(program_representation, type_definitions_llvm_translator);
-        llvm::Type* expected_arg_llvm_type = type_definitions_llvm_translator.translate_typesignature_to_llvm_type(expected_arg_type);
-        TranslatedExpression as_operator = type_operators_llvm_translator.translate_as_operator_to_llvm_value(
+        TranslatedExpression cast_result = type_operators_llvm_translator.cast_translated_expression_to_another_type_in_llvm(
             llvm_builder.GetInsertBlock(), 
-            llvm_function->getArg(arg_index),
-            expected_arg_llvm_type, 
+            llvm_function->getArg(arg_index), 
+            cfa_plan_descriptor.arg_types[arg_index],
             expected_arg_type
         );
-        arguments.push_back(as_operator.value);
+        arguments.push_back(cast_result.value);
     }
-    llvm::Value* return_value = llvm_builder.CreateCall(concrete_function, arguments);
-    if (cfa_plan_descriptor.return_type.has_value()) {
-        llvm_builder.CreateRet(return_value);
+    TranslatedExpression return_value = llvm_builder.CreateCall(concrete_function, arguments);
+    if (!cfa_plan_descriptor.return_type.has_value()) {
+        llvm_builder.CreateRetVoid();
         return;
     }
-    llvm_builder.CreateRetVoid();
+    TranslatedExpression casted_ret = type_operators_llvm_translator.cast_translated_expression_to_another_type_in_llvm(
+        llvm_builder.GetInsertBlock(), 
+        return_value, 
+        selected_concrete_function->return_type.value(),
+        cfa_plan_descriptor.return_type.value()
+    );
+    llvm_builder.CreateRet(casted_ret.value);
 }

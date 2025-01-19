@@ -31,6 +31,13 @@ class TypeDefinitionsLLVMTranslator {
         [[nodiscard]] llvm::Type* translate_slice_type_to_llvm_type(const SliceType& slice_type);
         [[nodiscard]] llvm::Type* translate_pointer_type_to_llvm_type(const PointerType& pointer_type);
 
+        [[nodiscard]] llvm::Type* get_int_llvm_type();
+        [[nodiscard]] llvm::Type* get_float_llvm_type();
+        [[nodiscard]] llvm::Type* get_char_llvm_type();
+        [[nodiscard]] llvm::Type* get_bool_llvm_type();
+        [[nodiscard]] llvm::Type* get_string_llvm_type();
+        [[nodiscard]] llvm::Type* get_raw_string_llvm_type();
+
         [[nodiscard]] size_t compute_header_unaware_typesignature_memory_footprint(const TypeSignature& typesignature);
         [[nodiscard]] size_t compute_header_unaware_inline_union_memory_footprint(const InlineUnion& inline_union);
         [[nodiscard]] size_t compute_header_unaware_named_union_memory_footprint(const UnionDefinition& inline_union);

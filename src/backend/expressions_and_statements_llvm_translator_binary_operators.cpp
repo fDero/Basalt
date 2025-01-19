@@ -6,7 +6,7 @@
 #include "frontend/syntax.hpp"
 #include "backend/expressions_and_statements_llvm_translator.hpp"
 #include "backend/callable_codeblocks_llvm_translator.hpp"
-#include "backend/type_operators_llvm_translator.hpp"
+#include "backend/type_manipulations_llvm_translator.hpp"
 #include "errors/internal_errors.hpp"
 
 TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_is_operator_to_llvm(
@@ -14,8 +14,8 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_is_operat
     const TypeOperator& is_operator
 ) {
     TranslatedExpression union_expression = translate_expression_to_llvm(block, is_operator.expression);
-    TypeOperatorsLLVMTranslator type_operators_llvm_translator(program_representation, type_definitions_llvm_translator);
-    return type_operators_llvm_translator.translate_is_operator_to_llvm_value(block, union_expression, is_operator.typesignature);
+    TypeManipulationsLLVMTranslator type_operators_llvm_translator(program_representation, type_definitions_llvm_translator);
+    return type_operators_llvm_translator.test_concrete_type_of_union_in_llvm(block, union_expression, is_operator.typesignature);
 }
 
 TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_as_operator_to_llvm(
@@ -23,9 +23,16 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_as_operat
     const TypeOperator& as_operator
 ) {
     TranslatedExpression union_expression = translate_expression_to_llvm(block, as_operator.expression);
-    TypeOperatorsLLVMTranslator type_operators_llvm_translator(program_representation, type_definitions_llvm_translator);
-    llvm::Type* llvm_type_to_cast_to = type_definitions_llvm_translator.translate_typesignature_to_llvm_type(as_operator.typesignature);
-    return type_operators_llvm_translator.translate_as_operator_to_llvm_value(block, union_expression, llvm_type_to_cast_to, as_operator.typesignature);
+    TypeManipulationsLLVMTranslator type_operators_llvm_translator(program_representation, type_definitions_llvm_translator);
+    auto soruce_type_opt = program_representation.resolve_expression_type(as_operator.expression, scope_context.raw_scope_context);
+    assert_type_deduction_success_in_backend_layer(soruce_type_opt.has_value());
+    TypeSignature soruce_type = soruce_type_opt.value();
+    return type_operators_llvm_translator.cast_translated_expression_to_another_type_in_llvm(
+        block, 
+        union_expression, 
+        soruce_type, 
+        as_operator.typesignature
+    );
 }
 
 TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_plus_binary_operator_to_llvm(

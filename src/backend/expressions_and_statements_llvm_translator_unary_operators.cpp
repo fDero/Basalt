@@ -6,7 +6,7 @@
 #include "frontend/syntax.hpp"
 #include "backend/expressions_and_statements_llvm_translator.hpp"
 #include "backend/callable_codeblocks_llvm_translator.hpp"
-#include "backend/type_operators_llvm_translator.hpp"
+#include "backend/type_manipulations_llvm_translator.hpp"
 #include "errors/internal_errors.hpp"
 
 TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_boolean_not_to_llvm(

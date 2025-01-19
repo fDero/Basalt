@@ -5,30 +5,8 @@
 
 #include "backend/expressions_and_statements_llvm_translator.hpp"
 #include "backend/callable_codeblocks_llvm_translator.hpp"
+#include "backend/llvm_wrappers.hpp"
 #include "errors/internal_errors.hpp"
-
-static llvm::Value* get_llvm_address(
-    llvm::IRBuilder<>& builder,
-    const TranslatedExpression& expr
-) {
-    llvm::Value* address = expr.address;
-    if (address == nullptr) {
-        address = builder.CreateAlloca(expr.value->getType());
-        builder.CreateStore(expr.value, address);
-    }
-    return address;
-}
-
-static llvm::Value* create_array_gep(
-    llvm::IRBuilder<>& builder,
-    llvm::Value* proper_array_address_not_ptr,
-    llvm::Value* index
-) {
-    std::vector<llvm::Value*> indices;
-    indices.push_back(llvm::ConstantInt::get(builder.getInt32Ty(), 0));
-    indices.push_back(index);
-    return builder.CreateGEP(proper_array_address_not_ptr, indices);
-}
 
 TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_square_bracket_access_to_llvm(
     llvm::BasicBlock* block,
