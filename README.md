@@ -1,17 +1,66 @@
-![license: MIT](https://img.shields.io/badge/license-MIT-blue)
-![version: pre-release](https://img.shields.io/badge/version-pre--release-red)
 
-# Basalt
-This repository hosts an interpreter for the Basalt programming language. In the future, 
-the goal is to evolve this project into an all-in-one bundle made of an interpreter, a compiler, and a debugger.
-Basalt is designed to be compiled directly to machine code, and offers all the features a low level language would, 
-while still being able to be interpreted like languages like Python or Ruby (enhancing portability, 
-and reducing wasted time by removing the need to perform a full compilation of your code-base just to run unit-tests).
+<center>
 
-### Building from source
-In order to build Basalt from source, `conan`, `cmake` and `g++` must be installed on your machine.
-Assuming such tools are indeed installed on the host machine, running the following command will download 
-dependencies, setup and start the build.
+![license](https://img.shields.io/badge/license-MIT-blue)
+![version](https://img.shields.io/badge/version-pre--release-purple)
+
+<h1><b><i><font size="15">>_Basalt</font></i></b></h1>
+
+Compiler for the *Basalt programming language*, a low level,
+statically typed language with manual memory management which has been designed for system-programming.
+
+</center>
+
+# Language Overview
+Basalt is a *C-like* language. Just as you would expect, the execution starts from a function called
+`main`. A basic hello-world example program in Basalt would look like this:
+
+```basalt
+package main;
+
+func main() {
+    console::print("Hello World!")
+}
+```
+
+The Basalt programming language offers the following features:
+
+- function overloading
+- native union support
+- pseudo-polimorfism based on common APIs over every member of a given union
+- generics (implemented the C++ way)
+- native typesystem support for dynamic arrays (slices)
+- manual memory management
+
+# Compiler features
+The Basalt compiler is itself powered by the *llvm compiler infrastructure*. It's capable of emitting
+object files (`.o`), assembly (`.s`) files and llvm-ir files (`.ll`) files as the compilation output. It's
+also capable of running code directly via just-in-time compilation (jit).
+
+Here's an example of how you can check for errors in your code using the `basalt` command
+```bash
+basalt typecheck -i src/*.basalt
+```
+
+Here's an example of how you can compile code using the `basalt` command
+```bash
+basalt compile -i src/*.basalt -o myprogram.o
+```
+
+Here's an example of how you can run your code directly using the `basalt` command
+```bash
+basalt run -i src/*.basalt
+```
+
+# Install / Build
+Regardless of your operating-system, builing from source will require `g++`, `cmake`, `conan` to be
+installed on your machine. Such tools are needed to download and build dependencies (LLVM, libxml2, gtest) and
+setup an incremental build enviroment.
+
+**notice:** conan versions prior to the `2.8.1` might not be able to correctly download and install the
+necessary dependencies for the project. Try to upgrade it before proceeding.
+
+### Build (Linux / MacOs)
 ```bash
 $ git clone https://www.github.com/fDero/Basalt
 $ cd Basalt
@@ -19,72 +68,22 @@ $ conan install . --output-folder=dependencies --build=missing
 $ cmake -S . -B build -DCMAKE_BUILD_TYPE=release
 $ cmake --build build --target basalt
 ```
-**notice:** conan installations prior to the `2.8.1` version might not be able to correctly download and install the
-necessary dependencies for the project. Try to upgrade it before proceeding.
 
-**notice:** When building on **Windows**, you might need to replace `cmake -S . -B build -DCMAKE_BUILD_TYPE=release` with
-`cmake -S . -B build -DCMAKE_BUILD_TYPE=release -G "MinGW Makefiles" -DCMAKE_CXX_COMPILER=g++`, make sure to remove the directories `build` and `out` before running the command again.
-
-**notice:** If you want to run the unit-tests, run the command `cmake --build build --target basalt_unit_tests`. This will create
-a binary called `basalt_unit_tests` that will perform the tests when executed. Tests are written using the
-gtest (googletest) unit-testing framework. Keep in mind that compilation will take much longer when compiling
-the test-suite, since gtest is a framework that heavily relies on the use of macros.
-
-
-### Hello World
-To make your first hello-world program in Basalt, all it takes is to create a file with the `.bt` extension 
-(in this case, it will be called `hello.bt`) containing the following code:
-```go
-package main;
-
-func main() {
-    console::println("Hello, World!");
-}
+### Build (Windows)
+```ps
+> git clone https://www.github.com/fDero/Basalt
+> cd Basalt
+> conan install . --output-folder=dependencies --build=missing
+> cmake -S . -B build -DCMAKE_BUILD_TYPE=release -G "MinGW Makefiles" -DCMAKE_CXX_COMPILER=g++
+> cmake --build build --target basalt
 ```
 
-Once you have the file set up, to run it just use the `basalt -r hello.bt` command in console.
-```bash
-$ basalt -r hello.bt
-Hello, World!
+### Install with the snap package manager (Ubuntu/Debian-based Linux distros)
+```
+snap install basalt
 ```
 
-### Types
-Basalt is a strictly typed language, it has a C-style type system with 
-`Int`, `Float`, `Bool`, `Char`, `String` as primitive types. 
-```go
-package main;
-
-func main() {
-    var x : Int = 6;
-    var y : Float = 9.4;
-    var f : Bool = false;
-    var c : Char = 'z';
-    var s : String = "hello world";
-}
-```
-
-### Recursion
-Basalt supports recursion just like any other language, and a good way to show it is with the classic 
-fibonacci example, consider the following code:
-```go
-package main;
-
-func fibo(n : Int) -> Int {
-    if (n < 2) {
-        return 1;
-    }
-    else {
-        return fibo(n-1) + fibo(n-2);
-    }
-}
-
-func main() {
-    console::println(fibo(6));
-}
-```
-assuming the file is called `fibo.bt`, then it can be executed just like we did earlier with the hello-world example, 
-using the `basalt -r` command.
-```bash
-$ basalt -r fibo.bt
-21
-```
+### Install with .msi installer (Windows)
+Check the releases tab of the github page, you should find a .msi installer
+to download. Such installer will correctly install a statically linked windows-x86
+pre-built instance of basalt in `%ProgramFiles%\basalt\<version>`
