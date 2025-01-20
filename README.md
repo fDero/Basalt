@@ -1,21 +1,15 @@
-
-<div align="center">
-
 ![license](https://img.shields.io/badge/license-MIT-blue)
 ![version](https://img.shields.io/badge/version-pre--release-purple)
 
-<h1><b><i>>_Basalt</i></b></h1>
-
+# Basalt
 Compiler for the *Basalt programming language*, a low level,
 statically typed language with manual memory management which has been designed for system-programming.
 
-</div>
-
-# Language Overview
+## Language Overview
 Basalt is a *C-like* language. Just as you would expect, the execution starts from a function called
 `main`. A basic hello-world example program in Basalt would look like this:
 
-```basalt
+```go
 package main;
 
 func main() {
@@ -32,7 +26,7 @@ The Basalt programming language offers the following features:
 - native typesystem support for dynamic arrays (slices)
 - manual memory management
 
-# Compiler features
+## Compiler features
 The Basalt compiler is itself powered by the *llvm compiler infrastructure*. It's capable of emitting
 object files (`.o`), assembly (`.s`) files and llvm-ir files (`.ll`) files as the compilation output. It's
 also capable of running code directly via just-in-time compilation (jit).
@@ -52,7 +46,7 @@ Here's an example of how you can run your code directly using the `basalt` comma
 basalt run -i src/*.basalt
 ```
 
-# Install / Build
+## Install / Build
 Regardless of your operating-system, builing from source will require `g++`, `cmake`, `conan` to be
 installed on your machine. Such tools are needed to download and build dependencies (LLVM, libxml2, gtest) and
 setup an incremental build enviroment.
@@ -60,7 +54,7 @@ setup an incremental build enviroment.
 **notice:** conan versions prior to the `2.8.1` might not be able to correctly download and install the
 necessary dependencies for the project. Try to upgrade it before proceeding.
 
-### Build (Linux / MacOs)
+#### Build (Linux / MacOs)
 ```bash
 $ git clone https://www.github.com/fDero/Basalt
 $ cd Basalt
@@ -69,7 +63,7 @@ $ cmake -S . -B build -DCMAKE_BUILD_TYPE=release
 $ cmake --build build --target basalt
 ```
 
-### Build (Windows)
+#### Build (Windows)
 ```ps
 > git clone https://www.github.com/fDero/Basalt
 > cd Basalt
@@ -78,12 +72,12 @@ $ cmake --build build --target basalt
 > cmake --build build --target basalt
 ```
 
-### Install with the snap package manager (Ubuntu/Debian-based Linux distros)
+#### Install with the snap package manager (Ubuntu/Debian-based Linux distros)
 ```
 snap install basalt
 ```
 
-### Install with .msi installer (Windows)
+#### Install with .msi installer (Windows)
 Check the releases tab of the github page, you should find a .msi installer
 to download. Such installer will correctly install a statically linked windows-x86
 pre-built instance of basalt in `%ProgramFiles%\basalt\<version>`
