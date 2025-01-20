@@ -39,10 +39,13 @@ class ExpressionTypeDeducer {
         [[nodiscard]] std::optional<TypeSignature> deduce_boolean_not_operator_type(const UnaryOperator& unary_op);
         [[nodiscard]] std::optional<TypeSignature> deduce_math_prefix_operator_type(const UnaryOperator& unary_op);
 
-        [[nodiscard]] std::optional<TypeSignature> deduce_type_from_comparison_operator(const BinaryOperator& unary_op);
+        [[nodiscard]] std::optional<TypeSignature> deduce_type_from_eq_binary_operator(const BinaryOperator& unary_op);
+        [[nodiscard]] std::optional<TypeSignature> deduce_type_from_ord_binary_operator(const BinaryOperator& unary_op);
+        [[nodiscard]] std::optional<TypeSignature> deduce_type_from_logical_binary_operator(const BinaryOperator& unary_op);
+        [[nodiscard]] std::optional<TypeSignature> deduce_type_from_math_binary_operator(const BinaryOperator& unary_op);        
+        
         [[nodiscard]] std::optional<TypeSignature> deduce_type_from_square_brackets_access(const Expression& square_brackets_access);
         [[nodiscard]] std::optional<TypeSignature> deduce_type_from_dot_member_access(const Expression& dot_member_access);
-        [[nodiscard]] std::optional<TypeSignature> deduce_type_from_math_binary_operator(const BinaryOperator& unary_op);        
 
     private:
         TypeDefinitionsRegister& type_definitions_register;

@@ -33,7 +33,7 @@ std::optional<TypeSignature> ExpressionTypeDeducer::deduce_boolean_not_operator_
     if (!operand_type.has_value()) {
         return std::nullopt;
     }
-    ensure_typesignature_is_boolean(operand_type.value());
+    ensure_typesignature_is_boolean(operand_type);
     return operand_type.value();
 }
 
@@ -46,18 +46,52 @@ std::optional<TypeSignature> ExpressionTypeDeducer::deduce_math_prefix_operator_
     return operand_type.value(); 
 }
 
-std::optional<TypeSignature> ExpressionTypeDeducer::deduce_type_from_comparison_operator(const BinaryOperator& expression) {
+std::optional<TypeSignature> ExpressionTypeDeducer::deduce_type_from_eq_binary_operator(const BinaryOperator& expression) {
+    std::optional<TypeSignature> left_operand_type = deduce_expression_type(expression.left_operand);
+    std::optional<TypeSignature> right_operand_type = deduce_expression_type(expression.right_operand);
+    ensure_typesignature_is_non_string_primitive_or_generic(left_operand_type);
+    ensure_typesignature_is_non_string_primitive_or_generic(right_operand_type);
+    bool deduced = left_operand_type.has_value() && right_operand_type.has_value();
+    ensure_numeric_or_generics_types_are_equal(left_operand_type, right_operand_type);
+    return deduced
+        ? deduce_primtive_type("Bool", expression) 
+        : std::nullopt;
+}
+
+std::optional<TypeSignature> ExpressionTypeDeducer::deduce_type_from_ord_binary_operator(const BinaryOperator& expression) {
+    std::optional<TypeSignature> left_operand_type = deduce_expression_type(expression.left_operand);
+    std::optional<TypeSignature> right_operand_type = deduce_expression_type(expression.right_operand);
+    ensure_typesignature_is_either_numeric_or_generic(left_operand_type);
+    ensure_typesignature_is_either_numeric_or_generic(right_operand_type);
+    ensure_numeric_or_generics_types_are_equal(left_operand_type, right_operand_type);
+    bool deduced = left_operand_type.has_value() && right_operand_type.has_value();
+    return deduced
+        ? deduce_primtive_type("Bool", expression) 
+        : std::nullopt;
+}
+
+std::optional<TypeSignature> ExpressionTypeDeducer::deduce_type_from_logical_binary_operator(const BinaryOperator& expression) {
     std::optional<TypeSignature> left_operand_type = deduce_expression_type(expression.left_operand);
     std::optional<TypeSignature> right_operand_type = deduce_expression_type(expression.right_operand);
     if (!left_operand_type.has_value() || !right_operand_type.has_value()) {
         return deduce_primtive_type("Bool", expression);    
     }
     AssignmentTypeChecker assignment_type_checker(type_definitions_register, project_file_structure);
-    bool lx_compatible_with_rx = assignment_type_checker.validate_assignment(left_operand_type.value(), right_operand_type.value());
-    bool rx_compatible_with_lx = assignment_type_checker.validate_assignment(right_operand_type.value(), left_operand_type.value());
-    ensure_typesignatures_are_mutually_compatible_for_structure_comparison(lx_compatible_with_rx, rx_compatible_with_lx,
-            expression);
+    ensure_typesignature_is_boolean(left_operand_type);
+    ensure_typesignature_is_boolean(left_operand_type);
     return deduce_primtive_type("Bool", expression);
+}
+
+std::optional<TypeSignature> ExpressionTypeDeducer::deduce_type_from_math_binary_operator(const BinaryOperator& expression) {
+    std::optional<TypeSignature> left_operand_type = deduce_expression_type(expression.left_operand);
+    std::optional<TypeSignature> right_operand_type = deduce_expression_type(expression.right_operand);
+    ensure_typesignature_is_either_numeric_or_generic(left_operand_type);
+    ensure_typesignature_is_either_numeric_or_generic(right_operand_type);
+    ensure_numeric_or_generics_types_are_equal(left_operand_type, right_operand_type);
+    bool deduced = left_operand_type.has_value() && right_operand_type.has_value();
+    return deduced
+        ? std::optional<TypeSignature>(left_operand_type.value()) 
+        : std::nullopt;
 }
 
 std::optional<TypeSignature> ExpressionTypeDeducer::deduce_type_from_square_brackets_access(const Expression& square_brackets_access_expr) {
@@ -65,9 +99,7 @@ std::optional<TypeSignature> ExpressionTypeDeducer::deduce_type_from_square_brac
     const SquareBracketsAccess& square_brackets_access = square_brackets_access_expr.get<SquareBracketsAccess>();
     std::optional<TypeSignature> left_operand_type = deduce_expression_type(square_brackets_access.storage);
     std::optional<TypeSignature> right_operand_type = deduce_expression_type(square_brackets_access.index);
-    if (left_operand_type.has_value()) {
-        ensure_typesignature_is_int(right_operand_type.value());
-    }
+    ensure_typesignature_is_int(right_operand_type);
     if (!left_operand_type.has_value()) {
         return std::nullopt;
     }
@@ -102,20 +134,4 @@ std::optional<TypeSignature> ExpressionTypeDeducer::deduce_type_from_dot_member_
         }
     }
     throw_no_such_struct_field(member_name, struct_type_definition, dot_member_access);
-}
-
-std::optional<TypeSignature> ExpressionTypeDeducer::deduce_type_from_math_binary_operator(const BinaryOperator& expression) {
-    std::optional<TypeSignature> left_operand_type = deduce_expression_type(expression.left_operand);
-    std::optional<TypeSignature> right_operand_type = deduce_expression_type(expression.right_operand);
-    if (left_operand_type.has_value()) {
-        ensure_typesignature_is_either_numeric_or_generic(left_operand_type.value());
-    }
-    if (right_operand_type.has_value()) {
-        ensure_typesignature_is_either_numeric_or_generic(right_operand_type.value());
-    }
-    if (left_operand_type.has_value() && right_operand_type.has_value()) {
-        ensure_numeric_or_generics_types_are_equal(left_operand_type.value(), right_operand_type.value());
-        return right_operand_type;
-    }
-    return std::nullopt;
 }

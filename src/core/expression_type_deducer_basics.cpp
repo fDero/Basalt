@@ -113,15 +113,15 @@ std::optional<TypeSignature> ExpressionTypeDeducer::deduce_type_from_binary_oper
     assert_operator_kind_was_found(operator_kind_search_outcome, operator_kinds);
     OperatorKind operator_kind = operator_kind_search_outcome->second;
     switch (operator_kind) {
-        case OperatorKind::or_operator:               return deduce_type_from_comparison_operator(binary_operator);
-        case OperatorKind::and_operator:              return deduce_type_from_comparison_operator(binary_operator);
-        case OperatorKind::xor_operator:              return deduce_type_from_comparison_operator(binary_operator);
-        case OperatorKind::equal:                     return deduce_type_from_comparison_operator(binary_operator);
-        case OperatorKind::not_equal:                 return deduce_type_from_comparison_operator(binary_operator);
-        case OperatorKind::less_then:                 return deduce_type_from_comparison_operator(binary_operator);
-        case OperatorKind::greater_then:              return deduce_type_from_comparison_operator(binary_operator);
-        case OperatorKind::less_then_or_equal:        return deduce_type_from_comparison_operator(binary_operator);
-        case OperatorKind::greater_then_or_equal:     return deduce_type_from_comparison_operator(binary_operator);
+        case OperatorKind::or_operator:               return deduce_type_from_logical_binary_operator(binary_operator);
+        case OperatorKind::and_operator:              return deduce_type_from_logical_binary_operator(binary_operator);
+        case OperatorKind::xor_operator:              return deduce_type_from_logical_binary_operator(binary_operator);
+        case OperatorKind::equal:                     return deduce_type_from_eq_binary_operator(binary_operator);
+        case OperatorKind::not_equal:                 return deduce_type_from_eq_binary_operator(binary_operator);
+        case OperatorKind::less_then:                 return deduce_type_from_ord_binary_operator(binary_operator);
+        case OperatorKind::greater_then:              return deduce_type_from_ord_binary_operator(binary_operator);
+        case OperatorKind::less_then_or_equal:        return deduce_type_from_ord_binary_operator(binary_operator);
+        case OperatorKind::greater_then_or_equal:     return deduce_type_from_ord_binary_operator(binary_operator);
         case OperatorKind::plus_operator:             return deduce_type_from_math_binary_operator(binary_operator);
         case OperatorKind::minus_operator:            return deduce_type_from_math_binary_operator(binary_operator);
         case OperatorKind::mul_operator:              return deduce_type_from_math_binary_operator(binary_operator);

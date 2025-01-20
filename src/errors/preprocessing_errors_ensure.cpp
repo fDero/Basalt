@@ -81,7 +81,11 @@ void ensure_object_is_mutable(
     }
 }
 
-void ensure_typesignature_is_int(const TypeSignature& type_signature) {
+void ensure_typesignature_is_int(const std::optional<TypeSignature>& type_signature_opt) {
+    if (!type_signature_opt.has_value()) {
+        return;
+    }
+    const TypeSignature& type_signature = type_signature_opt.value();
     if (!type_signature.is<PrimitiveType>() || type_signature.get<PrimitiveType>().type_name != "Int") {
         throw InternalError("type must be Int");
     }
@@ -132,9 +136,14 @@ void ensure_template_types_are_equal(
 }
 
 void ensure_numeric_or_generics_types_are_equal(
-    const TypeSignature& left_operand_type,
-    const TypeSignature& right_operand_type
-) {
+    const std::optional<TypeSignature>& left_operand_type_opt,
+    const std::optional<TypeSignature>& right_operand_type_opt
+) { 
+    if (!left_operand_type_opt.has_value() || !right_operand_type_opt.has_value()) {
+        return;
+    }
+    const TypeSignature& left_operand_type = left_operand_type_opt.value();
+    const TypeSignature& right_operand_type = right_operand_type_opt.value();   
     if (left_operand_type.is<PrimitiveType>() && right_operand_type.is<PrimitiveType>()) {
         ensure_numeric_types_are_equal(left_operand_type, right_operand_type);
         return;
@@ -146,7 +155,11 @@ void ensure_numeric_or_generics_types_are_equal(
     throw std::runtime_error("types are not equal");
 }
 
-void ensure_typesignature_is_boolean(const TypeSignature& type_signature) {
+void ensure_typesignature_is_boolean(const std::optional<TypeSignature>& type_signature_opt) {
+    if (!type_signature_opt.has_value()) {
+        return;
+    }
+    const TypeSignature& type_signature = type_signature_opt.value();
     if (!type_signature.is<PrimitiveType>() || type_signature.get<PrimitiveType>().type_name != "Bool") {
         throw InternalError("type must be Bool");
     }
@@ -162,7 +175,27 @@ void ensure_typesignature_is_numeric(const TypeSignature& type_signature) {
     }
 }
 
-void ensure_typesignature_is_either_numeric_or_generic(const TypeSignature& type_signature) {
+void ensure_typesignature_is_non_string_primitive_or_generic(const std::optional<TypeSignature>& type_signature_opt) {
+    if (!type_signature_opt.has_value()) {
+        return;
+    }
+    const TypeSignature& type_signature = type_signature_opt.value();
+    if (!type_signature.is<PrimitiveType>() && !type_signature.is<TemplateType>()) {
+        throw InternalError("type must be non-string primitive or generic");
+    }
+    if (type_signature.is<PrimitiveType>()) {
+        const PrimitiveType& primitive_type = type_signature.get<PrimitiveType>();
+        if (primitive_type.type_name == "String") {
+            throw InternalError("type must be non-string primitive or generic");
+        }
+    }
+}
+
+void ensure_typesignature_is_either_numeric_or_generic(const std::optional<TypeSignature>& type_signature_opt) {
+    if (!type_signature_opt.has_value()) {
+        return;
+    }
+    const TypeSignature& type_signature = type_signature_opt.value();
     if (!type_signature.is<PrimitiveType>() && !type_signature.is<TemplateType>()) {
         throw InternalError("type must be numeric or generic");
     }

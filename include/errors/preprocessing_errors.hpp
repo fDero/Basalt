@@ -141,11 +141,21 @@ void ensure_operator_kind_was_found(
     const std::map<std::string, OperatorKind>& operator_kinds
 );
 
-void ensure_typesignature_is_numeric(const TypeSignature& type_signature);
+void ensure_typesignature_is_numeric(
+    const TypeSignature& type_signature
+);
 
-void ensure_typesignature_is_either_numeric_or_generic(const TypeSignature& type_signature);
+void ensure_typesignature_is_non_string_primitive_or_generic(
+    const std::optional<TypeSignature>& type_signature_opt
+);
 
-void ensure_typesignature_is_boolean(const TypeSignature& type_signature);
+void ensure_typesignature_is_either_numeric_or_generic(
+    const std::optional<TypeSignature>& type_signature_opt
+);
+
+void ensure_typesignature_is_boolean(
+    const std::optional<TypeSignature>& type_signature_opt
+);
 
 [[noreturn]] void throw_cannot_access_square_brackets_on_type(
     const TypeSignature& left_operand_type,
@@ -160,7 +170,7 @@ void ensure_typesignature_is_boolean(const TypeSignature& type_signature);
 
 [[noreturn]] void throw_bad_assignment_target(const Expression& expression);
 
-void ensure_typesignature_is_int(const TypeSignature& type_signature);
+void ensure_typesignature_is_int(const std::optional<TypeSignature>& type_signature_opt);
 
 void ensure_typesignature_is_either_array_or_slice_for_square_brackets_access(
     const TypeSignature& type_signature
@@ -183,8 +193,8 @@ void ensure_template_types_are_equal(
 );
 
 void ensure_numeric_or_generics_types_are_equal(
-    const TypeSignature& left_operand_type,
-    const TypeSignature& right_operand_type
+    const std::optional<TypeSignature>& left_operand_type_opt,
+    const std::optional<TypeSignature>& right_operand_type_opt
 );
 
 void assert_number_of_arguments_match(
