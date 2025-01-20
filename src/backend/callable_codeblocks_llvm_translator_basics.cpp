@@ -39,6 +39,7 @@ llvm::Function* CallableCodeBlocksLLVMTranslator::translate_function_definition_
     ExpressionsAndStatementsLLVMTranslator body_translator = get_function_body_translator(
         scope_context, 
         function_definition->return_type, 
+        llvm_module,
         llvm_function, 
         entry_block
     );
@@ -81,6 +82,7 @@ ExpressionsAndStatementsLLVMTranslator
 CallableCodeBlocksLLVMTranslator::get_function_body_translator(
     TranslationAwareScopeContext scope_context,
     std::optional<TypeSignature> expected_return_type,
+    llvm::Module& llvm_module,
     llvm::Function* llvm_function,
     llvm::BasicBlock* function_entry_block
 ) {
@@ -91,6 +93,7 @@ CallableCodeBlocksLLVMTranslator::get_function_body_translator(
         scope_context,
         expected_return_type,
         llvm_context,
+        llvm_module,
         llvm_function,
         function_entry_block
     );

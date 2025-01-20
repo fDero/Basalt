@@ -27,7 +27,6 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_floating_
     llvm::BasicBlock* block, 
     const FloatLiteral& expr
 ) {
-   
     return llvm::ConstantFP::get(llvm::Type::getDoubleTy(context), expr.value);
 }
 
@@ -42,7 +41,27 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_string_li
     llvm::BasicBlock* block,
     const StringLiteral& expr
 ) {
-    return llvm::ConstantDataArray::getString(context, expr.value);
+    auto array_of_char_val = llvm::ConstantDataArray::getString(context, expr.value);
+    auto global_string_var = new llvm::GlobalVariable(
+        llvm_module,
+        array_of_char_val->getType(),
+        true,
+        llvm::GlobalValue::PrivateLinkage,
+        array_of_char_val,
+        expr.value
+    );
+    llvm::Type* char_ptr_type = type_definitions_llvm_translator.get_char_llvm_type()->getPointerTo();
+    llvm::Type* string_type = type_definitions_llvm_translator.get_string_llvm_type();
+    auto ptr_to_first_char = llvm::ConstantExpr::getBitCast(global_string_var, char_ptr_type);
+    llvm::IRBuilder<> builder(block);
+    llvm::Value* string_address = builder.CreateAlloca(string_type);
+    llvm::Value* string_len_address = builder.CreateStructGEP(string_type, string_address, 0);
+    llvm::Value* string_data_address = builder.CreateStructGEP(string_type, string_address, 1);
+    llvm::Value* string_len = llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), expr.value.size());
+    builder.CreateStore(string_len, string_len_address);
+    builder.CreateStore(ptr_to_first_char, string_data_address);
+    llvm::Value* string_value = builder.CreateLoad(string_address);
+    return {string_value, string_address};
 }
 
 TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_identifier_to_llvm(
