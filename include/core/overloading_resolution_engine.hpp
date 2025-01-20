@@ -37,13 +37,24 @@ class OverloadingResolutionEngine : public CachingAwareRegister {
 
     protected:
         using CachingAwareRegister::get_cache_search_key_for_func_def_retrieval_from_func_call;
+        using MatchedFunctionData = std::pair<FunctionDefinition::Ref, GenericSubstitutionRule::Set::Ref>;
 
-    private:
+        [[nodiscard]] std::vector<MatchedFunctionData> search_for_best_matches(
+            const FunctionCall& function_call,
+            const std::vector<TypeSignature>& arg_types
+        );
+
+        [[nodiscard]] std::string get_new_instantiated_function_name(
+            const FunctionDefinition& function_definition,
+            GenericSubstitutionRule::Set::Ref generic_substitution_rules
+        );
+
         [[nodiscard]] FunctionDefinition::Ref cache_unaware_function_definition_retrieval(
             const FunctionCall& function_call, 
             const std::vector<TypeSignature>& arg_types
         );
 
+    private:
         FunctionOverloadsRegister& function_overloads_register;
         TypeDefinitionsRegister& type_definitions_register;
         ProjectFileStructure& project_file_structure;

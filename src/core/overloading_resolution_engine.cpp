@@ -36,7 +36,8 @@ FunctionDefinition::Ref OverloadingResolutionEngine::retrieve_function_definitio
     return func_def_ref;
 }
 
-FunctionDefinition::Ref OverloadingResolutionEngine::cache_unaware_function_definition_retrieval(
+std::vector<OverloadingResolutionEngine::MatchedFunctionData>
+OverloadingResolutionEngine::search_for_best_matches(
     const FunctionCall& function_call,
     const std::vector<TypeSignature>& arg_types
 ) {
@@ -60,15 +61,40 @@ FunctionDefinition::Ref OverloadingResolutionEngine::cache_unaware_function_defi
                 best_specificity_so_far = current_specificity;
             }
         }
+    } 
+    return best_maches_so_far;
+}
+
+std::string OverloadingResolutionEngine::get_new_instantiated_function_name(
+    const FunctionDefinition& function_definition,
+    GenericSubstitutionRule::Set::Ref generic_substitution_rules
+) {
+    if (generic_substitution_rules == nullptr || generic_substitution_rules->empty()) {
+        return function_definition.function_name;
     }
+    std::string new_function_name = function_definition.function_name + "<";
+    for (const GenericSubstitutionRule& rule : *generic_substitution_rules) {
+        new_function_name += type_definitions_register.get_fully_qualified_typesignature_name(rule.replacement) + ",";
+    }
+    new_function_name.back() = '>';
+    return new_function_name;
+}
+
+FunctionDefinition::Ref OverloadingResolutionEngine::cache_unaware_function_definition_retrieval(
+    const FunctionCall& function_call,
+    const std::vector<TypeSignature>& arg_types
+) {
+    std::vector<MatchedFunctionData> best_maches_so_far = search_for_best_matches(function_call, arg_types);
     ensure_no_multiple_ambiguous_candidate_function_overloads_have_been_found(best_maches_so_far);
     if (best_maches_so_far.empty()) {
         return nullptr;
     }
     const FunctionDefinition& best_match = *best_maches_so_far[0].first; 
-    GenericsInstantiationEngine generics_instantiation_engine(*best_maches_so_far[0].second);
+    const GenericSubstitutionRule::Set::Ref generic_substitution_rules = best_maches_so_far[0].second;
+    const std::string new_function_name = get_new_instantiated_function_name(best_match, generic_substitution_rules);
+    GenericsInstantiationEngine generics_instantiation_engine(*generic_substitution_rules);
     FunctionDefinition::Ref instanitated_func_def_ref = 
-        generics_instantiation_engine.instantiate_generic_function(best_match, best_match.function_name);
+        generics_instantiation_engine.instantiate_generic_function(best_match, new_function_name);
     return instanitated_func_def_ref;
 }
 

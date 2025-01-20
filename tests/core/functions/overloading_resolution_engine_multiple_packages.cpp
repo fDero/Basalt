@@ -142,7 +142,7 @@ TEST(Core, Simple_Overloading_Resolution_Of_Generic_Vs_Non_Generic_Function_In_M
     std::vector<TypeSignature> arg_types = { TypeSignatureFactory::Int, TypeSignatureFactory::Int };
     FunctionDefinition::Ref func_def_ref = overoad_resolver.retrieve_function_definition(func_call, arg_types);
     EXPECT_NE(func_def_ref, nullptr); // <-- type inference automatically infers the generic type
-    EXPECT_EQ(func_def_ref->function_name, "add");
+    EXPECT_EQ(func_def_ref->function_name, "add<Int>");
 }
 
 TEST(Core, Simple_Overloading_Resolution_Of_Generic_Vs_Non_Generic_Function_In_Multiple_Packages_V4) {
