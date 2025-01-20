@@ -1,15 +1,15 @@
 
-<center>
+<div align="center">
 
 ![license](https://img.shields.io/badge/license-MIT-blue)
 ![version](https://img.shields.io/badge/version-pre--release-purple)
 
-<h1><b><i><font size="15">>_Basalt</font></i></b></h1>
+<h1><b><i>>_Basalt</i></b></h1>
 
 Compiler for the *Basalt programming language*, a low level,
 statically typed language with manual memory management which has been designed for system-programming.
 
-</center>
+</div>
 
 # Language Overview
 Basalt is a *C-like* language. Just as you would expect, the execution starts from a function called
