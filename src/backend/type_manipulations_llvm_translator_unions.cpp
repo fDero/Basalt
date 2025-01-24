@@ -37,12 +37,18 @@ TranslatedExpression TypeManipulationsLLVMTranslator::cast_union_expression_to_a
 ) {
     llvm::Type* llvm_dest_type = type_definitions_llvm_translator.translate_typesignature_to_llvm_type(dest_type);
     llvm::IRBuilder<> builder(block);
-    llvm::Value* union_address = get_llvm_address(builder, union_expression);
-    llvm::Value* casted_union_address = builder.CreateBitCast(union_address, llvm_dest_type->getPointerTo());
-    llvm::Value* casted_union = builder.CreateLoad(casted_union_address);
-    return (union_expression.address == nullptr)
-        ? TranslatedExpression(casted_union)
-        : TranslatedExpression(casted_union, casted_union_address);
+    llvm::Value* src_union_address = get_llvm_address(builder, union_expression);
+    llvm::Value* src_union_header_address = builder.CreateStructGEP(src_union_address, 0);
+    llvm::Value* src_union_payload_address = builder.CreateStructGEP(src_union_address, 0);
+    llvm::Value* src_union_header = builder.CreateLoad(src_union_header_address);
+    llvm::Value* src_union_payload = builder.CreateLoad(src_union_payload_address);
+    llvm::Value* dest_union_address = builder.CreateAlloca(llvm_dest_type);
+    llvm::Value* dest_union_header_address = builder.CreateStructGEP(dest_union_address, 0);
+    llvm::Value* dest_union_payload_address = builder.CreateStructGEP(dest_union_address, 0);
+    builder.CreateStore(src_union_header, dest_union_header_address);
+    builder.CreateStore(src_union_payload, dest_union_payload_address);
+    llvm::Value* dest_union_value = builder.CreateLoad(dest_union_address);
+    return {dest_union_value, dest_union_address};
 }
 
 TranslatedExpression TypeManipulationsLLVMTranslator::cast_union_expression_to_one_of_its_alternatives_in_llvm(

@@ -1,6 +1,6 @@
 
 #include <gtest/gtest.h>
-#include "core/overloading_resolution_engine.hpp"
+#include "core/function_definitions_register.hpp"
 #include "core/type_definitions_register.hpp"
 #include "frontend/syntax.hpp"
 #include "errors/internal_errors.hpp"
@@ -67,8 +67,7 @@ ProjectFileStructure simple_project_with_both_generic_and_non_generic_func_overl
 TEST(Core, Simple_Overloading_Resolution_Of_Generic_Vs_Non_Generic_Function_In_Multiple_Packages_V1) {
     ProjectFileStructure& proj = simple_project_with_both_generic_and_non_generic_func_overloads_in_multiple_packages;
     TypeDefinitionsRegister type_register(proj);
-    FunctionOverloadsRegister func_register(proj);
-    OverloadingResolutionEngine overoad_resolver(func_register, type_register, proj);
+    FunctionDefinitionsRegister overoad_resolver(type_register, proj);
     FunctionCall func_call {
         Token { "add", "main.basalt", 1, 2, 5, Token::Type::text },
         {
@@ -87,8 +86,7 @@ TEST(Core, Simple_Overloading_Resolution_Of_Generic_Vs_Non_Generic_Function_In_M
 TEST(Core, Simple_Overloading_Resolution_Of_Generic_Vs_Non_Generic_Function_In_Multiple_Packages_V2) {
     ProjectFileStructure& proj = simple_project_with_both_generic_and_non_generic_func_overloads_in_multiple_packages;
     TypeDefinitionsRegister type_register(proj);
-    FunctionOverloadsRegister func_register(proj);
-    OverloadingResolutionEngine overoad_resolver(func_register, type_register, proj);
+    FunctionDefinitionsRegister overoad_resolver(type_register, proj);
     FunctionCall func_call {
         Token { "add", "main.basalt", 1, 2, 5, Token::Type::text },
         {
@@ -108,8 +106,7 @@ TEST(Core, Simple_Overloading_Resolution_Of_Generic_Vs_Non_Generic_Function_In_M
 TEST(Core, Simple_Overloading_Of_Non_Existing_Function_In_Multiple_Packages) {
     ProjectFileStructure& proj = simple_project_with_both_generic_and_non_generic_func_overloads_in_multiple_packages;
     TypeDefinitionsRegister type_register(proj);
-    FunctionOverloadsRegister func_register(proj);
-    OverloadingResolutionEngine overoad_resolver(func_register, type_register, proj);
+    FunctionDefinitionsRegister overoad_resolver(type_register, proj);
     FunctionCall func_call {
         Token { "min", "main.basalt", 1, 2, 5, Token::Type::text },
         {
@@ -128,8 +125,7 @@ TEST(Core, Simple_Overloading_Of_Non_Existing_Function_In_Multiple_Packages) {
 TEST(Core, Simple_Overloading_Resolution_Of_Generic_Vs_Non_Generic_Function_In_Multiple_Packages_V3) {
     ProjectFileStructure& proj = simple_project_with_both_generic_and_non_generic_func_overloads_in_multiple_packages;
     TypeDefinitionsRegister type_register(proj);
-    FunctionOverloadsRegister func_register(proj);
-    OverloadingResolutionEngine overoad_resolver(func_register, type_register, proj);
+    FunctionDefinitionsRegister overoad_resolver(type_register, proj);
     FunctionCall func_call {
         Token { "add", "main.basalt", 1, 2, 5, Token::Type::text },
         {
@@ -148,8 +144,7 @@ TEST(Core, Simple_Overloading_Resolution_Of_Generic_Vs_Non_Generic_Function_In_M
 TEST(Core, Simple_Overloading_Resolution_Of_Generic_Vs_Non_Generic_Function_In_Multiple_Packages_V4) {
     ProjectFileStructure& proj = simple_project_with_both_generic_and_non_generic_func_overloads_in_multiple_packages;
     TypeDefinitionsRegister type_register(proj);
-    FunctionOverloadsRegister func_register(proj);
-    OverloadingResolutionEngine overoad_resolver(func_register, type_register, proj);
+    FunctionDefinitionsRegister overoad_resolver(type_register, proj);
     FunctionCall func_call {
         Token { "add", "main.basalt", 1, 2, 5, Token::Type::text },
         {
@@ -170,8 +165,7 @@ TEST(Core, Simple_Overloading_Resolution_Of_Generic_Vs_Non_Generic_Function_In_M
 TEST(Core, Simple_Overloading_Of_Non_Existing_Function_In_Multiple_Packages_V2) {
     ProjectFileStructure& proj = simple_project_with_both_generic_and_non_generic_func_overloads_in_multiple_packages;
     TypeDefinitionsRegister type_register(proj);
-    FunctionOverloadsRegister func_register(proj);
-    OverloadingResolutionEngine overoad_resolver(func_register, type_register, proj);
+    FunctionDefinitionsRegister overoad_resolver(type_register, proj);
     FunctionCall func_call {
         Token { "min", "main.basalt", 1, 2, 5, Token::Type::text },
         {
@@ -191,8 +185,7 @@ TEST(Core, Simple_Overloading_Of_Non_Existing_Function_In_Multiple_Packages_V2) 
 TEST(Core, Simple_Overloading_Resolution_Of_Generic_Vs_Non_Generic_Function_In_Multiple_Packages_V5) {
     ProjectFileStructure& proj = simple_project_with_both_generic_and_non_generic_func_overloads_in_multiple_packages;
     TypeDefinitionsRegister type_register(proj);
-    FunctionOverloadsRegister func_register(proj);
-    OverloadingResolutionEngine overoad_resolver(func_register, type_register, proj);
+    FunctionDefinitionsRegister overoad_resolver(type_register, proj);
     FunctionCall func_call {
         Token { "add", "main.basalt", 1, 2, 5, Token::Type::text },
         {
@@ -212,8 +205,7 @@ TEST(Core, Simple_Overloading_Resolution_Of_Generic_Vs_Non_Generic_Function_In_M
 TEST(Core, Simple_Overloading_Resolution_Of_Generic_Vs_Non_Generic_Function_In_Multiple_Packages_V6) {
     ProjectFileStructure& proj = simple_project_with_both_generic_and_non_generic_func_overloads_in_multiple_packages;
     TypeDefinitionsRegister type_register(proj);
-    FunctionOverloadsRegister func_register(proj);
-    OverloadingResolutionEngine overoad_resolver(func_register, type_register, proj);
+    FunctionDefinitionsRegister overoad_resolver(type_register, proj);
     FunctionCall func_call {
         Token { "add", "main.basalt", 1, 2, 5, Token::Type::text },
         {
@@ -233,8 +225,7 @@ TEST(Core, Simple_Overloading_Resolution_Of_Generic_Vs_Non_Generic_Function_In_M
 TEST(Core, Simple_Overloading_Of_Non_Existing_Function_In_Multiple_Packages_V3) {
     ProjectFileStructure& proj = simple_project_with_both_generic_and_non_generic_func_overloads_in_multiple_packages;
     TypeDefinitionsRegister type_register(proj);
-    FunctionOverloadsRegister func_register(proj);
-    OverloadingResolutionEngine overoad_resolver(func_register, type_register, proj);
+    FunctionDefinitionsRegister overoad_resolver(type_register, proj);
     FunctionCall func_call {
         Token { "min", "main.basalt", 1, 2, 5, Token::Type::text },
         {

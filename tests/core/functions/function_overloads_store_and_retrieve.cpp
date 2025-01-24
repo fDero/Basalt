@@ -1,6 +1,6 @@
 
 #include <gtest/gtest.h>
-#include "core/function_overloads_register.hpp"
+#include "core/function_definitions_register.hpp"
 #include "frontend/syntax.hpp"
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
@@ -88,7 +88,11 @@ ProjectFileStructure multi_file_project_with_multiple_function_definitions ({
 
 TEST(Core, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_From_A_Dot_Basalt_Without_Explicit_Generics) {
     
-    FunctionOverloadsRegister function_register(multi_file_project_with_multiple_function_definitions);
+    TypeDefinitionsRegister types_register(multi_file_project_with_multiple_function_definitions);
+    FunctionDefinitionsRegister function_register(
+        types_register,
+        multi_file_project_with_multiple_function_definitions
+    );
     
     FunctionCall function_call {
         Token { "add", "a.basalt", 1, 1, 1, Token::Type::text },
@@ -111,7 +115,11 @@ TEST(Core, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_From_A_Dot_B
 
 TEST(Core, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_From_A_Dot_Basalt_Without_Explicit_Generics_But_Specifyng_A_Package_Prefix) {
     
-    FunctionOverloadsRegister function_register(multi_file_project_with_multiple_function_definitions);
+    TypeDefinitionsRegister types_register(multi_file_project_with_multiple_function_definitions);
+    FunctionDefinitionsRegister function_register(
+        types_register,
+        multi_file_project_with_multiple_function_definitions
+    );
     
     FunctionCall function_call {
         Token { "add", "a.basalt", 1, 1, 1, Token::Type::text },
@@ -133,7 +141,11 @@ TEST(Core, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_From_A_Dot_B
 
 TEST(Core, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_From_A_Dot_Basalt_Without_Explicit_Generics_But_Specifyng_A_Package_Prefix_2) {
     
-    FunctionOverloadsRegister function_register(multi_file_project_with_multiple_function_definitions);
+    TypeDefinitionsRegister types_register(multi_file_project_with_multiple_function_definitions);
+    FunctionDefinitionsRegister function_register(
+        types_register,
+        multi_file_project_with_multiple_function_definitions
+    );
     
     FunctionCall function_call {
         Token { "add", "a.basalt", 1, 1, 1, Token::Type::text },
@@ -154,7 +166,11 @@ TEST(Core, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_From_A_Dot_B
 
 TEST(Core, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_From_B_Dot_Basalt_Without_Explicit_Generics) {
     
-    FunctionOverloadsRegister function_register(multi_file_project_with_multiple_function_definitions);
+    TypeDefinitionsRegister types_register(multi_file_project_with_multiple_function_definitions);
+    FunctionDefinitionsRegister function_register(
+        types_register,
+        multi_file_project_with_multiple_function_definitions
+    );
     
     FunctionCall function_call {
         Token { "add", "b.basalt", 1, 1, 1, Token::Type::text },
@@ -175,7 +191,11 @@ TEST(Core, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_From_B_Dot_B
 
 TEST(Core, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_From_C_Dot_Basalt_Without_Explicit_Generics) {
     
-    FunctionOverloadsRegister function_register(multi_file_project_with_multiple_function_definitions);
+    TypeDefinitionsRegister types_register(multi_file_project_with_multiple_function_definitions);
+    FunctionDefinitionsRegister function_register(
+        types_register,
+        multi_file_project_with_multiple_function_definitions
+    );
     
     FunctionCall function_call {
         Token { "add", "c.basalt", 1, 1, 1, Token::Type::text },
@@ -196,7 +216,11 @@ TEST(Core, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_From_C_Dot_B
 
 TEST(Core, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_From_A_Dot_Basalt_With_Explicit_Generics) {
     
-    FunctionOverloadsRegister function_register(multi_file_project_with_multiple_function_definitions);
+    TypeDefinitionsRegister types_register(multi_file_project_with_multiple_function_definitions);
+    FunctionDefinitionsRegister function_register(
+        types_register,
+        multi_file_project_with_multiple_function_definitions
+    );
     
     FunctionCall function_call {
         Token { "add", "a.basalt", 1, 1, 1, Token::Type::text },
@@ -217,7 +241,11 @@ TEST(Core, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_From_A_Dot_B
 
 TEST(Core, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_From_B_Dot_Basalt_With_Explicit_Generics) {
     
-    FunctionOverloadsRegister function_register(multi_file_project_with_multiple_function_definitions);
+    TypeDefinitionsRegister types_register(multi_file_project_with_multiple_function_definitions);
+    FunctionDefinitionsRegister function_register(
+        types_register,
+        multi_file_project_with_multiple_function_definitions
+    );
     
     FunctionCall function_call {
         Token { "add", "b.basalt", 1, 1, 1, Token::Type::text },
@@ -238,7 +266,11 @@ TEST(Core, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_From_B_Dot_B
 
 TEST(Core, Retrieve_Function_Overload_Sets_Ids_For_The_Add_Function_From_C_Dot_Basalt_With_Explicit_Generics) {
     
-    FunctionOverloadsRegister function_register(multi_file_project_with_multiple_function_definitions);
+    TypeDefinitionsRegister types_register(multi_file_project_with_multiple_function_definitions);
+    FunctionDefinitionsRegister function_register(
+        types_register,
+        multi_file_project_with_multiple_function_definitions
+    );
     
     FunctionCall function_call {
         Token { "add", "c.basalt", 1, 1, 1, Token::Type::text },

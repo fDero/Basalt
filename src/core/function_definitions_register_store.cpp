@@ -6,19 +6,10 @@
 #include "errors/preprocessing_errors.hpp"
 #include "errors/internal_errors.hpp"
 #include "core/generics_substitution_rules.hpp"
-#include "core/function_overloads_register.hpp"
+#include "core/function_definitions_register.hpp"
+#include "core/function_definitions_register.hpp"
 
-FunctionOverloadsRegister::FunctionOverloadsRegister(ProjectFileStructure& project_file_structure) 
-    : project_file_structure(project_file_structure) 
-{ 
-    project_file_structure.foreach_file([&](const FileRepresentation& file_representation) {
-        for (const auto& function_definition : file_representation.func_defs) {
-            store_function_definition(function_definition);
-        }
-    });
-}
-
-void FunctionOverloadsRegister::store_function_definition(
+void FunctionDefinitionsRegister::store_function_definition(
     const FunctionDefinition& func_def
 ) {
     const std::string package_name = project_file_structure.get_package_name_by_file_name(func_def.filename);
@@ -32,7 +23,7 @@ void FunctionOverloadsRegister::store_function_definition(
     }
 }
 
-void FunctionOverloadsRegister::foreach_function_definition(
+void FunctionDefinitionsRegister::foreach_function_definition(
     std::function<void(FunctionDefinition::Ref)> visitor
 ) {
     for (const auto& func_def : function_definitions) {
@@ -40,7 +31,7 @@ void FunctionOverloadsRegister::foreach_function_definition(
     }
 }
 
-std::vector<std::string> FunctionOverloadsRegister::retrieve_overload_sets_ids(const FunctionCall& function_call) {
+std::vector<std::string> FunctionDefinitionsRegister::retrieve_overload_sets_ids(const FunctionCall& function_call) {
     if (!function_call.package_prefix.empty()) {
         std::string overload_set_id = get_function_call_overload_set_id(function_call.package_prefix, function_call); 
         return { overload_set_id };
@@ -62,7 +53,7 @@ std::vector<std::string> FunctionOverloadsRegister::retrieve_overload_sets_ids(c
     return overload_sets_ids;
 }
 
-std::vector<FunctionDefinition::Ref>& FunctionOverloadsRegister::retrieve_specific_overload_set(const std::string& overload_set_id) {
+std::vector<FunctionDefinition::Ref>& FunctionDefinitionsRegister::retrieve_specific_overload_set(const std::string& overload_set_id) {
     static std::vector<FunctionDefinition::Ref> empty_overload_set;
     auto overload_set_search_outcome = function_definitions_overload_sets.find(overload_set_id);
     if (overload_set_search_outcome == function_definitions_overload_sets.end()) {

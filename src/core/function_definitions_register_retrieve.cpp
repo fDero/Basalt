@@ -4,7 +4,7 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 #include "core/function_specificity_descriptor.hpp"
-#include "core/overloading_resolution_engine.hpp"
+#include "core/function_definitions_register.hpp"
 #include "errors/preprocessing_errors.hpp"
 #include "errors/internal_errors.hpp"
 #include "core/generics_substitution_rules.hpp"
@@ -12,17 +12,21 @@
 #include "preprocessing/preprocessor.hpp"
 #include "core/assignment_type_checker.hpp"
 
-OverloadingResolutionEngine::OverloadingResolutionEngine(
-    FunctionOverloadsRegister& function_overloads_register,
+FunctionDefinitionsRegister::FunctionDefinitionsRegister(
     TypeDefinitionsRegister& type_definitions_register,
     ProjectFileStructure& project_file_structure
 )
-    : function_overloads_register(function_overloads_register)
-    , type_definitions_register(type_definitions_register) 
+    : type_definitions_register(type_definitions_register) 
     , project_file_structure(project_file_structure)
-{}
+{
+    project_file_structure.foreach_file([&](const FileRepresentation& file_representation) {
+        for (const auto& function_definition : file_representation.func_defs) {
+            store_function_definition(function_definition);
+        }
+    });
+}
 
-FunctionDefinition::Ref OverloadingResolutionEngine::retrieve_function_definition(
+FunctionDefinition::Ref FunctionDefinitionsRegister::retrieve_function_definition(
     const FunctionCall& function_call,
     const std::vector<TypeSignature>& arg_types
 ) {
@@ -36,16 +40,16 @@ FunctionDefinition::Ref OverloadingResolutionEngine::retrieve_function_definitio
     return func_def_ref;
 }
 
-std::vector<OverloadingResolutionEngine::MatchedFunctionData>
-OverloadingResolutionEngine::search_for_best_matches(
+std::vector<FunctionDefinitionsRegister::MatchedFunctionData>
+FunctionDefinitionsRegister::search_for_best_matches(
     const FunctionCall& function_call,
     const std::vector<TypeSignature>& arg_types
 ) {
-    std::vector<std::string> candidate_overload_set_ids = function_overloads_register.retrieve_overload_sets_ids(function_call);
+    std::vector<std::string> candidate_overload_set_ids = retrieve_overload_sets_ids(function_call);
     std::vector<std::pair<FunctionDefinition::Ref, GenericSubstitutionRule::Set::Ref>> best_maches_so_far; 
     FunctionSpecificityDescriptor best_specificity_so_far = FunctionSpecificityDescriptor::worst_possible_specificity();
     for (const std::string& overload_set_id : candidate_overload_set_ids) {
-        std::vector<FunctionDefinition::Ref>& current_overload_set = function_overloads_register.retrieve_specific_overload_set(overload_set_id);
+        std::vector<FunctionDefinition::Ref>& current_overload_set = retrieve_specific_overload_set(overload_set_id);
         for (const FunctionDefinition::Ref& func_def_ref : current_overload_set) {
             FunctionSpecificityDescriptor current_specificity(*func_def_ref, type_definitions_register);
             FunctionSpecificityDescriptor::ComparisonResult comparison_result = current_specificity.compare_with(best_specificity_so_far);
@@ -65,7 +69,7 @@ OverloadingResolutionEngine::search_for_best_matches(
     return best_maches_so_far;
 }
 
-std::string OverloadingResolutionEngine::get_new_instantiated_function_name(
+std::string FunctionDefinitionsRegister::get_new_instantiated_function_name(
     const FunctionDefinition& function_definition,
     GenericSubstitutionRule::Set::Ref generic_substitution_rules
 ) {
@@ -80,7 +84,7 @@ std::string OverloadingResolutionEngine::get_new_instantiated_function_name(
     return new_function_name;
 }
 
-FunctionDefinition::Ref OverloadingResolutionEngine::cache_unaware_function_definition_retrieval(
+FunctionDefinition::Ref FunctionDefinitionsRegister::cache_unaware_function_definition_retrieval(
     const FunctionCall& function_call,
     const std::vector<TypeSignature>& arg_types
 ) {
@@ -98,7 +102,7 @@ FunctionDefinition::Ref OverloadingResolutionEngine::cache_unaware_function_defi
     return instanitated_func_def_ref;
 }
 
-GenericSubstitutionRule::Set::Ref OverloadingResolutionEngine::check_function_compatibility(
+GenericSubstitutionRule::Set::Ref FunctionDefinitionsRegister::check_function_compatibility(
     const FunctionDefinition::Ref func_def_ref,
     const FunctionCall& func_call,
     const std::vector<TypeSignature>& arg_types

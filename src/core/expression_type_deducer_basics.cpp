@@ -10,13 +10,13 @@
 
 ExpressionTypeDeducer::ExpressionTypeDeducer(
     TypeDefinitionsRegister& program_representation,
-    OverloadingResolutionEngine& overloading_resolution_engine,
+    FunctionDefinitionsRegister& function_definitions_register,
     CommonFeatureAdoptionPlanGenerationEngine& common_feature_adoption_plan_generation_engine,
     ProjectFileStructure& project_file_structure,
     ScopeContext& scope_context
 )
     : type_definitions_register(program_representation)
-    , overloading_resolution_engine(overloading_resolution_engine)
+    , function_definitions_register(function_definitions_register)
     , common_feature_adoption_plan_generation_engine(common_feature_adoption_plan_generation_engine)
     , project_file_structure(project_file_structure)
     , scope_context(scope_context)
@@ -79,7 +79,7 @@ ExpressionTypeDeducer::deduce_type_from_function_call(const Expression& expressi
     const FunctionCall& function_call = expression.get<FunctionCall>();
     FunctionCallResolver resolver(
         type_definitions_register,
-        overloading_resolution_engine, 
+        function_definitions_register, 
         common_feature_adoption_plan_generation_engine
     );
     auto argument_types = deduce_argument_types_from_function_call(function_call);

@@ -1,6 +1,6 @@
 
 #include <gtest/gtest.h>
-#include "core/function_overloads_register.hpp"
+#include "core/function_definitions_register.hpp"
 #include "core/type_definitions_register.hpp"
 #include "core/common_feature_adoption_plan_generation_engine.hpp"
 #include "core/common_feature_adoption_plan_descriptor.hpp"
@@ -67,10 +67,9 @@ ProjectFileStructure project_with_single_file_containing_four_overloads_of_the_a
 
 
 TEST(Core, CFA_Success_When_It_Is_Not_Necessary) {
-    FunctionOverloadsRegister function_register(project_with_single_file_containing_four_overloads_of_the_add_function);
     TypeDefinitionsRegister type_register(project_with_single_file_containing_four_overloads_of_the_add_function);
-    OverloadingResolutionEngine overloading_resolution_engine(function_register, type_register, project_with_single_file_containing_four_overloads_of_the_add_function);
-    CommonFeatureAdoptionPlanGenerationEngine common_feature_adoption_plan_generator(overloading_resolution_engine, type_register);
+    FunctionDefinitionsRegister function_definitions_register(type_register, project_with_single_file_containing_four_overloads_of_the_add_function);
+    CommonFeatureAdoptionPlanGenerationEngine common_feature_adoption_plan_generator(function_definitions_register, type_register);
     auto cfa_plan_description = common_feature_adoption_plan_generator.generate_common_feature_adoption_plan_descriptor(
         FunctionCall {
             Token { "add", "a.basalt", 1, 1, 1, Token::Type::text },
@@ -93,10 +92,9 @@ TEST(Core, CFA_Success_When_It_Is_Not_Necessary) {
 
 
 TEST(Core, CFA_Success_When_It_Is_Not_Necessary2) {
-    FunctionOverloadsRegister function_register(project_with_single_file_containing_four_overloads_of_the_add_function);
     TypeDefinitionsRegister type_register(project_with_single_file_containing_four_overloads_of_the_add_function);
-    OverloadingResolutionEngine overloading_resolution_engine(function_register, type_register, project_with_single_file_containing_four_overloads_of_the_add_function);
-    CommonFeatureAdoptionPlanGenerationEngine common_feature_adoption_plan_generator(overloading_resolution_engine, type_register);
+    FunctionDefinitionsRegister function_definitions_register(type_register, project_with_single_file_containing_four_overloads_of_the_add_function);
+    CommonFeatureAdoptionPlanGenerationEngine common_feature_adoption_plan_generator(function_definitions_register, type_register);
     auto cfa_plan_descriptor = common_feature_adoption_plan_generator.generate_common_feature_adoption_plan_descriptor(
         FunctionCall {
             Token { "add", "a.basalt", 1, 1, 1, Token::Type::text },
@@ -119,10 +117,9 @@ TEST(Core, CFA_Success_When_It_Is_Not_Necessary2) {
 
 
 TEST(Core, CFA_Success_Resolving_One_Union_As_First_Arg) {
-    FunctionOverloadsRegister function_register(project_with_single_file_containing_four_overloads_of_the_add_function);
     TypeDefinitionsRegister type_register(project_with_single_file_containing_four_overloads_of_the_add_function);
-    OverloadingResolutionEngine overloading_resolution_engine(function_register, type_register, project_with_single_file_containing_four_overloads_of_the_add_function);
-    CommonFeatureAdoptionPlanGenerationEngine common_feature_adoption_plan_generator(overloading_resolution_engine, type_register);
+    FunctionDefinitionsRegister function_definitions_register(type_register, project_with_single_file_containing_four_overloads_of_the_add_function);
+    CommonFeatureAdoptionPlanGenerationEngine common_feature_adoption_plan_generator(function_definitions_register, type_register);
     auto cfa_plan_descriptor = common_feature_adoption_plan_generator.generate_common_feature_adoption_plan_descriptor(
         FunctionCall {
             Token { "add", "a.basalt", 1, 1, 1, Token::Type::text },
@@ -154,10 +151,9 @@ TEST(Core, CFA_Success_Resolving_One_Union_As_First_Arg) {
 
 
 TEST(Core, CFA_Success_Resolving_Two_Unions) {
-    FunctionOverloadsRegister function_register(project_with_single_file_containing_four_overloads_of_the_add_function);
     TypeDefinitionsRegister type_register(project_with_single_file_containing_four_overloads_of_the_add_function);
-    OverloadingResolutionEngine overloading_resolution_engine(function_register, type_register, project_with_single_file_containing_four_overloads_of_the_add_function);
-    CommonFeatureAdoptionPlanGenerationEngine common_feature_adoption_plan_generator(overloading_resolution_engine, type_register);
+    FunctionDefinitionsRegister function_definitions_register(type_register, project_with_single_file_containing_four_overloads_of_the_add_function);
+    CommonFeatureAdoptionPlanGenerationEngine common_feature_adoption_plan_generator(function_definitions_register, type_register);
     auto cfa_plan_descriptor = common_feature_adoption_plan_generator.generate_common_feature_adoption_plan_descriptor(
         FunctionCall {
             Token { "add", "a.basalt", 1, 1, 1, Token::Type::text },
@@ -192,10 +188,9 @@ TEST(Core, CFA_Success_Resolving_Two_Unions) {
 }
 
 TEST(Core, CFA_Success_Resolving_One_Union_As_Second_Arg) {
-    FunctionOverloadsRegister function_register(project_with_single_file_containing_four_overloads_of_the_add_function);
     TypeDefinitionsRegister type_register(project_with_single_file_containing_four_overloads_of_the_add_function);
-    OverloadingResolutionEngine overloading_resolution_engine(function_register, type_register, project_with_single_file_containing_four_overloads_of_the_add_function);
-    CommonFeatureAdoptionPlanGenerationEngine common_feature_adoption_plan_generator(overloading_resolution_engine, type_register);
+    FunctionDefinitionsRegister function_definitions_register(type_register, project_with_single_file_containing_four_overloads_of_the_add_function);
+    CommonFeatureAdoptionPlanGenerationEngine common_feature_adoption_plan_generator(function_definitions_register, type_register);
     auto cfa_plan_descriptor = common_feature_adoption_plan_generator.generate_common_feature_adoption_plan_descriptor(
         FunctionCall {
             Token { "add", "a.basalt", 1, 1, 1, Token::Type::text },

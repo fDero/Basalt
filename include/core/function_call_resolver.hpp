@@ -7,8 +7,8 @@
 
 #include "core/project_file_structure.hpp"
 #include "core/type_definitions_register.hpp"
-#include "core/function_overloads_register.hpp"
-#include "core/overloading_resolution_engine.hpp"
+#include "core/function_definitions_register.hpp"
+#include "core/function_definitions_register.hpp"
 #include "core/common_feature_adoption_plan_generation_engine.hpp"
 #include "core/scope_context.hpp"
 #include "core/callable_code_block.hpp"
@@ -19,7 +19,7 @@ class FunctionCallResolver {
     public:
         FunctionCallResolver(
             TypeDefinitionsRegister& type_definitions_register,
-            OverloadingResolutionEngine& overloading_resolution_engine,
+            FunctionDefinitionsRegister& function_definitions_register,
             CommonFeatureAdoptionPlanGenerationEngine& common_feature_adoption_plan_generation_engine
         );
 
@@ -42,6 +42,6 @@ class FunctionCallResolver {
 
     private:
         TypeDefinitionsRegister& type_definitions_register;
-        OverloadingResolutionEngine& overloading_resolution_engine;
+        FunctionDefinitionsRegister& function_definitions_register;
         CommonFeatureAdoptionPlanGenerationEngine& common_feature_adoption_plan_generation_engine;
 };

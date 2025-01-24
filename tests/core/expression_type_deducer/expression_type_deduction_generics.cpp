@@ -47,13 +47,12 @@ static ProjectFileStructure simple_project ({
 });
 
 static TypeDefinitionsRegister simple_type_register(simple_project);
-static FunctionOverloadsRegister simple_overloads_register(simple_project);
-static OverloadingResolutionEngine simple_overloading_resolution_engine(simple_overloads_register, simple_type_register, simple_project);
-static CommonFeatureAdoptionPlanGenerationEngine simple_common_feature_adoption_plan_generation_engine(simple_overloading_resolution_engine, simple_type_register);
+static FunctionDefinitionsRegister simple_function_definitions_register(simple_type_register, simple_project);
+static CommonFeatureAdoptionPlanGenerationEngine simple_common_feature_adoption_plan_generation_engine(simple_function_definitions_register, simple_type_register);
 static ScopeContext simple_scope_context;
 static ExpressionTypeDeducer type_deducer(
     simple_type_register,
-    simple_overloading_resolution_engine,
+    simple_function_definitions_register,
     simple_common_feature_adoption_plan_generation_engine,
     simple_project,
     simple_scope_context    

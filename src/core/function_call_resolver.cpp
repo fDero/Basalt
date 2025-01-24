@@ -7,11 +7,11 @@
 
 FunctionCallResolver::FunctionCallResolver(
     TypeDefinitionsRegister& type_definitions_register,
-    OverloadingResolutionEngine& overloading_resolution_engine,
+    FunctionDefinitionsRegister& function_definitions_register,
     CommonFeatureAdoptionPlanGenerationEngine& common_feature_adoption_plan_generation_engine
 )
     : type_definitions_register(type_definitions_register)
-    , overloading_resolution_engine(overloading_resolution_engine)
+    , function_definitions_register(function_definitions_register)
     , common_feature_adoption_plan_generation_engine(common_feature_adoption_plan_generation_engine)
 {}
 
@@ -40,7 +40,7 @@ CallableCodeBlock FunctionCallResolver::resolve_function_call(
     const FunctionCall& function_call,
     const std::vector <TypeSignature>& argument_types
 ) {
-    FunctionDefinition::Ref retrieved = overloading_resolution_engine
+    FunctionDefinition::Ref retrieved = function_definitions_register
         .retrieve_function_definition(function_call, argument_types);
     if (retrieved != nullptr) {
         return {retrieved, type_definitions_register};

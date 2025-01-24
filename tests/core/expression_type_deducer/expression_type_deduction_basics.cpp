@@ -9,14 +9,13 @@
 
 static ProjectFileStructure empty_project;
 static TypeDefinitionsRegister empty_type_register(empty_project);
-static FunctionOverloadsRegister empty_overloads_register(empty_project);
-static OverloadingResolutionEngine empty_overloading_resolution_engine(empty_overloads_register, empty_type_register, empty_project);
-static CommonFeatureAdoptionPlanGenerationEngine empty_common_feature_adoption_plan_generation_engine(empty_overloading_resolution_engine, empty_type_register);
+static FunctionDefinitionsRegister empty_function_definitions_register(empty_type_register, empty_project);
+static CommonFeatureAdoptionPlanGenerationEngine empty_common_feature_adoption_plan_generation_engine(empty_function_definitions_register, empty_type_register);
 static ScopeContext empty_scope_context;
 
 static ExpressionTypeDeducer type_deducer(
     empty_type_register,
-    empty_overloading_resolution_engine,
+    empty_function_definitions_register,
     empty_common_feature_adoption_plan_generation_engine,
     empty_project,
     empty_scope_context

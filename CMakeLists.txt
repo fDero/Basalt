@@ -11,6 +11,11 @@ project(
   LANGUAGES CXX
 )
 
+if(WIN32)
+  set(BUILD_SHARED_LIBS OFF) 
+  set(CMAKE_EXE_LINKER_FLAGS "-static")
+endif()
+
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 

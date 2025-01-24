@@ -6,7 +6,7 @@
 #pragma once
 
 #include "core/type_definitions_register.hpp"
-#include "core/overloading_resolution_engine.hpp"
+#include "core/function_definitions_register.hpp"
 #include "core/common_feature_adoption_plan_generation_engine.hpp"
 #include "core/project_file_structure.hpp"
 #include "core/scope_context.hpp"
@@ -17,7 +17,7 @@ class ExpressionTypeDeducer {
 
         ExpressionTypeDeducer(
             TypeDefinitionsRegister& type_definitions_register,
-            OverloadingResolutionEngine& overloading_resolution_engine,
+            FunctionDefinitionsRegister& function_definitions_register,
             CommonFeatureAdoptionPlanGenerationEngine& common_feature_adoption_plan_generation_engine,
             ProjectFileStructure& project_file_structure,
             ScopeContext& scope_context
@@ -49,7 +49,7 @@ class ExpressionTypeDeducer {
 
     private:
         TypeDefinitionsRegister& type_definitions_register;
-        OverloadingResolutionEngine& overloading_resolution_engine;
+        FunctionDefinitionsRegister& function_definitions_register;
         CommonFeatureAdoptionPlanGenerationEngine& common_feature_adoption_plan_generation_engine;
         ProjectFileStructure& project_file_structure;
         ScopeContext& scope_context;

@@ -9,10 +9,10 @@
 #include "errors/preprocessing_errors.hpp"
 
 CommonFeatureAdoptionPlanGenerationEngine::CommonFeatureAdoptionPlanGenerationEngine( 
-    OverloadingResolutionEngine& overloading_resolution_engine,
+    FunctionDefinitionsRegister& function_definitions_register,
     TypeDefinitionsRegister& type_definitions_register
 ) 
-    : overloading_resolution_engine(overloading_resolution_engine)
+    : function_definitions_register(function_definitions_register)
     , type_definitions_register(type_definitions_register)
 { }
 
@@ -61,7 +61,7 @@ CommonFeatureAdoptionPlanGenerationEngine::generate_common_feature_adoption_iter
     const std::vector<TypeSignature>& arg_types,
     std::vector<TypeSignature>::const_iterator current_arg_type_iterator
 ) { 
-    FunctionDefinition::Ref retrieved = overloading_resolution_engine.retrieve_function_definition(function_call, arg_types);
+    FunctionDefinition::Ref retrieved = function_definitions_register.retrieve_function_definition(function_call, arg_types);
     CommonFeatureAdoptionPlan direct_adoption_plan = retrieved;
     if (retrieved != nullptr) {
         return direct_adoption_plan;

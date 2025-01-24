@@ -7,8 +7,8 @@
 
 #include <unordered_map>
 
-#include "core/function_overloads_register.hpp"
-#include "core/overloading_resolution_engine.hpp"
+#include "core/function_definitions_register.hpp"
+#include "core/function_definitions_register.hpp"
 #include "core/type_definitions_register.hpp"
 #include "core/project_file_structure.hpp"
 #include "core/common_feature_adoption_plan_descriptor.hpp"
@@ -18,7 +18,7 @@ class CommonFeatureAdoptionPlanGenerationEngine : public CachingAwareRegister {
     
     public:
         CommonFeatureAdoptionPlanGenerationEngine(
-            OverloadingResolutionEngine& overloading_resolution_engine,
+            FunctionDefinitionsRegister& function_definitions_register,
             TypeDefinitionsRegister& type_definitions_register
         );
 
@@ -79,6 +79,6 @@ class CommonFeatureAdoptionPlanGenerationEngine : public CachingAwareRegister {
         );
 
         std::unordered_map<std::string, CommonFeatureAdoptionPlan> fast_retrieve_cache;
-        OverloadingResolutionEngine& overloading_resolution_engine;
+        FunctionDefinitionsRegister& function_definitions_register;
         TypeDefinitionsRegister& type_definitions_register;
 };

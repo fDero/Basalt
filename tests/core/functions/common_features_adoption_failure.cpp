@@ -1,6 +1,6 @@
 
 #include <gtest/gtest.h>
-#include "core/function_overloads_register.hpp"
+#include "core/function_definitions_register.hpp"
 #include "core/type_definitions_register.hpp"
 #include "core/common_feature_adoption_plan_generation_engine.hpp"
 #include "core/common_feature_adoption_plan_descriptor.hpp"
@@ -47,10 +47,9 @@ ProjectFileStructure project_with_single_file_containing_two_overload_of_the_add
 
 
 TEST(Core, CFA_Failure_Not_Every_Case_Is_Covered) {
-    FunctionOverloadsRegister function_register(project_with_single_file_containing_two_overload_of_the_add_function);
     TypeDefinitionsRegister type_register(project_with_single_file_containing_two_overload_of_the_add_function);
-    OverloadingResolutionEngine overloading_resolution_engine(function_register, type_register, project_with_single_file_containing_two_overload_of_the_add_function);
-    CommonFeatureAdoptionPlanGenerationEngine common_feature_adoption_plan_generator(overloading_resolution_engine, type_register);
+    FunctionDefinitionsRegister function_definitions_register(type_register, project_with_single_file_containing_two_overload_of_the_add_function);
+    CommonFeatureAdoptionPlanGenerationEngine common_feature_adoption_plan_generator(function_definitions_register, type_register);
     EXPECT_ANY_THROW(
         common_feature_adoption_plan_generator.generate_common_feature_adoption_plan_descriptor(
             FunctionCall {
@@ -106,10 +105,9 @@ ProjectFileStructure project_with_single_file_containing_two_overload_of_the_f_f
 
 
 TEST(Core, CFA_Failure_Incompatible_Return_Types) {
-    FunctionOverloadsRegister function_register(project_with_single_file_containing_two_overload_of_the_f_function_with_incompatible_return_types);
     TypeDefinitionsRegister type_register(project_with_single_file_containing_two_overload_of_the_f_function_with_incompatible_return_types);
-    OverloadingResolutionEngine overloading_resolution_engine(function_register, type_register, project_with_single_file_containing_two_overload_of_the_f_function_with_incompatible_return_types);
-    CommonFeatureAdoptionPlanGenerationEngine common_feature_adoption_plan_generator(overloading_resolution_engine, type_register);
+    FunctionDefinitionsRegister function_definitions_register(type_register, project_with_single_file_containing_two_overload_of_the_f_function_with_incompatible_return_types);
+    CommonFeatureAdoptionPlanGenerationEngine common_feature_adoption_plan_generator(function_definitions_register, type_register);
     EXPECT_ANY_THROW(
         common_feature_adoption_plan_generator.generate_common_feature_adoption_plan_descriptor(
             FunctionCall {

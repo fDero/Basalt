@@ -8,20 +8,23 @@
 #include <unordered_map>
 
 #include "core/project_file_structure.hpp"
-#include "core/function_overloads_register.hpp"
+#include "core/function_definitions_register.hpp"
 #include "core/type_definitions_register.hpp"
 #include "language/definitions.hpp"
 #include "language/functions.hpp"
 #include "core/generics_substitution_rules.hpp"
 #include "core/caching_aware_register.hpp"
 
-class OverloadingResolutionEngine : public CachingAwareRegister {
+class FunctionDefinitionsRegister : public CachingAwareRegister {
 
     public:
-        OverloadingResolutionEngine(
-            FunctionOverloadsRegister& function_overloads_register, 
+        FunctionDefinitionsRegister(
             TypeDefinitionsRegister& type_definitions_register,
             ProjectFileStructure& project_file_structure
+        );
+
+        void store_function_definition(
+            const FunctionDefinition& function_definition
         );
 
         [[nodiscard]] FunctionDefinition::Ref retrieve_function_definition(
@@ -33,6 +36,18 @@ class OverloadingResolutionEngine : public CachingAwareRegister {
             const FunctionDefinition::Ref func_def_ref,
             const FunctionCall& func_call,
             const std::vector<TypeSignature>& arg_types
+        );
+
+        void foreach_function_definition(
+            std::function<void(FunctionDefinition::Ref)> visitor
+        );
+
+        [[nodiscard]] std::vector<std::string> retrieve_overload_sets_ids(
+            const FunctionCall& function_call
+        );
+
+        [[nodiscard]] std::vector<FunctionDefinition::Ref>& retrieve_specific_overload_set(
+            const std::string& overload_set_id
         );
 
     protected:
@@ -55,8 +70,10 @@ class OverloadingResolutionEngine : public CachingAwareRegister {
         );
 
     private:
-        FunctionOverloadsRegister& function_overloads_register;
+        std::list<FunctionDefinition::Ref> function_definitions;
+        std::unordered_map<std::string, FunctionDefinition::OverloadSet> function_definitions_overload_sets;
+        std::unordered_map<std::string, FunctionDefinition::Ref> fast_retrieve_cache;
+
         TypeDefinitionsRegister& type_definitions_register;
         ProjectFileStructure& project_file_structure;
-        std::unordered_map<std::string, FunctionDefinition::Ref> fast_retrieve_cache;
 };
