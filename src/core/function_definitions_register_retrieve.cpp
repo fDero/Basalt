@@ -12,20 +12,6 @@
 #include "preprocessing/preprocessor.hpp"
 #include "core/assignment_type_checker.hpp"
 
-FunctionDefinitionsRegister::FunctionDefinitionsRegister(
-    TypeDefinitionsRegister& type_definitions_register,
-    ProjectFileStructure& project_file_structure
-)
-    : type_definitions_register(type_definitions_register) 
-    , project_file_structure(project_file_structure)
-{
-    project_file_structure.foreach_file([&](const FileRepresentation& file_representation) {
-        for (const auto& function_definition : file_representation.func_defs) {
-            store_function_definition(function_definition);
-        }
-    });
-}
-
 FunctionDefinition::Ref FunctionDefinitionsRegister::retrieve_function_definition(
     const FunctionCall& function_call,
     const std::vector<TypeSignature>& arg_types

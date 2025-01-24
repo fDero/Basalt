@@ -364,3 +364,58 @@ inline void ensure_condition_expression_is_boolean(
         throw std::runtime_error("condition expression is not boolean");
     }
 }
+
+inline void ensure_not_multiple_main_functions_have_been_found(
+    size_t main_function_counter
+) {
+    if (main_function_counter > 1) {
+        throw std::runtime_error("multiple main functions have been found");
+    }
+}
+
+inline void ensure_main_function_is_not_generic(
+    const FunctionDefinition::Ref& main_function_definition
+) {
+    if (!main_function_definition->template_generics_names.empty()) {
+        throw std::runtime_error("main function cannot be generic");
+    }
+}
+
+inline void assert_function_name_is_main(
+    const FunctionDefinition::Ref& main_function_definition
+) {
+    if (main_function_definition->function_name != "main") {
+        throw std::runtime_error("main function must be named 'main'");
+    }
+}
+
+inline void ensure_main_function_has_no_arguments(
+    const FunctionDefinition::Ref& main_function_definition
+) {
+    if (!main_function_definition->arguments.empty()) {
+        throw std::runtime_error("main function cannot have arguments");
+    }
+}
+
+inline void ensure_main_function_returns_either_int_or_void(
+    const FunctionDefinition::Ref& main_function_definition
+) {
+    if (!main_function_definition->return_type.has_value()) {
+        return;
+    }
+    TypeSignature return_type = *main_function_definition->return_type;
+    if (!return_type.is<PrimitiveType>()) {
+        throw std::runtime_error("main function must return either void or int");
+    }
+    if (return_type.get<PrimitiveType>().type_name != "Int") {
+        throw std::runtime_error("main function must return either void or int");
+    }
+}
+
+inline void ensure_main_function_is_in_main_package(
+    const std::string& package_name
+) {
+    if (package_name != "main") {
+        throw std::runtime_error("main function must be in the 'main' package");
+    }
+}

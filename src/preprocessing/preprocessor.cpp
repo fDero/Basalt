@@ -10,6 +10,7 @@
 #include "preprocessing/function_definitions_typechecker.hpp"
 #include "preprocessing/function_exit_path_navigator.hpp"
 #include "preprocessing/address_sanitizer.hpp"
+#include "preprocessing/main_functions_preprocessor.hpp"
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 
@@ -34,8 +35,10 @@ void PreProcessor::preprocess_function_definitions() {
     FunctionDefinitionsTypeChecker function_definitions_type_checker(program_representation);
     ConstConstraintValidator const_constraint_validator(program_representation);
     FunctionExitPathNavigator function_exit_path_navigator(program_representation);
+    MainFunctionsPreprocessor main_functions_preprocessor(program_representation);
     address_sanitizer.visit_all_function_definitions();
     function_definitions_type_checker.visit_all_function_definitions();
     const_constraint_validator.visit_all_function_definitions();
     function_exit_path_navigator.visit_all_function_definitions();
+    main_functions_preprocessor.preprocess_all_main_functions();
 }

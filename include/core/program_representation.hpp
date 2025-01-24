@@ -45,11 +45,15 @@ class ProgramRepresentation {
         );
     
         void foreach_type_definition(
-            std::function<void(const TypeDefinition&)> visitor
+            std::function<void(const TypeDefinition&)> functor
+        );
+
+        void foreach_main_function_definition(
+            std::function<void(const FunctionDefinition::Ref&, const std::string&)> functor
         );
 
         void foreach_function_definition(
-            std::function<void(const FunctionDefinition::Ref&)> visitor
+            std::function<void(const FunctionDefinition::Ref&)> functor
         );
 
         void verify_that_the_type_exists(

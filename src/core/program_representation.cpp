@@ -40,15 +40,21 @@ std::optional<TypeSignature> ProgramRepresentation::resolve_expression_type(
 }
 
 void ProgramRepresentation::foreach_type_definition(
-    std::function<void(const TypeDefinition&)> visitor
+    std::function<void(const TypeDefinition&)> functor
 ) {
-    type_definitions_register.foreach_type_definition(visitor);
+    type_definitions_register.foreach_type_definition(functor);
+}
+
+void ProgramRepresentation::foreach_main_function_definition(
+    std::function<void(const FunctionDefinition::Ref&, const std::string&)> functor
+) {
+    function_definitions_register.foreach_main_function_definition(functor);
 }
 
 void ProgramRepresentation::foreach_function_definition(
-    std::function<void(const FunctionDefinition::Ref&)> visitor
+    std::function<void(const FunctionDefinition::Ref&)> functor
 ) {
-    function_definitions_register.foreach_function_definition(visitor);
+    function_definitions_register.foreach_function_definition(functor);
 }
 
 void ProgramRepresentation::verify_that_the_type_exists(
