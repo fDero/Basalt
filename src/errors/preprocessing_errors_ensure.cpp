@@ -18,6 +18,15 @@ void ensure_type_not_already_visited_hence_no_cyclic_dependency(
     }
 }
 
+void ensure_character_literal_has_exactly_one_character(
+    const Token& token, 
+    const std::string& char_literal_value
+) {
+    if (char_literal_value.size() != 1) {
+        throw std::runtime_error("character literal must have exactly one character");
+    }
+}
+
 void ensure_no_multiple_definition_of_the_same_type(
     const std::pair<std::unordered_map<std::string, TypeDefinition>::iterator, bool>& 
         type_definition_insertion_outcome
@@ -232,4 +241,8 @@ void ensure_operator_kind_was_found(
     if (operator_kind_search_outcome == operator_kinds.end()) {
         throw InternalError("operator kind not found");
     }
+}
+
+void throw_unrecognized_escape_sequence(const Token& token, char current_char) {
+    throw std::runtime_error("unrecognized escape sequence");
 }

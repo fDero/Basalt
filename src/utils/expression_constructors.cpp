@@ -101,9 +101,12 @@ Identifier::Identifier(const DebugInformationsAwareEntity& debug_info, const std
     , name(name) 
 {}
 
-StringLiteral::StringLiteral(const Token& string_literal_token)
+StringLiteral::StringLiteral(
+    const Token& string_literal_token,
+    const std::string& value
+)
     : ExpressionBody(string_literal_token)
-    , value(string_literal_token.sourcetext) 
+    , value(value) 
 { }
 
 IntLiteral::IntLiteral(const Token& int_literal_token)
@@ -121,9 +124,12 @@ BoolLiteral::BoolLiteral(const Token& bool_literal_token)
     , value(bool_literal_token.sourcetext == "true") 
 { }
 
-CharLiteral::CharLiteral(const Token& char_literal_token)
+CharLiteral::CharLiteral(
+    const Token& char_literal_token,
+    char value
+)
     : ExpressionBody(char_literal_token)
-    , value(char_literal_token.sourcetext[1]) 
+    , value(value) 
 { }
 
 FunctionCall::FunctionCall(

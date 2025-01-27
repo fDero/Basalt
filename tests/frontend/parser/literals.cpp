@@ -27,7 +27,10 @@ TEST(Frontend, Parse_String_Literals) {
     for (const auto& literal : tokens) {
         Expression expr = parser.parse_string_literal();
         ASSERT_TRUE(expr.is<StringLiteral>());
-        EXPECT_EQ(expr.get<StringLiteral>().value, literal.sourcetext);
+        EXPECT_EQ(
+            expr.get<StringLiteral>().value, 
+            literal.sourcetext.substr(1, literal.sourcetext.size() - 2)
+        );
     }
 }
 

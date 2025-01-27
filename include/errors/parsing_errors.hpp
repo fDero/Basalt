@@ -86,3 +86,10 @@ void ensure_type_not_already_visited_hence_no_cyclic_dependency(
     const std::string& target_tag_name, 
     const std::unordered_set<std::string>& visited_definitions
 );
+
+[[noreturn]] void throw_unrecognized_escape_sequence(const Token& token, char current_char);
+
+void ensure_character_literal_has_exactly_one_character(
+    const Token& token, 
+    const std::string& char_literal_value
+);

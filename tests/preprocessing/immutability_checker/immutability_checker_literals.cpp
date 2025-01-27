@@ -26,7 +26,7 @@ TEST(Preprocessing, Immutability_Checker_Says_Char_Literal_Is_Immutable) {
     ProgramRepresentation empty_program(empty_project);
     ScopeContext empty_scope_context;
     ImmutabilityChecker immutability_checker(empty_scope_context, empty_program);
-    CharLiteral char_literal { Token { "'c'", "test.basalt", 1, 1, 1, Token::Type::character_literal } };
+    CharLiteral char_literal { Token { "'c'", "test.basalt", 1, 1, 1, Token::Type::character_literal }, 'c' };
     EXPECT_TRUE(immutability_checker.is_strictly_immutable_expression(char_literal));
 }
 
@@ -44,7 +44,7 @@ TEST(Preprocessing, Immutability_Checker_Says_String_Literal_Is_Immutable) {
     ProgramRepresentation empty_program(empty_project);
     ScopeContext empty_scope_context;
     ImmutabilityChecker immutability_checker(empty_scope_context, empty_program);
-    StringLiteral string_literal { Token { "15.6", "test.basalt", 1, 1, 1, Token::Type::string_literal } };
+    StringLiteral string_literal { Token { "AAA", "test.basalt", 1, 1, 1, Token::Type::string_literal }, "AAA" };
     EXPECT_TRUE(immutability_checker.is_strictly_immutable_expression(string_literal));
 }
 

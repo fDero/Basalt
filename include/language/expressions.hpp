@@ -187,7 +187,7 @@ struct StringLiteral : public ExpressionBody {
 
     virtual ~StringLiteral() = default;
 
-    StringLiteral(const Token& string_literal_token);
+    StringLiteral(const Token& string_literal_token, const std::string& value);
     
     [[nodiscard]] ExpressionBody::Kind expression_kind() const override;
 
@@ -231,7 +231,7 @@ struct CharLiteral : public ExpressionBody {
 
     virtual ~CharLiteral() = default;
 
-    CharLiteral(const Token& char_literal_token);
+    CharLiteral(const Token& char_literal_token, char value);
     
     [[nodiscard]] ExpressionBody::Kind expression_kind() const override;
 
