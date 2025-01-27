@@ -7,6 +7,7 @@
 
 #include <vector>
 #include <string>
+#include <optional>
 
 #include "frontend/tokenizer.hpp"
 #include "language/typesignatures.hpp"
@@ -38,6 +39,8 @@ struct FunctionDefinition : public DebugInformationsAwareEntity {
     std::vector<std::string> template_generics_names;
     std::vector<Argument> arguments;
     std::vector<Statement> code;
+    
+    std::optional<std::string> extern_implementation;
 };
 
 struct StructDefinition : public DebugInformationsAwareEntity  {

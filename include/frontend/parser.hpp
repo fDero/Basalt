@@ -63,6 +63,7 @@ class Parser {
         [[nodiscard]] std::vector<std::string> parse_template_generics();
         [[nodiscard]] std::vector<TypeSignature> parse_concrete_generics();
         
+        [[nodiscard]] FunctionDefinition parse_extern_function_declaration();
         [[nodiscard]] FunctionDefinition parse_function_definition();
         [[nodiscard]] FunctionCall parse_function_call();
         [[nodiscard]] std::vector<Expression> parse_function_call_arguments();

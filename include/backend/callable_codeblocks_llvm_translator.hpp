@@ -42,6 +42,16 @@ class CallableCodeBlocksLLVMTranslator {
         );
 
     protected:
+        [[nodiscard]] llvm::Function* translate_local_function_definition_to_llvm(
+            const FunctionDefinition::Ref& function_definition, 
+            llvm::Function* llvm_function
+        );
+
+        [[nodiscard]] llvm::Function* translate_extern_function_definition_to_llvm(
+            const FunctionDefinition::Ref& function_definition, 
+            llvm::Function* llvm_function
+        );
+
         [[nodiscard]] ExpressionsAndStatementsLLVMTranslator get_function_body_translator(
             TranslationAwareScopeContext scope_context,
             std::optional<TypeSignature> expected_return_type,

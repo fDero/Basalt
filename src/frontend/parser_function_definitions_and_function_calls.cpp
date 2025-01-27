@@ -13,12 +13,28 @@
 
 FunctionDefinition Parser::parse_function_definition() {
     assert_token_matches(source_tokens, iterator++, "func");
+    ensure_there_are_still_tokens(source_tokens, iterator);
     FunctionDefinition function(*iterator);
     std::advance(iterator, 1);
     function.template_generics_names = parse_template_generics();
     function.arguments = parse_function_def_arguments();
     function.return_type = parse_function_return_type();
     function.code = parse_function_def_body();
+    return function;
+}
+
+FunctionDefinition Parser::parse_extern_function_declaration() {
+    assert_token_matches(source_tokens, iterator++, "extern");
+    ensure_there_are_still_tokens(source_tokens, iterator);
+    FunctionDefinition function(*iterator);
+    std::advance(iterator, 1);
+    function.arguments = parse_function_def_arguments();
+    function.return_type = parse_function_return_type();
+    ensure_token_matches(source_tokens, iterator++, "=");
+    Expression underlying_function_name = parse_string_literal();
+    function.extern_implementation = 
+        underlying_function_name.get<StringLiteral>().value;
+    ensure_token_matches(source_tokens, iterator++, ";");
     return function;
 }
 

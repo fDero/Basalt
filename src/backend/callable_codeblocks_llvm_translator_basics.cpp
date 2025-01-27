@@ -21,6 +21,25 @@ llvm::Function* CallableCodeBlocksLLVMTranslator::translate_function_definition_
     const FunctionDefinition::Ref& function_definition, 
     llvm::Function* llvm_function
 ) {
+    return (function_definition->extern_implementation.has_value())
+        ? translate_extern_function_definition_to_llvm(function_definition, llvm_function)
+        : translate_local_function_definition_to_llvm(function_definition, llvm_function);
+}
+
+llvm::Function* CallableCodeBlocksLLVMTranslator::translate_extern_function_definition_to_llvm(
+    const FunctionDefinition::Ref& function_definition, 
+    llvm::Function* llvm_function
+) {
+    llvm_function->deleteBody();
+    llvm_function->setLinkage(llvm::Function::ExternalLinkage);
+    llvm_function->setName(function_definition->extern_implementation.value());
+    return llvm_function;
+}
+
+llvm::Function* CallableCodeBlocksLLVMTranslator::translate_local_function_definition_to_llvm(
+    const FunctionDefinition::Ref& function_definition, 
+    llvm::Function* llvm_function
+) {
     ScopeContext raw_scope_context(*function_definition);
     auto local_variables = std::make_shared<std::map<std::string, llvm::AllocaInst*>>();
     llvm::BasicBlock* entry_block = llvm::BasicBlock::Create(llvm_context, "entry", llvm_function);

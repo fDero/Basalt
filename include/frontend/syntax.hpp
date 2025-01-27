@@ -120,6 +120,7 @@ inline const std::map<std::string, short> prefix_operators_priority {
 };
 
 inline const std::map<std::string, Token::Type> keywords {
+    {"extern",   Token::Type::extern_keyword}, 
     {"func",     Token::Type::func_keyword},     
     {"struct",   Token::Type::struct_keyword},
     {"union",    Token::Type::union_keyword},    

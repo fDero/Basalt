@@ -29,8 +29,10 @@ void Parser::parse_source_code(FileRepresentation& output) {
     while (iterator != source_tokens.end()) {
         switch (iterator->type) {
             break; case Token::Type::func_keyword:    output.func_defs.push_back(parse_function_definition());
+            break; case Token::Type::extern_keyword:  output.func_defs.push_back(parse_extern_function_declaration());
             break; case Token::Type::struct_keyword:  output.type_defs.push_back(parse_struct_definition());
             break; case Token::Type::union_keyword:   output.type_defs.push_back(parse_union_definition());
+            break; case Token::Type::alias_keyword:   output.type_defs.push_back(parse_type_alias());
             break; default:                           throw_invalid_use_of_token_within_global_scope(iterator);
         }
     }

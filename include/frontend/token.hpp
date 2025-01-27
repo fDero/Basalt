@@ -45,6 +45,7 @@ struct Token : public DebugInformationsAwareEntity {
         const_keyword, 
 
         // definitions
+        extern_keyword,
         func_keyword, 
         struct_keyword, 
         union_keyword, 
