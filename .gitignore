@@ -21,6 +21,9 @@ basalt.exe
 basalt_unit_tests
 basalt_unit_tests.exe
 snippets
+snippets/*
+snippets2
+snippets2/*
 dependencies
 *.ll
 *.snap
