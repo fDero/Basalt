@@ -100,11 +100,15 @@ void ensure_typesignature_is_int(const std::optional<TypeSignature>& type_signat
     }
 }
 
-void ensure_typesignature_is_either_array_or_slice_for_square_brackets_access(
+void ensure_typesignature_is_compatible_square_brackets_access(
     const TypeSignature& type_signature
 ) {
-    if (!type_signature.is<ArrayType>() && !type_signature.is<SliceType>()) {
-        throw InternalError("type must be either array or slice");
+    bool is_array = type_signature.is<ArrayType>();
+    bool is_slice = type_signature.is<SliceType>();
+    bool is_string = type_signature.is<PrimitiveType>() && type_signature.get<PrimitiveType>().type_name == "String";
+    bool is_raw_string = type_signature.is<PrimitiveType>() && type_signature.get<PrimitiveType>().type_name == "RawString";
+    if (!is_array && !is_slice && !is_string && !is_raw_string) {
+        throw std::runtime_error("type must be either array, slice, String, RawString");
     }
 }
 

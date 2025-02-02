@@ -106,6 +106,12 @@ std::optional<TypeSignature> ExpressionTypeDeducer::deduce_type_from_square_brac
     switch(left_operand_type.value().typesiganture_kind()) {
         case TypeSignatureBody::Kind::array_type: return left_operand_type.value().get<ArrayType>().stored_type;
         case TypeSignatureBody::Kind::slice_type: return left_operand_type.value().get<SliceType>().stored_type;
+        case TypeSignatureBody::Kind::primitive_type: {
+            std::string primitive_type_name = left_operand_type.value().get<PrimitiveType>().type_name;
+            if (primitive_type_name == "String" || primitive_type_name == "RawString") {
+                return deduce_primtive_type("Char", square_brackets_access);
+            }
+        }
         default: throw_cannot_access_square_brackets_on_type(left_operand_type.value(), square_brackets_access);
     }
 }

@@ -172,7 +172,7 @@ void ensure_typesignature_is_boolean(
 
 void ensure_typesignature_is_int(const std::optional<TypeSignature>& type_signature_opt);
 
-void ensure_typesignature_is_either_array_or_slice_for_square_brackets_access(
+void ensure_typesignature_is_compatible_square_brackets_access(
     const TypeSignature& type_signature
 );
 

@@ -20,7 +20,7 @@
     const TypeSignature& left_operand_type,
     const SquareBracketsAccess& expression
 ) {
-    throw InternalError("cannot access square brackets on type");
+    throw std::runtime_error("cannot access square brackets on type");
 }
 
 [[noreturn]] void throw_no_such_struct_field(

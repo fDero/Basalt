@@ -35,6 +35,16 @@ inline llvm::Value* create_array_gep(
     return builder.CreateGEP(proper_array_address_not_ptr, indices);
 }
 
+inline llvm::Value* create_vector_gep(
+    llvm::IRBuilder<>& builder,
+    llvm::Value* ptr_to_first_elem,
+    llvm::Value* index
+) {
+    std::vector<llvm::Value*> indices;
+    indices.push_back(index);
+    return builder.CreateGEP(ptr_to_first_elem, indices);
+}
+
 inline llvm::BasicBlock* createBlockAfter(
     llvm::LLVMContext& context, 
     const std::string& block_name, 

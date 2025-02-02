@@ -19,8 +19,34 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_square_br
     switch (storage_type.typesiganture_kind()) {
         case TypeSignatureBody::Kind::array_type: return translate_square_bracket_access_from_array_to_llvm(block, expr);
         case TypeSignatureBody::Kind::slice_type: return translate_square_bracket_access_from_slice_to_llvm(block, expr);
+        case TypeSignatureBody::Kind::primitive_type: {
+            std::string primitive_type_name = storage_type.get<PrimitiveType>().type_name;
+            if (primitive_type_name == "String") return translate_square_bracket_access_from_string_to_llvm(block, expr);
+            if (primitive_type_name == "RawString") return translate_square_bracket_access_from_raw_string_to_llvm(block, expr);
+        }
         default: assert_unreachable();
     }
+}
+
+TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_square_bracket_access_from_string_to_llvm(
+    llvm::BasicBlock* block,
+    const SquareBracketsAccess& expr
+) {
+    return translate_square_bracket_access_from_slice_to_llvm(block, expr);
+}
+
+TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_square_bracket_access_from_raw_string_to_llvm(
+    llvm::BasicBlock* block,
+    const SquareBracketsAccess& expr
+) {
+    TranslatedExpression ptr_to_first_char = translate_expression_to_llvm(block, expr.storage);
+    TranslatedExpression index = translate_expression_to_llvm(block, expr.index);
+    llvm::IRBuilder<> builder(block);
+    llvm::Value* index_value = index.value;
+    std::vector<llvm::Value*> indices;
+    llvm::Value* element_address = create_vector_gep(builder, ptr_to_first_char.value, index_value);
+    llvm::Value* element_value = builder.CreateLoad(element_address);
+    return TranslatedExpression(element_value, element_address);
 }
 
 TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_square_bracket_access_from_array_to_llvm(

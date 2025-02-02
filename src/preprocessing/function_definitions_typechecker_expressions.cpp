@@ -82,7 +82,7 @@ void FDTC::SingleFunctionTypeChecker::visit_square_bracket_access(
     if (!index_type.has_value() || !storage_type.has_value()) {
         return;
     }
-    ensure_typesignature_is_either_array_or_slice_for_square_brackets_access(*storage_type);
+    ensure_typesignature_is_compatible_square_brackets_access(*storage_type);
     ensure_typesignature_is_int(*index_type);
 }
 

@@ -23,6 +23,7 @@ static std::string resolve_escaped_characters(const Token& token, const std::str
             break; case 'n':  resolved_string.back() = '\n';
             break; case 't':  resolved_string.back() = '\t';
             break; case 'r':  resolved_string.back() = '\r';
+            break; case '0':  resolved_string.back() = '\0';
             break; case '\\': resolved_string.back() = '\\';
             break; case '\'': resolved_string.back() = '\'';
             break; case '"':  resolved_string.back() = '"';
