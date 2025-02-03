@@ -79,7 +79,7 @@ TEST(Preprocessing, Function_Exit_Path_Navigator_Return_Inside_Of_A_While_But_Al
                                     Token { return_keyword, "test.basalt", 1, 1, 6, Token::Type::return_keyword }
                                 }
                             },
-                            Token { "while", "test.basalt", 1, 1, 1, Token::Type::while_keyword }
+                            Token { while_keyword, "test.basalt", 1, 1, 1, Token::Type::while_keyword }
                         },
                         Return {
                             BinaryOperator {
@@ -134,7 +134,7 @@ TEST(Preprocessing, Function_Exit_Path_Return_Inside_Of_An_Until_Hence_Function_
                                     Token { return_keyword, "test.basalt", 1, 1, 6, Token::Type::return_keyword }
                                 }
                             },
-                            Token { "until", "test.basalt", 1, 1, 1, Token::Type::until_keyword }
+                            Token { until_keyword, "test.basalt", 1, 1, 1, Token::Type::until_keyword }
                         }
                     }
                 )
@@ -196,10 +196,10 @@ TEST(Preprocessing, Function_Exit_Path_Navigator_Function_Every_Path_Returns_Ins
                                             Token { return_keyword, "test.basalt", 1, 1, 6, Token::Type::return_keyword }
                                         }
                                     },
-                                    Token { "if", "test.basalt", 1, 1, 1, Token::Type::if_keyword }
+                                    Token { if_keyword, "test.basalt", 1, 1, 1, Token::Type::if_keyword }
                                 }
                             },
-                            Token { "until", "test.basalt", 1, 1, 1, Token::Type::until_keyword }
+                            Token { until_keyword, "test.basalt", 1, 1, 1, Token::Type::until_keyword }
                         }
                     }
                 )
@@ -241,7 +241,7 @@ TEST(Preprocessing, Function_Exit_Path_Navigator_Local_Control_Flow_Alteration_D
                                     Token { break_keyword, "test.basalt", 1, 1, 6, Token::Type::break_keyword }
                                 }
                             },
-                            Token { "until", "test.basalt", 1, 1, 1, Token::Type::until_keyword }
+                            Token { until_keyword, "test.basalt", 1, 1, 1, Token::Type::until_keyword }
                         },
                         Return {
                             BinaryOperator {
@@ -306,10 +306,10 @@ TEST(Preprocessing, Function_Exit_Path_Navigator_Returning_From_A_Single_Branch_
                                             Token { break_keyword, "test.basalt", 1, 1, 6, Token::Type::break_keyword }
                                         }
                                     },
-                                    Token { "if", "test.basalt", 1, 1, 1, Token::Type::if_keyword }
+                                    Token { if_keyword, "test.basalt", 1, 1, 1, Token::Type::if_keyword }
                                 }
                             },
-                            Token { "until", "test.basalt", 1, 1, 1, Token::Type::until_keyword }
+                            Token { until_keyword, "test.basalt", 1, 1, 1, Token::Type::until_keyword }
                         },
                         Return {
                             BinaryOperator {
@@ -366,7 +366,7 @@ TEST(Preprocessing, Function_Exit_Path_Navigator_Conditional_Where_Just_One_Bran
                                             Token { break_keyword, "test.basalt", 1, 1, 6, Token::Type::break_keyword }
                                         }
                                     },
-                                    Token { "if", "test.basalt", 1, 1, 1, Token::Type::if_keyword }
+                                    Token { if_keyword, "test.basalt", 1, 1, 1, Token::Type::if_keyword }
                                 },
                                 VariableDeclaration {
                                     "z",
@@ -375,7 +375,7 @@ TEST(Preprocessing, Function_Exit_Path_Navigator_Conditional_Where_Just_One_Bran
                                     Token { "var", "test.basalt", 1, 1, 1, Token::Type::var_keyword }
                                 }
                             },
-                            Token { "until", "test.basalt", 1, 1, 1, Token::Type::until_keyword }
+                            Token { until_keyword, "test.basalt", 1, 1, 1, Token::Type::until_keyword }
                         },
                         Return {
                             BinaryOperator {

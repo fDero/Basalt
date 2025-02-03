@@ -9,25 +9,26 @@
 #include "language/statements.hpp"
 #include "language/definitions.hpp"
 #include "language/expressions.hpp"
+#include "syntax/keywords.hpp"
 
 Statement Parser::parse_if_statement() {
     const Token& if_token = *iterator;
-    assert_token_matches(source_tokens, iterator++, "if");
+    assert_token_matches(source_tokens, iterator++, if_keyword);
     ensure_token_matches(source_tokens, iterator++, "(");
     Expression condition = parse_expression();
     ensure_token_matches(source_tokens, iterator++, ")");
     std::vector<Statement> then_branch = parse_code_block();
-    if (iterator == source_tokens.end() || iterator->sourcetext != "else") {
+    if (iterator == source_tokens.end() || iterator->sourcetext != else_keyword) {
         return Conditional {condition, then_branch, {}, if_token};
     }
-    assert_token_matches(source_tokens, iterator++, "else");
+    assert_token_matches(source_tokens, iterator++, else_keyword);
     std::vector<Statement> else_branch = parse_code_block();
     return Conditional {condition, then_branch, else_branch, if_token};
 }
 
 Statement Parser::parse_while_loop() {
     const Token& while_token = *iterator;
-    assert_token_matches(source_tokens, iterator++, "while");
+    assert_token_matches(source_tokens, iterator++, while_keyword);
     ensure_token_matches(source_tokens, iterator++, "(");
     Expression condition = parse_expression();
     ensure_token_matches(source_tokens, iterator++, ")");
@@ -37,7 +38,7 @@ Statement Parser::parse_while_loop() {
 
 Statement Parser::parse_until_loop() {
     const Token& until_token = *iterator;
-    assert_token_matches(source_tokens, iterator++, "until");
+    assert_token_matches(source_tokens, iterator++, until_keyword);
     ensure_token_matches(source_tokens, iterator++, "(");
     Expression condition = parse_expression();
     ensure_token_matches(source_tokens, iterator++, ")");

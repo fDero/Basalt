@@ -98,7 +98,7 @@ TEST(Preprocessing, Function_Exit_Path_Navigator_Conditional_Where_Both_Branches
                                             Token { break_keyword, "test.basalt", 1, 1, 6, Token::Type::break_keyword }
                                         }
                                     },
-                                    Token { "if", "test.basalt", 1, 1, 1, Token::Type::if_keyword }
+                                    Token { if_keyword, "test.basalt", 1, 1, 1, Token::Type::if_keyword }
                                 },
                                 VariableDeclaration {
                                     "z",
@@ -107,7 +107,7 @@ TEST(Preprocessing, Function_Exit_Path_Navigator_Conditional_Where_Both_Branches
                                     Token { "var", "test.basalt", 1, 1, 1, Token::Type::var_keyword }
                                 }
                             },
-                            Token { "until", "test.basalt", 1, 1, 1, Token::Type::until_keyword }
+                            Token { until_keyword, "test.basalt", 1, 1, 1, Token::Type::until_keyword }
                         },
                         Return {
                             BinaryOperator {

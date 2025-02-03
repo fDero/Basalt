@@ -7,7 +7,7 @@
 
 TEST(Frontend, Parse_If_Statement_Inline_Then_No_Else) {
     std::vector<Token> tokens = {
-        { "if",          "test.basalt", 1, 1, 1, Token::Type::if_keyword    },
+        { if_keyword,    "test.basalt", 1, 1, 1, Token::Type::if_keyword    },
         { "(",           "test.basalt", 1, 2, 2, Token::Type::symbol        },
         { "ready",       "test.basalt", 1, 3, 3, Token::Type::text          },
         { ")",           "test.basalt", 1, 4, 4, Token::Type::symbol        },
@@ -25,13 +25,13 @@ TEST(Frontend, Parse_If_Statement_Inline_Then_No_Else) {
 
 TEST(Frontend, Parse_If_Statement_Inline_Then_Inline_Else) {
     std::vector<Token> tokens = {
-        { "if",             "test.basalt", 1, 1, 1, Token::Type::if_keyword       },
+        { if_keyword,       "test.basalt", 1, 1, 1, Token::Type::if_keyword       },
         { "(",              "test.basalt", 1, 2, 2, Token::Type::symbol           },
         { "ready",          "test.basalt", 1, 3, 3, Token::Type::text             },
         { ")",              "test.basalt", 1, 4, 4, Token::Type::symbol           },
         { break_keyword,    "test.basalt", 1, 2, 2, Token::Type::break_keyword    },
         { ";",              "test.basalt", 1, 3, 3, Token::Type::symbol           },
-        { "else",           "test.basalt", 1, 3, 3, Token::Type::else_keyword     },
+        { else_keyword,     "test.basalt", 1, 3, 3, Token::Type::else_keyword     },
         { continue_keyword, "test.basalt", 1, 2, 2, Token::Type::continue_keyword },
         { ";",              "test.basalt", 1, 3, 3, Token::Type::symbol           },
     };
@@ -47,7 +47,7 @@ TEST(Frontend, Parse_If_Statement_Inline_Then_Inline_Else) {
 
 TEST(Frontend, Parse_If_Statement_Block_Then_Block_Else) {
     std::vector<Token> tokens = {
-        { "if",             "test.basalt", 1, 1, 1, Token::Type::if_keyword       },
+        { if_keyword,       "test.basalt", 1, 1, 1, Token::Type::if_keyword       },
         { "(",              "test.basalt", 1, 2, 2, Token::Type::symbol           },
         { "ready",          "test.basalt", 1, 3, 3, Token::Type::text             },
         { ")",              "test.basalt", 1, 4, 4, Token::Type::symbol           },
@@ -55,7 +55,7 @@ TEST(Frontend, Parse_If_Statement_Block_Then_Block_Else) {
         { break_keyword,    "test.basalt", 1, 2, 2, Token::Type::break_keyword    },
         { ";",              "test.basalt", 1, 3, 3, Token::Type::symbol           },
         { "}",              "test.basalt", 1, 2, 2, Token::Type::symbol           },
-        { "else",           "test.basalt", 1, 3, 3, Token::Type::else_keyword     },
+        { else_keyword,     "test.basalt", 1, 3, 3, Token::Type::else_keyword     },
         { "{",              "test.basalt", 1, 2, 2, Token::Type::symbol           },
         { continue_keyword, "test.basalt", 1, 2, 2, Token::Type::continue_keyword },
         { ";",              "test.basalt", 1, 3, 3, Token::Type::symbol           },
@@ -73,7 +73,7 @@ TEST(Frontend, Parse_If_Statement_Block_Then_Block_Else) {
 
 TEST(Frontend, Parse_If_Statement_Block_Then_Block_Else_More_Then_One_Statement_In_Body) {
     std::vector<Token> tokens = {
-        { "if",             "test.basalt", 1, 1, 1, Token::Type::if_keyword       },
+        { if_keyword,       "test.basalt", 1, 1, 1, Token::Type::if_keyword       },
         { "(",              "test.basalt", 1, 2, 2, Token::Type::symbol           },
         { "ready",          "test.basalt", 1, 3, 3, Token::Type::text             },
         { ")",              "test.basalt", 1, 4, 4, Token::Type::symbol           },
@@ -83,7 +83,7 @@ TEST(Frontend, Parse_If_Statement_Block_Then_Block_Else_More_Then_One_Statement_
         { break_keyword,    "test.basalt", 1, 2, 2, Token::Type::break_keyword    },
         { ";",              "test.basalt", 1, 3, 3, Token::Type::symbol           },
         { "}",              "test.basalt", 1, 2, 2, Token::Type::symbol           },
-        { "else",           "test.basalt", 1, 3, 3, Token::Type::else_keyword     },
+        { else_keyword,     "test.basalt", 1, 3, 3, Token::Type::else_keyword     },
         { "{",              "test.basalt", 1, 2, 2, Token::Type::symbol           },
         { continue_keyword, "test.basalt", 1, 2, 2, Token::Type::continue_keyword },
         { ";",              "test.basalt", 1, 3, 3, Token::Type::symbol           },
@@ -105,7 +105,7 @@ TEST(Frontend, Parse_If_Statement_Block_Then_Block_Else_More_Then_One_Statement_
 
 TEST(Frontend, Parse_If_Statement_Inline_Then_No_Else_Condition_Is_Function_Call) {
     std::vector<Token> tokens = {
-        { "if",          "test.basalt", 1, 1, 1, Token::Type::if_keyword    },
+        { if_keyword,    "test.basalt", 1, 1, 1, Token::Type::if_keyword    },
         { "(",           "test.basalt", 1, 2, 2, Token::Type::symbol        },
         { "ready",       "test.basalt", 1, 3, 3, Token::Type::text          },
         { "(",           "test.basalt", 1, 2, 2, Token::Type::symbol        },
@@ -125,14 +125,14 @@ TEST(Frontend, Parse_If_Statement_Inline_Then_No_Else_Condition_Is_Function_Call
 
 TEST(Frontend, Parse_If_Statement_Inline_Then_No_Else_Condition_Is_Binary_Operator) {
     std::vector<Token> tokens = {
-        { "if", "test.basalt", 1, 1, 1, Token::Type::if_keyword             },
-        { "(", "test.basalt", 1, 2, 2, Token::Type::symbol                  },
-        { "ready", "test.basalt", 1, 3, 3, Token::Type::text                },
-        { "||", "test.basalt", 1, 2, 2, Token::Type::symbol                 },
-        { "flag", "test.basalt", 1, 4, 4, Token::Type::text                 },
-        { ")", "test.basalt", 1, 4, 4, Token::Type::symbol                  },
+        { if_keyword,    "test.basalt", 1, 1, 1, Token::Type::if_keyword    },
+        { "(",           "test.basalt", 1, 2, 2, Token::Type::symbol        },
+        { "ready",       "test.basalt", 1, 3, 3, Token::Type::text          },
+        { "||",          "test.basalt", 1, 2, 2, Token::Type::symbol        },
+        { "flag",        "test.basalt", 1, 4, 4, Token::Type::text          },
+        { ")",           "test.basalt", 1, 4, 4, Token::Type::symbol        },
         { break_keyword, "test.basalt", 1, 2, 2, Token::Type::break_keyword },
-        { ";", "test.basalt", 1, 3, 3, Token::Type::symbol                  },
+        { ";",           "test.basalt", 1, 3, 3, Token::Type::symbol        },
     };
     Parser parser = Parser({ "inline-tests.basalt", tokens });
     Statement statement = parser.parse_statement();
