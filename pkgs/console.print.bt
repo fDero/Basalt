@@ -1,0 +1,55 @@
+package console;
+
+
+/* this function is used to print a 
+single character to stdout */
+extern print(ch : Char) = "putchar";
+
+
+/* this function is used to print a 
+c-style string to the stdout */
+func print(cstr : RawString) {
+    var index : Int = 0;
+    while(cstr[index] != '\0') {
+        print(cstr[index]);
+        index = index + 1;
+    }
+}
+
+
+/* this function is used to print a 
+basalt-style string to the stdout */
+func print(str : String) {
+	var index : Int = 0;
+	while(index < str.len) {
+		print(str[index]);
+		index = index + 1;
+	}
+}
+
+
+/* this function is used to print a
+boolean in text-format to the stdout */
+func print(flag : Bool) {
+	if(flag) {
+		print('t');
+		print('r');
+		print('u');
+		print('e');
+	}
+	else {
+		print('f');
+		print('a');
+		print('l');
+		print('s');
+		print('e');
+	}
+}
+
+
+/* Just like calling `print` but 
+it automatically adds a new-line at the end */
+func println<T>(item : T) {
+	print(item);
+	print('\n');
+}

@@ -4,8 +4,6 @@
 *.exe
 *.out
 hidden
-*.bt
-*.basalt
 *dependencies*
 grammar/.antlr
 build
