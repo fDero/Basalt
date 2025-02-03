@@ -7,6 +7,7 @@
 #include "backend/callable_codeblocks_llvm_translator.hpp"
 #include "backend/llvm_wrappers.hpp"
 #include "errors/internal_errors.hpp"
+#include "syntax/primitive_types.hpp"
 
 TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_square_bracket_access_to_llvm(
     llvm::BasicBlock* block,
@@ -21,8 +22,8 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_square_br
         case TypeSignatureBody::Kind::slice_type: return translate_square_bracket_access_from_slice_to_llvm(block, expr);
         case TypeSignatureBody::Kind::primitive_type: {
             std::string primitive_type_name = storage_type.get<PrimitiveType>().type_name;
-            if (primitive_type_name == "String") return translate_square_bracket_access_from_string_to_llvm(block, expr);
-            if (primitive_type_name == "RawString") return translate_square_bracket_access_from_raw_string_to_llvm(block, expr);
+            if (primitive_type_name == string_type) return translate_square_bracket_access_from_string_to_llvm(block, expr);
+            if (primitive_type_name == raw_string_type) return translate_square_bracket_access_from_raw_string_to_llvm(block, expr);
         }
         default: assert_unreachable();
     }

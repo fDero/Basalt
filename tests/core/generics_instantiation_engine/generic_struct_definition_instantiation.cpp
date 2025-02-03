@@ -47,7 +47,7 @@ TEST(Core, Generic_Struct_With_PointerType_Field_Instantiation) {
     ASSERT_TRUE(instantiated_struct_definition.fields[0].field_type.is<PointerType>());
     PointerType pointed_type = instantiated_struct_definition.fields[0].field_type.get<PointerType>();
     ASSERT_TRUE(pointed_type.pointed_type.is<PrimitiveType>());
-    EXPECT_EQ(pointed_type.pointed_type.get<PrimitiveType>().type_name, "Int");
+    EXPECT_EQ(pointed_type.pointed_type.get<PrimitiveType>().type_name, int_type);
 }
 
 TEST(Core, Generic_Struct_With_Slice_Type_Field_Instantiation) {
@@ -68,7 +68,7 @@ TEST(Core, Generic_Struct_With_Slice_Type_Field_Instantiation) {
     ASSERT_TRUE(instantiated_struct_definition.fields[0].field_type.is<SliceType>());
     SliceType slice_type = instantiated_struct_definition.fields[0].field_type.get<SliceType>();
     ASSERT_TRUE(slice_type.stored_type.is<PrimitiveType>());
-    EXPECT_EQ(slice_type.stored_type.get<PrimitiveType>().type_name, "Int");
+    EXPECT_EQ(slice_type.stored_type.get<PrimitiveType>().type_name, int_type);
 }
 
 TEST(Core, Generic_Struct_With_Array_Type_Field_Instantiation) {
@@ -89,6 +89,6 @@ TEST(Core, Generic_Struct_With_Array_Type_Field_Instantiation) {
     ASSERT_TRUE(instantiated_struct_definition.fields[0].field_type.is<ArrayType>());
     ArrayType array_type = instantiated_struct_definition.fields[0].field_type.get<ArrayType>();
     ASSERT_TRUE(array_type.stored_type.is<PrimitiveType>());
-    EXPECT_EQ(array_type.stored_type.get<PrimitiveType>().type_name, "Int");
+    EXPECT_EQ(array_type.stored_type.get<PrimitiveType>().type_name, int_type);
     EXPECT_EQ(array_type.array_length, 10);
 }

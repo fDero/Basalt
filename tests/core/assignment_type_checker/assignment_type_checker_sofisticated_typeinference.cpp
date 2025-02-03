@@ -35,7 +35,7 @@ TEST(Core, Type_Inference_Algorithm_Finds_SuperType_Of_IntOrFloat_And_String_As_
     ProjectFileStructure empty_project;
     TypeDefinitionsRegister type_register(empty_project);
     AssignmentTypeChecker type_checker(type_register, empty_project);
-    TypeSignature IntOrFloat = InlineUnion { Token { "Int", "main.basalt", 1, 1, 1, Token::Type::type }, {
+    TypeSignature IntOrFloat = InlineUnion { Token { int_type, "main.basalt", 1, 1, 1, Token::Type::type }, {
         TypeSignatureFactory::Int, TypeSignatureFactory::Float
     } };
     EXPECT_TRUE(type_checker.validate_assignment(IntOrFloat, TypeSignatureFactory::T));

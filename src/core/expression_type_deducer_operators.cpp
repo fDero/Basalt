@@ -5,7 +5,6 @@
 
 #include "core/expression_type_deducer.hpp"
 #include "core/assignment_type_checker.hpp"
-#include "frontend/syntax.hpp"
 #include "errors/preprocessing_errors.hpp"
 #include "errors/internal_errors.hpp"
 
@@ -54,7 +53,7 @@ std::optional<TypeSignature> ExpressionTypeDeducer::deduce_type_from_eq_binary_o
     bool deduced = left_operand_type.has_value() && right_operand_type.has_value();
     ensure_numeric_or_generics_types_are_equal(left_operand_type, right_operand_type);
     return deduced
-        ? std::optional<TypeSignature>(deduce_primtive_type("Bool", expression)) 
+        ? std::optional<TypeSignature>(deduce_primtive_type(bool_type, expression)) 
         : std::nullopt;
 }
 
@@ -66,7 +65,7 @@ std::optional<TypeSignature> ExpressionTypeDeducer::deduce_type_from_ord_binary_
     ensure_numeric_or_generics_types_are_equal(left_operand_type, right_operand_type);
     bool deduced = left_operand_type.has_value() && right_operand_type.has_value();
     return deduced
-        ? std::optional<TypeSignature>(deduce_primtive_type("Bool", expression))
+        ? std::optional<TypeSignature>(deduce_primtive_type(bool_type, expression))
         : std::nullopt;
 }
 
@@ -74,12 +73,12 @@ std::optional<TypeSignature> ExpressionTypeDeducer::deduce_type_from_logical_bin
     std::optional<TypeSignature> left_operand_type = deduce_expression_type(expression.left_operand);
     std::optional<TypeSignature> right_operand_type = deduce_expression_type(expression.right_operand);
     if (!left_operand_type.has_value() || !right_operand_type.has_value()) {
-        return deduce_primtive_type("Bool", expression);    
+        return deduce_primtive_type(bool_type, expression);    
     }
     AssignmentTypeChecker assignment_type_checker(type_definitions_register, project_file_structure);
     ensure_typesignature_is_boolean(left_operand_type);
     ensure_typesignature_is_boolean(left_operand_type);
-    return deduce_primtive_type("Bool", expression);
+    return deduce_primtive_type(bool_type, expression);
 }
 
 std::optional<TypeSignature> ExpressionTypeDeducer::deduce_type_from_math_binary_operator(const BinaryOperator& expression) {

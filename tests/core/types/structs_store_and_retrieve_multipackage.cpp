@@ -3,7 +3,6 @@
 #include "core/type_definitions_register.hpp"
 #include "frontend/file_representation.hpp"
 #include "core/project_file_structure.hpp"
-#include "frontend/syntax.hpp"
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 #include "../../tests_utilities/struct_definition_factory.hpp"

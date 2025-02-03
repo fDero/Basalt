@@ -7,9 +7,9 @@
 
 #include <vector>
 #include <string>
+#include <optional>
 
 #include "language/typesignatures.hpp"
-#include "frontend/syntax.hpp"
 
 struct ExpressionBody : public DebugInformationsAwareEntity {
 

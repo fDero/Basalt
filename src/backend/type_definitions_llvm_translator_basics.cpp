@@ -5,6 +5,7 @@
 
 #include "backend/type_definitions_llvm_translator.hpp"
 #include "errors/internal_errors.hpp"
+#include "syntax/primitive_types.hpp"
 
 TypeDefinitionsLLVMTranslator::TypeDefinitionsLLVMTranslator(
     ProgramRepresentation& program_representation, 
@@ -15,17 +16,17 @@ TypeDefinitionsLLVMTranslator::TypeDefinitionsLLVMTranslator(
     , context(context)
     , llvm_module(llvm_module)
 { 
-    llvm_type_definitions.insert({"Int", llvm::Type::getInt64Ty(context)});
-    llvm_type_definitions.insert({"Float", llvm::Type::getDoubleTy(context)});
-    llvm_type_definitions.insert({"Bool", llvm::Type::getInt1Ty(context)});
-    llvm_type_definitions.insert({"Char", llvm::Type::getInt8Ty(context)});
-    llvm_type_definitions.insert({"RawString", llvm::Type::getInt8Ty(context)->getPointerTo()});
+    llvm_type_definitions.insert({int_type, llvm::Type::getInt64Ty(context)});
+    llvm_type_definitions.insert({float_type, llvm::Type::getDoubleTy(context)});
+    llvm_type_definitions.insert({bool_type, llvm::Type::getInt1Ty(context)});
+    llvm_type_definitions.insert({char_type, llvm::Type::getInt8Ty(context)});
+    llvm_type_definitions.insert({raw_string_type, llvm::Type::getInt8Ty(context)->getPointerTo()});
     llvm::Type* string_internal_representation[] = {
-        llvm_type_definitions["Int"],
-        llvm_type_definitions["RawString"],
+        llvm_type_definitions[int_type],
+        llvm_type_definitions[raw_string_type],
     };
-    llvm::Type* string_type = llvm::StructType::create(context, string_internal_representation, "String");
-    llvm_type_definitions.insert({"String", string_type});
+    llvm::Type* llvm_string_type = llvm::StructType::create(context, string_internal_representation, string_type);
+    llvm_type_definitions.insert({string_type, llvm_string_type});
 }
 
 llvm::Type* TypeDefinitionsLLVMTranslator::translate_typesignature_to_llvm_type(
@@ -64,25 +65,25 @@ llvm::Type* TypeDefinitionsLLVMTranslator::translate_return_type_to_llvm_type(
 }
 
 llvm::Type* TypeDefinitionsLLVMTranslator::get_int_llvm_type() {
-    return llvm_type_definitions["Int"];
+    return llvm_type_definitions[int_type];
 }
 
 llvm::Type* TypeDefinitionsLLVMTranslator::get_float_llvm_type() {
-    return llvm_type_definitions["Float"];
+    return llvm_type_definitions[float_type];
 }
 
 llvm::Type* TypeDefinitionsLLVMTranslator::get_char_llvm_type() {
-    return llvm_type_definitions["Char"];
+    return llvm_type_definitions[char_type];
 }
 
 llvm::Type* TypeDefinitionsLLVMTranslator::get_bool_llvm_type() {
-    return llvm_type_definitions["Bool"];
+    return llvm_type_definitions[bool_type];
 }
 
 llvm::Type* TypeDefinitionsLLVMTranslator::get_string_llvm_type() {
-    return llvm_type_definitions["String"];
+    return llvm_type_definitions[string_type];
 }
 
 llvm::Type* TypeDefinitionsLLVMTranslator::get_raw_string_llvm_type() {
-    return llvm_type_definitions["RawString"];
+    return llvm_type_definitions[raw_string_type];
 }

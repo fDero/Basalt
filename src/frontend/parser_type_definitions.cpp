@@ -5,11 +5,9 @@
 
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
-#include "frontend/syntax.hpp"
 #include "frontend/parser.hpp"
 #include "language/expressions.hpp"
-
-#include "errors/preprocessing_errors.hpp" // <-- ensure_typesignature_is
+#include "errors/preprocessing_errors.hpp"
 
 StructDefinition::Field Parser::parse_struct_field() {
     assert_token_is_text(source_tokens, iterator);

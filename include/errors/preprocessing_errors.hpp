@@ -16,6 +16,8 @@
 #include "core/scope_context.hpp"
 #include "core/generics_substitution_rules.hpp"
 #include "core/generics_instantiation_engine.hpp"
+#include "syntax/operators.hpp"
+#include "syntax/primitive_types.hpp"
 
 inline void ensure_assignment_is_valid(
     bool assignment_is_valid,
@@ -383,7 +385,7 @@ inline void ensure_condition_expression_is_boolean(
     if (!condition_type.has_value()) {
         throw std::runtime_error("condition expression is not boolean");
     }
-    if (!condition_type->is<PrimitiveType>() || condition_type->get<PrimitiveType>().type_name != "Bool") {
+    if (!condition_type->is<PrimitiveType>() || condition_type->get<PrimitiveType>().type_name != bool_type) {
         throw std::runtime_error("condition expression is not boolean");
     }
 }
@@ -430,7 +432,7 @@ inline void ensure_main_function_returns_either_int_or_void(
     if (!return_type.is<PrimitiveType>()) {
         throw std::runtime_error("main function must return either void or int");
     }
-    if (return_type.get<PrimitiveType>().type_name != "Int") {
+    if (return_type.get<PrimitiveType>().type_name != int_type) {
         throw std::runtime_error("main function must return either void or int");
     }
 }

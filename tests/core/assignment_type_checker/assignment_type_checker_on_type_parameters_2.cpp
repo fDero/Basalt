@@ -33,7 +33,7 @@ ProjectFileStructure single_file_project_with_list_and_number_defs2({
 TEST(Core, Inferred_Generics_Do_Not_Allow_Too_Much_Flexibility_On_Type_Parameters) {
     TypeDefinitionsRegister type_register(single_file_project_with_list_and_number_defs2);
     AssignmentTypeChecker type_checker(type_register, single_file_project_with_list_and_number_defs2);
-    TypeSignature IntOrFloat = InlineUnion { Token { "Int", "main.basalt", 1, 1, 1, Token::Type::type }, {
+    TypeSignature IntOrFloat = InlineUnion { Token { int_type, "main.basalt", 1, 1, 1, Token::Type::type }, {
         TypeSignatureFactory::Int, TypeSignatureFactory::Float
     } };
 
@@ -49,7 +49,7 @@ TEST(Core, Inferred_Generics_Do_Not_Allow_Too_Much_Flexibility_On_Type_Parameter
 TEST(Core, Inferred_Generics_Do_Not_Allow_Too_Much_Flexibility_On_Type_Parameters_Inverse) {
     TypeDefinitionsRegister type_register(single_file_project_with_list_and_number_defs2);
     AssignmentTypeChecker type_checker(type_register, single_file_project_with_list_and_number_defs2);
-    TypeSignature IntOrFloat = InlineUnion { Token { "Int", "main.basalt", 1, 1, 1, Token::Type::type }, {
+    TypeSignature IntOrFloat = InlineUnion { Token { int_type, "main.basalt", 1, 1, 1, Token::Type::type }, {
         TypeSignatureFactory::Int, TypeSignatureFactory::Float
     } };
 
@@ -66,7 +66,7 @@ TEST(Core, Inferred_Generics_Works_Just_Fine_Nested_Type_Parameters) {
     TypeDefinitionsRegister type_register(single_file_project_with_list_and_number_defs2);
     AssignmentTypeChecker type_checker(type_register, single_file_project_with_list_and_number_defs2);
 
-    TypeSignature IntOrFloat = InlineUnion { Token { "Int", "main.basalt", 1, 1, 1, Token::Type::type }, {
+    TypeSignature IntOrFloat = InlineUnion { Token { int_type, "main.basalt", 1, 1, 1, Token::Type::type }, {
         TypeSignatureFactory::Int, TypeSignatureFactory::Float
     } };
 
@@ -100,7 +100,7 @@ TEST(Core, Inferred_Generics_Works_Just_Fine_Nested_Type_Parameters_Not_Quite_Th
 
     TypeSignature number = CustomType { Token { "Number", "main.basalt", 1, 1, 1, Token::Type::type }, { } };
 
-    TypeSignature IntOrFloat = InlineUnion { Token { "Int", "main.basalt", 1, 1, 1, Token::Type::type }, {
+    TypeSignature IntOrFloat = InlineUnion { Token { int_type, "main.basalt", 1, 1, 1, Token::Type::type }, {
         TypeSignatureFactory::Int, TypeSignatureFactory::Float
     } };
 

@@ -1,8 +1,10 @@
 
 #include <gtest/gtest.h>
+
 #include "frontend/parser.hpp"
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
+#include "syntax/primitive_types.hpp"
 
 TEST(Frontend, Parse_CustomType_WithOut_Generics) {
     std::vector<Token> tokens = {
@@ -23,7 +25,7 @@ TEST(Frontend, Parse_Custom_Type_With_One_Generic) {
     std::vector<Token> tokens = {
         { "Wrapper", "test.basalt", 1, 1, 1, Token::Type::type },
         { "<", "test.basalt", 1, 2, 7, Token::Type::symbol     },
-        { "String", "test.basalt", 1, 3, 13, Token::Type::type },
+        { string_type, "test.basalt", 1, 3, 13, Token::Type::type },
         { ">", "test.basalt", 1, 4, 14, Token::Type::symbol    }
     };
     Parser parser = Parser({ "inline-tests.basalt", tokens });
@@ -32,18 +34,18 @@ TEST(Frontend, Parse_Custom_Type_With_One_Generic) {
     ASSERT_EQ(type.get<CustomType>().type_name, "Wrapper");
     ASSERT_EQ(type.get<CustomType>().type_parameters.size(), 1);
     ASSERT_TRUE(type.get<CustomType>().type_parameters[0].is<PrimitiveType>());
-    EXPECT_EQ(type.get<CustomType>().type_parameters[0].get<PrimitiveType>().type_name, "String");
+    EXPECT_EQ(type.get<CustomType>().type_parameters[0].get<PrimitiveType>().type_name, string_type);
 }
 
 TEST(Frontend, Parse_CustomType_With_Multiple_Generic) {
     std::vector<Token> tokens = {
         { "MultiWrapper", "test.basalt", 1, 1, 1, Token::Type::type },
         { "<", "test.basalt", 1, 2, 13, Token::Type::symbol },
-        { "String", "test.basalt", 1, 3, 14, Token::Type::type },
+        { string_type, "test.basalt", 1, 3, 14, Token::Type::type },
         { ",", "test.basalt", 1, 4, 20, Token::Type::symbol },
-        { "Int", "test.basalt", 1, 5, 21, Token::Type::type },
+        { int_type, "test.basalt", 1, 5, 21, Token::Type::type },
         { ",", "test.basalt", 1, 6, 24, Token::Type::symbol },
-        { "Bool", "test.basalt", 1, 7, 25, Token::Type::type },
+        { bool_type, "test.basalt", 1, 7, 25, Token::Type::type },
         { ">", "test.basalt", 1, 8, 29, Token::Type::symbol }
     };
     Parser parser = Parser({ "inline-tests.basalt", tokens });
@@ -53,7 +55,7 @@ TEST(Frontend, Parse_CustomType_With_Multiple_Generic) {
     ASSERT_TRUE(type.get<CustomType>().type_parameters[0].is<PrimitiveType>());
     ASSERT_TRUE(type.get<CustomType>().type_parameters[1].is<PrimitiveType>());
     ASSERT_TRUE(type.get<CustomType>().type_parameters[2].is<PrimitiveType>());
-    ASSERT_EQ(type.get<CustomType>().type_parameters[0].get<PrimitiveType>().type_name, "String");
-    ASSERT_EQ(type.get<CustomType>().type_parameters[1].get<PrimitiveType>().type_name, "Int");
-    ASSERT_EQ(type.get<CustomType>().type_parameters[2].get<PrimitiveType>().type_name, "Bool");
+    ASSERT_EQ(type.get<CustomType>().type_parameters[0].get<PrimitiveType>().type_name, string_type);
+    ASSERT_EQ(type.get<CustomType>().type_parameters[1].get<PrimitiveType>().type_name, int_type);
+    ASSERT_EQ(type.get<CustomType>().type_parameters[2].get<PrimitiveType>().type_name, bool_type);
 }

@@ -20,7 +20,7 @@ ProjectFileStructure directly_self_recursive_struct_definition_via_inline_union(
                     StructDefinition::Field { "int_or_a",
                         InlineUnion { Token { "A", "main.basalt", 1, 1, 1, Token::Type::type }, {
                             CustomType { Token { "A", "main.basalt", 1, 1, 1, Token::Type::type }, {} },
-                            PrimitiveType { Token { "Int", "main.basalt", 1, 1, 1, Token::Type::type } },
+                            PrimitiveType { Token { int_type, "main.basalt", 1, 1, 1, Token::Type::type } },
                         } }
                     }
                 }
@@ -41,9 +41,9 @@ ProjectFileStructure simple_struct_definition_with_harmless_inline_union({
             StructDefinitionFactory::make_struct_definition(
                 "A", "main.basalt", { }, {
                     StructDefinition::Field { "int_or_a",
-                        InlineUnion { Token { "Float", "main.basalt", 1, 1, 1, Token::Type::type }, {
-                            PrimitiveType { Token { "Float", "main.basalt", 1, 1, 1, Token::Type::type } },
-                            PrimitiveType { Token { "Int", "main.basalt", 1, 1, 1, Token::Type::type } },
+                        InlineUnion { Token { float_type, "main.basalt", 1, 1, 1, Token::Type::type }, {
+                            PrimitiveType { Token { float_type, "main.basalt", 1, 1, 1, Token::Type::type } },
+                            PrimitiveType { Token { int_type, "main.basalt", 1, 1, 1, Token::Type::type } },
                         } }
                     }
                 }

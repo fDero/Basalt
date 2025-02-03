@@ -3,7 +3,6 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
-#include "frontend/syntax.hpp"
 #include "backend/callable_codeblocks_llvm_translator.hpp"
 #include "backend/type_manipulations_llvm_translator.hpp"
 #include "backend/llvm_wrappers.hpp"

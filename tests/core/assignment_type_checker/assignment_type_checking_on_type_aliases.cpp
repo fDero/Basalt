@@ -89,7 +89,7 @@ TEST(Core, Pair_Of_Int_Int_Is_Compatible_With_Pair_Of_One_Generic_T_Via_Alias) {
     ASSERT_EQ(type_checker.get_generic_substitution_rules()->size(), 1);
     EXPECT_EQ(type_checker.get_generic_substitution_rules()->back().to_be_replaced, "T");
     ASSERT_TRUE(type_checker.get_generic_substitution_rules()->back().replacement.is<PrimitiveType>());
-    EXPECT_EQ(type_checker.get_generic_substitution_rules()->back().replacement.get<PrimitiveType>().type_name, "Int");
+    EXPECT_EQ(type_checker.get_generic_substitution_rules()->back().replacement.get<PrimitiveType>().type_name, int_type);
 }
 
 TEST(Core, Pair_Of_Int_Is_Compatible_With_Pair_Of_T_U) {
@@ -111,10 +111,10 @@ TEST(Core, Pair_Of_Int_Is_Compatible_With_Pair_Of_T_U) {
     ASSERT_EQ(type_checker.get_generic_substitution_rules()->size(), 2);
     EXPECT_EQ(type_checker.get_generic_substitution_rules()->front().to_be_replaced, "T");
     ASSERT_TRUE(type_checker.get_generic_substitution_rules()->front().replacement.is<PrimitiveType>());
-    EXPECT_EQ(type_checker.get_generic_substitution_rules()->front().replacement.get<PrimitiveType>().type_name, "Int");
+    EXPECT_EQ(type_checker.get_generic_substitution_rules()->front().replacement.get<PrimitiveType>().type_name, int_type);
     EXPECT_EQ(type_checker.get_generic_substitution_rules()->back().to_be_replaced, "U");
     ASSERT_TRUE(type_checker.get_generic_substitution_rules()->back().replacement.is<PrimitiveType>());
-    EXPECT_EQ(type_checker.get_generic_substitution_rules()->back().replacement.get<PrimitiveType>().type_name, "Int");
+    EXPECT_EQ(type_checker.get_generic_substitution_rules()->back().replacement.get<PrimitiveType>().type_name, int_type);
 }
 
 TEST(Core, List_Of_Aliased_Ints_And_List_Of_Number_Are_Compatible_With_List_Of_T) {

@@ -1,7 +1,7 @@
 
 #include <gtest/gtest.h>
 #include "core/function_definitions_register.hpp"
-#include "frontend/syntax.hpp"
+#include "syntax/primitive_types.hpp"
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 #include "../../tests_utilities/struct_definition_factory.hpp"

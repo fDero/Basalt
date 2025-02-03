@@ -5,7 +5,6 @@
 
 #include "core/expression_type_deducer.hpp"
 #include "core/assignment_type_checker.hpp"
-#include "frontend/syntax.hpp"
 #include "errors/preprocessing_errors.hpp"
 #include "errors/internal_errors.hpp"
 
@@ -23,8 +22,8 @@ std::optional<TypeSignature> ExpressionTypeDeducer::deduce_type_from_square_brac
         case TypeSignatureBody::Kind::slice_type: return left_operand_type.value().get<SliceType>().stored_type;
         case TypeSignatureBody::Kind::primitive_type: {
             std::string primitive_type_name = left_operand_type.value().get<PrimitiveType>().type_name;
-            if (primitive_type_name == "String" || primitive_type_name == "RawString") {
-                return deduce_primtive_type("Char", square_brackets_access);
+            if (primitive_type_name == string_type || primitive_type_name == raw_string_type) {
+                return deduce_primtive_type(char_type, square_brackets_access);
             }
         }
         default: throw_cannot_access_square_brackets_on_type(left_operand_type.value(), square_brackets_access);
@@ -87,8 +86,8 @@ std::optional<TypeSignature> ExpressionTypeDeducer::deduce_type_from_dot_member_
     const DotMemberAccess& dot_member_access,
     const PrimitiveType& primitive_type
 ) {
-    if (dot_member_access.member_name == "len" && primitive_type.type_name == "String") {
-        return deduce_primtive_type("Int", dot_member_access);
+    if (dot_member_access.member_name == "len" && primitive_type.type_name == string_type) {
+        return deduce_primtive_type(int_type, dot_member_access);
     }
     throw_no_such_primitive_field(dot_member_access.member_name, primitive_type, dot_member_access);
 }
@@ -98,7 +97,7 @@ std::optional<TypeSignature> ExpressionTypeDeducer::deduce_type_from_dot_member_
     const SliceType& slice_type
 ) {
     if (dot_member_access.member_name == "len") {
-        return deduce_primtive_type("Int", dot_member_access);
+        return deduce_primtive_type(int_type, dot_member_access);
     }
     throw_no_such_slice_field(dot_member_access.member_name, slice_type, dot_member_access);
 }

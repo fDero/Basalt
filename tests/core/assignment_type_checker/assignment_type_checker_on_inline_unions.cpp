@@ -32,7 +32,7 @@ TEST(Core, IntOrFloat_Is_Compatible_With_Itself) {
     ProjectFileStructure empty_project;
     TypeDefinitionsRegister type_register(empty_project); 
     AssignmentTypeChecker type_checker(type_register, empty_project);
-    TypeSignature IntOrFloat = InlineUnion { Token { "Int", "main.basalt", 1, 1, 1, Token::Type::type }, {
+    TypeSignature IntOrFloat = InlineUnion { Token { int_type, "main.basalt", 1, 1, 1, Token::Type::type }, {
         TypeSignatureFactory::Int, TypeSignatureFactory::Float
     } };
     bool IntOrFloat_is_compatible_with_itself = type_checker.validate_assignment(IntOrFloat, IntOrFloat);
@@ -42,7 +42,7 @@ TEST(Core, IntOrFloat_Is_Compatible_With_Itself) {
 TEST(Core, IntOrFloat_Is_Mutually_Compatible_With_Number) {
     TypeDefinitionsRegister type_register(single_file_project_with_number_def); 
     AssignmentTypeChecker type_checker(type_register, single_file_project_with_number_def);
-    TypeSignature IntOrFloat = InlineUnion { Token { "Int", "main.basalt", 1, 1, 1, Token::Type::type }, {
+    TypeSignature IntOrFloat = InlineUnion { Token { int_type, "main.basalt", 1, 1, 1, Token::Type::type }, {
         TypeSignatureFactory::Int, TypeSignatureFactory::Float
     } };
     TypeSignature Number = CustomType { Token { "Number", "main.basalt", 1, 1, 1, Token::Type::type }, { } };
@@ -56,7 +56,7 @@ TEST(Core, Int_And_Float_Are_Compatible_With_IntOrFloat) {
     ProjectFileStructure empty_project;
     TypeDefinitionsRegister type_register(empty_project); 
     AssignmentTypeChecker type_checker(type_register, empty_project);
-    TypeSignature IntOrFloat = InlineUnion { Token { "Int", "main.basalt", 1, 1, 1, Token::Type::type }, {
+    TypeSignature IntOrFloat = InlineUnion { Token { int_type, "main.basalt", 1, 1, 1, Token::Type::type }, {
         TypeSignatureFactory::Int, TypeSignatureFactory::Float
     } };
     bool Int_is_compatible_with_IntOrFloat = type_checker.validate_assignment(TypeSignatureFactory::Int, IntOrFloat);

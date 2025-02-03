@@ -4,7 +4,7 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 #include "errors/tokenization_errors.hpp"
-#include "frontend/syntax.hpp"
+#include "syntax/operators.hpp"
 
 std::string get_sourcetext_from_tokenizer(const Tokenizer& tokenizer) {
     std::string extracted;

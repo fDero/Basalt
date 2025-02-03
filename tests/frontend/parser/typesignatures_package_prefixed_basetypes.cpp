@@ -3,6 +3,7 @@
 #include "frontend/parser.hpp"
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
+#include "syntax/primitive_types.hpp"
 
 TEST(Frontend, Parse_Package_Prefixed_Concrete_Generic_CustomType) {
     std::vector<Token> tokens = {
@@ -10,7 +11,7 @@ TEST(Frontend, Parse_Package_Prefixed_Concrete_Generic_CustomType) {
         { "::",          "test.basalt", 1, 2, 13, Token::Type::symbol },
         { "List",        "test.basalt", 1, 3, 17, Token::Type::type   },
         { "<",           "test.basalt", 1, 4, 18, Token::Type::symbol },
-        { "Int",         "test.basalt", 1, 5, 21, Token::Type::type   },
+        { int_type,         "test.basalt", 1, 5, 21, Token::Type::type   },
         { ">",           "test.basalt", 1, 6, 22, Token::Type::symbol },
     };
     Parser parser = Parser({ "inline-tests.basalt", tokens });
@@ -22,7 +23,7 @@ TEST(Frontend, Parse_Package_Prefixed_Concrete_Generic_CustomType) {
     EXPECT_EQ(basetype.type_parameters.size(), 1);
     ASSERT_TRUE(basetype.type_parameters[0].is<PrimitiveType>());
     PrimitiveType generic = basetype.type_parameters[0].get<PrimitiveType>();
-    EXPECT_EQ(generic.type_name, "Int");
+    EXPECT_EQ(generic.type_name, int_type);
 }
 
 TEST(Frontend, Parse_Package_Prefixed_Non_Generic_CustomType) {

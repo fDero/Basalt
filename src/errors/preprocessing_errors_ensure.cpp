@@ -95,7 +95,7 @@ void ensure_typesignature_is_int(const std::optional<TypeSignature>& type_signat
         return;
     }
     const TypeSignature& type_signature = type_signature_opt.value();
-    if (!type_signature.is<PrimitiveType>() || type_signature.get<PrimitiveType>().type_name != "Int") {
+    if (!type_signature.is<PrimitiveType>() || type_signature.get<PrimitiveType>().type_name != int_type) {
         throw InternalError("type must be Int");
     }
 }
@@ -105,8 +105,8 @@ void ensure_typesignature_is_compatible_square_brackets_access(
 ) {
     bool is_array = type_signature.is<ArrayType>();
     bool is_slice = type_signature.is<SliceType>();
-    bool is_string = type_signature.is<PrimitiveType>() && type_signature.get<PrimitiveType>().type_name == "String";
-    bool is_raw_string = type_signature.is<PrimitiveType>() && type_signature.get<PrimitiveType>().type_name == "RawString";
+    bool is_string = type_signature.is<PrimitiveType>() && type_signature.get<PrimitiveType>().type_name == string_type;
+    bool is_raw_string = type_signature.is<PrimitiveType>() && type_signature.get<PrimitiveType>().type_name == raw_string_type;
     if (!is_array && !is_slice && !is_string && !is_raw_string) {
         throw std::runtime_error("type must be either array, slice, String, RawString");
     }
@@ -173,7 +173,7 @@ void ensure_typesignature_is_boolean(const std::optional<TypeSignature>& type_si
         return;
     }
     const TypeSignature& type_signature = type_signature_opt.value();
-    if (!type_signature.is<PrimitiveType>() || type_signature.get<PrimitiveType>().type_name != "Bool") {
+    if (!type_signature.is<PrimitiveType>() || type_signature.get<PrimitiveType>().type_name != bool_type) {
         throw InternalError("type must be Bool");
     }
 }
@@ -183,7 +183,7 @@ void ensure_typesignature_is_numeric(const TypeSignature& type_signature) {
         throw InternalError("type must be numeric");
     }
     const PrimitiveType& primitive_type = type_signature.get<PrimitiveType>();
-    if (primitive_type.type_name != "Int" && primitive_type.type_name != "Float") {
+    if (primitive_type.type_name != int_type && primitive_type.type_name != float_type) {
         throw InternalError("type must be numeric");
     }
 }
@@ -198,7 +198,7 @@ void ensure_typesignature_is_non_string_primitive_or_generic(const std::optional
     }
     if (type_signature.is<PrimitiveType>()) {
         const PrimitiveType& primitive_type = type_signature.get<PrimitiveType>();
-        if (primitive_type.type_name == "String") {
+        if (primitive_type.type_name == string_type) {
             throw InternalError("type must be non-string primitive or generic");
         }
     }
@@ -214,7 +214,7 @@ void ensure_typesignature_is_either_numeric_or_generic(const std::optional<TypeS
     }
     if (type_signature.is<PrimitiveType>()) {
         const PrimitiveType& primitive_type = type_signature.get<PrimitiveType>();
-        if (primitive_type.type_name != "Int" && primitive_type.type_name != "Float") {
+        if (primitive_type.type_name != int_type && primitive_type.type_name != float_type) {
             throw InternalError("type must be numeric or generic");
         }
     }

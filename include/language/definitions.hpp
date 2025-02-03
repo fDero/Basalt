@@ -13,7 +13,6 @@
 #include "language/typesignatures.hpp"
 #include "language/statements.hpp"
 #include "language/expressions.hpp"
-#include "frontend/syntax.hpp"
 #include "misc/debug_informations_aware_entity.hpp"
 #include "misc/smart_variant.hpp"
 

@@ -25,7 +25,7 @@ FileRepresentation generic_recursion_problem_file = {
             "B", "main.basalt", { }, {
                 StructDefinition::Field { "a",
                     CustomType { Token { "A", "main.basalt", 1, 1, 1, Token::Type::type }, {
-                        PrimitiveType { Token { "Int", "main.basalt", 1, 1, 1, Token::Type::type } }
+                        PrimitiveType { Token { int_type, "main.basalt", 1, 1, 1, Token::Type::type } }
                     } }
                 }
             }
@@ -52,7 +52,7 @@ FileRepresentation legal_wrapper_use = {
             "B", "main.basalt", { }, {
                 StructDefinition::Field { "wrapper",
                     CustomType { Token { "Wrapper", "main.basalt", 1, 1, 1, Token::Type::type }, {
-                        PrimitiveType { Token { "Int", "main.basalt", 1, 1, 1, Token::Type::type } }
+                        PrimitiveType { Token { int_type, "main.basalt", 1, 1, 1, Token::Type::type } }
                     } }
                 }
             }

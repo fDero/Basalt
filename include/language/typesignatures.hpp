@@ -7,7 +7,6 @@
 
 #include "misc/polymorph.hpp"
 #include "misc/debug_informations_aware_entity.hpp"
-#include "frontend/syntax.hpp"
 #include "misc/forward_declarations.hpp"
 
 struct TypeSignatureBody : public DebugInformationsAwareEntity {

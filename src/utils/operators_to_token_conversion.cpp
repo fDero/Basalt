@@ -4,6 +4,7 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 #include "language/expressions.hpp"
+#include "frontend/tokenizer.hpp"
 
 Token UnaryOperator::as_token() const {
     return Token { 

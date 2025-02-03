@@ -4,7 +4,6 @@
 #include "core/type_definitions_register.hpp"
 #include "core/common_feature_adoption_plan_generation_engine.hpp"
 #include "core/common_feature_adoption_plan_descriptor.hpp"
-#include "frontend/syntax.hpp"
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 #include "../../tests_utilities/struct_definition_factory.hpp"

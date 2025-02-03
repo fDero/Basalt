@@ -12,12 +12,12 @@
 #include <list>
 
 #include "frontend/tokenizer.hpp"
-#include "frontend/syntax.hpp"
 #include "language/typesignatures.hpp"
 #include "language/definitions.hpp"
 #include "frontend/file_representation.hpp"
 #include "errors/error-types.hpp"
 #include "core/common_feature_adoption_plan_descriptor.hpp"
+#include "syntax/operators.hpp"
 
 [[noreturn]] void assert_unreachable();
 

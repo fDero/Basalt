@@ -3,7 +3,6 @@
 #include "core/type_definitions_register.hpp"
 #include "frontend/file_representation.hpp"
 #include "core/project_file_structure.hpp"
-#include "frontend/syntax.hpp"
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 #include "../../tests_utilities/struct_definition_factory.hpp"
@@ -39,8 +38,8 @@ TEST(Core, Retrieve_Generic_StructDefinition_From_TypeSignature_In_The_Same_File
 
     TypeDefinition type_def =  type_register.retrieve_type_definition(
         CustomType { Token { "Pair", "test.basalt", 1, 1, 1, Token::Type::type }, {
-            PrimitiveType { Token { "Int", "test.basalt", 1, 1, 1, Token::Type::type } },
-            PrimitiveType { Token { "String", "test.basalt", 1, 1, 1, Token::Type::type } },
+            PrimitiveType { Token { int_type, "test.basalt", 1, 1, 1, Token::Type::type } },
+            PrimitiveType { Token { string_type, "test.basalt", 1, 1, 1, Token::Type::type } },
         } }
     );
 
@@ -92,13 +91,13 @@ TEST(Core, Struct_Overloads_Are_Distinguished_By_Template_Generics_Count) {
 
     TypeDefinition heterogeneous_pair =  type_register.retrieve_type_definition(
         CustomType { Token { "Pair", "test.basalt", 1, 1, 1, Token::Type::type }, {
-            PrimitiveType { Token { "Int", "test.basalt", 1, 1, 1, Token::Type::type } },
-            PrimitiveType { Token { "String", "test.basalt", 1, 1, 1, Token::Type::type } },
+            PrimitiveType { Token { int_type, "test.basalt", 1, 1, 1, Token::Type::type } },
+            PrimitiveType { Token { string_type, "test.basalt", 1, 1, 1, Token::Type::type } },
         } }
     );
     TypeDefinition homogeneous_pair =  type_register.retrieve_type_definition(
         CustomType { Token { "Pair", "test.basalt", 1, 1, 1, Token::Type::type }, {
-            PrimitiveType { Token { "Int", "test.basalt", 1, 1, 1, Token::Type::type } }
+            PrimitiveType { Token { int_type, "test.basalt", 1, 1, 1, Token::Type::type } }
         } }
     );
     ASSERT_TRUE(heterogeneous_pair.is<StructDefinition>());

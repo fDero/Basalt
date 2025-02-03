@@ -8,7 +8,7 @@
 #include "errors/internal_errors.hpp"
 
 bool AssignmentTypeChecker::validate_assignment_to_primitive_type(const TypeSignature& source, const PrimitiveType& dest) {
-    return (dest.type_name == "String" || dest.type_name == "RawString")
+    return (dest.type_name == string_type || dest.type_name == raw_string_type)
         ? validate_assignment_to_string(source, dest)
         : source.is<PrimitiveType>() && source.get<PrimitiveType>().type_name == dest.type_name;
 }
@@ -35,12 +35,12 @@ bool AssignmentTypeChecker::validate_assignment_to_string(const TypeSignature& s
 }
 
 bool AssignmentTypeChecker::validate_assignment_to_string_from_primitive_type(const PrimitiveType& source, const PrimitiveType& dest) {
-    return source.type_name == "String" || dest.type_name == "RawString";
+    return source.type_name == string_type || dest.type_name == raw_string_type;
 }
 
 bool AssignmentTypeChecker::validate_assignment_to_string_from_slice_type(const SliceType& source, const PrimitiveType& dest) {
     return source.stored_type.is<PrimitiveType>() && 
-        source.stored_type.get<PrimitiveType>().type_name == "Char";
+        source.stored_type.get<PrimitiveType>().type_name == char_type;
 }
 
 bool AssignmentTypeChecker::validate_assignment_to_string_from_pointer_type(const PointerType& pointer_type, const PrimitiveType& dest) {
@@ -49,7 +49,7 @@ bool AssignmentTypeChecker::validate_assignment_to_string_from_pointer_type(cons
     }
     const ArrayType& array_type = pointer_type.pointed_type.get<ArrayType>();
     return array_type.stored_type.is<PrimitiveType>() && 
-        array_type.stored_type.get<PrimitiveType>().type_name == "Char";
+        array_type.stored_type.get<PrimitiveType>().type_name == char_type;
 }
 
 bool AssignmentTypeChecker::validate_assignment_to_slice_from_pointer_type(const PointerType& pointer_type, const SliceType& dest) {

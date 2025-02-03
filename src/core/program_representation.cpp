@@ -3,7 +3,7 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
-#include "frontend/syntax.hpp"
+#include "syntax/primitive_types.hpp"
 #include "core/program_representation.hpp"
 #include "core/expression_type_deducer.hpp"
 #include "core/assignment_type_checker.hpp"

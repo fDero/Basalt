@@ -6,6 +6,7 @@
 #include "backend/type_manipulations_llvm_translator.hpp"
 #include "backend/llvm_wrappers.hpp"
 #include "errors/internal_errors.hpp"
+#include "syntax/primitive_types.hpp"
 
 TypeManipulationsLLVMTranslator::TypeManipulationsLLVMTranslator(
     ProgramRepresentation& program_representation, 
@@ -34,8 +35,8 @@ TypeManipulationsLLVMTranslator::compute_cast_strategy(
     bool source_is_ptr = source.is<PointerType>();
     bool source_is_ptr_to_array = source_is_ptr && source.get<PointerType>().pointed_type.is<ArrayType>();
     bool dest_is_slice = dest.is<SliceType>();
-    bool dest_is_string = dest.is<PrimitiveType>() && dest.get<PrimitiveType>().type_name == "String";
-    bool dest_is_raw_string = dest.is<PrimitiveType>() && dest.get<PrimitiveType>().type_name == "RawString";
+    bool dest_is_string = dest.is<PrimitiveType>() && dest.get<PrimitiveType>().type_name == string_type;
+    bool dest_is_raw_string = dest.is<PrimitiveType>() && dest.get<PrimitiveType>().type_name == raw_string_type;
     if (source_is_ptr_to_array && dest_is_slice) return CastStrategy::array_pointer_to_slice;
     if (source_is_ptr_to_array && dest_is_string) return CastStrategy::array_pointer_to_string;
     if (source_is_ptr_to_array && dest_is_raw_string) return CastStrategy::array_pointer_to_raw_string;
@@ -44,7 +45,7 @@ TypeManipulationsLLVMTranslator::compute_cast_strategy(
     if (source_is_slice && dest_is_string) return CastStrategy::slice_to_string;
     if (source_is_slice && dest_is_raw_string) return CastStrategy::slice_to_raw_string;;
 
-    bool source_is_string = source.is<PrimitiveType>() && source.get<PrimitiveType>().type_name == "String";
+    bool source_is_string = source.is<PrimitiveType>() && source.get<PrimitiveType>().type_name == string_type;
     if (source_is_string && dest_is_raw_string) return CastStrategy::string_to_raw_string;
 
     bool source_is_array = source.is<ArrayType>();

@@ -5,10 +5,10 @@
 
 #pragma once
 
+#include "syntax/operators.hpp"
 #include "language/typesignatures.hpp"
 #include "language/expressions.hpp"
 #include "core/expression_type_deducer.hpp"
-#include "frontend/syntax.hpp"
 
 class DotMemberAccessNormalizer {
     public:

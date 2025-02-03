@@ -27,11 +27,11 @@ ExpressionTypeDeducer::deduce_expression_type(
     const Expression& expression
 ) {    
     switch (expression.expression_kind()) {
-        case ExpressionBody::Kind::bool_literal:          return deduce_primtive_type("Bool", expression);
-        case ExpressionBody::Kind::int_literal:           return deduce_primtive_type("Int", expression);
-        case ExpressionBody::Kind::float_literal:         return deduce_primtive_type("Float", expression);
-        case ExpressionBody::Kind::char_literal:          return deduce_primtive_type("Char", expression);
-        case ExpressionBody::Kind::string_literal:        return deduce_primtive_type("String", expression);
+        case ExpressionBody::Kind::bool_literal:          return deduce_primtive_type(bool_type, expression);
+        case ExpressionBody::Kind::int_literal:           return deduce_primtive_type(int_type, expression);
+        case ExpressionBody::Kind::float_literal:         return deduce_primtive_type(float_type, expression);
+        case ExpressionBody::Kind::char_literal:          return deduce_primtive_type(char_type, expression);
+        case ExpressionBody::Kind::string_literal:        return deduce_primtive_type(string_type, expression);
         case ExpressionBody::Kind::dot_member_access:     return deduce_type_from_dot_member_access(expression);
         case ExpressionBody::Kind::square_bracket_access: return deduce_type_from_square_brackets_access(expression);
         case ExpressionBody::Kind::identifier:            return deduce_type_from_identifier(expression);
@@ -99,7 +99,7 @@ ExpressionTypeDeducer::deduce_type_from_type_operator(const Expression& expressi
     assert_operator_kind_was_found(operator_kind_search_outcome, operator_kinds);
     const OperatorKind& operator_kind = operator_kind_search_outcome->second;
     switch (operator_kind) {
-        case OperatorKind::is_operator: return deduce_primtive_type("Bool", expression);
+        case OperatorKind::is_operator: return deduce_primtive_type(bool_type, expression);
         case OperatorKind::as_operator: return operand_type;
         default: assert_unreachable();
     }

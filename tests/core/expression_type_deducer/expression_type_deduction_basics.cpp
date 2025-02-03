@@ -31,7 +31,7 @@ static Expression square_brackets_access_on_int_array = SquareBracketsAccess {
     Token { "[", "main.basalt", 1, 1, 1, Token::Type::symbol },
     ArrayLiteral {
         2,
-        PrimitiveType { Token { "Int", "main.basalt", 1, 1, 1, Token::Type::text } },
+        PrimitiveType { Token { int_type, "main.basalt", 1, 1, 1, Token::Type::text } },
         {
             IntLiteral { Token { "1", "main.basalt", 1, 1, 1, Token::Type::integer_literal } },
             IntLiteral { Token { "2", "main.basalt", 1, 1, 1, Token::Type::integer_literal } }
@@ -53,7 +53,7 @@ TEST(Core, Type_Deduction_Of_Sum_Of_Two_Integer_Literals) {
     const TypeSignature& sum_of_two_integer_literals_type = sum_of_two_integer_literals_type_opt.value();
     ASSERT_TRUE(sum_of_two_integer_literals_type.is<PrimitiveType>());
     const PrimitiveType& sum_of_two_integer_literals_primitive_type = sum_of_two_integer_literals_type.get<PrimitiveType>();
-    EXPECT_EQ(sum_of_two_integer_literals_primitive_type.type_name, "Int");
+    EXPECT_EQ(sum_of_two_integer_literals_primitive_type.type_name, int_type);
 }
 
 TEST(Core, Type_Deduction_Of_Square_Brackets_Access_On_Array_Literal_Of_Integers) {
@@ -62,7 +62,7 @@ TEST(Core, Type_Deduction_Of_Square_Brackets_Access_On_Array_Literal_Of_Integers
     const TypeSignature& square_brackets_access_on_int_array_type = square_brackets_access_on_int_array_type_opt.value();
     ASSERT_TRUE(square_brackets_access_on_int_array_type.is<PrimitiveType>());
     const PrimitiveType& square_brackets_access_on_int_array_primitive_type = square_brackets_access_on_int_array_type.get<PrimitiveType>();
-    EXPECT_EQ(square_brackets_access_on_int_array_primitive_type.type_name, "Int");
+    EXPECT_EQ(square_brackets_access_on_int_array_primitive_type.type_name, int_type);
 }
 
 TEST(Core, Type_Deduction_Of_Illegal_Square_Brackets_Access_On_Int_Literal_Throws_Exception) {

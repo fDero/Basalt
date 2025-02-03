@@ -3,6 +3,7 @@
 #include "frontend/parser.hpp"
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
+#include "syntax/primitive_types.hpp"
 
 TEST(Frontend, Parse_Dot_Member_Access_nested_with_multiplication) {
     std::vector<Token> tokens = {

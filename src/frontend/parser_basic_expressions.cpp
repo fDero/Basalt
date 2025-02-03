@@ -5,7 +5,6 @@
 
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
-#include "frontend/syntax.hpp"
 #include "frontend/parser.hpp"
 #include "language/expressions.hpp"
 #include "language/functions.hpp"

@@ -74,9 +74,9 @@ void TypeDependencyNavigator::visit_type_definition(
 }
 
 void TypeDependencyNavigator::visit_union_definition(const UnionDefinition& union_definition) {
-    std::string enum_id = union_definition.generate_union_id();
-    ensure_type_not_already_visited_hence_no_cyclic_dependency(enum_id, visited_definitions);
-    visited_definitions.insert(enum_id);
+    std::string union_id = union_definition.generate_union_id();
+    ensure_type_not_already_visited_hence_no_cyclic_dependency(union_id, visited_definitions);
+    visited_definitions.insert(union_id);
     for (const TypeSignature& alternative : union_definition.types) {
         visit_typesignature( alternative, union_definition.template_generics_names );
     }

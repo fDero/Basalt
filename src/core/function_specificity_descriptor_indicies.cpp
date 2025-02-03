@@ -36,8 +36,8 @@ void FunctionSpecificityDescriptor::update_metrics_based_on_primitive_type(
     const PrimitiveType& primitive_type = typesignature.get<PrimitiveType>();
     if (!current_type_is_fixed_and_cannot_be_an_upcasting_target) {
         const std::string& type_name = primitive_type.type_name;
-        number_of_possible_type_conversions += (type_name == "RawString") * 3;
-        number_of_possible_type_conversions += (type_name == "String") * 2;
+        number_of_possible_type_conversions += (type_name == raw_string_type) * 3;
+        number_of_possible_type_conversions += (type_name == string_type) * 2;
     }
 }
 

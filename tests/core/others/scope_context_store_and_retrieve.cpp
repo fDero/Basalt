@@ -1,7 +1,6 @@
  
 #include <gtest/gtest.h>
 #include "core/scope_context.hpp"
-#include "frontend/syntax.hpp"
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 #include "../../tests_utilities/struct_definition_factory.hpp"
@@ -11,35 +10,35 @@
 
 VariableDeclaration x_variable_of_type_int = VariableDeclaration(
     "x", TypeSignatureFactory::Int, std::nullopt,
-    Token { "Int", "test.basalt", 1, 1, 3, Token::Type::type }   
+    Token { int_type, "test.basalt", 1, 1, 3, Token::Type::type }   
 );
 
 VariableDeclaration y_variable_of_type_int = VariableDeclaration(
     "y", TypeSignatureFactory::Int, std::nullopt,
-    Token { "Int", "test.basalt", 1, 1, 3, Token::Type::type }   
+    Token { int_type, "test.basalt", 1, 1, 3, Token::Type::type }   
 );
 
 VariableDeclaration z_variable_of_type_int = VariableDeclaration(
     "z", TypeSignatureFactory::Int, std::nullopt,
-    Token { "Int", "test.basalt", 1, 1, 3, Token::Type::type }   
+    Token { int_type, "test.basalt", 1, 1, 3, Token::Type::type }   
 );
 
 ConstDeclaration a_const_of_type_int = ConstDeclaration(
     "a", TypeSignatureFactory::Int, 
     IntLiteral { Token { "13", "test.basalt", 1, 1, 1, Token::Type::integer_literal } },
-    Token { "Int", "test.basalt", 1, 1, 3, Token::Type::type }   
+    Token { int_type, "test.basalt", 1, 1, 3, Token::Type::type }   
 );
 
 ConstDeclaration b_const_of_type_int = ConstDeclaration(
     "b", TypeSignatureFactory::Int, 
     IntLiteral { Token { "13", "test.basalt", 1, 1, 1, Token::Type::integer_literal } },
-    Token { "Int", "test.basalt", 1, 1, 3, Token::Type::type }   
+    Token { int_type, "test.basalt", 1, 1, 3, Token::Type::type }   
 );
 
 ConstDeclaration c_const_of_type_int = ConstDeclaration(
     "c", TypeSignatureFactory::Int, 
     IntLiteral { Token { "13", "test.basalt", 1, 1, 1, Token::Type::integer_literal } },
-    Token { "Int", "test.basalt", 1, 1, 3, Token::Type::type }   
+    Token { int_type, "test.basalt", 1, 1, 3, Token::Type::type }   
 );
 
 TEST(Core, Scope_Context_Store_A_Bunch_Of_Local_Objects) {

@@ -4,6 +4,7 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 #include "language/statements.hpp"
+#include "frontend/tokenizer.hpp"
 
 VariableDeclaration::VariableDeclaration(
     const std::string& name, 

@@ -5,9 +5,9 @@
 
 #include <assert.h>
 
+#include "syntax/primitive_types.hpp"
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
-#include "frontend/syntax.hpp"
 #include "frontend/parser.hpp"
 #include "language/expressions.hpp"
 
