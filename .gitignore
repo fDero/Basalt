@@ -1,33 +1,44 @@
+
+# Ignore IDE-related configurations
 .vscode
 .idea
+
+# Place files that you want to ignore here
+hidden
+
+# Ignore output files, executables and libraries
 *.elf
 *.exe
 *.out
-hidden
-*dependencies*
-grammar/.antlr
+*.o
+*.a
+*.so
+*.dll
+*.lib
+*.s
+*.asm
+
+# Ignore build-related files
+*cmake*
+cmake-build-debug/*
+dependencies/*
 build
-out
-lib
-docs/*
-docs
-cmake-build-debug
-out/bin/**
-out/lib/*
+out/*
+lib/*
+bin/*
+
+# Ignore `basalt` executables
 basalt
 basalt.exe
+
+# Ignore `basalt_unit_tests` executables
 basalt_unit_tests
 basalt_unit_tests.exe
-snippets
-snippets/*
-snippets2
-snippets2/*
-dependencies
-*.ll
+
+# Ignore unwanted distribution-related files
 *.snap
 *.msi
 *.nix
-*.o
 result
 *.s
 *.asm
