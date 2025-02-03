@@ -66,6 +66,7 @@ FunctionDefinition::Ref GenericsInstantiationEngine::instantiate_generic_functio
 ) {
     DebugInformationsAwareEntity debug_info = function_definition.as_debug_informations_aware_entity();
     FunctionDefinition::Ref instantiated_function = std::make_shared<FunctionDefinition>(new_function_name, debug_info);
+    instantiated_function->extern_implementation = function_definition.extern_implementation;
     if (function_definition.return_type.has_value()) {
         instantiated_function->return_type = instantiate_generic_typesignature(*function_definition.return_type);
     }
