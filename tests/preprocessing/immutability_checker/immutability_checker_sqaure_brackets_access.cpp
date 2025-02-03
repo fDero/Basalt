@@ -78,7 +78,7 @@ TEST(Preprocessing, Immutability_Checker_Square_Brackets_Member_Access_On_Const_
             },
             Token { "[", "test.basalt", 1, 1, 1, Token::Type::integer_literal } 
         },
-        Token { "const", "test.basalt", 1, 1, 1, Token::Type::const_keyword }
+        Token { const_keyword, "test.basalt", 1, 1, 1, Token::Type::const_keyword }
     };
     SquareBracketsAccess sqb_access {
         Token { "[", "test.basalt", 1, 1, 1, Token::Type::symbol },
@@ -106,7 +106,7 @@ TEST(Preprocessing, Immutability_Checker_Square_Brackets_Member_Access_On_Var_Ar
             },
             Token { "[", "test.basalt", 1, 1, 1, Token::Type::integer_literal } 
         },
-        Token { "var", "test.basalt", 1, 1, 1, Token::Type::var_keyword }
+        Token { var_keyword, "test.basalt", 1, 1, 1, Token::Type::var_keyword }
     };
     SquareBracketsAccess sqb_access {
         Token { "[", "test.basalt", 1, 1, 1, Token::Type::symbol },
@@ -131,7 +131,7 @@ TEST(Preprocessing, Immutability_Checker_Square_Brackets_Member_Access_On_Const_
         Identifier { 
             Token { "outsorced", "test.basalt", 1, 1, 1, Token::Type::text } 
         },
-        Token { "const", "test.basalt", 1, 1, 1, Token::Type::const_keyword }
+        Token { const_keyword, "test.basalt", 1, 1, 1, Token::Type::const_keyword }
     };
     SquareBracketsAccess sqb_access {
         Token { "[", "test.basalt", 1, 1, 1, Token::Type::symbol },
@@ -154,7 +154,7 @@ TEST(Preprocessing, Immutability_Checker_Square_Brackets_Member_Access_On_Var_Sl
         identifier.name, 
         TypeSignatureFactory::SliceOfInts,
         std::nullopt,
-        Token { "var", "test.basalt", 1, 1, 1, Token::Type::var_keyword }
+        Token { var_keyword, "test.basalt", 1, 1, 1, Token::Type::var_keyword }
     };
     SquareBracketsAccess sqb_access {
         Token { "[", "test.basalt", 1, 1, 1, Token::Type::symbol },

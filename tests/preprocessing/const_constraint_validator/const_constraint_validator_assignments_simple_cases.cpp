@@ -22,7 +22,7 @@ TEST(Preprocessing, Const_Constraint_Validator_Assignment_Of_Literal_To_Var) {
                             "x",
                             TypeSignatureFactory::Int,
                             IntLiteral { Token { "1", "test.basalt", 1, 1, 1, Token::Type::integer_literal } },
-                            Token { "var", "test.basalt", 1, 1, 1, Token::Type::var_keyword }
+                            Token { var_keyword, "test.basalt", 1, 1, 1, Token::Type::var_keyword }
                         },
                         Assignment {
                             Identifier { Token { "x", "test.basalt", 1, 1, 1, Token::Type::text } },
@@ -86,7 +86,7 @@ TEST(Preprocessing, Const_Constraint_Validator_Assignment_Of_Literal_To_Const) {
                             "x",
                             TypeSignatureFactory::Int,
                             IntLiteral { Token { "1", "test.basalt", 1, 1, 1, Token::Type::integer_literal } },
-                            Token { "const", "test.basalt", 1, 1, 1, Token::Type::const_keyword }
+                            Token { const_keyword, "test.basalt", 1, 1, 1, Token::Type::const_keyword }
                         },
                         Assignment {
                             Identifier { Token { "x", "test.basalt", 1, 1, 1, Token::Type::text } },

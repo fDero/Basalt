@@ -35,7 +35,7 @@ TEST(Preprocessing, Const_Constraint_Validator_Assignment_Of_Ref_To_Array_Litera
                                     Token { "[", "test.basalt", 1, 1, 4, Token::Type::type }
                                 },
                             },
-                            Token { "const", "test.basalt", 1, 1, 1, Token::Type::const_keyword }
+                            Token { const_keyword, "test.basalt", 1, 1, 1, Token::Type::const_keyword }
                         }
                     }
                 )
@@ -77,7 +77,7 @@ TEST(Preprocessing, Const_Constraint_Validator_Assignment_Of_Ref_To_Array_Litera
                                     Token { "[", "test.basalt", 1, 1, 4, Token::Type::type }
                                 },
                             },
-                            Token { "const", "test.basalt", 1, 1, 1, Token::Type::const_keyword }
+                            Token { const_keyword, "test.basalt", 1, 1, 1, Token::Type::const_keyword }
                         }
                     }
                 )

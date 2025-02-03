@@ -33,6 +33,12 @@ inline const std::string constexpr else_keyword              = "else";
 inline const std::string constexpr while_keyword             = "while";
 inline const std::string constexpr until_keyword             = "until";
 
+inline const std::string constexpr is_keyword                = "is";
+inline const std::string constexpr as_keyword                = "as";
+
+inline const std::string constexpr var_keyword               = "var";
+inline const std::string constexpr const_keyword             = "const";
+
 inline const std::string constexpr boolean_true_literal      = "true";
 inline const std::string constexpr boolean_false_literal     = "false";
 
@@ -51,8 +57,8 @@ inline const std::map<std::string, Token::Type> keywords {
     { else_keyword,     Token::Type::else_keyword     },
     { while_keyword,    Token::Type::while_keyword    },    
     { until_keyword,    Token::Type::until_keyword    },
-    { "is",             Token::Type::is_keyword       },       
-    { "as",             Token::Type::as_keyword       },
-    { "var",            Token::Type::var_keyword      },      
-    { "const",          Token::Type::const_keyword    },
+    { is_keyword,       Token::Type::is_keyword       },       
+    { as_keyword,       Token::Type::as_keyword       },
+    { var_keyword,      Token::Type::var_keyword      },      
+    { const_keyword,    Token::Type::const_keyword    },
 };

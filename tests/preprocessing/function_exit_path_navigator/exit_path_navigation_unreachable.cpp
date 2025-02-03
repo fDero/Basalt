@@ -104,7 +104,7 @@ TEST(Preprocessing, Function_Exit_Path_Navigator_Conditional_Where_Both_Branches
                                     "z",
                                     TypeSignatureFactory::Int,
                                     std::nullopt,
-                                    Token { "var", "test.basalt", 1, 1, 1, Token::Type::var_keyword }
+                                    Token { var_keyword, "test.basalt", 1, 1, 1, Token::Type::var_keyword }
                                 }
                             },
                             Token { until_keyword, "test.basalt", 1, 1, 1, Token::Type::until_keyword }

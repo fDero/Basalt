@@ -7,13 +7,13 @@
 
 TEST(Frontend, Parse_Variable_With_Type_And_Value) {
     std::vector<Token> tokens = {
-        { "var", "test.basalt", 1, 1, 1,  Token::Type::var_keyword },
-        { "x",   "test.basalt", 1, 2, 4,  Token::Type::text },
-        { ":",   "test.basalt", 1, 3, 5,  Token::Type::symbol },
-        { int_type, "test.basalt", 1, 4, 8,  Token::Type::type },
-        { "=",   "test.basalt", 1, 5, 9,  Token::Type::symbol },
-        { "6",   "test.basalt", 1, 6, 10, Token::Type::integer_literal },
-        { ";",   "test.basalt", 1, 7, 11, Token::Type::symbol }
+        { var_keyword, "test.basalt", 1, 1, 1,  Token::Type::var_keyword },
+        { "x",   "test.basalt", 1, 2, 4,  Token::Type::text              },
+        { ":",   "test.basalt", 1, 3, 5,  Token::Type::symbol            },
+        { int_type, "test.basalt", 1, 4, 8,  Token::Type::type           },
+        { "=",   "test.basalt", 1, 5, 9,  Token::Type::symbol            },
+        { "6",   "test.basalt", 1, 6, 10, Token::Type::integer_literal   },
+        { ";",   "test.basalt", 1, 7, 11, Token::Type::symbol            },
     };
     Parser parser = Parser({ "inline-tests.basalt", tokens });
     Statement statement = parser.parse_variable_definition();
@@ -26,11 +26,11 @@ TEST(Frontend, Parse_Variable_With_Type_And_Value) {
 
 TEST(Frontend, Parse_Variable_With_No_Value) {
     std::vector<Token> tokens = {
-        { "var", "test.basalt", 1, 1, 1,  Token::Type::var_keyword },
-        { "x",   "test.basalt", 1, 2, 4,  Token::Type::text },
-        { ":",   "test.basalt", 1, 3, 5,  Token::Type::symbol },
-        { int_type, "test.basalt", 1, 4, 8,  Token::Type::type },
-        { ";",   "test.basalt", 1, 7, 11, Token::Type::symbol }
+        { var_keyword, "test.basalt", 1, 1, 1,  Token::Type::var_keyword },
+        { "x",         "test.basalt", 1, 2, 4,  Token::Type::text        },
+        { ":",         "test.basalt", 1, 3, 5,  Token::Type::symbol      },
+        { int_type,    "test.basalt", 1, 4, 8,  Token::Type::type        },
+        { ";",         "test.basalt", 1, 7, 11, Token::Type::symbol      },
     };
     Parser parser = Parser({ "inline-tests.basalt", tokens });
     Statement statement = parser.parse_variable_definition();
@@ -43,13 +43,13 @@ TEST(Frontend, Parse_Variable_With_No_Value) {
 
 TEST(Frontend, Parse_Constant_With_Type_And_Value) {
     std::vector<Token> tokens = {
-        { "const", "test.basalt", 1, 1, 1,  Token::Type::const_keyword },
-        { "x",   "test.basalt",   1, 2, 6,  Token::Type::text },
-        { ":",   "test.basalt",   1, 3, 8,  Token::Type::symbol },
-        { int_type, "test.basalt",   1, 4, 10, Token::Type::type },
-        { "=",   "test.basalt",   1, 5, 11, Token::Type::symbol },
-        { "6",   "test.basalt",   1, 6, 12, Token::Type::integer_literal },
-        { ";",   "test.basalt",   1, 7, 13, Token::Type::symbol }
+        { const_keyword, "test.basalt", 1, 1, 1,  Token::Type::const_keyword },
+        { "x",   "test.basalt",   1, 2, 6,  Token::Type::text                },
+        { ":",   "test.basalt",   1, 3, 8,  Token::Type::symbol              },
+        { int_type, "test.basalt",   1, 4, 10, Token::Type::type             },
+        { "=",   "test.basalt",   1, 5, 11, Token::Type::symbol              },
+        { "6",   "test.basalt",   1, 6, 12, Token::Type::integer_literal     },
+        { ";",   "test.basalt",   1, 7, 13, Token::Type::symbol              },
     };
     Parser parser = Parser({ "inline-tests.basalt", tokens });
     Statement statement = parser.parse_constant_definition();

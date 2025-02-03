@@ -23,13 +23,13 @@ TEST(Preprocessing, Const_Constraint_Validator_Assignment_Of_Address_Of_Const_To
                             "v",
                             TypeSignatureFactory::PointerToInt,
                             std::nullopt,
-                            Token { "var", "test.basalt", 1, 1, 1, Token::Type::var_keyword }
+                            Token { var_keyword, "test.basalt", 1, 1, 1, Token::Type::var_keyword }
                         },
                         ConstDeclaration {
                             "x",
                             TypeSignatureFactory::Int,
                             IntLiteral { Token { "1", "test.basalt", 1, 1, 1, Token::Type::integer_literal } },
-                            Token { "const", "test.basalt", 1, 1, 1, Token::Type::const_keyword }
+                            Token { const_keyword, "test.basalt", 1, 1, 1, Token::Type::const_keyword }
                         },
                         Assignment {
                             Identifier { Token { "v", "test.basalt", 1, 1, 1, Token::Type::text } },
@@ -78,7 +78,7 @@ TEST(Preprocessing, Const_Constraint_Validator_Assignment_Of_Const_Struct_To_Var
                                 { }
                             },
                             std::nullopt,
-                            Token { "var", "test.basalt", 1, 1, 1, Token::Type::var_keyword }
+                            Token { var_keyword, "test.basalt", 1, 1, 1, Token::Type::var_keyword }
                         },
                         ConstDeclaration {
                             "x",
@@ -87,7 +87,7 @@ TEST(Preprocessing, Const_Constraint_Validator_Assignment_Of_Const_Struct_To_Var
                                 { }
                             },
                             Identifier { Token { "v", "test.basalt", 1, 1, 1, Token::Type::text } },
-                            Token { "const", "test.basalt", 1, 1, 1, Token::Type::const_keyword }
+                            Token { const_keyword, "test.basalt", 1, 1, 1, Token::Type::const_keyword }
                         },
                         Assignment {
                             Identifier { Token { "v", "test.basalt", 1, 1, 1, Token::Type::text } },
@@ -122,13 +122,13 @@ TEST(Preprocessing, Const_Constraint_Validator_Assignment_Of_Const_Ptr_To_Var_Pt
                             "v",
                             TypeSignatureFactory::PointerToInt,
                             std::nullopt,
-                            Token { "var", "test.basalt", 1, 1, 1, Token::Type::var_keyword }
+                            Token { var_keyword, "test.basalt", 1, 1, 1, Token::Type::var_keyword }
                         },
                         ConstDeclaration {
                             "x",
                             TypeSignatureFactory::PointerToInt,
                             Identifier { Token { "v", "test.basalt", 1, 1, 1, Token::Type::text } },
-                            Token { "const", "test.basalt", 1, 1, 1, Token::Type::const_keyword }
+                            Token { const_keyword, "test.basalt", 1, 1, 1, Token::Type::const_keyword }
                         },
                         Assignment {
                             Identifier { Token { "v", "test.basalt", 1, 1, 1, Token::Type::text } },

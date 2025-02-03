@@ -11,7 +11,7 @@ TEST(Preprocessing, Immutability_Checker_Says_Const_Identifier_Is_Immutable) {
         identifier.name, 
         TypeSignatureFactory::Int, 
         IntLiteral { Token { "1", "test.basalt", 1, 1, 1, Token::Type::integer_literal } },
-        Token { "const", "test.basalt", 1, 1, 1, Token::Type::const_keyword }
+        Token { const_keyword, "test.basalt", 1, 1, 1, Token::Type::const_keyword }
     };
     ProjectFileStructure empty_project;
     ProgramRepresentation empty_program(empty_project);
@@ -29,7 +29,7 @@ TEST(Preprocessing, Immutability_Checker_Says_Var_Identifier_Is_NON_Immutable_He
         identifier.name, 
         TypeSignatureFactory::Int, 
         IntLiteral { Token { "1", "test.basalt", 1, 1, 1, Token::Type::integer_literal } },
-        Token { "var", "test.basalt", 1, 1, 1, Token::Type::var_keyword }
+        Token { var_keyword, "test.basalt", 1, 1, 1, Token::Type::var_keyword }
     };
     ProjectFileStructure empty_project;
     ProgramRepresentation empty_program(empty_project);

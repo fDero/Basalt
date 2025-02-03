@@ -72,7 +72,7 @@ TEST(Preprocessing, Immutability_Checker_Says_Dot_Member_Access_On_Variable_Is_N
         identifier.name, 
         CustomType { Token { "IntWrapper", "test.basalt", 1, 1, 1, Token::Type::type }, {} },
         std::nullopt,
-        Token { "var", "test.basalt", 1, 1, 1, Token::Type::var_keyword }
+        Token { var_keyword, "test.basalt", 1, 1, 1, Token::Type::var_keyword }
     };
     DotMemberAccess dot_member_access {
         Token { ".", "test.basalt", 1, 1, 1, Token::Type::symbol },
@@ -111,7 +111,7 @@ TEST(Preprocessing, Immutability_Checker_Says_Dot_Member_Access_On_Const_Is_Immu
         identifier.name, 
         CustomType { Token { "IntWrapper", "test.basalt", 1, 1, 1, Token::Type::type }, {} },
         Identifier { Token { "outsorced", "test.basalt", 1, 1, 1, Token::Type::text } },
-        Token { "const", "test.basalt", 1, 1, 1, Token::Type::const_keyword }
+        Token { const_keyword, "test.basalt", 1, 1, 1, Token::Type::const_keyword }
     };
     DotMemberAccess dot_member_access {
         Token { ".", "test.basalt", 1, 1, 1, Token::Type::symbol },

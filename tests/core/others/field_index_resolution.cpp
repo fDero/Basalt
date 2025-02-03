@@ -37,7 +37,7 @@ TEST(Core, Field_Index_Resolution_Success_On_First_Field) {
     TypeSignature person_type = CustomType { Token { "Color", "test.basalt", 1, 1, 3, Token::Type::type }, {} };
     VariableDeclaration x_variable_def = VariableDeclaration(
         "x", person_type , std::nullopt,
-        Token { "var", "test.basalt", 1, 1, 3, Token::Type::type }   
+        Token { var_keyword, "test.basalt", 1, 1, 3, Token::Type::type }   
     );
     Identifier x_variable_expr = Identifier { Token { "x", "test.basalt", 1, 1, 3, Token::Type::text } };
     DotMemberAccess dot_member_access = DotMemberAccess {
@@ -56,7 +56,7 @@ TEST(Core, Field_Index_Resolution_Success_On_Second_Field) {
     TypeSignature person_type = CustomType { Token { "Color", "test.basalt", 1, 1, 3, Token::Type::type }, {} };
     VariableDeclaration x_variable_def = VariableDeclaration(
         "x", person_type , std::nullopt,
-        Token { "var", "test.basalt", 1, 1, 3, Token::Type::type }   
+        Token { var_keyword, "test.basalt", 1, 1, 3, Token::Type::type }   
     );
     Identifier x_variable_expr = Identifier { Token { "x", "test.basalt", 1, 1, 3, Token::Type::text } };
     DotMemberAccess dot_member_access = DotMemberAccess {
@@ -75,7 +75,7 @@ TEST(Core, Field_Index_Resolution_Success_On_Third_Field) {
     TypeSignature person_type = CustomType { Token { "Color", "test.basalt", 1, 1, 3, Token::Type::type }, {} };
     VariableDeclaration x_variable_def = VariableDeclaration(
         "x", person_type , std::nullopt,
-        Token { "var", "test.basalt", 1, 1, 3, Token::Type::type }   
+        Token { var_keyword, "test.basalt", 1, 1, 3, Token::Type::type }   
     );
     Identifier x_variable_expr = Identifier { Token { "x", "test.basalt", 1, 1, 3, Token::Type::text } };
     DotMemberAccess dot_member_access = DotMemberAccess {

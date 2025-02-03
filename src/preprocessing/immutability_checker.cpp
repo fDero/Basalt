@@ -62,7 +62,7 @@ bool ImmutabilityChecker::is_dot_member_access_immutable(const DotMemberAccess& 
 }
 
 bool ImmutabilityChecker::is_type_operator_immutable(const TypeOperator& type_operator) {
-    return type_operator.operator_text == "as" && is_weakly_immutable_expression(type_operator.expression);
+    return type_operator.operator_text == as_keyword && is_weakly_immutable_expression(type_operator.expression);
 }
 
 bool ImmutabilityChecker::is_function_call_weakly_immutable(const FunctionCall& function_call) {

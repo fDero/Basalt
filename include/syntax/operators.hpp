@@ -10,6 +10,7 @@
 #include <map>
 
 #include "syntax/symbols.hpp"
+#include "syntax/keywords.hpp"
 
 inline const std::string constexpr address_operator = "&";
 inline const std::string constexpr pointer_dereference_operator = "#";
@@ -91,12 +92,12 @@ inline const std::map<std::string, OperatorKind> operator_kinds {
     { "*",                          OperatorKind::mul_operator              },
     { "/",                          OperatorKind::div_operator              },
     { "%",                          OperatorKind::mod_operator              },
-    { "is",                         OperatorKind::is_operator               },
-    { "as",                         OperatorKind::as_operator               }
+    { is_keyword,                   OperatorKind::is_operator               },
+    { as_keyword,                   OperatorKind::as_operator               },
 };
 
 inline const std::set<std::string> type_operators { 
-    "is", "as" 
+    is_keyword, as_keyword 
 };
 
 inline const std::map<std::string, short> infix_operators_priority {
@@ -113,7 +114,7 @@ inline const std::map<std::string, short> infix_operators_priority {
     { "-", 3 }, 
     { "*", 4 }, 
     { "/", 4 }, 
-    { "%", 4 }
+    { "%", 4 },
 };
 
 inline const std::map<std::string, short> prefix_operators_priority {
@@ -123,5 +124,5 @@ inline const std::map<std::string, short> prefix_operators_priority {
     { "++", 5 }, 
     { "--", 5 },
     { pointer_dereference_operator, 7 }, 
-    { address_operator, 7 }
+    { address_operator, 7 },
 };

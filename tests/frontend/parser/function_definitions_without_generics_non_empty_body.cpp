@@ -13,7 +13,7 @@ TEST(Frontend, Parse_Function_Definition_WithOut_generics_And_No_Arguments_And_N
         { "(",          "test.basalt", 1,  3,  6,   Token::Type::symbol       },
         { ")",          "test.basalt", 1,  4,  7,   Token::Type::symbol       },
         { "{",          "test.basalt", 1,  5,  8,   Token::Type::symbol       },
-        { "var",        "test.basalt", 1,  8,  14,  Token::Type::var_keyword  },
+        { var_keyword,  "test.basalt", 1,  8,  14,  Token::Type::var_keyword  },
         { "x",          "test.basalt", 1,  8,  14,  Token::Type::text         },
         { ":",          "test.basalt", 1,  8,  14,  Token::Type::symbol       },
         { int_type,     "test.basalt", 1,  8,  14,  Token::Type::type         },
@@ -76,7 +76,7 @@ TEST(Frontend, Parse_Function_Definition_WithOut_generics_And_Two_Arguments_And_
         { int_type,        "test.basalt", 1, 10, 13,  Token::Type::type                 },
         { ")",             "test.basalt", 1, 11, 16,  Token::Type::symbol               },
         { "{",             "test.basalt", 1, 12, 17,  Token::Type::symbol               },
-        { return_keyword,        "test.basalt", 1, 13, 18,  Token::Type::return_keyword },
+        { return_keyword,  "test.basalt", 1, 13, 18,  Token::Type::return_keyword },
         { ";",             "test.basalt", 1, 14, 24,  Token::Type::symbol               },
         { "}",             "test.basalt", 1, 15, 25,  Token::Type::symbol               }
     };

@@ -34,13 +34,13 @@ TEST(Preprocessing, Const_Constraint_Validator_Assignment_Of_Literal_To_Member_O
                                 { TypeSignatureFactory::Int }
                             },
                             std::nullopt,
-                            Token { "var", "test.basalt", 1, 1, 1, Token::Type::var_keyword }
+                            Token { var_keyword, "test.basalt", 1, 1, 1, Token::Type::var_keyword }
                         },
                         ConstDeclaration {
                             "x",
                             TypeSignatureFactory::Int,
                             Identifier { Token { "v", "test.basalt", 1, 1, 1, Token::Type::text } },
-                            Token { "const", "test.basalt", 1, 1, 1, Token::Type::const_keyword }
+                            Token { const_keyword, "test.basalt", 1, 1, 1, Token::Type::const_keyword }
                         },
                         Assignment {
                             DotMemberAccess {

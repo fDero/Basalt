@@ -34,7 +34,7 @@ TEST(Preprocessing, Const_Constraint_Validator_Assignment_Of_Literal_To_Member_O
                                 {}
                             },
                             std::nullopt,
-                            Token { "var", "test.basalt", 1, 1, 1, Token::Type::var_keyword }
+                            Token { var_keyword, "test.basalt", 1, 1, 1, Token::Type::var_keyword }
                         },
                         Assignment {
                             Identifier { Token { "v", "test.basalt", 1, 1, 1, Token::Type::text } },
@@ -69,13 +69,13 @@ TEST(Preprocessing, Const_Constraint_Validator_Assignment_Of_AddressOf_To_Ptr) {
                             "v",
                             TypeSignatureFactory::PointerToInt,
                             std::nullopt,
-                            Token { "var", "test.basalt", 1, 1, 1, Token::Type::var_keyword }
+                            Token { var_keyword, "test.basalt", 1, 1, 1, Token::Type::var_keyword }
                         },
                         VariableDeclaration {
                             "u",
                             TypeSignatureFactory::Int,
                             std::nullopt,
-                            Token { "var", "test.basalt", 1, 1, 1, Token::Type::var_keyword }
+                            Token { var_keyword, "test.basalt", 1, 1, 1, Token::Type::var_keyword }
                         },
                         Assignment {
                             Identifier { Token { "v", "test.basalt", 1, 1, 1, Token::Type::text } },
@@ -113,7 +113,7 @@ TEST(Preprocessing, Const_Constraint_Validator_Assignment_Of_Pointer_Result_Of_A
                             "v",
                             TypeSignatureFactory::PointerToInt,
                             std::nullopt,
-                            Token { "var", "test.basalt", 1, 1, 1, Token::Type::var_keyword }
+                            Token { var_keyword, "test.basalt", 1, 1, 1, Token::Type::var_keyword }
                         },
                         Assignment {
                             Identifier { Token { "v", "test.basalt", 1, 1, 1, Token::Type::text } },

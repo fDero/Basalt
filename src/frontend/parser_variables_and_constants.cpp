@@ -23,7 +23,7 @@ std::optional<Expression> Parser::parse_value_after_object_declaration() {
 
 Statement Parser::parse_variable_definition() {
     const Token& var_token = *iterator;
-    assert_token_matches(source_tokens, iterator++, "var");
+    assert_token_matches(source_tokens, iterator++, var_keyword);
     ensure_token_is_identifier(source_tokens, iterator);
     std::string var_name = ( iterator++ )->sourcetext;
     TypeSignature var_type = parse_type_after_object_declaration();
@@ -34,7 +34,7 @@ Statement Parser::parse_variable_definition() {
 
 Statement Parser::parse_constant_definition() {
     const Token& const_token = *iterator;
-    assert_token_matches(source_tokens, iterator++, "const");
+    assert_token_matches(source_tokens, iterator++, const_keyword);
     ensure_token_is_identifier(source_tokens, iterator);
     std::string const_name = ( iterator++ )->sourcetext;
     TypeSignature const_type = parse_type_after_object_declaration();

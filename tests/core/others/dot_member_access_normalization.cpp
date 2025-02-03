@@ -36,7 +36,7 @@ TEST(Core, Dot_Member_Access_Normalization_Does_Nothing_When_Not_Needed) {
     TypeSignature person_type = CustomType { Token { "Person", "test.basalt", 1, 1, 3, Token::Type::type }, {} };
     VariableDeclaration x_variable_def = VariableDeclaration(
         "x", person_type , std::nullopt,
-        Token { "var", "test.basalt", 1, 1, 3, Token::Type::type }   
+        Token { var_keyword, "test.basalt", 1, 1, 3, Token::Type::type }   
     );
     Identifier x_variable_expr = Identifier { Token { "x", "test.basalt", 1, 1, 3, Token::Type::text } };
     DotMemberAccess dot_member_access = DotMemberAccess {
@@ -60,7 +60,7 @@ TEST(Core, Dot_Member_Access_Normalization_Creates_One_DeReference_Operation) {
     TypeSignature pointer_to_person_type = PointerType { Token { "#", "test.basalt", 1, 1, 3, Token::Type::type }, person_type };
     VariableDeclaration x_variable_def = VariableDeclaration(
         "x", pointer_to_person_type , std::nullopt,
-        Token { "var", "test.basalt", 1, 1, 3, Token::Type::type }   
+        Token { var_keyword, "test.basalt", 1, 1, 3, Token::Type::type }   
     );
     Identifier x_variable_expr = Identifier { Token { "x", "test.basalt", 1, 1, 3, Token::Type::text } };
     DotMemberAccess dot_member_access = DotMemberAccess {
@@ -85,7 +85,7 @@ TEST(Core, Dot_Member_Access_Normalization_Creates_The_Necessary_DeReference_Ope
     TypeSignature pointer_to_pointer_to_person_type = PointerType { Token { "#", "test.basalt", 1, 1, 3, Token::Type::type }, pointer_to_person_type };
     VariableDeclaration x_variable_def = VariableDeclaration(
         "x", pointer_to_pointer_to_person_type , std::nullopt,
-        Token { "var", "test.basalt", 1, 1, 3, Token::Type::type }   
+        Token { var_keyword, "test.basalt", 1, 1, 3, Token::Type::type }   
     );
     Identifier x_variable_expr = Identifier { Token { "x", "test.basalt", 1, 1, 3, Token::Type::text } };
     DotMemberAccess dot_member_access = DotMemberAccess {

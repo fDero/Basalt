@@ -61,7 +61,7 @@ static ExpressionTypeDeducer type_deducer(
 TEST(Core, Type_Deduction_Fails_Because_Args_Are_Generic) {
     simple_scope_context.store_local_variable(VariableDeclaration {
         "t", TypeSignatureFactory::T, std::nullopt, 
-        Token { "var", "main.basalt", 1, 1, 1, Token::Type::var_keyword }
+        Token { var_keyword, "main.basalt", 1, 1, 1, Token::Type::var_keyword }
     });
     Expression function_call = FunctionCall {
         Token { "add", "main.basalt", 1, 1, 1, Token::Type::text },
@@ -79,7 +79,7 @@ TEST(Core, Type_Deduction_Fails_Because_Args_Are_Generic) {
 TEST(Core, Type_Deduction_Can_Still_Spot_Errors_With_Function_Calls_Even_When_Type_Is_Already_Known_To_Be_Undecidible) {
     simple_scope_context.store_local_variable(VariableDeclaration {
         "u", TypeSignatureFactory::U, std::nullopt, 
-        Token { "var", "main.basalt", 1, 1, 1, Token::Type::var_keyword }
+        Token { var_keyword, "main.basalt", 1, 1, 1, Token::Type::var_keyword }
     });
     Expression function_call = FunctionCall {
         Token { "add", "main.basalt", 1, 1, 1, Token::Type::text },
@@ -98,7 +98,7 @@ TEST(Core, Type_Deduction_Can_Still_Spot_Errors_With_Function_Calls_Even_When_Ty
 TEST(Core, Type_Deduction_Cannot_Figure_What_Operator_To_Use) {
     simple_scope_context.store_local_variable(VariableDeclaration {
         "s", TypeSignatureFactory::S, std::nullopt, 
-        Token { "var", "main.basalt", 1, 1, 1, Token::Type::var_keyword }
+        Token { var_keyword, "main.basalt", 1, 1, 1, Token::Type::var_keyword }
     });
     Expression binary_operator = BinaryOperator {
         Token { "+", "main.basalt", 1, 1, 1, Token::Type::symbol },
@@ -116,7 +116,7 @@ TEST(Core, Type_Deduction_Cannot_Figure_What_Operator_To_Use) {
 TEST(Core, Type_Deduction_Works_For_Address_Of_Generic_Typed_Variable) {
     simple_scope_context.store_local_variable(VariableDeclaration {
         "v", TypeSignatureFactory::V, std::nullopt, 
-        Token { "var", "main.basalt", 1, 1, 1, Token::Type::var_keyword }
+        Token { var_keyword, "main.basalt", 1, 1, 1, Token::Type::var_keyword }
     });
     Expression address_of = UnaryOperator {
         Token { "&", "main.basalt", 1, 1, 1, Token::Type::symbol },
@@ -135,7 +135,7 @@ TEST(Core, Type_Deduction_Works_For_Address_Of_Generic_Typed_Variable) {
 TEST(Core, Type_Deduction_Works_For_Pointer_Dereference_Of_Generic_Typed_Pointer) {
     simple_scope_context.store_local_variable(VariableDeclaration {
         "k", TypeSignatureFactory::PtrToK, std::nullopt, 
-        Token { "var", "main.basalt", 1, 1, 1, Token::Type::var_keyword }
+        Token { var_keyword, "main.basalt", 1, 1, 1, Token::Type::var_keyword }
     });
 
     ASSERT_TRUE(simple_scope_context.get_local_object_type("k").is<PointerType>());
