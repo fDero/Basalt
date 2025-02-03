@@ -24,7 +24,7 @@ class ExpressionTypeDeducer {
         );
 
         [[nodiscard]] std::optional<TypeSignature> deduce_expression_type(const Expression& expression);
-        [[nodiscard]] std::optional<TypeSignature> deduce_primtive_type(const std::string& type_name, const Expression& expression);
+
         [[nodiscard]] std::optional<TypeSignature> deduce_type_from_array_literal(const Expression& expression);
         [[nodiscard]] std::optional<TypeSignature> deduce_type_from_identifier(const Expression& expression);
         [[nodiscard]] std::optional<TypeSignature> deduce_type_from_function_call(const Expression& expression);
@@ -46,6 +46,37 @@ class ExpressionTypeDeducer {
         
         [[nodiscard]] std::optional<TypeSignature> deduce_type_from_square_brackets_access(const Expression& square_brackets_access);
         [[nodiscard]] std::optional<TypeSignature> deduce_type_from_dot_member_access(const Expression& dot_member_access);
+
+        [[nodiscard]] std::optional<TypeSignature> deduce_type_from_dot_member_access_on_type(
+            const DotMemberAccess& dot_member_access, 
+            const TypeSignature& operand_type
+        );
+
+        [[nodiscard]] std::optional<TypeSignature> deduce_type_from_dot_member_access_on_custom_type(
+            const DotMemberAccess& dot_member_access, 
+            const CustomType& operand_type
+        );
+
+        [[nodiscard]] std::optional<TypeSignature> deduce_type_from_dot_member_access_on_primitive_type(
+            const DotMemberAccess& dot_member_access, 
+            const PrimitiveType& operand_type
+        );
+
+        [[nodiscard]] std::optional<TypeSignature> deduce_type_from_dot_member_access_on_pointer_type(
+            const DotMemberAccess& dot_member_access, 
+            const PointerType& operand_type
+        );
+
+        [[nodiscard]] std::optional<TypeSignature> deduce_type_from_dot_member_access_on_slice_type(
+            const DotMemberAccess& dot_member_access, 
+            const SliceType& operand_type
+        );
+
+    protected:
+        [[nodiscard]] TypeSignature deduce_primtive_type(
+            const std::string& type_name, 
+            const Expression& expression
+        );
 
     private:
         TypeDefinitionsRegister& type_definitions_register;

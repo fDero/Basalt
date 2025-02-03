@@ -83,21 +83,3 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_square_br
         ? TranslatedExpression(element_value)
         : TranslatedExpression(element_value, element_address);
 }
-
-TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_dot_member_access_to_llvm(
-    llvm::BasicBlock* block,
-    const DotMemberAccess& expr
-) {
-    DotMemberAccess normalized_dot_member_access = program_representation
-        .normalize_dot_member_access(expr, scope_context.raw_scope_context);
-    size_t field_index = program_representation
-        .resolve_field_index(normalized_dot_member_access, scope_context.raw_scope_context);
-    TranslatedExpression target = translate_expression_to_llvm(block, normalized_dot_member_access.struct_value);
-    llvm::IRBuilder<> builder(block);
-    llvm::Value* target_address = get_llvm_address(builder, target);
-    llvm::Value* field_address = builder.CreateStructGEP(target_address, field_index);
-    llvm::Value* field_value = builder.CreateLoad(field_address);
-    return (target.address == nullptr)
-        ? TranslatedExpression(field_value)
-        : TranslatedExpression(field_value, field_address);
-}

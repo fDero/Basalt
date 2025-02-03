@@ -29,6 +29,29 @@ inline void ensure_assignment_is_valid(
     }
 }
 
+inline void throw_bad_dot_member_access_on_type(
+    const TypeSignature& left_operand_type,
+    const DotMemberAccess& dot_member_access
+) {
+    throw std::runtime_error("bad dot member access on type");
+}
+
+inline void throw_no_such_primitive_field(
+    const std::string& member_name,
+    const PrimitiveType& primitive_type_definition,
+    const DotMemberAccess& dot_member_access
+) {
+    throw std::runtime_error("no such primitive field");
+}
+
+inline void throw_no_such_slice_field(
+    const std::string& member_name,
+    const SliceType& pointer_type_definition,
+    const DotMemberAccess& dot_member_access
+) {
+    throw std::runtime_error("no such pointer field");
+}
+
 inline void ensure_type_is_union_for_type_operator(bool type_operator_typesignature_is_union) {
     if (!type_operator_typesignature_is_union) {
         throw std::runtime_error("type operator must be applied to a union type");

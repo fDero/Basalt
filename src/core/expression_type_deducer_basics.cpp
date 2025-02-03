@@ -44,8 +44,7 @@ ExpressionTypeDeducer::deduce_expression_type(
     assert_unreachable();
 }
 
-std::optional<TypeSignature> 
-ExpressionTypeDeducer::deduce_primtive_type(
+TypeSignature ExpressionTypeDeducer::deduce_primtive_type(
     const std::string& type_name, 
     const Expression& expression
 ) {

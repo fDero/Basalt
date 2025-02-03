@@ -62,13 +62,6 @@ class ExpressionsAndStatementsLLVMTranslator {
         [[nodiscard]] TranslatedExpression translate_type_operator_to_llvm(llvm::BasicBlock* block, const TypeOperator& expr);
         [[nodiscard]] TranslatedExpression translate_unary_operator_to_llvm(llvm::BasicBlock* block, const UnaryOperator& expr);
 
-        [[nodiscard]] TranslatedExpression translate_square_bracket_access_to_llvm(llvm::BasicBlock* block, const SquareBracketsAccess& expr);
-        [[nodiscard]] TranslatedExpression translate_square_bracket_access_from_array_to_llvm(llvm::BasicBlock* block, const SquareBracketsAccess& expr);
-        [[nodiscard]] TranslatedExpression translate_square_bracket_access_from_slice_to_llvm(llvm::BasicBlock* block, const SquareBracketsAccess& expr);
-        [[nodiscard]] TranslatedExpression translate_square_bracket_access_from_string_to_llvm(llvm::BasicBlock* block, const SquareBracketsAccess& expr);
-        [[nodiscard]] TranslatedExpression translate_square_bracket_access_from_raw_string_to_llvm(llvm::BasicBlock* block, const SquareBracketsAccess& expr);
-        [[nodiscard]] TranslatedExpression translate_dot_member_access_to_llvm(llvm::BasicBlock* block, const DotMemberAccess& expr);
-
         [[nodiscard]] TranslatedExpression translate_is_operator_to_llvm(llvm::BasicBlock* block, const TypeOperator& expr);
         [[nodiscard]] TranslatedExpression translate_as_operator_to_llvm(llvm::BasicBlock* block, const TypeOperator& expr);
 
@@ -94,6 +87,38 @@ class ExpressionsAndStatementsLLVMTranslator {
         [[nodiscard]] TranslatedExpression translate_decrement_prefix_to_llvm(llvm::BasicBlock* block, const UnaryOperator& expr);
         [[nodiscard]] TranslatedExpression translate_ptr_dereference_to_llvm(llvm::BasicBlock* block, const UnaryOperator& expr);
         [[nodiscard]] TranslatedExpression translate_addressof_to_llvm(llvm::BasicBlock* block, const UnaryOperator& expr);
+
+        [[nodiscard]] TranslatedExpression translate_square_bracket_access_to_llvm(llvm::BasicBlock* block, const SquareBracketsAccess& expr);
+        [[nodiscard]] TranslatedExpression translate_square_bracket_access_from_array_to_llvm(llvm::BasicBlock* block, const SquareBracketsAccess& expr);
+        [[nodiscard]] TranslatedExpression translate_square_bracket_access_from_slice_to_llvm(llvm::BasicBlock* block, const SquareBracketsAccess& expr);
+        [[nodiscard]] TranslatedExpression translate_square_bracket_access_from_string_to_llvm(llvm::BasicBlock* block, const SquareBracketsAccess& expr);
+        [[nodiscard]] TranslatedExpression translate_square_bracket_access_from_raw_string_to_llvm(llvm::BasicBlock* block, const SquareBracketsAccess& expr);
+        
+        [[nodiscard]] TranslatedExpression translate_string_or_slice_length_to_llvm(llvm::BasicBlock* block, const Expression& expr);
+
+        [[nodiscard]] TranslatedExpression translate_dot_member_access_to_llvm(
+            llvm::BasicBlock* block, 
+            const DotMemberAccess& expr
+        );
+        
+        [[nodiscard]] TranslatedExpression translate_dot_member_access_on_custom_type_to_llvm(
+            llvm::BasicBlock* block, 
+            const DotMemberAccess& expr
+        );
+
+        [[nodiscard]] TranslatedExpression translate_dot_member_access_on_primitive_type_to_llvm(
+            llvm::BasicBlock* block,
+            const Expression& accessed_expression,
+            const PrimitiveType primitive_type,
+            const std::string& member_name
+        );
+
+        [[nodiscard]] TranslatedExpression translate_dot_member_access_on_slice_type_to_llvm(
+            llvm::BasicBlock* block,
+            const Expression& accessed_expression,
+            const SliceType& slice_type,
+            const std::string& member_name
+        );
 
     protected:        
         [[nodiscard]] ExpressionsAndStatementsLLVMTranslator create_translator_for_nested_conditional();
