@@ -10,24 +10,25 @@
 #include "language/definitions.hpp"
 #include "language/expressions.hpp"
 #include "language/functions.hpp"
+#include "syntax/keywords.hpp"
 
 Statement Parser::parse_break_keyword() {
     const Token& break_token = *iterator;
-    assert_token_matches(source_tokens, iterator++, "break");
+    assert_token_matches(source_tokens, iterator++, break_keyword);
     ensure_token_matches(source_tokens, iterator++, ";");
     return Break { break_token };
 }
 
 Statement Parser::parse_continue_keyword() {
     const Token& continue_token = *iterator;
-    assert_token_matches(source_tokens, iterator++, "continue");
+    assert_token_matches(source_tokens, iterator++, continue_keyword);
     ensure_token_matches(source_tokens, iterator++, ";");
     return Continue { continue_token };
 }
 
 Statement Parser::parse_return_keyword() {
     const Token& return_token = *iterator;
-    assert_token_matches(source_tokens, iterator++, "return");
+    assert_token_matches(source_tokens, iterator++, return_keyword);
     ensure_there_are_still_tokens(source_tokens, iterator);
     if (iterator->sourcetext == ";") {
         std::advance(iterator, 1);

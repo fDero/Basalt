@@ -31,22 +31,22 @@ TEST(Frontend, Parse_Function_Definition_WithOut_generics_And_No_Arguments_And_N
 
 TEST(Frontend, Parse_Function_Definition_WithOut_generics_And_Only_One_Argument_And_NON_Empty_Body) {
     std::vector<Token> tokens = {
-        { func_keyword,    "test.basalt", 1,  1,  1,   Token::Type::func_keyword    },
-        { "f",             "test.basalt", 1,  2,  5,   Token::Type::text            },
-        { "(",             "test.basalt", 1,  3,  6,   Token::Type::symbol          },
-        { "x",             "test.basalt", 1,  4,  7,   Token::Type::text            },
-        { ":",             "test.basalt", 1,  5,  8,   Token::Type::symbol          },
-        { int_type,        "test.basalt", 1,  6,  9,   Token::Type::type            },
-        { ")",             "test.basalt", 1,  7,  13,  Token::Type::symbol          },
-        { "{",             "test.basalt", 1,  8,  14,  Token::Type::symbol          },
-        { "x",             "test.basalt", 1,  8,  14,  Token::Type::text            },
-        { "=",             "test.basalt", 1,  8,  14,  Token::Type::symbol          },
-        { "6",             "test.basalt", 1,  8,  14,  Token::Type::integer_literal },
-        { ";",             "test.basalt", 1,  8,  14,  Token::Type::symbol          },
-        { "return",        "test.basalt", 1, 13,  18,  Token::Type::return_keyword  },
-        { "x",             "test.basalt", 1, 13,  18,  Token::Type::text            },
-        { ";",             "test.basalt", 1, 14,  24,  Token::Type::symbol          },
-        { "}",             "test.basalt", 1,  9,  15,  Token::Type::symbol          }
+        { func_keyword,    "test.basalt", 1,  1,  1,   Token::Type::func_keyword          },
+        { "f",             "test.basalt", 1,  2,  5,   Token::Type::text                  },
+        { "(",             "test.basalt", 1,  3,  6,   Token::Type::symbol                },
+        { "x",             "test.basalt", 1,  4,  7,   Token::Type::text                  },
+        { ":",             "test.basalt", 1,  5,  8,   Token::Type::symbol                },
+        { int_type,        "test.basalt", 1,  6,  9,   Token::Type::type                  },
+        { ")",             "test.basalt", 1,  7,  13,  Token::Type::symbol                },
+        { "{",             "test.basalt", 1,  8,  14,  Token::Type::symbol                },
+        { "x",             "test.basalt", 1,  8,  14,  Token::Type::text                  },
+        { "=",             "test.basalt", 1,  8,  14,  Token::Type::symbol                },
+        { "6",             "test.basalt", 1,  8,  14,  Token::Type::integer_literal       },
+        { ";",             "test.basalt", 1,  8,  14,  Token::Type::symbol                },
+        { return_keyword,        "test.basalt", 1, 13,  18,  Token::Type::return_keyword  },
+        { "x",             "test.basalt", 1, 13,  18,  Token::Type::text                  },
+        { ";",             "test.basalt", 1, 14,  24,  Token::Type::symbol                },
+        { "}",             "test.basalt", 1,  9,  15,  Token::Type::symbol                }
     };
     Parser parser = Parser({ "inline-tests.basalt", tokens });
     FunctionDefinition funcdef = parser.parse_function_definition();
@@ -64,21 +64,21 @@ TEST(Frontend, Parse_Function_Definition_WithOut_generics_And_Only_One_Argument_
 
 TEST(Frontend, Parse_Function_Definition_WithOut_generics_And_Two_Arguments_And_NON_Empty_Body) {
     std::vector<Token> tokens = {
-        { func_keyword,    "test.basalt", 1, 1,  1,   Token::Type::func_keyword   },
-        { "f",             "test.basalt", 1, 2,  5,   Token::Type::text           },
-        { "(",             "test.basalt", 1, 3,  6,   Token::Type::symbol         },
-        { "x",             "test.basalt", 1, 4,  7,   Token::Type::text           },
-        { ":",             "test.basalt", 1, 5,  8,   Token::Type::symbol         },
-        { int_type,        "test.basalt", 1, 6,  9,   Token::Type::type           },
-        { ",",             "test.basalt", 1, 7,  10,  Token::Type::type           },
-        { "y",             "test.basalt", 1, 8,  11,  Token::Type::text           },
-        { ":",             "test.basalt", 1, 9,  12,  Token::Type::symbol         },
-        { int_type,        "test.basalt", 1, 10, 13,  Token::Type::type           },
-        { ")",             "test.basalt", 1, 11, 16,  Token::Type::symbol         },
-        { "{",             "test.basalt", 1, 12, 17,  Token::Type::symbol         },
-        { "return",        "test.basalt", 1, 13, 18,  Token::Type::return_keyword },
-        { ";",             "test.basalt", 1, 14, 24,  Token::Type::symbol         },
-        { "}",             "test.basalt", 1, 15, 25,  Token::Type::symbol         }
+        { func_keyword,    "test.basalt", 1, 1,  1,   Token::Type::func_keyword         },
+        { "f",             "test.basalt", 1, 2,  5,   Token::Type::text                 },
+        { "(",             "test.basalt", 1, 3,  6,   Token::Type::symbol               },
+        { "x",             "test.basalt", 1, 4,  7,   Token::Type::text                 },
+        { ":",             "test.basalt", 1, 5,  8,   Token::Type::symbol               },
+        { int_type,        "test.basalt", 1, 6,  9,   Token::Type::type                 },
+        { ",",             "test.basalt", 1, 7,  10,  Token::Type::type                 },
+        { "y",             "test.basalt", 1, 8,  11,  Token::Type::text                 },
+        { ":",             "test.basalt", 1, 9,  12,  Token::Type::symbol               },
+        { int_type,        "test.basalt", 1, 10, 13,  Token::Type::type                 },
+        { ")",             "test.basalt", 1, 11, 16,  Token::Type::symbol               },
+        { "{",             "test.basalt", 1, 12, 17,  Token::Type::symbol               },
+        { return_keyword,        "test.basalt", 1, 13, 18,  Token::Type::return_keyword },
+        { ";",             "test.basalt", 1, 14, 24,  Token::Type::symbol               },
+        { "}",             "test.basalt", 1, 15, 25,  Token::Type::symbol               }
     };
     Parser parser = Parser({ "inline-tests.basalt", tokens });
     FunctionDefinition funcdef = parser.parse_function_definition();

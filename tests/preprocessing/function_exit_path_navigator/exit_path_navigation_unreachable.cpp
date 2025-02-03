@@ -3,6 +3,7 @@
 #include "preprocessing/function_exit_path_navigator.hpp"
 #include "../../tests_utilities/typesignature_factory.hpp"
 #include "../../tests_utilities/function_definition_factory.hpp"
+#include "syntax/keywords.hpp"
 
 TEST(Preprocessing, Function_Exit_Path_Navigator_Stuff_After_Return_Is_Unreachable) {
     ProjectFileStructure single_func_def_project({
@@ -31,7 +32,7 @@ TEST(Preprocessing, Function_Exit_Path_Navigator_Stuff_After_Return_Is_Unreachab
                                 Identifier { Token { "x", "test.basalt", 1, 1, 1, Token::Type::text } },
                                 Identifier { Token { "y", "test.basalt", 1, 1, 1, Token::Type::text } }
                             },
-                            Token { "return", "test.basalt", 1, 1, 6, Token::Type::return_keyword }
+                            Token { return_keyword, "test.basalt", 1, 1, 6, Token::Type::return_keyword }
                         },
                         Assignment {
                             Identifier { Token { "x", "test.basalt", 1, 1, 1, Token::Type::text } },
@@ -89,12 +90,12 @@ TEST(Preprocessing, Function_Exit_Path_Navigator_Conditional_Where_Both_Branches
                                                 Identifier { Token { "x", "test.basalt", 1, 1, 1, Token::Type::text } },
                                                 Identifier { Token { "y", "test.basalt", 1, 1, 1, Token::Type::text } }
                                             },
-                                            Token { "return", "test.basalt", 1, 1, 6, Token::Type::return_keyword }
+                                            Token { return_keyword, "test.basalt", 1, 1, 6, Token::Type::return_keyword }
                                         }
                                     },
                                     {
                                         Break {
-                                            Token { "break", "test.basalt", 1, 1, 6, Token::Type::break_keyword }
+                                            Token { break_keyword, "test.basalt", 1, 1, 6, Token::Type::break_keyword }
                                         }
                                     },
                                     Token { "if", "test.basalt", 1, 1, 1, Token::Type::if_keyword }
@@ -114,7 +115,7 @@ TEST(Preprocessing, Function_Exit_Path_Navigator_Conditional_Where_Both_Branches
                                 Identifier { Token { "x", "test.basalt", 1, 1, 1, Token::Type::text } },
                                 Identifier { Token { "y", "test.basalt", 1, 1, 1, Token::Type::text } }
                             },
-                            Token { "return", "test.basalt", 1, 1, 6, Token::Type::return_keyword }
+                            Token { return_keyword, "test.basalt", 1, 1, 6, Token::Type::return_keyword }
                         }
                     }
                 )

@@ -13,7 +13,7 @@
 #include "language/functions.hpp"
 
 std::string Parser::parse_package_name() {
-    ensure_token_matches(source_tokens, iterator++, "package");
+    ensure_token_matches(source_tokens, iterator++, package_keyword);
     ensure_there_are_still_tokens(source_tokens, iterator);
     std::string package_name = iterator->sourcetext;
     std::advance(iterator, 1);
@@ -23,7 +23,7 @@ std::string Parser::parse_package_name() {
 }
 
 std::string Parser::parse_package_import() {
-    assert_token_matches(source_tokens, iterator++, "import");
+    assert_token_matches(source_tokens, iterator++, import_keyword);
     std::string package_name = iterator->sourcetext;
     std::advance(iterator, 1);
     ensure_token_matches(source_tokens, iterator++, ";");

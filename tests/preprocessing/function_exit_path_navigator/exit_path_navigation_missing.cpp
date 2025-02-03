@@ -3,6 +3,7 @@
 #include "preprocessing/function_exit_path_navigator.hpp"
 #include "../../tests_utilities/typesignature_factory.hpp"
 #include "../../tests_utilities/function_definition_factory.hpp"
+#include "syntax/keywords.hpp"
 
 TEST(Preprocessing, Function_Exit_Path_Navigator_Missing_Return) {
     ProjectFileStructure single_func_def_project({
@@ -65,7 +66,7 @@ TEST(Preprocessing, Function_Exit_Path_Navigator_Return_Inside_Of_A_While_Does_N
                                         Identifier { Token { "x", "test.basalt", 1, 1, 1, Token::Type::text } },
                                         Identifier { Token { "y", "test.basalt", 1, 1, 1, Token::Type::text } }
                                     },
-                                    Token { "return", "test.basalt", 1, 1, 6, Token::Type::return_keyword }
+                                    Token { return_keyword, "test.basalt", 1, 1, 6, Token::Type::return_keyword }
                                 }
                             },
                             Token { "while", "test.basalt", 1, 1, 1, Token::Type::while_keyword }
@@ -117,7 +118,7 @@ TEST(Preprocessing, Function_Exit_Path_Navigator_Not_Every_Path_Returns_Inside_O
                                                 Identifier { Token { "x", "test.basalt", 1, 1, 1, Token::Type::text } },
                                                 Identifier { Token { "y", "test.basalt", 1, 1, 1, Token::Type::text } }
                                             },
-                                            Token { "return", "test.basalt", 1, 1, 6, Token::Type::return_keyword }
+                                            Token { return_keyword, "test.basalt", 1, 1, 6, Token::Type::return_keyword }
                                         }
                                     },
                                     {
@@ -164,7 +165,7 @@ TEST(Preprocessing, Function_Exit_Path_Navigator_Local_Control_Flow_Alteration_D
                             },
                             {
                                 Break {
-                                    Token { "break", "test.basalt", 1, 1, 6, Token::Type::break_keyword }
+                                    Token { break_keyword, "test.basalt", 1, 1, 6, Token::Type::break_keyword }
                                 }
                             },
                             Token { "until", "test.basalt", 1, 1, 1, Token::Type::until_keyword }

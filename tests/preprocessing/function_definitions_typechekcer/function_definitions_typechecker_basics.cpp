@@ -3,6 +3,7 @@
 #include "preprocessing/function_definitions_typechecker.hpp"
 #include "../../tests_utilities/typesignature_factory.hpp"
 #include "../../tests_utilities/function_definition_factory.hpp"
+#include "syntax/keywords.hpp"
 
 TEST(Preprocessing, FunctionDefinitionsTypeChecker_With_Empty_Function_Definition) {
     ProjectFileStructure single_func_def_project({
@@ -39,7 +40,7 @@ TEST(Preprocessing, FunctionDefinitionsTypeChecker_With_Correct_Return_Type) {
                     "f", "test.basalt", {}, {}, TypeSignatureFactory::Int, {
                         Return {
                             IntLiteral { Token { "1", "test.basalt", 1, 1, 1, Token::Type::integer_literal } },
-                            Token { "return", "test.basalt", 1, 1, 6, Token::Type::return_keyword }
+                            Token { return_keyword, "test.basalt", 1, 1, 6, Token::Type::return_keyword }
                         }
                     }
                 )
@@ -65,7 +66,7 @@ TEST(Preprocessing, FunctionDefinitionsTypeChecker_With_Wrong_Return_Type) {
                     "f", "test.basalt", {}, {}, TypeSignatureFactory::Int, {
                         Return {
                             FloatLiteral { Token { "3.14", "test.basalt", 1, 1, 1, Token::Type::integer_literal } },
-                            Token { "return", "test.basalt", 1, 1, 6, Token::Type::return_keyword }
+                            Token { return_keyword, "test.basalt", 1, 1, 6, Token::Type::return_keyword }
                         }
                     }
                 )
