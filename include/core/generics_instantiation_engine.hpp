@@ -69,6 +69,11 @@ class GenericsInstantiationEngine {
             const std::string& new_function_name
         );
 
+        [[nodiscard]] FunctionDefinition::Ref instantiate_generic_function(
+            const FunctionDefinition::Ref& function_definition_ref, 
+            const std::string& new_function_name
+        );
+
     private:
         GenericSubstitutionRule::Set rules;
 };

@@ -77,4 +77,14 @@ FunctionDefinition::Ref GenericsInstantiationEngine::instantiate_generic_functio
         instantiated_function->code.push_back(instantiate_generic_statement(statement));
     }
     return instantiated_function;
+    throw "x";
+}
+
+FunctionDefinition::Ref GenericsInstantiationEngine::instantiate_generic_function(
+    const FunctionDefinition::Ref& function_definition_ref, 
+    const std::string& new_function_name
+) {
+    return (function_definition_ref->template_generics_names.empty()) 
+        ? function_definition_ref:
+        instantiate_generic_function(*function_definition_ref, new_function_name);
 };

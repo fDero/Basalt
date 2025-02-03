@@ -79,9 +79,9 @@ FunctionDefinition::Ref FunctionDefinitionsRegister::cache_unaware_function_defi
     if (best_maches_so_far.empty()) {
         return nullptr;
     }
-    const FunctionDefinition& best_match = *best_maches_so_far[0].first; 
+    const FunctionDefinition::Ref best_match = best_maches_so_far[0].first; 
     const GenericSubstitutionRule::Set::Ref generic_substitution_rules = best_maches_so_far[0].second;
-    const std::string new_function_name = get_new_instantiated_function_name(best_match, generic_substitution_rules);
+    const std::string new_function_name = get_new_instantiated_function_name(*best_match, generic_substitution_rules);
     GenericsInstantiationEngine generics_instantiation_engine(*generic_substitution_rules);
     FunctionDefinition::Ref instanitated_func_def_ref = 
         generics_instantiation_engine.instantiate_generic_function(best_match, new_function_name);
