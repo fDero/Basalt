@@ -83,8 +83,6 @@ class ExpressionsAndStatementsLLVMTranslator {
         [[nodiscard]] TranslatedExpression translate_boolean_not_to_llvm(llvm::BasicBlock* block, const UnaryOperator& expr);
         [[nodiscard]] TranslatedExpression translate_minus_sign_to_llvm(llvm::BasicBlock* block, const UnaryOperator& expr);
         [[nodiscard]] TranslatedExpression translate_plus_sign_to_llvm(llvm::BasicBlock* block, const UnaryOperator& expr);
-        [[nodiscard]] TranslatedExpression translate_increment_prefix_to_llvm(llvm::BasicBlock* block, const UnaryOperator& expr);
-        [[nodiscard]] TranslatedExpression translate_decrement_prefix_to_llvm(llvm::BasicBlock* block, const UnaryOperator& expr);
         [[nodiscard]] TranslatedExpression translate_ptr_dereference_to_llvm(llvm::BasicBlock* block, const UnaryOperator& expr);
         [[nodiscard]] TranslatedExpression translate_addressof_to_llvm(llvm::BasicBlock* block, const UnaryOperator& expr);
 

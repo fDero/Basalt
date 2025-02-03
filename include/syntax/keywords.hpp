@@ -10,11 +10,6 @@
 
 #include "frontend/tokenizer.hpp"
 
-inline const std::string constexpr single_line_comment       = "//";
-inline const std::string constexpr multiline_comment_opening = "/*";
-inline const std::string constexpr multiline_comment_closing = "*/";
-inline const std::string constexpr namespace_concatenation   = "::";
-
 inline const std::string constexpr extern_keyword            = "extern";
 inline const std::string constexpr func_keyword              = "func";
 inline const std::string constexpr struct_keyword            = "strcut";

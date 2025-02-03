@@ -4,7 +4,7 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 #include "core/caching_aware_register.hpp"
-#include "syntax/keywords.hpp"
+#include "syntax/specials.hpp"
 
 std::string CachingAwareRegister::get_cache_search_key_for_func_def_retrieval_from_func_call(
     TypeDefinitionsRegister& type_definitions_register,

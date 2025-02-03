@@ -65,8 +65,6 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_unary_ope
     OperatorKind operator_kind = operator_kinds.at(expr.operator_text);
     switch (operator_kind) {
         case OperatorKind::boolean_not:            return translate_boolean_not_to_llvm(block, expr);
-        case OperatorKind::math_increment:         return translate_increment_prefix_to_llvm(block, expr);
-        case OperatorKind::math_decrement:         return translate_decrement_prefix_to_llvm(block, expr);
         case OperatorKind::minus_operator:         return translate_minus_sign_to_llvm(block, expr);
         case OperatorKind::plus_operator:          return translate_plus_sign_to_llvm(block, expr);
         case OperatorKind::pointer_dereference_op: return translate_ptr_dereference_to_llvm(block, expr);

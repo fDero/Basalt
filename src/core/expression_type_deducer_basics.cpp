@@ -141,8 +141,6 @@ ExpressionTypeDeducer::deduce_type_from_unary_operator(const Expression& express
         case OperatorKind::address_of:             return deduce_address_operator_type(unary_operator);
         case OperatorKind::pointer_dereference_op: return deduce_pointer_dereference_operator_type(unary_operator);
         case OperatorKind::boolean_not:            return deduce_boolean_not_operator_type(unary_operator);
-        case OperatorKind::math_increment:         return deduce_math_prefix_operator_type(unary_operator);
-        case OperatorKind::math_decrement:         return deduce_math_prefix_operator_type(unary_operator);
         case OperatorKind::plus_operator:          return deduce_math_prefix_operator_type(unary_operator);
         case OperatorKind::minus_operator:         return deduce_math_prefix_operator_type(unary_operator);
         default: assert_unreachable();

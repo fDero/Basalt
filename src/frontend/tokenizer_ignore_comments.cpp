@@ -4,7 +4,7 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 #include "frontend/tokenizer.hpp"
-#include "syntax/keywords.hpp"
+#include "syntax/specials.hpp"
 
 void Tokenizer::update_multiline_comments_tracker() {
     if (char_pos + 1 < current_line.size()) {
