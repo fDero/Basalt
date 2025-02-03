@@ -8,10 +8,10 @@
 #include "frontend/parser.hpp"
 #include "language/expressions.hpp"
 #include "language/functions.hpp"
-
+#include "syntax/keywords.hpp"
 
 FunctionDefinition Parser::parse_function_definition() {
-    assert_token_matches(source_tokens, iterator++, "func");
+    assert_token_matches(source_tokens, iterator++, func_keyword);
     ensure_there_are_still_tokens(source_tokens, iterator);
     FunctionDefinition function(*iterator);
     std::advance(iterator, 1);
@@ -23,7 +23,7 @@ FunctionDefinition Parser::parse_function_definition() {
 }
 
 FunctionDefinition Parser::parse_extern_function_declaration() {
-    assert_token_matches(source_tokens, iterator++, "extern");
+    assert_token_matches(source_tokens, iterator++, extern_keyword);
     ensure_there_are_still_tokens(source_tokens, iterator);
     FunctionDefinition function(*iterator);
     std::advance(iterator, 1);

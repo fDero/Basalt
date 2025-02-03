@@ -8,6 +8,7 @@
 #include "frontend/parser.hpp"
 #include "language/expressions.hpp"
 #include "errors/preprocessing_errors.hpp"
+#include "syntax/keywords.hpp"
 
 StructDefinition::Field Parser::parse_struct_field() {
     assert_token_is_text(source_tokens, iterator);
@@ -20,7 +21,7 @@ StructDefinition::Field Parser::parse_struct_field() {
 }
 
 StructDefinition Parser::parse_struct_definition() {
-    assert_token_matches(source_tokens, iterator++, "struct");
+    assert_token_matches(source_tokens, iterator++, struct_keyword);
     ensure_token_is_struct_name(source_tokens, iterator);
     StructDefinition struct_def(*iterator);
     std::advance(iterator, 1);
@@ -36,7 +37,7 @@ StructDefinition Parser::parse_struct_definition() {
 }
 
 UnionDefinition Parser::parse_union_definition() {
-    assert_token_matches(source_tokens, iterator++, "union");
+    assert_token_matches(source_tokens, iterator++, union_keyword);
     ensure_token_is_struct_name(source_tokens, iterator);
     UnionDefinition union_def(*iterator);
     std::advance(iterator, 1);
@@ -50,7 +51,7 @@ UnionDefinition Parser::parse_union_definition() {
 }
 
 TypeAlias Parser::parse_type_alias() {
-    assert_token_matches(source_tokens, iterator++, "alias");
+    assert_token_matches(source_tokens, iterator++, alias_keyword);
     const Token& alias_token = *iterator;
     ensure_token_is_typesignature(source_tokens, iterator++);
     std::vector<std::string> template_generics = parse_template_generics();
