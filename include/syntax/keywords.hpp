@@ -12,7 +12,7 @@
 
 inline const std::string constexpr extern_keyword            = "extern";
 inline const std::string constexpr func_keyword              = "func";
-inline const std::string constexpr struct_keyword            = "strcut";
+inline const std::string constexpr struct_keyword            = "struct";
 inline const std::string constexpr union_keyword             = "union";
 inline const std::string constexpr alias_keyword             = "alias";
 
