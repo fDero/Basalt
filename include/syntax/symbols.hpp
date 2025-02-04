@@ -7,6 +7,9 @@
 
 #include <set>
 
+#include "syntax/infixes.hpp"
+#include "syntax/specials.hpp"
+
 inline char constexpr plus_symbol        = '+';
 inline char constexpr minus_symbol       = '-';
 inline char constexpr star_symbol        = '*';
@@ -63,4 +66,16 @@ inline const std::set<char> symbols{
     close_square_paren,
     open_curly_paren,
     close_curly_paren 
+};
+
+inline const std::set<std::string> combinations{
+    cmp_geq_operator,
+    cmp_leq_operator,
+    cmp_neq_operator,
+    cmp_eq_operator,
+    boolean_and_operator,
+    boolean_or_operator,
+    boolean_xor_operator,
+    namespace_concatenation,
+    return_type_prefix,
 };

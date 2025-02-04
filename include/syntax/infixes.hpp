@@ -9,7 +9,6 @@
 #include <set>
 #include <map>
 
-#include "syntax/symbols.hpp"
 #include "syntax/keywords.hpp"
 
 inline const std::string constexpr dot_member_access_operator   = ".";

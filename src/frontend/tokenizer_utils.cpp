@@ -3,6 +3,7 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include "syntax/keywords.hpp"
 #include "syntax/specials.hpp"
 #include "errors/tokenization_errors.hpp"
 #include "frontend/tokenizer.hpp"
@@ -34,10 +35,10 @@ Tokenizer::Tokenizer(const std::string& file_input)
 
 void Tokenizer::inspect_for_unexpected_tokens() {
     std::string buffer;
-    while (char_pos < current_line.size() && discardable.find(current_line[char_pos]) != discardable.end()) {
+    while (char_pos < current_line.size() && discardable.find(current_line[char_pos]) == discardable.end()) {
         buffer.push_back(current_line[char_pos++]);
     }
-    if (!buffer.empty() && char_pos >= current_line.size()) {
+    if (!buffer.empty()) {
         throw_unexpected_token(buffer, *this);
     }
 }

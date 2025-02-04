@@ -8,8 +8,6 @@
 #include <string>
 #include <set>
 
-#include "syntax/infixes.hpp"
-
 inline const std::string constexpr pointer_type_symbol          = "#";
 inline const std::string constexpr slice_type_symbol            = "$";
 inline const std::string square_brackets_access                 = "[square-brackets-access]";
@@ -32,18 +30,6 @@ inline const std::set<char> discardable{
 inline const std::string constexpr char_delim                   = "'";
 inline const std::string constexpr string_delim                 = "\"";
 inline const std::string constexpr string_delim2                = "`";
-
-inline const std::set<std::string> combinations{
-    cmp_geq_operator,
-    cmp_leq_operator,
-    cmp_neq_operator,
-    cmp_eq_operator,
-    boolean_and_operator,
-    boolean_or_operator,
-    boolean_xor_operator,
-    namespace_concatenation,
-    return_type_prefix,
-};
 
 inline const std::set<char> string_opening_characters {
     char_delim[0],

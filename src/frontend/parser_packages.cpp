@@ -4,6 +4,7 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 #include "syntax/specials.hpp"
+#include "syntax/keywords.hpp"
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 #include "frontend/parser.hpp"
