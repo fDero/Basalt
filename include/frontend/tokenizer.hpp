@@ -13,6 +13,18 @@
 
 class Tokenizer {
 
+    public:
+        Tokenizer(const std::istringstream& inline_input);
+        Tokenizer(const std::string& file_input);
+
+        [[nodiscard]] TokenizedFile tokenize();
+
+        [[nodiscard]] std::optional<Token> extract_number();
+        [[nodiscard]] std::optional<Token> extract_text();
+        [[nodiscard]] std::optional<Token> extract_string();
+        [[nodiscard]] std::optional<Token> extract_symbol();
+        [[nodiscard]] std::optional<Token> extract();
+
     private: 
         std::unique_ptr<std::istream> token_input;
         std::string filename;
@@ -29,23 +41,9 @@ class Tokenizer {
 
         void ignore_discardable_characters();
         void inspect_for_unexpected_tokens();
+
         [[nodiscard]] Token make_token(const std::string& sourcetext, const Token::Type type);
+        [[nodiscard]] DebugInformationsAwareEntity make_coordinates();
+
         [[nodiscard]] Token::Type get_textual_token_type(const std::string& sourcetext);
-
-    public:
-        Tokenizer(const std::istringstream& inline_input);
-        Tokenizer(const std::string& file_input);
-
-        [[nodiscard]] TokenizedFile tokenize();
-        [[nodiscard]] std::string get_current_line() const;
-        [[nodiscard]] std::string get_filename() const;
-        [[nodiscard]] size_t get_line_number() const;
-        [[nodiscard]] size_t get_tok_number() const;
-        [[nodiscard]] size_t get_char_pos() const;
-
-        [[nodiscard]] std::optional<Token> extract_number();
-        [[nodiscard]] std::optional<Token> extract_text();
-        [[nodiscard]] std::optional<Token> extract_string();
-        [[nodiscard]] std::optional<Token> extract_symbol();
-        [[nodiscard]] std::optional<Token> extract();
 };

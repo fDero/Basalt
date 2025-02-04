@@ -96,7 +96,7 @@ void ensure_typesignature_is_int(const std::optional<TypeSignature>& type_signat
     }
     const TypeSignature& type_signature = type_signature_opt.value();
     if (!type_signature.is<PrimitiveType>() || type_signature.get<PrimitiveType>().type_name != int_type) {
-        throw InternalError("type must be Int");
+        throw std::runtime_error("type must be Int");
     }
 }
 
@@ -174,17 +174,17 @@ void ensure_typesignature_is_boolean(const std::optional<TypeSignature>& type_si
     }
     const TypeSignature& type_signature = type_signature_opt.value();
     if (!type_signature.is<PrimitiveType>() || type_signature.get<PrimitiveType>().type_name != bool_type) {
-        throw InternalError("type must be Bool");
+        throw std::runtime_error("type must be Bool");
     }
 }
 
 void ensure_typesignature_is_numeric(const TypeSignature& type_signature) {
     if (!type_signature.is<PrimitiveType>()) {
-        throw InternalError("type must be numeric");
+        throw std::runtime_error("type must be numeric");
     }
     const PrimitiveType& primitive_type = type_signature.get<PrimitiveType>();
     if (primitive_type.type_name != int_type && primitive_type.type_name != float_type) {
-        throw InternalError("type must be numeric");
+        throw std::runtime_error("type must be numeric");
     }
 }
 
@@ -194,12 +194,12 @@ void ensure_typesignature_is_non_string_primitive_or_generic(const std::optional
     }
     const TypeSignature& type_signature = type_signature_opt.value();
     if (!type_signature.is<PrimitiveType>() && !type_signature.is<TemplateType>()) {
-        throw InternalError("type must be non-string primitive or generic");
+        throw std::runtime_error("type must be non-string primitive or generic");
     }
     if (type_signature.is<PrimitiveType>()) {
         const PrimitiveType& primitive_type = type_signature.get<PrimitiveType>();
         if (primitive_type.type_name == string_type) {
-            throw InternalError("type must be non-string primitive or generic");
+            throw std::runtime_error("type must be non-string primitive or generic");
         }
     }
 }
@@ -210,12 +210,12 @@ void ensure_typesignature_is_either_numeric_or_generic(const std::optional<TypeS
     }
     const TypeSignature& type_signature = type_signature_opt.value();
     if (!type_signature.is<PrimitiveType>() && !type_signature.is<TemplateType>()) {
-        throw InternalError("type must be numeric or generic");
+        throw std::runtime_error("type must be numeric or generic");
     }
     if (type_signature.is<PrimitiveType>()) {
         const PrimitiveType& primitive_type = type_signature.get<PrimitiveType>();
         if (primitive_type.type_name != int_type && primitive_type.type_name != float_type) {
-            throw InternalError("type must be numeric or generic");
+            throw std::runtime_error("type must be numeric or generic");
         }
     }
 }
@@ -225,7 +225,7 @@ void ensure_function_overload_was_successfully_retrieved(
     const std::optional<FunctionDefinition::Ref>& retrieved
 ) {
     if (!retrieved.has_value()) {
-        throw InternalError("no function overload found");
+        throw std::runtime_error("no function overload found");
     }
 }
 
@@ -234,7 +234,7 @@ void ensure_function_has_a_return_type(
     const std::optional<TypeSignature>& return_type
 ) {
     if (!return_type.has_value()) {
-        throw InternalError("function has no return type");
+        throw std::runtime_error("function has no return type");
     }
 }
 

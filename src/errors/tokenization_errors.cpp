@@ -6,58 +6,63 @@
 #include "errors/tokenization_errors.hpp"
 #include "syntax/specials.hpp"
 
-std::string get_sourcetext_from_tokenizer(const Tokenizer& tokenizer) {
-    std::string extracted;
-    std::string current_line = tokenizer.get_current_line();
-    for (size_t i = tokenizer.get_char_pos(); i < current_line.size(); i++) {
-        if (discardable.find(current_line[i]) != discardable.end()) break;
-        extracted.push_back(current_line[i]);
-    }
-    return extracted;
-}
-
-[[noreturn]] void throw_unexpected_token(const std::string& sourcetext, const Tokenizer& tokenizer) {
+[[noreturn]] void throw_unexpected_token(const Token& token) {
     throw TokenizationError {
-            "unexpected token: " + sourcetext, sourcetext, 
-            tokenizer.get_filename(), tokenizer.get_line_number(), 
-            tokenizer.get_tok_number(), tokenizer.get_char_pos()
-        };
+        "unexpected token: " + token.sourcetext, 
+        token.sourcetext, 
+        token.filename, 
+        token.line_number, 
+        token.tok_number, 
+        token.char_pos
+    };
 }
 
-void avoid_multiple_floating_points(bool floating, char current_char, const Tokenizer& tokenizer) {
-    if (floating && current_char == '.') {
+void avoid_multiple_floating_points(
+    bool floating, 
+    char maybe_decimal_point,
+    const DebugInformationsAwareEntity& coordinates
+) {
+    if (floating && maybe_decimal_point == '.') {
         throw TokenizationError {
             "multiple floating points in the same number", 
-            get_sourcetext_from_tokenizer(tokenizer), 
-            tokenizer.get_filename(), tokenizer.get_line_number(), 
-            tokenizer.get_tok_number(), tokenizer.get_char_pos()
+            std::string{maybe_decimal_point}, 
+            coordinates.filename,
+            coordinates.line_number,
+            coordinates.tok_number,
+            coordinates.char_pos
         };
     }
 }
 
-void ensure_string_gets_closed(const std::string& buffer, const Tokenizer& tokenizer) {
-    std::string current_line = tokenizer.get_current_line();
-    unsigned int char_pos = tokenizer.get_char_pos();
-    if (current_line[char_pos+buffer.size()] != current_line[char_pos]) {
+void ensure_string_gets_closed(
+    const std::string& buffer, 
+    const DebugInformationsAwareEntity& coordinates
+) {
+    if (buffer.front() != buffer.back()) {
         throw TokenizationError {
-            "string opened but never closed", 
-            get_sourcetext_from_tokenizer(tokenizer), 
-            tokenizer.get_filename(), tokenizer.get_line_number(), 
-            tokenizer.get_tok_number(), tokenizer.get_char_pos()
+            "string/char literal opened but never closed", 
+            std::string{buffer.front()}, 
+            coordinates.filename, 
+            coordinates.line_number, 
+            coordinates.tok_number, 
+            coordinates.char_pos
         };
     }
 }
 
 void ensure_multiline_comments_get_closed(
     const std::stack<Token>& multiline_comments_tracker, 
-    const Tokenizer& tokenizer
+    const DebugInformationsAwareEntity& coordinates
 ) {
     if (!multiline_comments_tracker.empty()) {
         const Token& comment = multiline_comments_tracker.top();
         throw TokenizationError {
-            "multiline comment opened but never closed", "/*",
-            tokenizer.get_filename(), comment.line_number, 
-            comment.tok_number, comment.char_pos
+            "multiline comment opened but never closed",
+            comment.sourcetext,
+            coordinates.filename, 
+            comment.line_number, 
+            comment.tok_number, 
+            comment.char_pos
         };
     }
 }

@@ -12,12 +12,16 @@ std::optional<Token> Tokenizer::extract_number() {
         std::string buffer;
         bool floating = false;
         for (size_t i = char_pos; i < current_line.size(); i++) {
-            if (!isdigit(current_line[i]) && current_line[i] != '.') break;
-            avoid_multiple_floating_points(floating, current_line[i], *this);
+            if (!isdigit(current_line[i]) && current_line[i] != '.') {
+                break;
+            }
+            avoid_multiple_floating_points(floating, current_line[i], make_coordinates());
             floating = floating || (current_line[i] == '.');
             buffer.push_back(current_line[i]);
         }
-        Token::Type type = (floating)? Token::Type::floating_literal : Token::Type::integer_literal;
+        Token::Type type = (floating)
+            ? Token::Type::floating_literal 
+            : Token::Type::integer_literal;
         return make_token(buffer, type);
     }
     return std::nullopt;
@@ -41,13 +45,17 @@ std::optional<Token> Tokenizer::extract_string() {
         std::string buffer;
         bool escape = false;
         buffer.push_back(current_line[char_pos]);
-        for(size_t i = char_pos + 1; i < current_line.size() && !(current_line[char_pos] == current_line[i] && !escape); i++) {
-            escape = (current_line[i] == '\\' && !escape);
+        for(size_t i = char_pos + 1; i < current_line.size(); i++) {
             buffer.push_back(current_line[i]);
+            if (current_line[i] == buffer.front() && !escape) {
+                break;
+            }
+            escape = (current_line[i] == '\\') && !escape;
         }
-        ensure_string_gets_closed(buffer, *this);
-        buffer.push_back(current_line[char_pos]);
-        Token::Type type = (buffer[0] == '\'')? Token::Type::character_literal : Token::Type::string_literal;
+        ensure_string_gets_closed(buffer, make_coordinates());
+        Token::Type type = (buffer[0] == '\'')
+            ? Token::Type::character_literal 
+            : Token::Type::string_literal;
         return make_token(buffer, type);
     }
     return std::nullopt;

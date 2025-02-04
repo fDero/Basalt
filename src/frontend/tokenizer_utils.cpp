@@ -39,7 +39,8 @@ void Tokenizer::inspect_for_unexpected_tokens() {
         buffer.push_back(current_line[char_pos++]);
     }
     if (!buffer.empty()) {
-        throw_unexpected_token(buffer, *this);
+        char_pos = char_pos - 1;
+        throw_unexpected_token(make_token(buffer, Token::Type::text));
     }
 }
 
@@ -54,6 +55,15 @@ Token Tokenizer::make_token(const std::string& sourcetext, const Token::Type tok
         sourcetext, filename, line_number, tok_number,
         static_cast<unsigned int>(char_pos - sourcetext.size() + 1),
         token_type
+    };
+}
+
+DebugInformationsAwareEntity Tokenizer::make_coordinates() {
+    return DebugInformationsAwareEntity { 
+        filename,
+        line_number, 
+        tok_number,
+        static_cast<unsigned int>(char_pos),
     };
 }
 
@@ -83,26 +93,6 @@ TokenizedFile Tokenizer::tokenize() {
             char_pos += ( (token.has_value())? token->sourcetext.size() : 0 );
         }
     }
-    ensure_multiline_comments_get_closed(multiline_comments_tracker, *this);
+    ensure_multiline_comments_get_closed(multiline_comments_tracker, make_coordinates());
     return tokenized_file;
-}
-
-std::string Tokenizer::get_current_line() const {
-    return current_line;
-}
-
-std::string Tokenizer::get_filename() const {
-    return filename;
-}
-
-size_t Tokenizer::get_line_number() const {
-    return line_number;
-}
-
-size_t Tokenizer::get_tok_number() const {
-    return tok_number;
-}
-
-size_t Tokenizer::get_char_pos() const {
-    return char_pos;
 }
