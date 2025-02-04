@@ -113,6 +113,8 @@ std::optional<TypeSignature> ExpressionTypeDeducer::deduce_type_from_binary_oper
         
         case BinaryOperator::Kind::cmp_eq:
         case BinaryOperator::Kind::cmp_neq:
+            return deduce_type_from_eq_binary_operator(binary_operator);
+
         case BinaryOperator::Kind::cmp_gt:
         case BinaryOperator::Kind::cmp_geq:
         case BinaryOperator::Kind::cmp_lt:
