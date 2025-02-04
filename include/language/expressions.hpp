@@ -135,12 +135,30 @@ struct BinaryOperator : public ExpressionBody {
 
     virtual ~BinaryOperator() = default;
 
+    enum class Kind {
+        boolean_and,
+        boolean_or,
+        boolean_xor,
+        cmp_lt,
+        cmp_gt,
+        cmp_leq,
+        cmp_geq,
+        cmp_eq,
+        cmp_neq,
+        math_sum,
+        math_sub,
+        math_mul,
+        math_div,
+        math_mod,
+    };
+
     BinaryOperator(
         const Token& operator_token, 
         const Expression& lx, 
         const Expression& rx
     );
 
+    Kind binary_op_kind;
     std::string operator_text;
     Expression left_operand;
     Expression right_operand;
@@ -150,6 +168,14 @@ struct BinaryOperator : public ExpressionBody {
 };
 
 struct UnaryOperator : public ExpressionBody {
+
+    enum class Kind {
+        boolean_not,
+        minus_sign,
+        plus_sign,
+        pointer_dereference,
+        address_of,
+    };
 
     virtual ~UnaryOperator() = default;
 
@@ -166,7 +192,8 @@ struct UnaryOperator : public ExpressionBody {
 
     [[nodiscard]] Token as_token() const;
     [[nodiscard]] ExpressionBody::Kind expression_kind() const override;
-    
+
+    Kind unary_op_kind;    
     std::string operator_text;
     Expression operand;
 };

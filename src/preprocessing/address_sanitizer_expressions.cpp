@@ -3,6 +3,7 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include "syntax/prefixes.hpp"
 #include "errors/preprocessing_errors.hpp"
 #include "preprocessing/address_sanitizer.hpp"
 using AS = AddressSanitizer;

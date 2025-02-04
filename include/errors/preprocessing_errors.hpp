@@ -16,7 +16,6 @@
 #include "core/scope_context.hpp"
 #include "core/generics_substitution_rules.hpp"
 #include "core/generics_instantiation_engine.hpp"
-#include "syntax/operators.hpp"
 #include "syntax/primitive_types.hpp"
 
 inline void ensure_assignment_is_valid(
@@ -159,11 +158,6 @@ void ensure_function_overload_was_successfully_retrieved(
 void ensure_function_has_a_return_type(
     const FunctionCall& function_call, 
     const std::optional<TypeSignature>& return_type
-);
-
-void ensure_operator_kind_was_found(
-    const std::map<std::string, OperatorKind>::const_iterator& operator_kind_search_outcome,
-    const std::map<std::string, OperatorKind>& operator_kinds
 );
 
 void ensure_typesignature_is_numeric(

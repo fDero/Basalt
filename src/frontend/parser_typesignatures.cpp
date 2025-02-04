@@ -5,6 +5,7 @@
 
 #include <assert.h>
 
+#include "syntax/specials.hpp"
 #include "syntax/primitive_types.hpp"
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"

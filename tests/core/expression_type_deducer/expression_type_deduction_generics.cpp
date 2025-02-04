@@ -3,7 +3,7 @@
 #include "errors/internal_errors.hpp"
 #include "preprocessing/preprocessor.hpp"
 #include "core/expression_type_deducer.hpp"
-
+#include "syntax/keywords.hpp"
 #include "../../tests_utilities/function_definition_factory.hpp"
 #include "../../tests_utilities/typesignature_factory.hpp"
 

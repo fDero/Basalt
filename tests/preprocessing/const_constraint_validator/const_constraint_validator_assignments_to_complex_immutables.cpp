@@ -1,5 +1,7 @@
 
 #include <gtest/gtest.h>
+
+#include "syntax/keywords.hpp"
 #include "preprocessing/const_constraint_validator.hpp"
 #include "../../tests_utilities/typesignature_factory.hpp"
 #include "../../tests_utilities/struct_definition_factory.hpp"

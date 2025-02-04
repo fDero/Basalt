@@ -5,7 +5,7 @@
 
 #include <regex>
 
-#include "syntax/keywords.hpp"
+#include "syntax/specials.hpp"
 #include "core/type_definitions_register.hpp"
 #include "errors/preprocessing_errors.hpp"
 #include "errors/internal_errors.hpp"

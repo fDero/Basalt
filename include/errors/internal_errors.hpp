@@ -17,7 +17,6 @@
 #include "frontend/file_representation.hpp"
 #include "errors/error-types.hpp"
 #include "core/common_feature_adoption_plan_descriptor.hpp"
-#include "syntax/operators.hpp"
 
 [[noreturn]] void assert_unreachable();
 
@@ -171,18 +170,9 @@ inline void assert_unary_operator_is(const UnaryOperator& expression, const std:
 inline void assert_binary_operator_is(const BinaryOperator& expression, const std::string& operator_text) {
     #ifdef DEBUG_BUILD
     if (expression.operator_text != operator_text) {
-        throw InternalError("expected unary operator to be " + operator_text);
+        throw InternalError("expected binary operator to be " + operator_text);
     }
     #endif
-}
-
-inline void assert_operator_kind_was_found(
-    const std::map<std::string, OperatorKind>::const_iterator& operator_kind_search_outcome,
-    const std::map<std::string, OperatorKind>& operator_kinds
-) {
-    if (operator_kind_search_outcome == operator_kinds.end()) {
-        throw InternalError("operator kind not found");
-    }
 }
 
 void assert_vectors_have_same_size_hence_they_can_be_zipped(

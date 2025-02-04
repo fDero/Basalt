@@ -238,15 +238,6 @@ void ensure_function_has_a_return_type(
     }
 }
 
-void ensure_operator_kind_was_found(
-    const std::map<std::string, OperatorKind>::const_iterator& operator_kind_search_outcome,
-    const std::map<std::string, OperatorKind>& operator_kinds
-) {
-    if (operator_kind_search_outcome == operator_kinds.end()) {
-        throw InternalError("operator kind not found");
-    }
-}
-
 void throw_unrecognized_escape_sequence(const Token& token, char current_char) {
     throw std::runtime_error("unrecognized escape sequence");
 }

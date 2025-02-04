@@ -9,6 +9,7 @@
 #include "language/statements.hpp"
 #include "language/definitions.hpp"
 #include "language/expressions.hpp"
+#include "syntax/keywords.hpp"
 
 TypeSignature Parser::parse_type_after_object_declaration() {
     ensure_token_matches(source_tokens, iterator++, ":");

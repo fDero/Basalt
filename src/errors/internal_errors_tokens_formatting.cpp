@@ -7,6 +7,8 @@
 
 #include "frontend/tokenizer.hpp"
 #include "errors/internal_errors.hpp"
+#include "syntax/infixes.hpp"
+#include "syntax/prefixes.hpp"
 
 void assert_integer_literal_properly_formatted(const std::vector<Token>::iterator& iterator) {
     #ifdef DEBUG_BUILD

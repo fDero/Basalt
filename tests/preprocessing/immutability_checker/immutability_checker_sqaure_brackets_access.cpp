@@ -1,5 +1,6 @@
 
 #include <gtest/gtest.h>
+#include "syntax/keywords.hpp"
 #include "preprocessing/immutability_checker.hpp"
 #include "../../tests_utilities/typesignature_factory.hpp"
 #include "../../tests_utilities/function_definition_factory.hpp"

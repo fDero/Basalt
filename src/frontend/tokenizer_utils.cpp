@@ -3,7 +3,7 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
-#include "syntax/keywords.hpp"
+#include "syntax/specials.hpp"
 #include "errors/tokenization_errors.hpp"
 #include "frontend/tokenizer.hpp"
 #include "errors/internal_errors.hpp"

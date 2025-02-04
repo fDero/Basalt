@@ -4,6 +4,7 @@
 #include "../../tests_utilities/typesignature_factory.hpp"
 #include "../../tests_utilities/function_definition_factory.hpp"
 #include "../../tests_utilities/struct_definition_factory.hpp"
+#include "syntax/keywords.hpp"
 
 TEST(Preprocessing, Const_Constraint_Validator_Assignment_Of_Ref_To_Array_Literal_To_Const_Slice) {
     ProjectFileStructure single_func_def_project({

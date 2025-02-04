@@ -5,6 +5,7 @@
 
 #include "preprocessing/immutability_checker.hpp"
 #include "errors/internal_errors.hpp"
+#include "syntax/infixes.hpp"
 
 ImmutabilityChecker::ImmutabilityChecker(
     ScopeContext& scope_context, 

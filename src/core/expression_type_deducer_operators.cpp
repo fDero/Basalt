@@ -7,6 +7,7 @@
 #include "core/assignment_type_checker.hpp"
 #include "errors/preprocessing_errors.hpp"
 #include "errors/internal_errors.hpp"
+#include "syntax/prefixes.hpp"
 
 std::optional<TypeSignature> ExpressionTypeDeducer::deduce_address_operator_type(const UnaryOperator& expression) {
     assert_unary_operator_is(expression, address_operator);

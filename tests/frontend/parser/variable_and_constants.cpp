@@ -4,6 +4,7 @@
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 #include "syntax/primitive_types.hpp"
+#include "syntax/keywords.hpp"
 
 TEST(Frontend, Parse_Variable_With_Type_And_Value) {
     std::vector<Token> tokens = {
