@@ -62,7 +62,8 @@ void CommandLineController::compiler_subcommand() {
 }
 
 void CommandLineController::interpreter_subcommand() {
-    throw CommandLineError {
+    using CompilationError::Kind::CommandLineError;
+    CompilationError::raise<CommandLineError>(
         "`run` subcommand not yet implemented"
-    };
+    );
 }

@@ -10,7 +10,7 @@
 
 #include "frontend/tokenizer.hpp"
 #include "language/definitions.hpp"
-#include "errors/error-types.hpp"
+#include "errors/compilation_error.hpp"
 #include "language/functions.hpp"
 #include "misc/forward_declarations.hpp"
 #include "core/scope_context.hpp"

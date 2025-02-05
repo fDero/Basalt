@@ -11,7 +11,7 @@ void assert_packagename_is_found(
 ) {
     #ifdef DEBUG_BUILD
     if (search_outcome == end) {
-        throw InternalError {
+        throw std::runtime_error {
             "package name was not found in the map of package names by file names"
         };
     }
@@ -24,7 +24,7 @@ void assert_files_are_found(
 ) {
     #ifdef DEBUG_BUILD
     if (search_outcome == end) {
-        throw InternalError {
+        throw std::runtime_error {
             "files vector was not found in the map of files by package names"
         };
     }
@@ -37,7 +37,7 @@ void assert_imports_vector_is_found(
 ) {
     #ifdef DEBUG_BUILD
     if (search_outcome == end) {
-        throw InternalError {
+        throw std::runtime_error {
             "imports vector was not found in the map of imports by file names"
         };
     }
@@ -50,7 +50,7 @@ void assert_overload_set_exists(
 ) {
     #ifdef DEBUG_BUILD
     if (search_outcome == end) {
-        throw InternalError {
+        throw std::runtime_error {
             "overload set was not found in the map of overload sets by overload ids"
         };
     }

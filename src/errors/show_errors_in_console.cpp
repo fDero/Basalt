@@ -5,11 +5,20 @@
 
 #include <exception>
 #include <string>
+#include <iostream>
+#include <fstream>
 
-#include "errors/display_utilities.hpp"
+#include "errors/compilation_error.hpp"
 #include "misc/console_colors.hpp"
 
-void display_target_line(size_t char_pos, const std::string& line) {
+using CompilationError::Kind::CommandLineError;
+using CompilationError::Kind::TokenizationError;
+using CompilationError::Kind::ParsingError;
+using CompilationError::Kind::IndexingError;
+using CompilationError::Kind::ValidationError;
+using CompilationError::Kind::InternalError;
+
+static void display_target_line(size_t char_pos, const std::string& line) {
     std::cout << "\t";
     for (size_t i = 0; i < line.size(); i++) {
         if(i != char_pos) std::cout << yellow(line.substr(i,1)); 
@@ -19,7 +28,7 @@ void display_target_line(size_t char_pos, const std::string& line) {
     std::cout << "\n";
 }
 
-void display_error_context(const std::string& filename, size_t target_line_number, size_t char_pos) {
+static void display_error_context(const std::string& filename, size_t target_line_number, size_t char_pos) {
     std::ifstream infile(filename);
     std::string line;
     int spread = 4;
@@ -33,53 +42,67 @@ void display_error_context(const std::string& filename, size_t target_line_numbe
     }
 }
 
-void display_commandline_error(const CommandLineError& err) {
-    std::cout << std::endl << bold_red("COMMANDLINE ERROR: ") << red(err.error_message + "\n\n")
-    << purple("type 'basalt help' in your console to get more info\n\n");
+static void display_coordinates(const DebugInformationsAwareEntity& debug_info) {
+    std::cout 
+        << purple("at line: ") 
+        << debug_info.line_number 
+        << purple(" at char: ") 
+        << debug_info.char_pos 
+        << std::endl
+        << std::endl;
 }
 
-void display_tokenization_error(const TokenizationError& err) {
+static void display_error_kind(CompilationError::Kind kind) {
+    std::cout << std::endl << std::endl; 
+    switch (kind) {
+        break; case CommandLineError:  std::cout << bold_red("COMMAND LINE ERROR: ");
+        break; case TokenizationError: std::cout << bold_red("TOKENIZATION ERROR: ");
+        break; case ParsingError:      std::cout << bold_red("SYNTAX ERROR: ");
+        break; case IndexingError:     std::cout << bold_red("INDEXING ERROR: ");
+        break; case ValidationError:   std::cout << bold_red("VALIDATION ERROR: ");
+        break; case InternalError:     std::cout << bold_red("INTERNAL ERROR: ");
+    }
+}
+
+static void display_error_message(const std::string& error_message) {
+    std::cout 
+        << red(error_message) 
+        << std::endl 
+        << std::endl;
+}
+
+static void display_runtime_error(const std::runtime_error& err) {
     std::cout << std::endl
-    << bold_red("TOKENIZATION ERROR: ") << red(err.error_message) << "\n\n";
-    display_error_context(err.filename, err.line_number, err.char_pos);
-    std::cout << purple("\n in file: ") << err.filename << " "
-    << purple("at line: ") << err.line_number << "\n\n";
+    << bold_red("RUNTIME ERROR: ") 
+    << red(err.what())
+    << std::endl
+    << std::endl
+    << blue("better error messages are work in progress right now")
+    << std::endl
+    << std::endl;
 }
 
-void display_parsing_error(const ParsingError& err) {
-    std::cout << std::endl
-    << bold_red("SYNTAX ERROR: ") << red(err.error_message) << "\n\n";
-    display_error_context(err.filename, err.line_number, err.char_pos);
-    std::cout << purple("\n in file: ") << err.filename
-    << purple(" at line: ") << err.line_number << "\n\n";
-}
-
-void display_internal_error(const InternalError& err) {
-    std::cout << std::endl
-    << bold_red("INTERNAL COMPILER ERROR: ") << red(err.error_message + "\n\n")
-    << yellow("please, write an extensive bug report explaining the issue and report it on the github page ") 
-    << yellow("of this project at https://www.github.com/fDero/Basalt\n\n");
-}
-
-void display_runtime_error(const std::runtime_error& err) {
-    std::cout << std::endl
-    << bold_red("RUNTIME ERROR: ") << red(err.what())
-    << blue("\n\nbetter error messages are work in progress right now\n\n");
-}
-
-void display_unrecognized_error() {
-    InternalError unrecognized_error { "an unrecognized error has occurred, the point of failure is unknown" };
-    display_internal_error(unrecognized_error);
+static void display_unrecognized_error() {
+    display_error_kind(InternalError);
+    display_error_message(
+        "an unrecognized error has occurred, the point of failure is unknown"
+    );
 }
 
 void display_pretty_error_message(std::exception_ptr& error) {
     try {
         std::rethrow_exception(error);
     }
-    catch (const CommandLineError& err)    { display_commandline_error(err);  }
-    catch (const TokenizationError& err)   { display_tokenization_error(err); }
-    catch (const ParsingError& err)        { display_parsing_error(err);      }
-    catch (const InternalError& err)       { display_internal_error(err);     }
-    catch (const std::runtime_error& err)  { display_runtime_error(err);      }
-    catch (...)                            { display_unrecognized_error();    }
+    catch (const CompilationError& err)    { err.display_pretty();         }
+    catch (const std::runtime_error& err)  { display_runtime_error(err);   }
+    catch (...)                            { display_unrecognized_error(); }
+}
+
+void CompilationError::display_pretty() const {
+    display_error_kind(kind);
+    display_error_message(std::runtime_error::what());
+    if (optional<DebugInformationsAwareEntity>::has_value()) {
+        display_error_context(value().filename, value().line_number, value().char_pos);
+        display_coordinates(value());
+    }
 }

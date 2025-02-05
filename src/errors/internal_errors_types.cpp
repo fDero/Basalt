@@ -14,13 +14,13 @@ void assert_token_matches(
 ) {
     #ifdef DEBUG_BUILD
     if (iterator == source_tokens.end()) {
-        throw InternalError {
+        throw std::runtime_error {
             "somehow the parser was expecting  a token but there was none, "
             "the last token in the tokens vector was: " + source_tokens.back().sourcetext
         };
     }
     if (iterator->sourcetext != text) {
-        throw InternalError {
+        throw std::runtime_error {
             "somehow the parser expected the token to be: " + text + ", "
             "while the token itself is: " + iterator->sourcetext
         };
@@ -36,13 +36,13 @@ void assert_token_is_of_given_type(
 ) {
     #ifdef DEBUG_BUILD
     if (iterator == source_tokens.end()) {
-        throw InternalError {
+        throw std::runtime_error {
             "somehow the parser was expecting  a token but there was none, "
             "the last token in the tokens vector was: " + source_tokens.back().sourcetext
         };
     }
     if (iterator->type != expected_type) {
-        throw InternalError {
+        throw std::runtime_error {
             "somehow the parser attempted to parse a " + expected_type_str + " while the current "
             "token has a clearly different type, the token itself is: " + iterator->sourcetext
         };

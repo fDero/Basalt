@@ -28,11 +28,11 @@
     const StructDefinition& struct_type_definition,
     const DotMemberAccess& expression
 ) {
-    throw InternalError("no such struct field");
+    throw std::runtime_error("no such struct field");
 }
 
 [[noreturn]] void throw_bad_assignment_target(
     const Expression& expression
 ) {
-    throw InternalError("bad assignment target");
+    throw std::runtime_error("bad assignment target");
 }

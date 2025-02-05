@@ -131,7 +131,7 @@ void ensure_numeric_types_are_equal(
     const PrimitiveType& left_primitive = left_operand_type.get<PrimitiveType>();
     const PrimitiveType& right_primitive = right_operand_type.get<PrimitiveType>();
     if (left_primitive.type_name != right_primitive.type_name) {
-        throw InternalError("numeric types are not equal");
+        throw std::runtime_error("numeric types are not equal");
     }
 }
 
@@ -144,7 +144,7 @@ void ensure_template_types_are_equal(
     const TemplateType& left_primitive = left_operand_type.get<TemplateType>();
     const TemplateType& right_primitive = right_operand_type.get<TemplateType>();
     if (left_primitive.type_name != right_primitive.type_name) {
-        throw InternalError("numeric types are not equal");
+        throw std::runtime_error("numeric types are not equal");
     }
 }
 

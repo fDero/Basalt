@@ -15,7 +15,7 @@ void assert_number_of_arguments_match(
 ) {
     #ifdef DEBUG
     if (function_definition->arguments.size() != arg_types.size()) {
-        throw InternalError("number of arguments does not match");
+        throw std::runtime_error("number of arguments does not match");
     }
     #endif
 }

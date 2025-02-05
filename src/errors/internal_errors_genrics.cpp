@@ -14,7 +14,7 @@ void assert_vectors_have_same_size_hence_they_can_be_zipped(
 ) {
     #ifdef DEBUG_BUILD
     if (template_generics.size() != type_parameters.size()) {
-        throw InternalError{ "template generics and instantiation generics have different sizes" };
+        throw std::runtime_error{ "template generics and instantiation generics have different sizes" };
     }
     #endif
 }

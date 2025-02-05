@@ -12,7 +12,7 @@
 
 #include "frontend/tokenizer.hpp"
 #include "language/definitions.hpp"
-#include "errors/error-types.hpp"
+#include "errors/compilation_error.hpp"
 
 [[noreturn]] void throw_expression_expected_got_unrecognized(
     const std::vector<Token>::iterator& iterator

@@ -6,7 +6,7 @@
 #pragma once
 
 #include "cli/commandline.hpp"
-#include "errors/error-types.hpp"
+#include "errors/compilation_error.hpp"
 
 [[noreturn]] void throw_invalid_output_file_format(const std::string& filename);
 

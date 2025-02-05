@@ -8,7 +8,7 @@
 #include <optional> 
 
 #include "frontend/tokenizer.hpp"
-#include "errors/error-types.hpp"
+#include "errors/compilation_error.hpp"
 #include "misc/debug_informations_aware_entity.hpp"
 
 [[noreturn]] void throw_unexpected_token(
