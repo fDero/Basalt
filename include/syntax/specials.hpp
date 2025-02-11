@@ -27,6 +27,12 @@ inline const std::set<char> discardable{
     '\t','\r','\0','\n',' '
 };
 
+inline const std::set<std::string> function_call_opening_characters {
+    "(",
+    "<",
+    namespace_concatenation
+};
+
 inline const std::string constexpr char_delim                   = "'";
 inline const std::string constexpr string_delim                 = "\"";
 inline const std::string constexpr string_delim2                = "`";

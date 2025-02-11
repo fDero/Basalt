@@ -60,20 +60,19 @@ Expression Parser::parse_terminal_expression() {
         break; case Token::Type::text: {
             auto old_iterator_backup = iterator;
             Expression Identifier = parse_identifier();
-            if (iterator == source_tokens.end()) {
+            bool should_stop_here = iterator == source_tokens.end();
+            should_stop_here = should_stop_here || std::next(iterator) == source_tokens.end();
+            if (should_stop_here) {
                 return Identifier;
             }
-            if (std::next(iterator) == source_tokens.end()) {
-                return Identifier;
-            }
-            else if (iterator->sourcetext == "(" || iterator->sourcetext == namespace_concatenation) {
+            auto search_outcome = function_call_opening_characters.find(iterator->sourcetext);
+            bool should_parse_function_call = search_outcome != function_call_opening_characters.end();
+            if (should_parse_function_call) {
                 iterator = old_iterator_backup;
                 FunctionCall fcall = parse_function_call();
                 return fcall;
             }
-            else {
-                return Identifier;
-            }
+            return Identifier;
         }
         break; case Token::Type::symbol: {
             if (iterator->sourcetext == "(") return parse_expression_wrapped_in_parenthesis(); 

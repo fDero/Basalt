@@ -108,8 +108,9 @@ std::vector<std::string> Parser::parse_template_generics() {
 }
 
 std::vector<TypeSignature> Parser::parse_concrete_generics() {
-    if (iterator == source_tokens.end() || iterator->sourcetext != "<") return {};
-    assert_token_matches(source_tokens, iterator, "<");
+    if (iterator == source_tokens.end() || iterator->sourcetext != "<") {
+        return std::vector<TypeSignature>();
+    }
     const Token& angular_brackets_opening = *(iterator++);
     std::vector<TypeSignature> concrete_generics;
     while (iterator != source_tokens.end() && iterator->sourcetext != ">") {
@@ -117,6 +118,6 @@ std::vector<TypeSignature> Parser::parse_concrete_generics() {
         ensure_either_comma_or_closed_angular_for_generics(source_tokens, angular_brackets_opening, iterator);
         std::advance(iterator, iterator != source_tokens.end() && iterator->sourcetext == ",");
     }
-    assert_token_matches(source_tokens, iterator++, ">");
+    ensure_token_matches(source_tokens, iterator++, ">");
     return concrete_generics;
 }
