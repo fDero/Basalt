@@ -57,3 +57,15 @@ bool AssignmentTypeChecker::validate_assignment_to_slice_from_pointer_type(const
     const ArrayType& array_type = pointer_type.pointed_type.get<ArrayType>();
     return validate_assignment_very_strictly(array_type.stored_type, dest.stored_type);
 }
+
+bool AssignmentTypeChecker::validate_assignment_to_array_type(const TypeSignature& source, const ArrayType& dest) {
+    bool assignment_makes_sense = (source.is<ArrayType>());
+    assignment_makes_sense &= validate_assignment(source.get<ArrayType>().stored_type, dest.stored_type);
+    assignment_makes_sense &= source.get<ArrayType>().array_length == dest.array_length;
+    return assignment_makes_sense;
+}
+
+bool AssignmentTypeChecker::validate_assignment_to_pointer_type(const TypeSignature& source, const PointerType& dest) {
+    bool assignment_makes_sense = (source.is<PointerType>());
+    return assignment_makes_sense && validate_assignment_very_strictly(source.get<PointerType>().pointed_type, dest.pointed_type);
+}

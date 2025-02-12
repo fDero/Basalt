@@ -75,24 +75,6 @@ bool AssignmentTypeChecker::type_parameters_assignment_validation(const CustomTy
     return true;
 }
 
-bool AssignmentTypeChecker::validate_assignment_very_strictly(const TypeSignature& source_generic, const TypeSignature& dest_generic) {
-    bool forward_assignable = validate_assignment(source_generic, dest_generic);
-    if (!forward_assignable) {
-        return false;
-    }
-    if (dest_generic.is_generic()) {
-        return true;
-    }
-    assert(forward_assignable);
-    bool mutually_assignable = validate_assignment(dest_generic, source_generic);
-    bool both_primitive_types = (source_generic.is<PrimitiveType>() && dest_generic.is<PrimitiveType>());
-    bool upcasted = both_primitive_types && source_generic.get<PrimitiveType>().type_name != dest_generic.get<PrimitiveType>().type_name;
-    if (!mutually_assignable || upcasted) {
-        return false;
-    }
-    return true;
-}
-
 bool AssignmentTypeChecker::validate_assignment_to_generic_type_parameter(const TypeSignature& source, const TemplateType& dest) {
     for (GenericSubstitutionRule& rule : *generic_substitution_rules) {
         if (rule.to_be_replaced == dest.type_name) {
