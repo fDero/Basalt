@@ -80,6 +80,9 @@ FunctionDefinition::Ref FunctionDefinitionsRegister::cache_unaware_function_defi
         return nullptr;
     }
     const FunctionDefinition::Ref best_match = best_maches_so_far[0].first; 
+    if (best_match->template_generics_names.empty()) {
+        return best_match;
+    }
     const GenericSubstitutionRule::Set::Ref generic_substitution_rules = best_maches_so_far[0].second;
     const std::string new_function_name = get_new_instantiated_function_name(*best_match, generic_substitution_rules);
     GenericsInstantiationEngine generics_instantiation_engine(*generic_substitution_rules);
