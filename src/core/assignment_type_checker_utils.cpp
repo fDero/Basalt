@@ -19,45 +19,78 @@ GenericSubstitutionRule::Set::Ref AssignmentTypeChecker::get_generic_substitutio
     return generic_substitution_rules;
 }
 
-bool AssignmentTypeChecker::validate_type_alias_unaware_assignment(const TypeSignature& source, const TypeSignature& dest) {
+bool AssignmentTypeChecker::validate_type_alias_unaware_assignment(
+    const TypeSignature& source, 
+    const TypeSignature& dest, 
+    bool strict_mode
+) {
+    TypeSignature true_source = source;
+    if (source.is<TemplateType>()) {
+        for (const auto& rule : *generic_substitution_rules) {
+            if (rule.to_be_replaced == source.get<TemplateType>().type_name) {
+                true_source = rule.replacement;
+            }
+        }
+    }
     switch (dest.typesiganture_kind()) {
-        case TypeSignatureBody::Kind::template_type:  return validate_assignment_to_template_generic(source, dest.get<TemplateType>());
-        case TypeSignatureBody::Kind::custom_type:    return validate_assignment_to_custom_type(source, dest.get<CustomType>());
-        case TypeSignatureBody::Kind::pointer_type:   return validate_assignment_to_pointer_type(source, dest.get<PointerType>());
-        case TypeSignatureBody::Kind::array_type:     return validate_assignment_to_array_type(source, dest.get<ArrayType>());
-        case TypeSignatureBody::Kind::slice_type:     return validate_assignment_to_slice_type(source, dest.get<SliceType>());
-        case TypeSignatureBody::Kind::inline_union:   return validate_assignment_to_inline_union(source, dest.get<InlineUnion>()); 
-        case TypeSignatureBody::Kind::primitive_type: return validate_assignment_to_primitive_type(source, dest.get<PrimitiveType>());
+        case TypeSignatureBody::Kind::template_type:  return validate_assignment_to_template_generic(true_source, dest.get<TemplateType>(), strict_mode);
+        case TypeSignatureBody::Kind::custom_type:    return validate_assignment_to_custom_type(true_source, dest.get<CustomType>(), strict_mode);
+        case TypeSignatureBody::Kind::pointer_type:   return validate_assignment_to_pointer_type(true_source, dest.get<PointerType>(), strict_mode);
+        case TypeSignatureBody::Kind::array_type:     return validate_assignment_to_array_type(true_source, dest.get<ArrayType>(), strict_mode);
+        case TypeSignatureBody::Kind::slice_type:     return validate_assignment_to_slice_type(true_source, dest.get<SliceType>(), strict_mode);
+        case TypeSignatureBody::Kind::inline_union:   return validate_assignment_to_inline_union(true_source, dest.get<InlineUnion>(), strict_mode); 
+        case TypeSignatureBody::Kind::primitive_type: return validate_assignment_to_primitive_type(true_source, dest.get<PrimitiveType>(), strict_mode);
     }
     assert_unreachable();
 }
 
 bool AssignmentTypeChecker::validate_assignment(
     const TypeSignature& source, 
-    const TypeSignature& dest
+    const TypeSignature& dest,
+    bool strict_mode
 ) {
-    return validation_strategy
-        .validate_assignment_all_intrnal(source, dest);
+    const TypeSignature unaliased_source_type = type_definitions_register.unalias_type(source);
+    const TypeSignature unaliased_dest_type = type_definitions_register.unalias_type(dest);
+    if (!strict_mode) {
+        return validate_type_alias_unaware_assignment(unaliased_source_type, unaliased_dest_type, false);
+    }
+    bool forward_assignable = validate_type_alias_unaware_assignment(unaliased_source_type, unaliased_dest_type, true);
+    bool mutually_assignable = forward_assignable && validate_type_alias_unaware_assignment(unaliased_dest_type, unaliased_source_type, true);
+    if (!forward_assignable) {
+        return false;
+    }
+    bool both_primitive_types = (source.is<PrimitiveType>() && dest.is<PrimitiveType>());
+    bool upcasted = both_primitive_types && source.get<PrimitiveType>().type_name != dest.get<PrimitiveType>().type_name;
+    return mutually_assignable && !upcasted;
 }
 
 bool AssignmentTypeChecker::validate_assignment_to_template_generic(
     const TypeSignature& source, 
-    const TemplateType& dest
+    const TemplateType& dest,
+    bool strict_mode
 ) {
-    return validation_strategy
-        .validate_assignment_generics_internal(source, dest);
-}
-
-bool AssignmentTypeChecker::validate_assignment_very_strictly(
-    const TypeSignature& source, 
-    const TypeSignature& dest
-) {
-    AssignmentTypeChecker checker(
-        type_definitions_register, 
-        project_file_structure
-    );
-    checker.validation_strategy = Strategy::create_strict_strategy(checker);
-    checker.generic_substitution_rules = generic_substitution_rules;
-    checker.strict_type_inference_deductions = strict_type_inference_deductions;
-    return checker.validate_assignment(source, dest);
+    for (GenericSubstitutionRule& rule : *generic_substitution_rules) {
+        if (rule.to_be_replaced == dest.type_name) {
+            if (validate_assignment(source, rule.replacement, strict_mode)) {
+                if (strict_mode) {
+                    strict_type_inference_deductions.insert(dest.type_name);
+                }
+                return true;
+            }
+            else if (validate_assignment(rule.replacement, source, strict_mode)) {
+                rule.replacement = source;
+                return !strict_type_inference_deductions.contains(dest.type_name);
+            }
+            else if (rule.replacement.is<InlineUnion>()) {
+                rule.replacement.get<InlineUnion>().alternatives.push_back(source);
+                return !strict_type_inference_deductions.contains(dest.type_name);
+            }
+            else {
+                rule.replacement = InlineUnion { dest, { rule.replacement, source } };
+                return !strict_type_inference_deductions.contains(dest.type_name);
+            }
+        }
+    }
+    generic_substitution_rules->push_back({dest.type_name, source});
+    return true;
 }
