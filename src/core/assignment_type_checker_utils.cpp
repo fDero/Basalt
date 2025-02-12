@@ -71,23 +71,24 @@ bool AssignmentTypeChecker::validate_assignment_to_template_generic(
 ) {
     for (GenericSubstitutionRule& rule : *generic_substitution_rules) {
         if (rule.to_be_replaced == dest.type_name) {
-            if (validate_assignment(source, rule.replacement, strict_mode)) {
-                if (strict_mode) {
-                    strict_type_inference_deductions.insert(dest.type_name);
-                }
+            bool already_locked = strict_type_inference_deductions.contains(dest.type_name);
+            if (strict_mode) {
+                strict_type_inference_deductions.insert(dest.type_name);
+            }
+            if (validate_assignment(source, rule.replacement, strict_mode)) {   
                 return true;
             }
             else if (validate_assignment(rule.replacement, source, false)) {
                 rule.replacement = source;
-                return !strict_type_inference_deductions.contains(dest.type_name);
+                return !already_locked;
             }
             else if (rule.replacement.is<InlineUnion>()) {
                 rule.replacement.get<InlineUnion>().alternatives.push_back(source);
-                return !strict_type_inference_deductions.contains(dest.type_name);
+                return !already_locked;
             }
             else {
                 rule.replacement = InlineUnion { dest, { rule.replacement, source } };
-                return !strict_type_inference_deductions.contains(dest.type_name);
+                return !already_locked;
             }
         }
     }
