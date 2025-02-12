@@ -69,12 +69,12 @@ bool AssignmentTypeChecker::validate_assignment_to_template_generic(
     const TemplateType& dest,
     bool strict_mode
 ) {
+    bool already_locked = strict_type_inference_deductions.contains(dest.type_name);
+    if (strict_mode) {
+        strict_type_inference_deductions.insert(dest.type_name);
+    }
     for (GenericSubstitutionRule& rule : *generic_substitution_rules) {
         if (rule.to_be_replaced == dest.type_name) {
-            bool already_locked = strict_type_inference_deductions.contains(dest.type_name);
-            if (strict_mode) {
-                strict_type_inference_deductions.insert(dest.type_name);
-            }
             if (validate_assignment(source, rule.replacement, strict_mode)) {   
                 return true;
             }
@@ -93,8 +93,5 @@ bool AssignmentTypeChecker::validate_assignment_to_template_generic(
         }
     }
     generic_substitution_rules->push_back({dest.type_name, source});
-    if (strict_mode) {
-        strict_type_inference_deductions.insert(dest.type_name);
-    }
-    return true;
+    return !already_locked;
 }
