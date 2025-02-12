@@ -30,7 +30,7 @@ ProjectFileStructure single_file_project_with_list_and_number_defs2({
     }
 });
 
-TEST(Core, Inferred_Generics_Do_Not_Allow_Too_Much_Flexibility_On_Type_Parameters) {
+TEST(Core, Inferred_Generics_Allow_Enough_Flexibility_On_Type_Parameters) {
     TypeDefinitionsRegister type_register(single_file_project_with_list_and_number_defs2);
     AssignmentTypeChecker type_checker(type_register, single_file_project_with_list_and_number_defs2);
     TypeSignature IntOrFloat = InlineUnion { Token { int_type, "main.basalt", 1, 1, 1, Token::Type::type }, {
@@ -43,10 +43,10 @@ TEST(Core, Inferred_Generics_Do_Not_Allow_Too_Much_Flexibility_On_Type_Parameter
     bool Int_is_compatible_with_T = type_checker.validate_assignment(TypeSignatureFactory::Int, TypeSignatureFactory::T);
     bool List_Of_IntOrFloat_is_compatible_with_list_of_T = type_checker.validate_assignment(list_of_IntOrFloat, list_of_T);
     EXPECT_TRUE(Int_is_compatible_with_T);
-    EXPECT_FALSE(List_Of_IntOrFloat_is_compatible_with_list_of_T);
+    EXPECT_TRUE(List_Of_IntOrFloat_is_compatible_with_list_of_T);
 }
 
-TEST(Core, Inferred_Generics_Do_Not_Allow_Too_Much_Flexibility_On_Type_Parameters_Inverse) {
+TEST(Core, Inferred_Generics_Do_Not_Allow_Too_Much_Flexibility_On_Type_Parameters) {
     TypeDefinitionsRegister type_register(single_file_project_with_list_and_number_defs2);
     AssignmentTypeChecker type_checker(type_register, single_file_project_with_list_and_number_defs2);
     TypeSignature IntOrFloat = InlineUnion { Token { int_type, "main.basalt", 1, 1, 1, Token::Type::type }, {

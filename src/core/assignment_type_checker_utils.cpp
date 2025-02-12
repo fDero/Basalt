@@ -77,7 +77,7 @@ bool AssignmentTypeChecker::validate_assignment_to_template_generic(
                 }
                 return true;
             }
-            else if (validate_assignment(rule.replacement, source, strict_mode)) {
+            else if (validate_assignment(rule.replacement, source, false)) {
                 rule.replacement = source;
                 return !strict_type_inference_deductions.contains(dest.type_name);
             }
