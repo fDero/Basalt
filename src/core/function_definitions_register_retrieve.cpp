@@ -85,6 +85,7 @@ FunctionDefinition::Ref FunctionDefinitionsRegister::cache_unaware_function_defi
     GenericsInstantiationEngine generics_instantiation_engine(*generic_substitution_rules);
     FunctionDefinition::Ref instanitated_func_def_ref = 
         generics_instantiation_engine.instantiate_generic_function(best_match, new_function_name);
+    function_definitions.push_back(instanitated_func_def_ref);
     return instanitated_func_def_ref;
 }
 
