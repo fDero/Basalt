@@ -92,5 +92,8 @@ bool AssignmentTypeChecker::validate_assignment_to_template_generic(
         }
     }
     generic_substitution_rules->push_back({dest.type_name, source});
+    if (strict_mode) {
+        strict_type_inference_deductions.insert(dest.type_name);
+    }
     return true;
 }
