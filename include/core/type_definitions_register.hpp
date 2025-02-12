@@ -47,8 +47,4 @@ class TypeDefinitionsRegister {
         std::list<std::string> type_definitions_ids;
         std::unordered_map<std::string, TypeDefinition> type_definitions;
         ProjectFileStructure& project_file_structure;
-
-    friend class TypeDependencyNavigator;
-    friend class PackageTypeConflictNavigator;
-    friend class AssignmentTypeChecker;
 };
