@@ -40,11 +40,11 @@ TEST(Preprocessing, Immutability_Deducer_Says_Function_Call_Output_Is_Immutable)
         },
         {}
     };
-    EXPECT_TRUE(immutability_deducer.is_strictly_immutable_expression(func_call));
-    EXPECT_TRUE(immutability_deducer.is_weakly_immutable_expression(func_call));
+    EXPECT_TRUE(immutability_deducer.is_expression_immutable(func_call));
+    EXPECT_TRUE(immutability_deducer.is_expression_immutable(func_call));
 }
 
-TEST(Preprocessing, Immutability_Deducer_Says_Function_Call_Output_Is_Weakly_Immutable_If_Pointer) {
+TEST(Preprocessing, Immutability_Deducer_Says_Function_Call_Output_Is_NOT_Immutable_If_Pointer) {
     ProjectFileStructure single_func_def_project({
         FileRepresentation {
             .file_metadata = {
@@ -79,6 +79,5 @@ TEST(Preprocessing, Immutability_Deducer_Says_Function_Call_Output_Is_Weakly_Imm
     FunctionCall func_call {
         Token { "get_int_wrapper_ptr", "test.basalt", 1, 1, 1, Token::Type::text }, "", {}, {}
     };
-    EXPECT_TRUE(immutability_deducer.is_strictly_immutable_expression(func_call));
-    EXPECT_FALSE(immutability_deducer.is_weakly_immutable_expression(func_call));
+    EXPECT_FALSE(immutability_deducer.is_expression_immutable(func_call));
 }

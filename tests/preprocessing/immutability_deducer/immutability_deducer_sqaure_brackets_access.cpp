@@ -33,7 +33,7 @@ TEST(Preprocessing, Immutability_Deducer_Says_Square_Brackets_Access_On_Fcall_Is
         },
         IntLiteral { Token { "0", "test.basalt", 1, 1, 1, Token::Type::integer_literal } }
     };
-    EXPECT_FALSE(immutability_deducer.is_strictly_immutable_expression(sqb_access));
+    EXPECT_FALSE(immutability_deducer.is_expression_immutable(sqb_access));
 }
 
 TEST(Preprocessing, Immutability_Deducer_Says_Square_Brackets_Access_On_Fcall_Is_Immutable) {
@@ -63,7 +63,7 @@ TEST(Preprocessing, Immutability_Deducer_Says_Square_Brackets_Access_On_Fcall_Is
         },
         IntLiteral { Token { "0", "test.basalt", 1, 1, 1, Token::Type::integer_literal } }
     };
-    EXPECT_TRUE(immutability_deducer.is_strictly_immutable_expression(sqb_access));
+    EXPECT_TRUE(immutability_deducer.is_expression_immutable(sqb_access));
 }
 
 TEST(Preprocessing, Immutability_Deducer_Square_Brackets_Member_Access_On_Const_Array_Is_Immutable) {
@@ -91,7 +91,7 @@ TEST(Preprocessing, Immutability_Deducer_Square_Brackets_Member_Access_On_Const_
     ScopeContext scope_context;
     ImmutabilityDeducer immutability_deducer(scope_context, example_program);
     scope_context.store_local_constant(const_declaration);
-    EXPECT_TRUE(immutability_deducer.is_strictly_immutable_expression(sqb_access));
+    EXPECT_TRUE(immutability_deducer.is_expression_immutable(sqb_access));
 }
 
 TEST(Preprocessing, Immutability_Deducer_Square_Brackets_Member_Access_On_Var_Array_Is_Immutable) {
@@ -119,7 +119,7 @@ TEST(Preprocessing, Immutability_Deducer_Square_Brackets_Member_Access_On_Var_Ar
     ScopeContext scope_context;
     ImmutabilityDeducer immutability_deducer(scope_context, example_program);
     scope_context.store_local_variable(var_declaration);
-    EXPECT_FALSE(immutability_deducer.is_strictly_immutable_expression(sqb_access));
+    EXPECT_FALSE(immutability_deducer.is_expression_immutable(sqb_access));
 }
 
 TEST(Preprocessing, Immutability_Deducer_Square_Brackets_Member_Access_On_Const_Slice_Is_Immutable) {
@@ -144,7 +144,7 @@ TEST(Preprocessing, Immutability_Deducer_Square_Brackets_Member_Access_On_Const_
     ScopeContext scope_context;
     ImmutabilityDeducer immutability_deducer(scope_context, example_program);
     scope_context.store_local_constant(const_declaration);
-    EXPECT_TRUE(immutability_deducer.is_strictly_immutable_expression(sqb_access));
+    EXPECT_TRUE(immutability_deducer.is_expression_immutable(sqb_access));
 }
 
 TEST(Preprocessing, Immutability_Deducer_Square_Brackets_Member_Access_On_Var_Slice_Is_NOT_Immutable_Hence_Mutable) {
@@ -167,5 +167,5 @@ TEST(Preprocessing, Immutability_Deducer_Square_Brackets_Member_Access_On_Var_Sl
     ScopeContext scope_context;
     ImmutabilityDeducer immutability_deducer(scope_context, example_program);
     scope_context.store_local_variable(var_declaration);
-    EXPECT_FALSE(immutability_deducer.is_strictly_immutable_expression(sqb_access));
+    EXPECT_FALSE(immutability_deducer.is_expression_immutable(sqb_access));
 }

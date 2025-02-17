@@ -39,17 +39,17 @@ bool AssignmentImmutabilityChecker::is_expression_assignable_to_var(const Expres
 
 bool AssignmentImmutabilityChecker::is_potentially_bonding_expression_assignable_to_var(const Expression& expression) {
     auto expr_type = program_representation.resolve_expression_type(expression, scope_context);
-    bool assignment_of_immutable_expr = immutability_deducer.is_weakly_immutable_expression(expression);
+    bool assignment_of_immutable_expr = immutability_deducer.is_expression_immutable(expression);
     bool assignment_implies_bond = expr_type.has_value() && bond_inspector.does_the_type_of_this_expr_imply_a_bond(*expr_type);
     return !assignment_of_immutable_expr || !assignment_implies_bond;
 }
 
 bool AssignmentImmutabilityChecker::does_assignment_discard_qualifiers(const Expression& source, const Expression& dest) {
-    bool assignment_to_immutable_target = immutability_deducer.is_weakly_immutable_expression(dest);
+    bool assignment_to_immutable_target = immutability_deducer.is_expression_immutable(dest);
     bool assignment_to_final_target = false;
-    if (dest.is<FunctionCall>()) {
-        auto return_type_opt = program_representation.resolve_expression_type(dest.get<FunctionCall>(), scope_context);
-        assignment_to_final_target = !return_type_opt.has_value() || (!return_type_opt->is<PointerType>() && !return_type_opt->is<SliceType>());
+    if (dest.is<UnaryOperator>()) {
+        auto unary_operator = dest.get<UnaryOperator>();
+        assignment_to_final_target = unary_operator.operator_text == "&";
     }
     bool expression_not_assignable = !is_expression_assignable_to_var(source);
     return assignment_to_immutable_target || assignment_to_final_target || expression_not_assignable;

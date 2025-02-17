@@ -45,7 +45,7 @@ TEST(Preprocessing, Immutability_Deducer_Says_Dot_Member_Access_On_Fcall_Is_NOT_
         },
         "wrapped"
     };
-    EXPECT_FALSE(immutability_deducer.is_strictly_immutable_expression(dot_member_access));
+    EXPECT_FALSE(immutability_deducer.is_expression_immutable(dot_member_access));
 }
 
 TEST(Preprocessing, Immutability_Deducer_Says_Dot_Member_Access_On_Variable_Is_NOT_Immutable_Hence_Mutable) {
@@ -84,7 +84,7 @@ TEST(Preprocessing, Immutability_Deducer_Says_Dot_Member_Access_On_Variable_Is_N
     ScopeContext scope_context;
     ImmutabilityDeducer immutability_deducer(scope_context, example_program);
     scope_context.store_local_variable(var_declaration);
-    EXPECT_FALSE(immutability_deducer.is_strictly_immutable_expression(dot_member_access));
+    EXPECT_FALSE(immutability_deducer.is_expression_immutable(dot_member_access));
 }
 
 TEST(Preprocessing, Immutability_Deducer_Says_Dot_Member_Access_On_Const_Is_Immutable) {
@@ -123,5 +123,5 @@ TEST(Preprocessing, Immutability_Deducer_Says_Dot_Member_Access_On_Const_Is_Immu
     ScopeContext scope_context;
     ImmutabilityDeducer immutability_deducer(scope_context, example_program);
     scope_context.store_local_constant(const_declaration);
-    EXPECT_TRUE(immutability_deducer.is_strictly_immutable_expression(dot_member_access));
+    EXPECT_TRUE(immutability_deducer.is_expression_immutable(dot_member_access));
 }

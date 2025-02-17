@@ -19,7 +19,7 @@ TEST(Preprocessing, Immutability_Deducer_Says_Const_Identifier_Is_Immutable) {
     ScopeContext scope_context;
     scope_context.store_local_constant(const_declaration);
     ImmutabilityDeducer immutability_deducer(scope_context, empty_program);
-    EXPECT_TRUE(immutability_deducer.is_strictly_immutable_expression(identifier));
+    EXPECT_TRUE(immutability_deducer.is_expression_immutable(identifier));
 }
 
 TEST(Preprocessing, Immutability_Deducer_Says_Var_Identifier_Is_NON_Immutable_Hence_Mutable) {
@@ -37,5 +37,5 @@ TEST(Preprocessing, Immutability_Deducer_Says_Var_Identifier_Is_NON_Immutable_He
     ScopeContext scope_context;
     scope_context.store_local_variable(var_declaration);
     ImmutabilityDeducer immutability_deducer(scope_context, empty_program);
-    EXPECT_FALSE(immutability_deducer.is_strictly_immutable_expression(identifier));
+    EXPECT_FALSE(immutability_deducer.is_expression_immutable(identifier));
 }
