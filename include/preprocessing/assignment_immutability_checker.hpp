@@ -15,6 +15,7 @@
 #include "errors/preprocessing_errors.hpp"
 #include "preprocessing/bond_inspector.hpp"
 #include "preprocessing/immutability_deducer.hpp"
+#include "preprocessing/observability_deducer.hpp"
 
 class AssignmentImmutabilityChecker {
 
@@ -34,4 +35,5 @@ class AssignmentImmutabilityChecker {
         ProgramRepresentation& program_representation;
         BondInspector bond_inspector;
         ImmutabilityDeducer immutability_deducer;
+        ObservabilityDeducer observability_deducer;
 };

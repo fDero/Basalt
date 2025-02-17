@@ -12,7 +12,8 @@ AssignmentImmutabilityChecker::AssignmentImmutabilityChecker(
     : scope_context(scope_context)
     , program_representation(program_representation) 
     , bond_inspector(scope_context, program_representation)   
-    , immutability_deducer(scope_context, program_representation) 
+    , immutability_deducer(scope_context, program_representation)
+    , observability_deducer(scope_context, program_representation)
 {}
         
 bool AssignmentImmutabilityChecker::is_expression_assignable_to_var(const Expression& expression) {
@@ -45,14 +46,11 @@ bool AssignmentImmutabilityChecker::is_potentially_bonding_expression_assignable
 }
 
 bool AssignmentImmutabilityChecker::does_assignment_discard_qualifiers(const Expression& source, const Expression& dest) {
-    bool assignment_to_immutable_target = immutability_deducer.is_expression_immutable(dest);
-    bool assignment_to_final_target = false;
-    if (dest.is<UnaryOperator>()) {
-        auto unary_operator = dest.get<UnaryOperator>();
-        assignment_to_final_target = unary_operator.operator_text == "&";
-    }
-    bool expression_not_assignable = !is_expression_assignable_to_var(source);
-    return assignment_to_immutable_target || assignment_to_final_target || expression_not_assignable;
+    bool target_is_immutable = immutability_deducer.is_expression_immutable(dest);
+    bool update_is_observable = observability_deducer.is_expression_update_observable(dest);
+    bool expression_is_assignable = is_expression_assignable_to_var(source);
+    bool target_is_dereference_operator = dest.is<UnaryOperator>() && dest.get<UnaryOperator>().operator_text == "&";
+    return target_is_dereference_operator || target_is_immutable || !update_is_observable || !expression_is_assignable;
 }
 
 bool AssignmentImmutabilityChecker::does_assignment_discard_qualifiers(const Assignment& assignment) {

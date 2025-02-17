@@ -56,7 +56,5 @@ bool ImmutabilityDeducer::is_unary_operator_immutable(const UnaryOperator& unary
 }
 
 bool ImmutabilityDeducer::is_function_call_immutable(const FunctionCall& function_call) {
-    auto return_type_opt = program_representation.resolve_expression_type(function_call, scope_context);
-    return !return_type_opt.has_value() || 
-        (!return_type_opt->is<PointerType>() && !return_type_opt->is<SliceType>());
+    return false;
 }

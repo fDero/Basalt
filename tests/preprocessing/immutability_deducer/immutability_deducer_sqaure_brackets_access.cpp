@@ -36,36 +36,6 @@ TEST(Preprocessing, Immutability_Deducer_Says_Square_Brackets_Access_On_Fcall_Is
     EXPECT_FALSE(immutability_deducer.is_expression_immutable(sqb_access));
 }
 
-TEST(Preprocessing, Immutability_Deducer_Says_Square_Brackets_Access_On_Fcall_Is_Immutable) {
-    ProjectFileStructure single_func_def_project({
-        FileRepresentation {
-            .file_metadata = {
-                .filename = "test.basalt",
-                .packagename = "mainpackage",
-                .imports = { }
-            },
-            .type_defs = { },
-            .func_defs = { 
-                FunctionDefinitionFactory::make_function_definition(
-                    "get_ints", "test.basalt", {}, {}, 
-                    TypeSignatureFactory::ArrayOfInts
-                )
-            }
-        }
-    });
-    ProgramRepresentation single_func_def_program(single_func_def_project);
-    ScopeContext scope_context;
-    ImmutabilityDeducer immutability_deducer(scope_context, single_func_def_program);
-    SquareBracketsAccess sqb_access {
-        Token { ".", "test.basalt", 1, 1, 1, Token::Type::symbol },
-        FunctionCall {
-            Token { "get_ints", "test.basalt", 1, 1, 1, Token::Type::text }, "", {}, {}
-        },
-        IntLiteral { Token { "0", "test.basalt", 1, 1, 1, Token::Type::integer_literal } }
-    };
-    EXPECT_TRUE(immutability_deducer.is_expression_immutable(sqb_access));
-}
-
 TEST(Preprocessing, Immutability_Deducer_Square_Brackets_Member_Access_On_Const_Array_Is_Immutable) {
     Identifier identifier { 
         Token { "x", "test.basalt", 1, 1, 1, Token::Type::text } 
