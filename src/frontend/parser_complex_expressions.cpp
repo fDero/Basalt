@@ -57,28 +57,8 @@ Expression Parser::parse_expression_wrapped_in_parenthesis() {
 Expression Parser::parse_terminal_expression() {
     ensure_there_are_still_tokens(source_tokens, iterator);
     switch(iterator->type) {
-        break; case Token::Type::text: {
-            auto old_iterator_backup = iterator;
-            Expression Identifier = parse_identifier();
-            bool should_stop_here = iterator == source_tokens.end();
-            should_stop_here = should_stop_here || std::next(iterator) == source_tokens.end();
-            if (should_stop_here) {
-                return Identifier;
-            }
-            auto search_outcome = function_call_opening_characters.find(iterator->sourcetext);
-            bool should_parse_function_call = search_outcome != function_call_opening_characters.end();
-            if (should_parse_function_call) {
-                iterator = old_iterator_backup;
-                FunctionCall fcall = parse_function_call();
-                return fcall;
-            }
-            return Identifier;
-        }
-        break; case Token::Type::symbol: {
-            if (iterator->sourcetext == "(") return parse_expression_wrapped_in_parenthesis(); 
-            else if (iterator->sourcetext == "[") return parse_array_literal();
-            else return parse_prefix_operator();
-        }
+        break; case Token::Type::text:              return parse_text_first_expression();
+        break; case Token::Type::symbol:            return parse_symbol_first_expression();
         break; case Token::Type::integer_literal:   return parse_integer_literal();
         break; case Token::Type::floating_literal:  return parse_floating_literal();
         break; case Token::Type::boolean_literal:   return parse_boolean_literal();
@@ -87,6 +67,30 @@ Expression Parser::parse_terminal_expression() {
         break; default:                             throw_expression_expected_got_unrecognized(iterator);
     }
 }
+
+Expression Parser::parse_text_first_expression() {
+    Expression identifier = parse_identifier();
+    bool should_stop_here = std::next(iterator) == source_tokens.end();
+    should_stop_here = should_stop_here || std::next(iterator) == source_tokens.end();
+    should_stop_here |= !function_call_opening_characters.contains(iterator->sourcetext);
+    if (should_stop_here) {
+        return identifier;
+    }
+    bool false_positive = iterator->sourcetext == "<" && std::next(iterator) == source_tokens.end();
+    false_positive = false_positive || std::next(iterator)->type != Token::Type::type;
+    if (!false_positive) {
+        return identifier;
+    }
+    std::advance(iterator, -1);
+    return parse_function_call();
+}
+
+Expression Parser::parse_symbol_first_expression() {
+    if (iterator->sourcetext == "(") return parse_expression_wrapped_in_parenthesis(); 
+    else if (iterator->sourcetext == "[") return parse_array_literal();
+    else return parse_prefix_operator();
+}
+
 
 Expression Parser::parse_prefix_operator() {
     assert_token_is_prefix_operator(iterator);

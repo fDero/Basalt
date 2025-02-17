@@ -23,8 +23,8 @@ inline const std::string constexpr cmp_geq_operator             = ">=";
 inline const std::string constexpr cmp_leq_operator             = "<=";
 inline const std::string constexpr cmp_neq_operator             = "!=";
 inline const std::string constexpr cmp_eq_operator              = "==";
-inline const std::string constexpr cmp_le_operator              = "<";
-inline const std::string constexpr cmp_ge_operator              = ">";
+inline const std::string constexpr cmp_lt_operator              = "<";
+inline const std::string constexpr cmp_gt_operator              = ">";
 
 inline const std::string constexpr boolean_and_operator         = "&&";
 inline const std::string constexpr boolean_or_operator          = "||";
@@ -39,6 +39,8 @@ inline const std::set<std::string> infixies {
     cmp_geq_operator,
     cmp_leq_operator,
     cmp_neq_operator,
+    cmp_lt_operator,
+    cmp_gt_operator,
     cmp_eq_operator,
     boolean_and_operator,
     boolean_or_operator,
@@ -54,8 +56,8 @@ inline const std::map<std::string, short> infix_operators_priority {
     { boolean_xor_operator,     1 }, 
     { boolean_and_operator,     1 }, 
     { boolean_or_operator,      1 }, 
-    { cmp_le_operator,          2 }, 
-    { cmp_ge_operator,          2 }, 
+    { cmp_lt_operator,          2 }, 
+    { cmp_gt_operator,          2 }, 
     { cmp_leq_operator,         2 }, 
     { cmp_geq_operator,         2 }, 
     { cmp_eq_operator,          2 }, 

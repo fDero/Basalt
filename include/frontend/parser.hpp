@@ -28,6 +28,8 @@ class Parser {
 
         [[nodiscard]] Expression parse_array_literal();
         [[nodiscard]] Expression parse_expression();
+        [[nodiscard]] Expression parse_text_first_expression();
+        [[nodiscard]] Expression parse_symbol_first_expression();
         [[nodiscard]] Expression parse_terminal_expression();
         [[nodiscard]] Expression parse_expression_wrapped_in_parenthesis();
         [[nodiscard]] Expression parse_expression_wrapped_in_square_brackets();
