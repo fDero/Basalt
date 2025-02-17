@@ -17,27 +17,19 @@ void ImmutabilityConstraintValidator::visit_all_function_definitions() {
 
 void ImmutabilityConstraintValidator::visit_function_definition(const FunctionDefinition& function_definition) {
     ScopeContext scope_context(function_definition);
-    ImmutabilityDeducer immutability_deducer(scope_context, program_representation);
-    BondInspector bond_inspector(scope_context, program_representation);
     SingleFunctionImmutabilityConstraintValidator single_function_immutability_constraint_validator(
         scope_context,
-        program_representation,
-        immutability_deducer,
-        bond_inspector
+        program_representation
     );
     single_function_immutability_constraint_validator.visit_function_definition(function_definition);
 }
 
 CCV::SingleFunctionImmutabilityConstraintValidator::SingleFunctionImmutabilityConstraintValidator(
     ScopeContext& scope_context,
-    ProgramRepresentation& program_representation,
-    ImmutabilityDeducer& immutability_deducer,
-    BondInspector& bond_inspector
+    ProgramRepresentation& program_representation
 )
     : scope_context(scope_context) 
     , program_representation(program_representation)
-    , immutability_deducer(immutability_deducer)
-    , bond_inspector(bond_inspector)
 {}
 
 

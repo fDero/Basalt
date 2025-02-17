@@ -22,9 +22,7 @@ class ImmutabilityConstraintValidator {
         struct SingleFunctionImmutabilityConstraintValidator {
             SingleFunctionImmutabilityConstraintValidator(
                 ScopeContext& scope_context,
-                ProgramRepresentation& program_representation,
-                ImmutabilityDeducer& immutability_deducer,
-                BondInspector& bond_inspector
+                ProgramRepresentation& program_representation
             );
 
             void visit_function_definition(const FunctionDefinition& function_definition);
@@ -49,8 +47,6 @@ class ImmutabilityConstraintValidator {
 
             ScopeContext& scope_context;
             ProgramRepresentation& program_representation;
-            ImmutabilityDeducer& immutability_deducer;
-            BondInspector& bond_inspector;
         };
 
     private:

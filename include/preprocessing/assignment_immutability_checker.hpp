@@ -21,17 +21,17 @@ class AssignmentImmutabilityChecker {
     public:
         AssignmentImmutabilityChecker(
             ScopeContext& scope_context, 
-            ProgramRepresentation& program_representation,
-            BondInspector& bond_inspector,
-            ImmutabilityDeducer& immutability_deducer
+            ProgramRepresentation& program_representation
         );
         
         [[nodiscard]] bool is_expression_assignable_to_var(const Expression& expression);
         [[nodiscard]] bool is_potentially_bonding_expression_assignable_to_var(const Expression& expression);
-        
+        [[nodiscard]] bool does_assignment_discard_qualifiers(const Expression& source, const Expression& dest);
+        [[nodiscard]] bool does_assignment_discard_qualifiers(const Assignment& assignment);
+
     private:
         ScopeContext& scope_context;
         ProgramRepresentation& program_representation;
-        BondInspector& bond_inspector;
+        BondInspector bond_inspector;
         ImmutabilityDeducer immutability_deducer;
 };

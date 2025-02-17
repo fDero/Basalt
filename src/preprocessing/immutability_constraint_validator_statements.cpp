@@ -78,7 +78,7 @@ void CCV::SingleFunctionImmutabilityConstraintValidator::visit_variable_declarat
     if (variable_declaration.initial_value.has_value()) {
         Expression value = variable_declaration.initial_value.value();
         visit_expression(variable_declaration.initial_value.value(), scope_context);
-        AssignmentImmutabilityChecker assignment_immutability_checker(scope_context, program_representation, bond_inspector, immutability_deducer);
+        AssignmentImmutabilityChecker assignment_immutability_checker(scope_context, program_representation);
         bool assignment_discard_qualifiers = !assignment_immutability_checker.is_expression_assignable_to_var(value);
         ensure_assignment_complies_with_const_qualifiers(variable_declaration, assignment_discard_qualifiers);
     }
@@ -99,7 +99,7 @@ void CCV::SingleFunctionImmutabilityConstraintValidator::visit_function_call(
 ) {
     for (const Expression& argument : function_call.arguments) {
         visit_expression(argument, scope_context);
-        AssignmentImmutabilityChecker assignment_immutability_checker(scope_context, program_representation, bond_inspector, immutability_deducer);
+        AssignmentImmutabilityChecker assignment_immutability_checker(scope_context, program_representation);
         bool assignment_discard_qualifiers = !assignment_immutability_checker.is_expression_assignable_to_var(argument);
         ensure_use_as_function_argument_complies_with_const_qualifiers(function_call, argument, assignment_discard_qualifiers);
     }
@@ -110,9 +110,7 @@ void CCV::SingleFunctionImmutabilityConstraintValidator::visit_assignment(
     ScopeContext& scope_context
 ) {
     visit_expression(assignment.assigned_value, scope_context);
-    bool assignment_to_immutable_target = immutability_deducer.is_strictly_immutable_expression(assignment.assignment_target);
-    AssignmentImmutabilityChecker assignment_immutability_checker(scope_context, program_representation, bond_inspector, immutability_deducer);
-    bool expression_not_assignable = !assignment_immutability_checker.is_expression_assignable_to_var(assignment.assigned_value);
-    bool assignment_discard_qualifiers = assignment_to_immutable_target || expression_not_assignable;
-    ensure_assignment_complies_with_const_qualifiers(assignment, assignment_discard_qualifiers);
+    AssignmentImmutabilityChecker assignment_immutability_checker(scope_context, program_representation);
+    bool assignment_discards_qualifiers = assignment_immutability_checker.does_assignment_discard_qualifiers(assignment);
+    ensure_assignment_complies_with_const_qualifiers(assignment, assignment_discards_qualifiers);
 }
