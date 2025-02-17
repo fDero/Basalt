@@ -6,7 +6,7 @@
 #include "../../tests_utilities/function_definition_factory.hpp"
 #include "../../tests_utilities/struct_definition_factory.hpp"
 
-TEST(Preprocessing, Immutability_Checker_Says_Dot_Member_Access_On_Fcall_Is_NOT_Immutable_Hence_Mutable) {
+TEST(Preprocessing, Immutability_Deducer_Says_Dot_Member_Access_On_Fcall_Is_NOT_Immutable_Hence_Mutable) {
     ProjectFileStructure single_func_def_project({
         FileRepresentation {
             .file_metadata = {
@@ -48,7 +48,7 @@ TEST(Preprocessing, Immutability_Checker_Says_Dot_Member_Access_On_Fcall_Is_NOT_
     EXPECT_FALSE(immutability_deducer.is_strictly_immutable_expression(dot_member_access));
 }
 
-TEST(Preprocessing, Immutability_Checker_Says_Dot_Member_Access_On_Variable_Is_NOT_Immutable_Hence_Mutable) {
+TEST(Preprocessing, Immutability_Deducer_Says_Dot_Member_Access_On_Variable_Is_NOT_Immutable_Hence_Mutable) {
     ProjectFileStructure example_project({
         FileRepresentation {
             .file_metadata = {
@@ -87,7 +87,7 @@ TEST(Preprocessing, Immutability_Checker_Says_Dot_Member_Access_On_Variable_Is_N
     EXPECT_FALSE(immutability_deducer.is_strictly_immutable_expression(dot_member_access));
 }
 
-TEST(Preprocessing, Immutability_Checker_Says_Dot_Member_Access_On_Const_Is_Immutable) {
+TEST(Preprocessing, Immutability_Deducer_Says_Dot_Member_Access_On_Const_Is_Immutable) {
     ProjectFileStructure example_project({
         FileRepresentation {
             .file_metadata = {

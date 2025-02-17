@@ -6,7 +6,7 @@
 #include "../../tests_utilities/function_definition_factory.hpp"
 #include "../../tests_utilities/struct_definition_factory.hpp"
 
-TEST(Preprocessing, Immutability_Checker_Says_Square_Brackets_Access_On_Fcall_Is_NOT_Immutable_Hence_Mutable) {
+TEST(Preprocessing, Immutability_Deducer_Says_Square_Brackets_Access_On_Fcall_Is_NOT_Immutable_Hence_Mutable) {
     ProjectFileStructure single_func_def_project({
         FileRepresentation {
             .file_metadata = {
@@ -36,7 +36,7 @@ TEST(Preprocessing, Immutability_Checker_Says_Square_Brackets_Access_On_Fcall_Is
     EXPECT_FALSE(immutability_deducer.is_strictly_immutable_expression(sqb_access));
 }
 
-TEST(Preprocessing, Immutability_Checker_Says_Square_Brackets_Access_On_Fcall_Is_Immutable) {
+TEST(Preprocessing, Immutability_Deducer_Says_Square_Brackets_Access_On_Fcall_Is_Immutable) {
     ProjectFileStructure single_func_def_project({
         FileRepresentation {
             .file_metadata = {
@@ -66,7 +66,7 @@ TEST(Preprocessing, Immutability_Checker_Says_Square_Brackets_Access_On_Fcall_Is
     EXPECT_TRUE(immutability_deducer.is_strictly_immutable_expression(sqb_access));
 }
 
-TEST(Preprocessing, Immutability_Checker_Square_Brackets_Member_Access_On_Const_Array_Is_Immutable) {
+TEST(Preprocessing, Immutability_Deducer_Square_Brackets_Member_Access_On_Const_Array_Is_Immutable) {
     Identifier identifier { 
         Token { "x", "test.basalt", 1, 1, 1, Token::Type::text } 
     };
@@ -94,7 +94,7 @@ TEST(Preprocessing, Immutability_Checker_Square_Brackets_Member_Access_On_Const_
     EXPECT_TRUE(immutability_deducer.is_strictly_immutable_expression(sqb_access));
 }
 
-TEST(Preprocessing, Immutability_Checker_Square_Brackets_Member_Access_On_Var_Array_Is_Immutable) {
+TEST(Preprocessing, Immutability_Deducer_Square_Brackets_Member_Access_On_Var_Array_Is_Immutable) {
     Identifier identifier { 
         Token { "x", "test.basalt", 1, 1, 1, Token::Type::text } 
     };
@@ -122,7 +122,7 @@ TEST(Preprocessing, Immutability_Checker_Square_Brackets_Member_Access_On_Var_Ar
     EXPECT_FALSE(immutability_deducer.is_strictly_immutable_expression(sqb_access));
 }
 
-TEST(Preprocessing, Immutability_Checker_Square_Brackets_Member_Access_On_Const_Slice_Is_Immutable) {
+TEST(Preprocessing, Immutability_Deducer_Square_Brackets_Member_Access_On_Const_Slice_Is_Immutable) {
     Identifier identifier { 
         Token { "x", "test.basalt", 1, 1, 1, Token::Type::text } 
     };
@@ -147,7 +147,7 @@ TEST(Preprocessing, Immutability_Checker_Square_Brackets_Member_Access_On_Const_
     EXPECT_TRUE(immutability_deducer.is_strictly_immutable_expression(sqb_access));
 }
 
-TEST(Preprocessing, Immutability_Checker_Square_Brackets_Member_Access_On_Var_Slice_Is_NOT_Immutable_Hence_Mutable) {
+TEST(Preprocessing, Immutability_Deducer_Square_Brackets_Member_Access_On_Var_Slice_Is_NOT_Immutable_Hence_Mutable) {
     Identifier identifier { 
         Token { "x", "test.basalt", 1, 1, 1, Token::Type::text } 
     };

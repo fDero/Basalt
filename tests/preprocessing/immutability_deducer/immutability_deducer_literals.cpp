@@ -3,7 +3,7 @@
 #include "preprocessing/immutability_deducer.hpp"
 #include "../../tests_utilities/typesignature_factory.hpp"
 
-TEST(Preprocessing, Immutability_Checker_Says_Int_Literal_Is_Immutable) {
+TEST(Preprocessing, Immutability_Deducer_Says_Int_Literal_Is_Immutable) {
     ProjectFileStructure empty_project;
     ProgramRepresentation empty_program(empty_project);
     ScopeContext empty_scope_context;
@@ -12,7 +12,7 @@ TEST(Preprocessing, Immutability_Checker_Says_Int_Literal_Is_Immutable) {
     EXPECT_TRUE(immutability_deducer.is_strictly_immutable_expression(int_literal));
 }
 
-TEST(Preprocessing, Immutability_Checker_Says_Bool_Literal_Is_Immutable) {
+TEST(Preprocessing, Immutability_Deducer_Says_Bool_Literal_Is_Immutable) {
     ProjectFileStructure empty_project;
     ProgramRepresentation empty_program(empty_project);
     ScopeContext empty_scope_context;
@@ -21,7 +21,7 @@ TEST(Preprocessing, Immutability_Checker_Says_Bool_Literal_Is_Immutable) {
     EXPECT_TRUE(immutability_deducer.is_strictly_immutable_expression(bool_literal));
 }
 
-TEST(Preprocessing, Immutability_Checker_Says_Char_Literal_Is_Immutable) {
+TEST(Preprocessing, Immutability_Deducer_Says_Char_Literal_Is_Immutable) {
     ProjectFileStructure empty_project;
     ProgramRepresentation empty_program(empty_project);
     ScopeContext empty_scope_context;
@@ -30,7 +30,7 @@ TEST(Preprocessing, Immutability_Checker_Says_Char_Literal_Is_Immutable) {
     EXPECT_TRUE(immutability_deducer.is_strictly_immutable_expression(char_literal));
 }
 
-TEST(Preprocessing, Immutability_Checker_Says_Float_Literal_Is_Immutable) {
+TEST(Preprocessing, Immutability_Deducer_Says_Float_Literal_Is_Immutable) {
     ProjectFileStructure empty_project;
     ProgramRepresentation empty_program(empty_project);
     ScopeContext empty_scope_context;
@@ -39,7 +39,7 @@ TEST(Preprocessing, Immutability_Checker_Says_Float_Literal_Is_Immutable) {
     EXPECT_TRUE(immutability_deducer.is_strictly_immutable_expression(float_literal));
 }
 
-TEST(Preprocessing, Immutability_Checker_Says_String_Literal_Is_Immutable) {
+TEST(Preprocessing, Immutability_Deducer_Says_String_Literal_Is_Immutable) {
     ProjectFileStructure empty_project;
     ProgramRepresentation empty_program(empty_project);
     ScopeContext empty_scope_context;
@@ -48,7 +48,7 @@ TEST(Preprocessing, Immutability_Checker_Says_String_Literal_Is_Immutable) {
     EXPECT_TRUE(immutability_deducer.is_strictly_immutable_expression(string_literal));
 }
 
-TEST(Preprocessing, Immutability_Checker_Says_Array_Literal_Is_Immutable) {
+TEST(Preprocessing, Immutability_Deducer_Says_Array_Literal_Is_Immutable) {
     ProjectFileStructure empty_project;
     ProgramRepresentation empty_program(empty_project);
     ScopeContext empty_scope_context;

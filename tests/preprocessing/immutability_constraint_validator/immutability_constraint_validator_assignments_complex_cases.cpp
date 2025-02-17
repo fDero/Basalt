@@ -6,7 +6,7 @@
 #include "../../tests_utilities/function_definition_factory.hpp"
 #include "../../tests_utilities/struct_definition_factory.hpp"
 
-TEST(Preprocessing, Const_Constraint_Validator_Assignment_Of_Literal_To_Member_Of_A_Struct_Variable) {
+TEST(Preprocessing, Immutability_Constraint_Validator_Assignment_Of_Literal_To_Member_Of_A_Struct_Variable) {
     ProjectFileStructure single_func_def_project({
         FileRepresentation {
             .file_metadata = {
@@ -52,7 +52,7 @@ TEST(Preprocessing, Const_Constraint_Validator_Assignment_Of_Literal_To_Member_O
     immutability_constraint_validator.visit_all_function_definitions();
 }
 
-TEST(Preprocessing, Const_Constraint_Validator_Assignment_Of_AddressOf_To_Ptr) {
+TEST(Preprocessing, Immutability_Constraint_Validator_Assignment_Of_AddressOf_To_Ptr) {
     ProjectFileStructure single_func_def_project({
         FileRepresentation {
             .file_metadata = {
@@ -96,7 +96,7 @@ TEST(Preprocessing, Const_Constraint_Validator_Assignment_Of_AddressOf_To_Ptr) {
     immutability_constraint_validator.visit_all_function_definitions();
 }
 
-TEST(Preprocessing, Const_Constraint_Validator_Assignment_Of_Pointer_Result_Of_A_Function_To_Ptr) {
+TEST(Preprocessing, Immutability_Constraint_Validator_Assignment_Of_Pointer_Result_Of_A_Function_To_Ptr) {
     ProjectFileStructure single_func_def_project({
         FileRepresentation {
             .file_metadata = {
@@ -136,7 +136,7 @@ TEST(Preprocessing, Const_Constraint_Validator_Assignment_Of_Pointer_Result_Of_A
     immutability_constraint_validator.visit_all_function_definitions();
 }
 
-TEST(Preprocessing, Const_Constraint_Validator_Assignment_Of_Literal_To_Member_Of_A_Struct_Pointer_Returned_By_A_Function) {
+TEST(Preprocessing, Immutability_Constraint_Validator_Assignment_Of_Literal_To_Member_Of_A_Struct_Pointer_Returned_By_A_Function) {
     ProjectFileStructure single_func_def_project({
         FileRepresentation {
             .file_metadata = {

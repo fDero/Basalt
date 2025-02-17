@@ -4,7 +4,7 @@
 #include "preprocessing/immutability_deducer.hpp"
 #include "../../tests_utilities/typesignature_factory.hpp"
 
-TEST(Preprocessing, Immutability_Checker_Says_Const_Identifier_Is_Immutable) {
+TEST(Preprocessing, Immutability_Deducer_Says_Const_Identifier_Is_Immutable) {
     Identifier identifier { 
         Token { "x", "test.basalt", 1, 1, 1, Token::Type::text } 
     };
@@ -22,7 +22,7 @@ TEST(Preprocessing, Immutability_Checker_Says_Const_Identifier_Is_Immutable) {
     EXPECT_TRUE(immutability_deducer.is_strictly_immutable_expression(identifier));
 }
 
-TEST(Preprocessing, Immutability_Checker_Says_Var_Identifier_Is_NON_Immutable_Hence_Mutable) {
+TEST(Preprocessing, Immutability_Deducer_Says_Var_Identifier_Is_NON_Immutable_Hence_Mutable) {
     Identifier identifier { 
         Token { "x", "test.basalt", 1, 1, 1, Token::Type::text } 
     };

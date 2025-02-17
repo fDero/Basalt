@@ -5,7 +5,7 @@
 #include "../../tests_utilities/function_definition_factory.hpp"
 #include "../../tests_utilities/struct_definition_factory.hpp"
 
-TEST(Preprocessing, Immutability_Checker_Says_Function_Call_Output_Is_Immutable) {
+TEST(Preprocessing, Immutability_Deducer_Says_Function_Call_Output_Is_Immutable) {
     ProjectFileStructure single_func_def_project({
         FileRepresentation {
             .file_metadata = {
@@ -44,7 +44,7 @@ TEST(Preprocessing, Immutability_Checker_Says_Function_Call_Output_Is_Immutable)
     EXPECT_TRUE(immutability_deducer.is_weakly_immutable_expression(func_call));
 }
 
-TEST(Preprocessing, Immutability_Checker_Says_Function_Call_Output_Is_Weakly_Immutable_If_Pointer) {
+TEST(Preprocessing, Immutability_Deducer_Says_Function_Call_Output_Is_Weakly_Immutable_If_Pointer) {
     ProjectFileStructure single_func_def_project({
         FileRepresentation {
             .file_metadata = {
