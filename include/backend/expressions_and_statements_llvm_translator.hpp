@@ -21,6 +21,7 @@
 #include <llvm/IR/Module.h>
 
 class ExpressionsAndStatementsLLVMTranslator {
+    
     public:
         ExpressionsAndStatementsLLVMTranslator(
             ProgramRepresentation& program_representation, 

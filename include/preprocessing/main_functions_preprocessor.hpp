@@ -8,6 +8,7 @@
 #include "core/program_representation.hpp"
 
 class MainFunctionsPreprocessor {
+    
     public:
         MainFunctionsPreprocessor(ProgramRepresentation& program_representation);
 

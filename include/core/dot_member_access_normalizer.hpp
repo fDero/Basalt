@@ -11,6 +11,7 @@
 #include "core/expression_type_deducer.hpp"
 
 class DotMemberAccessNormalizer {
+
     public:
         DotMemberAccessNormalizer(
             ExpressionTypeDeducer& expression_type_deducer,

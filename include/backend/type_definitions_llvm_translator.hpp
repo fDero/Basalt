@@ -13,6 +13,7 @@
 #include <llvm/IR/Constants.h>
 
 class TypeDefinitionsLLVMTranslator {
+
     public:
         TypeDefinitionsLLVMTranslator(
             ProgramRepresentation& program_representation, 

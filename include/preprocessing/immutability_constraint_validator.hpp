@@ -12,6 +12,7 @@
 #include "errors/preprocessing_errors.hpp"
 
 class ImmutabilityConstraintValidator {
+    
     public:
         ImmutabilityConstraintValidator(ProgramRepresentation& program_representation);
 

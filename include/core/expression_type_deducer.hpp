@@ -14,7 +14,6 @@
 class ExpressionTypeDeducer {
 
     public:
-
         ExpressionTypeDeducer(
             TypeDefinitionsRegister& type_definitions_register,
             FunctionDefinitionsRegister& function_definitions_register,

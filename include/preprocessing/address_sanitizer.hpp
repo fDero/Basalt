@@ -12,6 +12,7 @@
 #include "errors/preprocessing_errors.hpp"
 
 class AddressSanitizer {
+    
     public:
         AddressSanitizer(ProgramRepresentation& program_representation);
 

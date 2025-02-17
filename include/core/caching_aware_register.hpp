@@ -9,6 +9,7 @@
 #include "language/functions.hpp"
 
 class CachingAwareRegister {
+
     protected:
         [[nodiscard]] std::string get_cache_search_key_for_func_def_retrieval_from_func_call(
             TypeDefinitionsRegister& type_definitions_register,

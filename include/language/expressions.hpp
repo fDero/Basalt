@@ -39,7 +39,6 @@ struct ExpressionBody : public DebugInformationsAwareEntity {
 class Expression : public Polymorph<ExpressionBody> {
     
     public:
-
         using Polymorph<ExpressionBody>::is;
         using Polymorph<ExpressionBody>::get;
         using Polymorph<ExpressionBody>::Polymorph;

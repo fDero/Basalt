@@ -91,7 +91,6 @@ Expression Parser::parse_symbol_first_expression() {
     else return parse_prefix_operator();
 }
 
-
 Expression Parser::parse_prefix_operator() {
     assert_token_is_prefix_operator(iterator);
     const Token& operator_token = *iterator;

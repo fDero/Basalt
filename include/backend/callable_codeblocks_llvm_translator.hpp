@@ -19,6 +19,7 @@
 #include <llvm/IR/Module.h>
 
 class CallableCodeBlocksLLVMTranslator {
+    
     public:
         CallableCodeBlocksLLVMTranslator(
             ProgramRepresentation& program_representation, 
