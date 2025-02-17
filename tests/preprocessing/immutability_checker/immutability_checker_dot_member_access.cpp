@@ -1,7 +1,7 @@
 
 #include <gtest/gtest.h>
 #include "syntax/keywords.hpp"
-#include "preprocessing/immutability_checker.hpp"
+#include "preprocessing/immutability_deducer.hpp"
 #include "../../tests_utilities/typesignature_factory.hpp"
 #include "../../tests_utilities/function_definition_factory.hpp"
 #include "../../tests_utilities/struct_definition_factory.hpp"
@@ -37,7 +37,7 @@ TEST(Preprocessing, Immutability_Checker_Says_Dot_Member_Access_On_Fcall_Is_NOT_
     });
     ProgramRepresentation single_func_def_program(single_func_def_project);
     ScopeContext scope_context;
-    ImmutabilityChecker immutability_checker(scope_context, single_func_def_program);
+    ImmutabilityDeducer immutability_deducer(scope_context, single_func_def_program);
     DotMemberAccess dot_member_access {
         Token { ".", "test.basalt", 1, 1, 1, Token::Type::symbol },
         FunctionCall {
@@ -45,7 +45,7 @@ TEST(Preprocessing, Immutability_Checker_Says_Dot_Member_Access_On_Fcall_Is_NOT_
         },
         "wrapped"
     };
-    EXPECT_FALSE(immutability_checker.is_strictly_immutable_expression(dot_member_access));
+    EXPECT_FALSE(immutability_deducer.is_strictly_immutable_expression(dot_member_access));
 }
 
 TEST(Preprocessing, Immutability_Checker_Says_Dot_Member_Access_On_Variable_Is_NOT_Immutable_Hence_Mutable) {
@@ -82,9 +82,9 @@ TEST(Preprocessing, Immutability_Checker_Says_Dot_Member_Access_On_Variable_Is_N
     };
     ProgramRepresentation example_program(example_project);
     ScopeContext scope_context;
-    ImmutabilityChecker immutability_checker(scope_context, example_program);
+    ImmutabilityDeducer immutability_deducer(scope_context, example_program);
     scope_context.store_local_variable(var_declaration);
-    EXPECT_FALSE(immutability_checker.is_strictly_immutable_expression(dot_member_access));
+    EXPECT_FALSE(immutability_deducer.is_strictly_immutable_expression(dot_member_access));
 }
 
 TEST(Preprocessing, Immutability_Checker_Says_Dot_Member_Access_On_Const_Is_Immutable) {
@@ -121,7 +121,7 @@ TEST(Preprocessing, Immutability_Checker_Says_Dot_Member_Access_On_Const_Is_Immu
     };
     ProgramRepresentation example_program(example_project);
     ScopeContext scope_context;
-    ImmutabilityChecker immutability_checker(scope_context, example_program);
+    ImmutabilityDeducer immutability_deducer(scope_context, example_program);
     scope_context.store_local_constant(const_declaration);
-    EXPECT_TRUE(immutability_checker.is_strictly_immutable_expression(dot_member_access));
+    EXPECT_TRUE(immutability_deducer.is_strictly_immutable_expression(dot_member_access));
 }

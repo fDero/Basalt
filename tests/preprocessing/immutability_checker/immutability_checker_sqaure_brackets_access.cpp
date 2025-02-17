@@ -1,7 +1,7 @@
 
 #include <gtest/gtest.h>
 #include "syntax/keywords.hpp"
-#include "preprocessing/immutability_checker.hpp"
+#include "preprocessing/immutability_deducer.hpp"
 #include "../../tests_utilities/typesignature_factory.hpp"
 #include "../../tests_utilities/function_definition_factory.hpp"
 #include "../../tests_utilities/struct_definition_factory.hpp"
@@ -25,7 +25,7 @@ TEST(Preprocessing, Immutability_Checker_Says_Square_Brackets_Access_On_Fcall_Is
     });
     ProgramRepresentation single_func_def_program(single_func_def_project);
     ScopeContext scope_context;
-    ImmutabilityChecker immutability_checker(scope_context, single_func_def_program);
+    ImmutabilityDeducer immutability_deducer(scope_context, single_func_def_program);
     SquareBracketsAccess sqb_access {
         Token { ".", "test.basalt", 1, 1, 1, Token::Type::symbol },
         FunctionCall {
@@ -33,7 +33,7 @@ TEST(Preprocessing, Immutability_Checker_Says_Square_Brackets_Access_On_Fcall_Is
         },
         IntLiteral { Token { "0", "test.basalt", 1, 1, 1, Token::Type::integer_literal } }
     };
-    EXPECT_FALSE(immutability_checker.is_strictly_immutable_expression(sqb_access));
+    EXPECT_FALSE(immutability_deducer.is_strictly_immutable_expression(sqb_access));
 }
 
 TEST(Preprocessing, Immutability_Checker_Says_Square_Brackets_Access_On_Fcall_Is_Immutable) {
@@ -55,7 +55,7 @@ TEST(Preprocessing, Immutability_Checker_Says_Square_Brackets_Access_On_Fcall_Is
     });
     ProgramRepresentation single_func_def_program(single_func_def_project);
     ScopeContext scope_context;
-    ImmutabilityChecker immutability_checker(scope_context, single_func_def_program);
+    ImmutabilityDeducer immutability_deducer(scope_context, single_func_def_program);
     SquareBracketsAccess sqb_access {
         Token { ".", "test.basalt", 1, 1, 1, Token::Type::symbol },
         FunctionCall {
@@ -63,7 +63,7 @@ TEST(Preprocessing, Immutability_Checker_Says_Square_Brackets_Access_On_Fcall_Is
         },
         IntLiteral { Token { "0", "test.basalt", 1, 1, 1, Token::Type::integer_literal } }
     };
-    EXPECT_TRUE(immutability_checker.is_strictly_immutable_expression(sqb_access));
+    EXPECT_TRUE(immutability_deducer.is_strictly_immutable_expression(sqb_access));
 }
 
 TEST(Preprocessing, Immutability_Checker_Square_Brackets_Member_Access_On_Const_Array_Is_Immutable) {
@@ -89,9 +89,9 @@ TEST(Preprocessing, Immutability_Checker_Square_Brackets_Member_Access_On_Const_
     ProjectFileStructure example_project;
     ProgramRepresentation example_program(example_project);
     ScopeContext scope_context;
-    ImmutabilityChecker immutability_checker(scope_context, example_program);
+    ImmutabilityDeducer immutability_deducer(scope_context, example_program);
     scope_context.store_local_constant(const_declaration);
-    EXPECT_TRUE(immutability_checker.is_strictly_immutable_expression(sqb_access));
+    EXPECT_TRUE(immutability_deducer.is_strictly_immutable_expression(sqb_access));
 }
 
 TEST(Preprocessing, Immutability_Checker_Square_Brackets_Member_Access_On_Var_Array_Is_Immutable) {
@@ -117,9 +117,9 @@ TEST(Preprocessing, Immutability_Checker_Square_Brackets_Member_Access_On_Var_Ar
     ProjectFileStructure example_project;
     ProgramRepresentation example_program(example_project);
     ScopeContext scope_context;
-    ImmutabilityChecker immutability_checker(scope_context, example_program);
+    ImmutabilityDeducer immutability_deducer(scope_context, example_program);
     scope_context.store_local_variable(var_declaration);
-    EXPECT_FALSE(immutability_checker.is_strictly_immutable_expression(sqb_access));
+    EXPECT_FALSE(immutability_deducer.is_strictly_immutable_expression(sqb_access));
 }
 
 TEST(Preprocessing, Immutability_Checker_Square_Brackets_Member_Access_On_Const_Slice_Is_Immutable) {
@@ -142,9 +142,9 @@ TEST(Preprocessing, Immutability_Checker_Square_Brackets_Member_Access_On_Const_
     ProjectFileStructure example_project;
     ProgramRepresentation example_program(example_project);
     ScopeContext scope_context;
-    ImmutabilityChecker immutability_checker(scope_context, example_program);
+    ImmutabilityDeducer immutability_deducer(scope_context, example_program);
     scope_context.store_local_constant(const_declaration);
-    EXPECT_TRUE(immutability_checker.is_strictly_immutable_expression(sqb_access));
+    EXPECT_TRUE(immutability_deducer.is_strictly_immutable_expression(sqb_access));
 }
 
 TEST(Preprocessing, Immutability_Checker_Square_Brackets_Member_Access_On_Var_Slice_Is_NOT_Immutable_Hence_Mutable) {
@@ -165,7 +165,7 @@ TEST(Preprocessing, Immutability_Checker_Square_Brackets_Member_Access_On_Var_Sl
     ProjectFileStructure example_project;
     ProgramRepresentation example_program(example_project);
     ScopeContext scope_context;
-    ImmutabilityChecker immutability_checker(scope_context, example_program);
+    ImmutabilityDeducer immutability_deducer(scope_context, example_program);
     scope_context.store_local_variable(var_declaration);
-    EXPECT_FALSE(immutability_checker.is_strictly_immutable_expression(sqb_access));
+    EXPECT_FALSE(immutability_deducer.is_strictly_immutable_expression(sqb_access));
 }

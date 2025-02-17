@@ -1,7 +1,7 @@
 
 #include <gtest/gtest.h>
 #include "syntax/keywords.hpp"
-#include "preprocessing/const_constraint_validator.hpp"
+#include "preprocessing/immutability_constraint_validator.hpp"
 #include "../../tests_utilities/typesignature_factory.hpp"
 #include "../../tests_utilities/function_definition_factory.hpp"
 #include "../../tests_utilities/struct_definition_factory.hpp"
@@ -46,8 +46,8 @@ TEST(Preprocessing, Const_Constraint_Validator_Assignment_Of_Address_Of_Const_To
         }
     });
     ProgramRepresentation single_func_def_program(single_func_def_project);
-    ConstConstraintValidator const_constraint_validator(single_func_def_program);
-    EXPECT_ANY_THROW(const_constraint_validator.visit_all_function_definitions());
+    ImmutabilityConstraintValidator immutability_constraint_validator(single_func_def_program);
+    EXPECT_ANY_THROW(immutability_constraint_validator.visit_all_function_definitions());
 }
 
 TEST(Preprocessing, Const_Constraint_Validator_Assignment_Of_Const_Struct_To_Var_Struct_Where_Structs_Have_Pointers) {
@@ -101,8 +101,8 @@ TEST(Preprocessing, Const_Constraint_Validator_Assignment_Of_Const_Struct_To_Var
         }
     });
     ProgramRepresentation single_func_def_program(single_func_def_project);
-    ConstConstraintValidator const_constraint_validator(single_func_def_program);
-    EXPECT_ANY_THROW(const_constraint_validator.visit_all_function_definitions());
+    ImmutabilityConstraintValidator immutability_constraint_validator(single_func_def_program);
+    EXPECT_ANY_THROW(immutability_constraint_validator.visit_all_function_definitions());
 }
 
 TEST(Preprocessing, Const_Constraint_Validator_Assignment_Of_Const_Ptr_To_Var_Ptr) {
@@ -142,6 +142,6 @@ TEST(Preprocessing, Const_Constraint_Validator_Assignment_Of_Const_Ptr_To_Var_Pt
         }
     });
     ProgramRepresentation single_func_def_program(single_func_def_project);
-    ConstConstraintValidator const_constraint_validator(single_func_def_program);
-    EXPECT_ANY_THROW(const_constraint_validator.visit_all_function_definitions());
+    ImmutabilityConstraintValidator immutability_constraint_validator(single_func_def_program);
+    EXPECT_ANY_THROW(immutability_constraint_validator.visit_all_function_definitions());
 }

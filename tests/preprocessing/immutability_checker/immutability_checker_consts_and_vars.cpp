@@ -1,7 +1,7 @@
 
 #include <gtest/gtest.h>
 #include "syntax/keywords.hpp"
-#include "preprocessing/immutability_checker.hpp"
+#include "preprocessing/immutability_deducer.hpp"
 #include "../../tests_utilities/typesignature_factory.hpp"
 
 TEST(Preprocessing, Immutability_Checker_Says_Const_Identifier_Is_Immutable) {
@@ -18,8 +18,8 @@ TEST(Preprocessing, Immutability_Checker_Says_Const_Identifier_Is_Immutable) {
     ProgramRepresentation empty_program(empty_project);
     ScopeContext scope_context;
     scope_context.store_local_constant(const_declaration);
-    ImmutabilityChecker immutability_checker(scope_context, empty_program);
-    EXPECT_TRUE(immutability_checker.is_strictly_immutable_expression(identifier));
+    ImmutabilityDeducer immutability_deducer(scope_context, empty_program);
+    EXPECT_TRUE(immutability_deducer.is_strictly_immutable_expression(identifier));
 }
 
 TEST(Preprocessing, Immutability_Checker_Says_Var_Identifier_Is_NON_Immutable_Hence_Mutable) {
@@ -36,6 +36,6 @@ TEST(Preprocessing, Immutability_Checker_Says_Var_Identifier_Is_NON_Immutable_He
     ProgramRepresentation empty_program(empty_project);
     ScopeContext scope_context;
     scope_context.store_local_variable(var_declaration);
-    ImmutabilityChecker immutability_checker(scope_context, empty_program);
-    EXPECT_FALSE(immutability_checker.is_strictly_immutable_expression(identifier));
+    ImmutabilityDeducer immutability_deducer(scope_context, empty_program);
+    EXPECT_FALSE(immutability_deducer.is_strictly_immutable_expression(identifier));
 }

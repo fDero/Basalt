@@ -14,16 +14,16 @@
 #include "language/functions.hpp"
 #include "errors/preprocessing_errors.hpp"
 #include "preprocessing/bond_inspector.hpp"
-#include "preprocessing/immutability_checker.hpp"
+#include "preprocessing/immutability_deducer.hpp"
 
-class AssignabilityChecker {
+class AssignmentImmutabilityChecker {
 
     public:
-        AssignabilityChecker(
+        AssignmentImmutabilityChecker(
             ScopeContext& scope_context, 
             ProgramRepresentation& program_representation,
             BondInspector& bond_inspector,
-            ImmutabilityChecker& immutability_checker
+            ImmutabilityDeducer& immutability_deducer
         );
         
         [[nodiscard]] bool is_expression_assignable_to_var(const Expression& expression);
@@ -33,5 +33,5 @@ class AssignabilityChecker {
         ScopeContext& scope_context;
         ProgramRepresentation& program_representation;
         BondInspector& bond_inspector;
-        ImmutabilityChecker immutability_checker;
+        ImmutabilityDeducer immutability_deducer;
 };

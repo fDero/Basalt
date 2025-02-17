@@ -7,23 +7,23 @@
 
 #include "core/program_representation.hpp"
 #include "core/scope_context.hpp"
-#include "preprocessing/immutability_checker.hpp"
+#include "preprocessing/immutability_deducer.hpp"
 #include "preprocessing/bond_inspector.hpp"
 #include "errors/preprocessing_errors.hpp"
 
-class ConstConstraintValidator {
+class ImmutabilityConstraintValidator {
     public:
-        ConstConstraintValidator(ProgramRepresentation& program_representation);
+        ImmutabilityConstraintValidator(ProgramRepresentation& program_representation);
 
         void visit_all_function_definitions();
         void visit_function_definition(const FunctionDefinition& function_definition);
 
     protected:
-        struct SingleFunctionConstConstraintValidator {
-            SingleFunctionConstConstraintValidator(
+        struct SingleFunctionImmutabilityConstraintValidator {
+            SingleFunctionImmutabilityConstraintValidator(
                 ScopeContext& scope_context,
                 ProgramRepresentation& program_representation,
-                ImmutabilityChecker& immutability_checker,
+                ImmutabilityDeducer& immutability_deducer,
                 BondInspector& bond_inspector
             );
 
@@ -49,7 +49,7 @@ class ConstConstraintValidator {
 
             ScopeContext& scope_context;
             ProgramRepresentation& program_representation;
-            ImmutabilityChecker& immutability_checker;
+            ImmutabilityDeducer& immutability_deducer;
             BondInspector& bond_inspector;
         };
 

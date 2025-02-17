@@ -1,6 +1,6 @@
 
 #include <gtest/gtest.h>
-#include "preprocessing/immutability_checker.hpp"
+#include "preprocessing/immutability_deducer.hpp"
 #include "../../tests_utilities/typesignature_factory.hpp"
 #include "../../tests_utilities/function_definition_factory.hpp"
 #include "../../tests_utilities/struct_definition_factory.hpp"
@@ -31,7 +31,7 @@ TEST(Preprocessing, Immutability_Checker_Says_Function_Call_Output_Is_Immutable)
     });
     ProgramRepresentation single_func_def_program(single_func_def_project);
     ScopeContext scope_context;
-    ImmutabilityChecker immutability_checker(scope_context, single_func_def_program);
+    ImmutabilityDeducer immutability_deducer(scope_context, single_func_def_program);
     FunctionCall func_call {
         Token { "add", "test.basalt", 1, 1, 1, Token::Type::text }, "",
         { 
@@ -40,8 +40,8 @@ TEST(Preprocessing, Immutability_Checker_Says_Function_Call_Output_Is_Immutable)
         },
         {}
     };
-    EXPECT_TRUE(immutability_checker.is_strictly_immutable_expression(func_call));
-    EXPECT_TRUE(immutability_checker.is_weakly_immutable_expression(func_call));
+    EXPECT_TRUE(immutability_deducer.is_strictly_immutable_expression(func_call));
+    EXPECT_TRUE(immutability_deducer.is_weakly_immutable_expression(func_call));
 }
 
 TEST(Preprocessing, Immutability_Checker_Says_Function_Call_Output_Is_Weakly_Immutable_If_Pointer) {
@@ -75,10 +75,10 @@ TEST(Preprocessing, Immutability_Checker_Says_Function_Call_Output_Is_Weakly_Imm
     });
     ProgramRepresentation single_func_def_program(single_func_def_project);
     ScopeContext scope_context;
-    ImmutabilityChecker immutability_checker(scope_context, single_func_def_program);
+    ImmutabilityDeducer immutability_deducer(scope_context, single_func_def_program);
     FunctionCall func_call {
         Token { "get_int_wrapper_ptr", "test.basalt", 1, 1, 1, Token::Type::text }, "", {}, {}
     };
-    EXPECT_TRUE(immutability_checker.is_strictly_immutable_expression(func_call));
-    EXPECT_FALSE(immutability_checker.is_weakly_immutable_expression(func_call));
+    EXPECT_TRUE(immutability_deducer.is_strictly_immutable_expression(func_call));
+    EXPECT_FALSE(immutability_deducer.is_weakly_immutable_expression(func_call));
 }

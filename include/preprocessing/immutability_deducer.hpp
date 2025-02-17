@@ -12,10 +12,10 @@
 #include "language/functions.hpp"
 #include "errors/preprocessing_errors.hpp"
 
-class ImmutabilityChecker {
+class ImmutabilityDeducer {
 
     public:
-        ImmutabilityChecker(
+        ImmutabilityDeducer(
             ScopeContext& scope_context, 
             ProgramRepresentation& program_representation
         );

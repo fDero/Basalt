@@ -3,11 +3,11 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
-#include "preprocessing/assignability_checker.hpp"
-#include "preprocessing/const_constraint_validator.hpp"
-using CCV = ConstConstraintValidator;
+#include "preprocessing/assignment_immutability_checker.hpp"
+#include "preprocessing/immutability_constraint_validator.hpp"
+using CCV = ImmutabilityConstraintValidator;
 
-void CCV::SingleFunctionConstConstraintValidator::visit_statement(
+void CCV::SingleFunctionImmutabilityConstraintValidator::visit_statement(
     const Statement& statement, 
     ScopeContext& scope_context
 ) {
@@ -25,7 +25,7 @@ void CCV::SingleFunctionConstConstraintValidator::visit_statement(
     }
 }
 
-void CCV::SingleFunctionConstConstraintValidator::visit_if_statement(
+void CCV::SingleFunctionImmutabilityConstraintValidator::visit_if_statement(
     const Conditional& conditional, 
     ScopeContext& scope_context
 ) {
@@ -40,7 +40,7 @@ void CCV::SingleFunctionConstConstraintValidator::visit_if_statement(
     }
 }
 
-void CCV::SingleFunctionConstConstraintValidator::visit_while_loop(
+void CCV::SingleFunctionImmutabilityConstraintValidator::visit_while_loop(
     const WhileLoop& while_loop, 
     ScopeContext& scope_context
 ) {
@@ -51,7 +51,7 @@ void CCV::SingleFunctionConstConstraintValidator::visit_while_loop(
     }
 }
 
-void CCV::SingleFunctionConstConstraintValidator::visit_until_loop(
+void CCV::SingleFunctionImmutabilityConstraintValidator::visit_until_loop(
     const UntilLoop& until_loop, 
     ScopeContext& scope_context
 ) {
@@ -62,7 +62,7 @@ void CCV::SingleFunctionConstConstraintValidator::visit_until_loop(
     }
 }
 
-void CCV::SingleFunctionConstConstraintValidator::visit_return_statement(
+void CCV::SingleFunctionImmutabilityConstraintValidator::visit_return_statement(
     const Return& return_statement, 
     ScopeContext& scope_context
 ) {
@@ -71,21 +71,21 @@ void CCV::SingleFunctionConstConstraintValidator::visit_return_statement(
     }
 }
 
-void CCV::SingleFunctionConstConstraintValidator::visit_variable_declaration(
+void CCV::SingleFunctionImmutabilityConstraintValidator::visit_variable_declaration(
     const VariableDeclaration& variable_declaration, 
     ScopeContext& scope_context
 ) {
     if (variable_declaration.initial_value.has_value()) {
         Expression value = variable_declaration.initial_value.value();
         visit_expression(variable_declaration.initial_value.value(), scope_context);
-        AssignabilityChecker assignability_checker(scope_context, program_representation, bond_inspector, immutability_checker);
-        bool assignment_discard_qualifiers = !assignability_checker.is_expression_assignable_to_var(value);
+        AssignmentImmutabilityChecker assignment_immutability_checker(scope_context, program_representation, bond_inspector, immutability_deducer);
+        bool assignment_discard_qualifiers = !assignment_immutability_checker.is_expression_assignable_to_var(value);
         ensure_assignment_complies_with_const_qualifiers(variable_declaration, assignment_discard_qualifiers);
     }
     scope_context.store_local_variable(variable_declaration);
 }
 
-void CCV::SingleFunctionConstConstraintValidator::visit_const_declaration(
+void CCV::SingleFunctionImmutabilityConstraintValidator::visit_const_declaration(
     const ConstDeclaration& const_declaration, 
     ScopeContext& scope_context
 ) {
@@ -93,26 +93,26 @@ void CCV::SingleFunctionConstConstraintValidator::visit_const_declaration(
     scope_context.store_local_constant(const_declaration);
 }
 
-void CCV::SingleFunctionConstConstraintValidator::visit_function_call(
+void CCV::SingleFunctionImmutabilityConstraintValidator::visit_function_call(
     const FunctionCall& function_call, 
     ScopeContext& scope_context
 ) {
     for (const Expression& argument : function_call.arguments) {
         visit_expression(argument, scope_context);
-        AssignabilityChecker assignability_checker(scope_context, program_representation, bond_inspector, immutability_checker);
-        bool assignment_discard_qualifiers = !assignability_checker.is_expression_assignable_to_var(argument);
+        AssignmentImmutabilityChecker assignment_immutability_checker(scope_context, program_representation, bond_inspector, immutability_deducer);
+        bool assignment_discard_qualifiers = !assignment_immutability_checker.is_expression_assignable_to_var(argument);
         ensure_use_as_function_argument_complies_with_const_qualifiers(function_call, argument, assignment_discard_qualifiers);
     }
 }
 
-void CCV::SingleFunctionConstConstraintValidator::visit_assignment(
+void CCV::SingleFunctionImmutabilityConstraintValidator::visit_assignment(
     const Assignment& assignment, 
     ScopeContext& scope_context
 ) {
     visit_expression(assignment.assigned_value, scope_context);
-    bool assignment_to_immutable_target = immutability_checker.is_strictly_immutable_expression(assignment.assignment_target);
-    AssignabilityChecker assignability_checker(scope_context, program_representation, bond_inspector, immutability_checker);
-    bool expression_not_assignable = !assignability_checker.is_expression_assignable_to_var(assignment.assigned_value);
+    bool assignment_to_immutable_target = immutability_deducer.is_strictly_immutable_expression(assignment.assignment_target);
+    AssignmentImmutabilityChecker assignment_immutability_checker(scope_context, program_representation, bond_inspector, immutability_deducer);
+    bool expression_not_assignable = !assignment_immutability_checker.is_expression_assignable_to_var(assignment.assigned_value);
     bool assignment_discard_qualifiers = assignment_to_immutable_target || expression_not_assignable;
     ensure_assignment_complies_with_const_qualifiers(assignment, assignment_discard_qualifiers);
 }

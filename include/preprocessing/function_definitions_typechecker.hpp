@@ -7,7 +7,7 @@
 
 #include "core/program_representation.hpp"
 #include "core/scope_context.hpp"
-#include "preprocessing/immutability_checker.hpp"
+#include "preprocessing/immutability_deducer.hpp"
 #include "preprocessing/bond_inspector.hpp"
 #include "errors/preprocessing_errors.hpp"
 

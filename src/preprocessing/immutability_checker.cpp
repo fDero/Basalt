@@ -3,11 +3,11 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
-#include "preprocessing/immutability_checker.hpp"
+#include "preprocessing/immutability_deducer.hpp"
 #include "errors/internal_errors.hpp"
 #include "syntax/infixes.hpp"
 
-ImmutabilityChecker::ImmutabilityChecker(
+ImmutabilityDeducer::ImmutabilityDeducer(
     ScopeContext& scope_context, 
     ProgramRepresentation& program_representation
 )
@@ -15,7 +15,7 @@ ImmutabilityChecker::ImmutabilityChecker(
     , program_representation(program_representation) 
 {}
 
-bool ImmutabilityChecker::is_weakly_immutable_expression(const Expression& expression) {
+bool ImmutabilityDeducer::is_weakly_immutable_expression(const Expression& expression) {
     switch (expression.expression_kind()) {
         case ExpressionBody::Kind::function_call: 
             return is_function_call_weakly_immutable(expression.get<FunctionCall>());
@@ -26,7 +26,7 @@ bool ImmutabilityChecker::is_weakly_immutable_expression(const Expression& expre
     }
 }
 
-bool ImmutabilityChecker::is_strictly_immutable_expression(const Expression& expression) {
+bool ImmutabilityDeducer::is_strictly_immutable_expression(const Expression& expression) {
     switch (expression.expression_kind()) {
         case ExpressionBody::Kind::identifier:            return is_identifier_immutable(expression.get<Identifier>());
         case ExpressionBody::Kind::type_operator:         return is_type_operator_immutable(expression.get<TypeOperator>());
@@ -45,33 +45,33 @@ bool ImmutabilityChecker::is_strictly_immutable_expression(const Expression& exp
     assert_unreachable();
 }
 
-bool ImmutabilityChecker::is_identifier_immutable(const Identifier& identifier) {
+bool ImmutabilityDeducer::is_identifier_immutable(const Identifier& identifier) {
     return scope_context.is_identifier_immutable(identifier.name);
 }
 
-bool ImmutabilityChecker::is_unary_operator_immutable(const UnaryOperator& unary_operator) {
+bool ImmutabilityDeducer::is_unary_operator_immutable(const UnaryOperator& unary_operator) {
     return unary_operator.operator_text != "#" || 
         is_weakly_immutable_expression(unary_operator.operand);
 }
 
-bool ImmutabilityChecker::is_square_bracket_access_immutable(const SquareBracketsAccess& square_brackets_access) {
+bool ImmutabilityDeducer::is_square_bracket_access_immutable(const SquareBracketsAccess& square_brackets_access) {
     return is_weakly_immutable_expression(square_brackets_access.storage);
 }
 
-bool ImmutabilityChecker::is_dot_member_access_immutable(const DotMemberAccess& dot_member_access) {
+bool ImmutabilityDeducer::is_dot_member_access_immutable(const DotMemberAccess& dot_member_access) {
     return is_weakly_immutable_expression(dot_member_access.struct_value);
 }
 
-bool ImmutabilityChecker::is_type_operator_immutable(const TypeOperator& type_operator) {
+bool ImmutabilityDeducer::is_type_operator_immutable(const TypeOperator& type_operator) {
     return type_operator.operator_text == as_keyword && is_weakly_immutable_expression(type_operator.expression);
 }
 
-bool ImmutabilityChecker::is_function_call_weakly_immutable(const FunctionCall& function_call) {
+bool ImmutabilityDeducer::is_function_call_weakly_immutable(const FunctionCall& function_call) {
     std::optional<TypeSignature> return_type = program_representation.resolve_expression_type(function_call, scope_context);
     return !return_type.has_value() || (!return_type->is<PointerType>() && !return_type->is<SliceType>());
 }
 
-bool ImmutabilityChecker::is_unary_weakly_operator_immutable(const UnaryOperator& unary_operator) {
+bool ImmutabilityDeducer::is_unary_weakly_operator_immutable(const UnaryOperator& unary_operator) {
     return (unary_operator.operator_text != "#" && unary_operator.operator_text != "&") ||
         is_weakly_immutable_expression(unary_operator.operand);
 }
