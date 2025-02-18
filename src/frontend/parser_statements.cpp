@@ -28,12 +28,12 @@ Statement Parser::parse_statement() {
 
 Statement Parser::parse_non_keyword_initialized_statements() {
     Expression expression = parse_expression();
-    if (expression.is<FunctionCall>()) {
+    ensure_there_are_still_tokens(source_tokens, iterator);
+    if (expression.is<FunctionCall>() && iterator->sourcetext != "=") {
         FunctionCall function_call = expression.get<FunctionCall>();
         ensure_token_matches(source_tokens, iterator++, ";");
         return function_call;
     }
-    ensure_there_are_still_tokens(source_tokens, iterator);
     const Token& assignment_token = *iterator;
     ensure_token_matches(source_tokens, iterator++, "=");
     Expression right_hand_side = parse_expression();
