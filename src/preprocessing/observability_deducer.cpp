@@ -41,11 +41,19 @@ bool ObservabilityDeducer::is_unary_operator_update_observable(const UnaryOperat
 }
 
 bool ObservabilityDeducer::is_square_bracket_access_update_observable(const SquareBracketsAccess& square_brackets_access) {
-    return is_expression_update_observable(square_brackets_access.storage);
+    if (is_expression_update_observable(square_brackets_access.storage)) {
+        return true;
+    }
+    const auto& type_opt = program_representation.resolve_expression_type(square_brackets_access.storage, scope_context);
+    return !type_opt.has_value() || type_opt->is<SliceType>() || type_opt->is<PointerType>();
 }
 
 bool ObservabilityDeducer::is_dot_member_access_update_observable(const DotMemberAccess& dot_member_access) {
-    return is_expression_update_observable(dot_member_access.struct_value);
+    if (is_expression_update_observable(dot_member_access.struct_value)) {
+        return is_expression_update_observable(dot_member_access.struct_value);
+    }
+    const auto& type_opt = program_representation.resolve_expression_type(dot_member_access.struct_value, scope_context);    
+    return !type_opt.has_value() || type_opt->is<SliceType>() || type_opt->is<PointerType>();
 }
 
 bool ObservabilityDeducer::is_type_operator_update_observable(const TypeOperator& type_operator) {
@@ -53,6 +61,5 @@ bool ObservabilityDeducer::is_type_operator_update_observable(const TypeOperator
 }
 
 bool ObservabilityDeducer::is_function_call_update_observable(const FunctionCall& function_call) {
-    auto return_type_opt = program_representation.resolve_expression_type(function_call, scope_context);
-    return return_type_opt.has_value() && (return_type_opt.value().is<PointerType>() || return_type_opt.value().is<SliceType>());
+    return false;
 }
