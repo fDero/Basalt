@@ -76,9 +76,9 @@ Expression Parser::parse_text_first_expression() {
     if (should_stop_here) {
         return identifier;
     }
-    bool false_positive = iterator->sourcetext == "<" && std::next(iterator) == source_tokens.end();
-    false_positive = false_positive || std::next(iterator)->type != Token::Type::type;
-    if (!false_positive) {
+    ensure_there_are_still_tokens(source_tokens, iterator);
+    bool false_positive = iterator->sourcetext == "<" && std::next(iterator)->type != Token::Type::type;
+    if (false_positive) {
         return identifier;
     }
     std::advance(iterator, -1);
