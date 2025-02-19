@@ -35,6 +35,18 @@ class TypeManipulationsLLVMTranslator {
             const TypeSignature& dest_type
         );
 
+        [[nodiscard]] TranslatedExpression cast_union_expression_as_ref_to_another_union_type_in_llvm(
+            llvm::BasicBlock* block,
+            TranslatedExpression union_expression,
+            const TypeSignature& dest_type
+        );
+
+        [[nodiscard]] TranslatedExpression cast_union_expression_to_one_of_its_alternatives_in_llvm(
+            llvm::BasicBlock* block,
+            TranslatedExpression union_expression,
+            const TypeSignature& dest_type
+        );
+
     protected:
         enum class CastStrategy {
             noop,
@@ -56,12 +68,6 @@ class TypeManipulationsLLVMTranslator {
         );
 
         [[nodiscard]] TranslatedExpression cast_union_expression_to_another_union_type_in_llvm(
-            llvm::BasicBlock* block,
-            TranslatedExpression union_expression,
-            const TypeSignature& dest_type
-        );
-
-        [[nodiscard]] TranslatedExpression cast_union_expression_to_one_of_its_alternatives_in_llvm(
             llvm::BasicBlock* block,
             TranslatedExpression union_expression,
             const TypeSignature& dest_type

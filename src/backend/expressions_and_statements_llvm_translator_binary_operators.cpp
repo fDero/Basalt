@@ -26,12 +26,9 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_as_operat
     auto soruce_type_opt = program_representation.resolve_expression_type(as_operator.expression, scope_context.raw_scope_context);
     assert_type_deduction_success_in_backend_layer(soruce_type_opt.has_value());
     TypeSignature soruce_type = soruce_type_opt.value();
-    return type_operators_llvm_translator.cast_translated_expression_to_another_type_in_llvm(
-        block, 
-        union_expression, 
-        soruce_type, 
-        as_operator.typesignature
-    );
+    return (program_representation.is_union(as_operator.typesignature))
+        ? type_operators_llvm_translator.cast_union_expression_as_ref_to_another_union_type_in_llvm(block, union_expression, as_operator.typesignature)
+        : type_operators_llvm_translator.cast_union_expression_to_one_of_its_alternatives_in_llvm(block, union_expression, as_operator.typesignature);
 }
 
 TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_plus_binary_operator_to_llvm(

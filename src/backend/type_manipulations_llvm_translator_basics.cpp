@@ -16,7 +16,6 @@ TypeManipulationsLLVMTranslator::TypeManipulationsLLVMTranslator(
     , type_definitions_llvm_translator(type_definitions_llvm_translator)
 { }
 
-
 TypeManipulationsLLVMTranslator::CastStrategy 
 TypeManipulationsLLVMTranslator::compute_cast_strategy(
     const TypeSignature& source,

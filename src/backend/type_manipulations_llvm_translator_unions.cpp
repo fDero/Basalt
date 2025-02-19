@@ -51,6 +51,21 @@ TranslatedExpression TypeManipulationsLLVMTranslator::cast_union_expression_to_a
     return {dest_union_value, dest_union_address};
 }
 
+TranslatedExpression TypeManipulationsLLVMTranslator::cast_union_expression_as_ref_to_another_union_type_in_llvm(
+    llvm::BasicBlock* block,
+    TranslatedExpression union_expression,
+    const TypeSignature& dest_type
+) {
+    llvm::IRBuilder<> builder(block);
+    llvm::Value* union_address = get_llvm_address(builder, union_expression);
+    llvm::Type* llvm_dest_type = type_definitions_llvm_translator.translate_typesignature_to_llvm_type(dest_type);
+    llvm::Value* casted_union_payload_address = builder.CreateBitCast(union_address, llvm_dest_type->getPointerTo());
+    llvm::Value* casted_union_payload = builder.CreateLoad(casted_union_payload_address);
+    return (union_expression.address == nullptr)
+        ? TranslatedExpression(casted_union_payload)
+        : TranslatedExpression(casted_union_payload, casted_union_payload_address);
+}
+
 TranslatedExpression TypeManipulationsLLVMTranslator::cast_union_expression_to_one_of_its_alternatives_in_llvm(
     llvm::BasicBlock* block,
     TranslatedExpression union_expression,
