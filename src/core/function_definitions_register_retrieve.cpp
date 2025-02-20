@@ -51,7 +51,7 @@ FunctionDefinitionsRegister::search_for_best_matches(
                 best_specificity_so_far = current_specificity;
             }
         }
-    } 
+    }
     return best_maches_so_far;
 }
 

@@ -18,12 +18,12 @@ void FunctionSpecificityDescriptor::update_metrics_based_on_argument_type(
     const bool flag = current_type_is_fixed_and_cannot_be_an_upcasting_target; 
     switch (arg_type.typesiganture_kind()) {
         break; case TypeSignatureBody::Kind::primitive_type: update_metrics_based_on_primitive_type(input_arg_type, reg, flag);
-        break; case TypeSignatureBody::Kind::pointer_type: update_metrics_based_on_pointer_type(input_arg_type, reg, flag);
-        break; case TypeSignatureBody::Kind::template_type: number_of_uses_of_its_generic_parameters++;
-        break; case TypeSignatureBody::Kind::inline_union: update_metrics_based_on_inline_union_type(input_arg_type, reg, flag);
-        break; case TypeSignatureBody::Kind::custom_type: update_metrics_based_on_custom_type(input_arg_type, reg, flag);
-        break; case TypeSignatureBody::Kind::array_type: return;
-        break; case TypeSignatureBody::Kind::slice_type: return;
+        break; case TypeSignatureBody::Kind::pointer_type:   update_metrics_based_on_pointer_type(input_arg_type, reg, flag);
+        break; case TypeSignatureBody::Kind::template_type:  number_of_uses_of_its_generic_parameters++;
+        break; case TypeSignatureBody::Kind::inline_union:   update_metrics_based_on_inline_union_type(input_arg_type, reg, flag);
+        break; case TypeSignatureBody::Kind::custom_type:    update_metrics_based_on_custom_type(input_arg_type, reg, flag);
+        break; case TypeSignatureBody::Kind::array_type:     return;
+        break; case TypeSignatureBody::Kind::slice_type:     return;
     }
 }
 
@@ -47,7 +47,8 @@ void FunctionSpecificityDescriptor::update_metrics_based_on_pointer_type(
     bool current_type_is_fixed_and_cannot_be_an_upcasting_target
 ) {
     assert_typesignature_is<PointerType>(typesignature);
-    const PointerType& inner_type = typesignature.get<PointerType>();
+    const PointerType& pointer_type = typesignature.get<PointerType>();
+    const TypeSignature& inner_type = pointer_type.pointed_type;
     current_type_is_fixed_and_cannot_be_an_upcasting_target = true;
     update_metrics_based_on_argument_type(
         inner_type, 
