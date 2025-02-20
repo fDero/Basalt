@@ -60,6 +60,7 @@ target_compile_options(
   -Wpedantic
   -Wfloat-equal
   -Wno-deprecated-declarations
+  -DDEBUG_BUILD
 )
 
 target_link_libraries(

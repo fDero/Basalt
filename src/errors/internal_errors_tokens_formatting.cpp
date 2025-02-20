@@ -43,7 +43,7 @@ void assert_floating_literal_properly_formatted(const std::vector<Token>::iterat
 void assert_character_literal_properly_formatted(const std::vector<Token>::iterator& iterator) {
     #ifdef DEBUG_BUILD
     const std::string& txt = iterator->sourcetext;
-    if (txt.size() != 3 || txt[0] != txt[2]) {
+    if (txt.size() < 3 || txt.front() != txt.back()) {
         throw std::runtime_error {
             "somehow the tokenizer assigned the character literal type to a non character literal token, "
             "the token itself is: " + iterator->sourcetext
