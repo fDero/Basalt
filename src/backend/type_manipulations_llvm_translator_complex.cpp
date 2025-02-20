@@ -13,7 +13,6 @@ TranslatedExpression TypeManipulationsLLVMTranslator::cast_pointer_to_array_to_s
     const TypeSignature& cast_dest,
     const PointerType& soruce_pointer_to_array_type
 ) {
-    assert_typesignature_is<SliceType>(cast_dest);
     assert_typesignature_is<ArrayType>(soruce_pointer_to_array_type.pointed_type);
     const ArrayType& source_array_type = soruce_pointer_to_array_type.pointed_type.get<ArrayType>();
     size_t array_length = source_array_type.array_length;
