@@ -25,7 +25,9 @@ void FunctionExitPathNavigator::visit_function_definition(
 ) {
     EPK codeblock_exit = visit_code_block(function_definition.code, ScopeKind::function);
     bool every_path_returns = (codeblock_exit == EPK::definitive_exit);
-    if (function_definition.return_type.has_value()) {
+    bool should_be_enforced = function_definition.return_type.has_value();
+    should_be_enforced &= !function_definition.extern_implementation.has_value();
+    if (should_be_enforced) {
         ensure_every_path_returns_in_function_exit_navigation(every_path_returns);
     }
 }
