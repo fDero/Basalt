@@ -28,7 +28,7 @@ func print(str : String) {
 }
 
 
-/* this function is used to print a
+/* this function is used to print a 
 boolean in text-format to the stdout */
 func print(flag : Bool) {
 	if(flag) {
@@ -47,9 +47,65 @@ func print(flag : Bool) {
 }
 
 
-/* Just like calling `print` but 
-it automatically adds a new-line at the end */
-func println<T>(item : T) {
-	print(item);
-	print('\n');
+/* this function is used to print an
+integer to the stdout. The minus sign will be shown
+if the integer is negative, but no plus sign will be shown
+if the integer is positive */
+func print(number : Int) {
+	if(number < 0) {
+		print('-');
+		number = -number;
+	}
+	else if(number == 0) {
+		print('0');
+		return;
+	}
+
+	var digits : [400]Int;
+	var digits_counter : Int = 0;
+
+	while (number != 0) {
+		digits[digits_counter] = number % 10;
+		number = number / 10;
+		digits_counter = digits_counter + 1;
+	}
+
+	while (digits_counter > 0) {
+		digits_counter = digits_counter - 1;
+		print_unsigned_single_digit_number(digits[digits_counter]);
+	}
+}
+
+
+/* this function is used to print a
+float to the stdout. The minus sign will be shown
+if the float is negative, but no plus sign will be shown
+if the float is positive */
+func print(number : Float) {
+	if(number < 0.0) {
+		print('-');
+		number = -number;
+	}
+	else if(number == 0.0) {
+		print('0');
+		return;
+	}
+
+	var integer_part : Int = 0;
+	while (number > 1.0) {
+		integer_part = integer_part + 1;
+		number = number - 1.0;
+	}
+	print(integer_part);
+	print('.');
+
+	while (number > 0.0) {
+		number = number * 10.0;
+		print_unsigned_single_digit_number(number);
+		while (number >= 1.0) {
+			number = number - 1.0;
+		}
+	}
+
+	print('0');
 }
