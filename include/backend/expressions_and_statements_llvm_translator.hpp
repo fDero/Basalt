@@ -31,7 +31,6 @@ class ExpressionsAndStatementsLLVMTranslator {
             std::optional<TypeSignature> expected_return_type,
             llvm::LLVMContext& context,
             llvm::Module& llvm_module,
-            llvm::Function* current_function,
             llvm::BasicBlock* loop_entry_block = nullptr,
             llvm::BasicBlock* loop_exit_block = nullptr
         );
@@ -138,5 +137,4 @@ class ExpressionsAndStatementsLLVMTranslator {
         llvm::Module& llvm_module;
         llvm::BasicBlock* loop_entry_block;
         llvm::BasicBlock* loop_exit_block;
-        llvm::Function* current_function;
 };

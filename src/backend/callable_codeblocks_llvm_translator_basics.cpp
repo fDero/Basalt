@@ -113,7 +113,6 @@ CallableCodeBlocksLLVMTranslator::get_function_body_translator(
         expected_return_type,
         llvm_context,
         llvm_module,
-        llvm_function,
         function_entry_block
     );
 }

@@ -15,7 +15,6 @@ ExpressionsAndStatementsLLVMTranslator::ExpressionsAndStatementsLLVMTranslator(
     std::optional<TypeSignature> expected_return_type,
     llvm::LLVMContext& context,
     llvm::Module& llvm_module,
-    llvm::Function* current_function,
     llvm::BasicBlock* entry_block,
     llvm::BasicBlock* exit_block
 )
@@ -28,7 +27,6 @@ ExpressionsAndStatementsLLVMTranslator::ExpressionsAndStatementsLLVMTranslator(
     , llvm_module(llvm_module)
     , loop_entry_block(entry_block)
     , loop_exit_block(exit_block)
-    , current_function(current_function)
 { }
 
 [[nodiscard]] ExpressionsAndStatementsLLVMTranslator 
@@ -43,8 +41,7 @@ ExpressionsAndStatementsLLVMTranslator::create_translator_for_nested_loop(
         scope_context.create_nested_scope(), 
         expected_return_type,
         context,
-        llvm_module,   
-        current_function,
+        llvm_module,
         new_entry_block, 
         new_exit_block
     );
