@@ -7,7 +7,7 @@
 #include "syntax/specials.hpp"
 using CompilationError::Kind::TokenizationError;
 
-[[noreturn]] void throw_unexpected_token(const Token& token) {
+void throw_unexpected_token(const Token& token) {
     CompilationError::raise<TokenizationError>(
         "unexpected token: " + token.sourcetext, 
         token

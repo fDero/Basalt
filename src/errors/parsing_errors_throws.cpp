@@ -6,7 +6,7 @@
 #include "errors/parsing_errors.hpp"
 using CompilationError::Kind::ParsingError;
 
-[[noreturn]] void throw_expression_expected_got_unrecognized(
+void throw_expression_expected_got_unrecognized(
     const std::vector<Token>::iterator& iterator
 ) {
     CompilationError::raise<ParsingError>(
@@ -15,7 +15,7 @@ using CompilationError::Kind::ParsingError;
     );
 }
 
-[[noreturn]] void throw_invalid_use_of_token_within_global_scope(
+void throw_invalid_use_of_token_within_global_scope(
     const std::vector<Token>::iterator& iterator
 ) {
     CompilationError::raise<ParsingError>(
