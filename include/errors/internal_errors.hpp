@@ -116,7 +116,7 @@ inline void assert_typedefinition_is(const TypeDefinition& type_definition) {
     if (!type_definition.is<T>()) {
         std::string T_type_converted_to_string = typeid(T).name();
         throw std::runtime_error {
-            "somehow a typesignature was expected to be a " + 
+            "somehow a type definition was expected to be a " + 
             T_type_converted_to_string + " instead it wasn't"    
         };
     }
@@ -139,7 +139,7 @@ inline void assert_expression_is(const Expression& expression) {
     if (!expression.is<T>()) {
         std::string T_type_converted_to_string = typeid(T).name();
         throw std::runtime_error {
-            "somehow a typesignature was expected to be a " + 
+            "somehow an expression was expected to be a " + 
             T_type_converted_to_string + " instead it wasn't"    
         };
     }
@@ -152,7 +152,7 @@ inline void assert_statement_is(const Statement& statement) {
     if (!statement.is<T>()) {
         std::string T_type_converted_to_string = typeid(T).name();
         throw std::runtime_error {
-            "somehow a typesignature was expected to be a " + 
+            "somehow a statement was expected to be a " + 
             T_type_converted_to_string + " instead it wasn't"    
         };
     }
