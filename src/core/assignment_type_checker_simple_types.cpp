@@ -84,7 +84,9 @@ bool AssignmentTypeChecker::validate_assignment_to_slice_from_pointer_type(
     const SliceType& dest,
     bool strict_mode
 ) {
-    ensure_typesignature_is<ArrayType>(pointer_type.pointed_type);
+    if (!pointer_type.pointed_type.is<ArrayType>()) {
+        return false;
+    }
     const ArrayType& array_type = pointer_type.pointed_type.get<ArrayType>();
     return validate_assignment(array_type.stored_type, dest.stored_type, true);
 }
