@@ -14,19 +14,25 @@ from stdin to the memory location pointed by the
 slice passed as first and only argument. The exact 
 number of characters scanned depends on the length 
 of the slice and the length of the stdin-input 
-(on \n the input is considered closed) */
+(on \n the input is considered closed) 
+(every \n at the beginning of the input is ignored) */
 func scan(char_slice : $Char) {
     var cursor : Int = 0;
-    var temp : Char = read_one_character();
+    var tmp : Char = '\n';
+
+    until (tmp != '\n') {
+	    tmp = read_one_character();
+    }
+
     while (
         cursor < char_slice.len 
-        && temp != '\n' 
-        && temp != '\$' 
-        && temp != '\0'
+        && tmp != '\n' 
+        && tmp != '\$' 
+        && tmp != '\0'
     ) {
-        char_slice[cursor] = temp;
+        char_slice[cursor] = tmp;
         cursor = cursor + 1;
-        temp = read_one_character();
+        tmp = read_one_character();
     }
     if (cursor < char_slice.len) {
         char_slice[cursor] = '\0';
