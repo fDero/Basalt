@@ -21,7 +21,7 @@ func print(cstr : RawString) {
 basalt-style string to the stdout */
 func print(str : String) {
 	var index : Int = 0;
-	while(index < str.len) {
+	while(index < str.len && str[index] != '\0') {
 		print(str[index]);
 		index = index + 1;
 	}
@@ -108,4 +108,12 @@ func print(number : Float) {
 	}
 
 	print('0');
+}
+
+
+/* Just like calling `print` but 
+it automatically adds a new-line at the end */
+func println<T>(item : T) {
+	print(item);
+	print('\n');
 }

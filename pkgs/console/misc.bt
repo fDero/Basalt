@@ -1,12 +1,9 @@
 package console;
 
 
-/* Just like calling `print` but 
-it automatically adds a new-line at the end */
-func println<T>(item : T) {
-	print(item);
-	print('\n');
-}
+/* this function is used to read
+a single ascii character from the stdin */
+extern read_one_character() -> Char = "getchar";
 
 
 /* this function is used to print an

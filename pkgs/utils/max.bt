@@ -1,0 +1,23 @@
+package utils;
+
+
+/* given two integers, returns the maximum (signed comparison) */
+func max(a : Int, b : Int) -> Int {
+    if (a >= b) {
+        return a;
+    }
+    else {
+        return b;
+    }
+}
+
+
+/* given two floats, returns the maximum (signed comparison) */
+func max(a : Float, b : Float) -> Float {
+    if (a >= b) {
+        return a;
+    }
+    else {
+        return b;
+    }
+}
