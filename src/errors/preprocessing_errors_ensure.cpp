@@ -23,7 +23,10 @@ void ensure_character_literal_has_exactly_one_character(
     const std::string& char_literal_value
 ) {
     if (char_literal_value.size() != 1) {
-        throw std::runtime_error("character literal must have exactly one character");
+        throw std::runtime_error(
+            "character literal must have exactly one character: " +
+            token.sourcetext + "->" + char_literal_value
+        );
     }
 }
 
@@ -239,5 +242,5 @@ void ensure_function_has_a_return_type(
 }
 
 void throw_unrecognized_escape_sequence(const Token& token, char current_char) {
-    throw std::runtime_error("unrecognized escape sequence");
+    throw std::runtime_error("unrecognized escape sequence: " + std::string{'\\', current_char});
 }
