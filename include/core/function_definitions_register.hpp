@@ -78,6 +78,18 @@ class FunctionDefinitionsRegister : public CachingAwareRegister {
             const std::vector<TypeSignature>& arg_types
         );
 
+        [[nodiscard]] GenericSubstitutionRule::Set::Ref check_function_compatibility_explicitly(
+            const FunctionDefinition::Ref func_def_ref,
+            const FunctionCall& func_call,
+            const std::vector<TypeSignature>& arg_types
+        );
+
+        [[nodiscard]] GenericSubstitutionRule::Set::Ref check_function_compatibility_using_type_inference(
+            const FunctionDefinition::Ref func_def_ref,
+            const FunctionCall& func_call,
+            const std::vector<TypeSignature>& arg_types
+        );
+
     private:
         std::list<FunctionDefinition::Ref> function_definitions;
         std::unordered_map<std::string, FunctionDefinition::OverloadSet> function_definitions_overload_sets;

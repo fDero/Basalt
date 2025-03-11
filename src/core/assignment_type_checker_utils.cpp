@@ -11,8 +11,8 @@ AssignmentTypeChecker::AssignmentTypeChecker(
     TypeDefinitionsRegister& type_definitions_register, 
     ProjectFileStructure& project_file_structure
 )
-    : type_definitions_register(type_definitions_register), 
-    project_file_structure(project_file_structure) 
+    : type_definitions_register(type_definitions_register)
+    , project_file_structure(project_file_structure) 
 {}
 
 GenericSubstitutionRule::Set::Ref AssignmentTypeChecker::get_generic_substitution_rules() {

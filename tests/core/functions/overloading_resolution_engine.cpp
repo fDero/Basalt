@@ -78,7 +78,7 @@ TEST(Core, Simple_Overloading_Resolution_Of_Generic_Vs_Non_Generic_Function_In_S
     std::vector<TypeSignature> arg_types = { TypeSignatureFactory::Int, TypeSignatureFactory::Int };
     FunctionDefinition::Ref func_def_ref = overoad_resolver.retrieve_function_definition(func_call, arg_types);
     ASSERT_NE(func_def_ref, nullptr);
-    EXPECT_EQ(func_def_ref->function_name, "add");
+    EXPECT_EQ(func_def_ref->function_name, "add<Int>");
 }
 
 TEST(Core, Simple_Overloading_Of_Non_Existing_Function) {

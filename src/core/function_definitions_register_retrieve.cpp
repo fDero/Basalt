@@ -92,7 +92,19 @@ FunctionDefinition::Ref FunctionDefinitionsRegister::cache_unaware_function_defi
     return instanitated_func_def_ref;
 }
 
+
 GenericSubstitutionRule::Set::Ref FunctionDefinitionsRegister::check_function_compatibility(
+    const FunctionDefinition::Ref func_def_ref,
+    const FunctionCall& func_call,
+    const std::vector<TypeSignature>& arg_types
+) {
+    bool function_is_non_generic_or_it_uses_type_inference = func_call.instantiated_generics.empty();
+    return function_is_non_generic_or_it_uses_type_inference
+        ? check_function_compatibility_using_type_inference(func_def_ref, func_call, arg_types)
+        : check_function_compatibility_explicitly(func_def_ref, func_call, arg_types);
+}
+
+GenericSubstitutionRule::Set::Ref FunctionDefinitionsRegister::check_function_compatibility_using_type_inference(
     const FunctionDefinition::Ref func_def_ref,
     const FunctionCall& func_call,
     const std::vector<TypeSignature>& arg_types
@@ -100,19 +112,35 @@ GenericSubstitutionRule::Set::Ref FunctionDefinitionsRegister::check_function_co
     assert_number_of_arguments_match(func_def_ref, arg_types);    
     size_t number_of_arguments = func_call.arguments.size();
     AssignmentTypeChecker type_checker(type_definitions_register, project_file_structure);
-    bool function_is_non_generic_or_it_uses_type_inference = func_call.instantiated_generics.empty();
-    bool different_number_of_generics = func_def_ref->template_generics_names.size() != func_call.instantiated_generics.size();
-    bool type_parameters_fatal_mismatch = !function_is_non_generic_or_it_uses_type_inference && different_number_of_generics;
-    if (type_parameters_fatal_mismatch) {
+    for (size_t i = 0; i < number_of_arguments; i++) {
+        const TypeSignature& declered_arg_type = func_def_ref->arguments[i].arg_type;
+        const TypeSignature& provided_arg_type = arg_types[i];
+        if (!type_checker.validate_assignment(provided_arg_type, declered_arg_type)) {
+            return nullptr;
+        }
+    }
+    if (type_checker.get_generic_substitution_rules()->size() != func_def_ref->template_generics_names.size()) {
         return nullptr;
     }
-    GenericSubstitutionRule::Set explicit_generics_substitution_rules;
-    if (!function_is_non_generic_or_it_uses_type_inference) {
-        explicit_generics_substitution_rules  = GenericSubstitutionRule::Set::zip_components_vectors(
-            func_def_ref->template_generics_names, 
-            func_call.instantiated_generics
-        );
+    return type_checker.get_generic_substitution_rules();
+}
+
+GenericSubstitutionRule::Set::Ref FunctionDefinitionsRegister::check_function_compatibility_explicitly(
+    const FunctionDefinition::Ref func_def_ref,
+    const FunctionCall& func_call,
+    const std::vector<TypeSignature>& arg_types
+) {
+    assert_number_of_arguments_match(func_def_ref, arg_types);    
+    size_t number_of_arguments = func_call.arguments.size();
+    bool different_number_of_generics = func_def_ref->template_generics_names.size() != func_call.instantiated_generics.size();
+    if (different_number_of_generics) {
+        return nullptr;
     }
+    GenericSubstitutionRule::Set explicit_generics_substitution_rules = GenericSubstitutionRule::Set::zip_components_vectors(
+        func_def_ref->template_generics_names, 
+        func_call.instantiated_generics
+    );
+    AssignmentTypeChecker type_checker(type_definitions_register, project_file_structure);
     GenericsInstantiationEngine generics_instantiation_engine(explicit_generics_substitution_rules);
     for (size_t i = 0; i < number_of_arguments; i++) {
         TypeSignature declered_arg_type = generics_instantiation_engine.instantiate_generic_typesignature(
@@ -123,10 +151,5 @@ GenericSubstitutionRule::Set::Ref FunctionDefinitionsRegister::check_function_co
             return nullptr;
         }
     }
-    if (function_is_non_generic_or_it_uses_type_inference) {
-        if (type_checker.get_generic_substitution_rules()->size() != func_def_ref->template_generics_names.size()) {
-            return nullptr;
-        }
-    }
-    return type_checker.get_generic_substitution_rules();
+    return std::make_shared<GenericSubstitutionRule::Set>(explicit_generics_substitution_rules);
 }
