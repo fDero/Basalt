@@ -3,7 +3,15 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include <list>
+#include <string>
+#include <unordered_map>
+#include <vector>
+
 #include "errors/internal_errors.hpp"
+#include "frontend/file_representation.hpp"
+#include "language/definitions.hpp"
+
 
 void assert_packagename_is_found(
     const std::unordered_map<std::string, std::string>::const_iterator& search_outcome,
@@ -11,9 +19,7 @@ void assert_packagename_is_found(
 ) {
     #ifdef DEBUG_BUILD
     if (search_outcome == end) {
-        throw std::runtime_error {
-            "package name was not found in the map of package names by file names"
-        };
+        throw_internal_error("package name was not found in the map of package names by file names");
     }
     #endif
 }
@@ -24,9 +30,7 @@ void assert_files_are_found(
 ) {
     #ifdef DEBUG_BUILD
     if (search_outcome == end) {
-        throw std::runtime_error {
-            "files vector was not found in the map of files by package names"
-        };
+        throw_internal_error("files vector was not found in the map of files by package names");
     }
     #endif
 }
@@ -37,9 +41,7 @@ void assert_imports_vector_is_found(
 ) {
     #ifdef DEBUG_BUILD
     if (search_outcome == end) {
-        throw std::runtime_error {
-            "imports vector was not found in the map of imports by file names"
-        };
+        throw_internal_error("imports vector was not found in the map of imports by file names");
     }
     #endif
 }
@@ -50,9 +52,7 @@ void assert_overload_set_exists(
 ) {
     #ifdef DEBUG_BUILD
     if (search_outcome == end) {
-        throw std::runtime_error {
-            "overload set was not found in the map of overload sets by overload ids"
-        };
+        throw_internal_error("overload set was not found in the map of overload sets by overload ids");
     }
     #endif
 }

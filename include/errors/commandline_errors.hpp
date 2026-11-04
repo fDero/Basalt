@@ -5,8 +5,13 @@
 
 #pragma once
 
-#include "cli/commandline.hpp"
-#include "errors/compilation_error.hpp"
+#include <iosfwd>
+#include <optional>
+#include <string>
+#include <vector>
+
+#include "cli/file_extensions.hpp"
+
 
 [[noreturn]] void throw_invalid_output_file_format(const std::string& filename);
 
@@ -41,4 +46,3 @@ void ensure_lack_of_input_files(const std::vector<std::string>& input_files);
 void ensure_source_file_is_open(const std::fstream& input_file, const std::string& file_name);
 
 void ensure_valid_target_triple(const std::string& target_triple, const std::string& error);
-

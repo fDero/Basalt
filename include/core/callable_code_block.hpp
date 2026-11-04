@@ -5,12 +5,16 @@
 
 #pragma once
 
-#include "core/type_definitions_register.hpp"
-#include "language/typesignatures.hpp"
-#include "language/definitions.hpp"
-#include "misc/smart_variant.hpp"
-#include "misc/forward_declarations.hpp"
+#include <optional>
+#include <string>
+#include <vector>
+
 #include "core/common_feature_adoption_plan_descriptor.hpp"
+#include "language/definitions.hpp"
+#include "language/typesignatures.hpp"
+#include "misc/forward_declarations.hpp"
+#include "misc/smart_variant.hpp"
+
 
 struct CallableCodeBlock : public SmartVariant<
     FunctionDefinition::Ref,
@@ -28,9 +32,9 @@ struct CallableCodeBlock : public SmartVariant<
     using ParentVariant::operator=;
     using ParentVariant::is;
     using ParentVariant::get;
-    
+
     [[nodiscard]] std::optional<TypeSignature> get_return_type() const;
-    
+
     [[nodiscard]] Kind callable_codeblock_kind() const;
 
     [[nodiscard]] std::vector<TypeSignature> get_arg_types() const;

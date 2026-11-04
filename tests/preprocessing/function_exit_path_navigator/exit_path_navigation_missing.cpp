@@ -1,9 +1,18 @@
-
 #include <gtest/gtest.h>
+
+#include "core/program_representation.hpp"
+#include "core/project_file_structure.hpp"
+#include "frontend/file_representation.hpp"
+#include "frontend/token.hpp"
+#include "language/definitions.hpp"
+#include "language/expressions.hpp"
+#include "language/statements.hpp"
 #include "preprocessing/function_exit_path_navigator.hpp"
-#include "../../tests_utilities/typesignature_factory.hpp"
-#include "../../tests_utilities/function_definition_factory.hpp"
 #include "syntax/keywords.hpp"
+#include "../../tests_utilities/compilation_error_assertions.hpp"
+#include "../../tests_utilities/function_definition_factory.hpp"
+#include "../../tests_utilities/typesignature_factory.hpp"
+
 
 TEST(Preprocessing, Function_Exit_Path_Navigator_Missing_Return) {
     ProjectFileStructure single_func_def_project({
@@ -31,7 +40,7 @@ TEST(Preprocessing, Function_Exit_Path_Navigator_Missing_Return) {
     });
     ProgramRepresentation single_func_def_program(single_func_def_project);
     FunctionExitPathNavigator exit_path_navigator(single_func_def_program);
-    EXPECT_ANY_THROW(exit_path_navigator.visit_all_function_definitions());
+    EXPECT_COMPILATION_ERROR(ValidationError, "does not return a value on every path", exit_path_navigator.visit_all_function_definitions());
 }
 
 TEST(Preprocessing, Function_Exit_Path_Navigator_Return_Inside_Of_A_While_Does_Not_Count_Because_While_Execution_Is_Not_Guaranteed) {
@@ -78,7 +87,7 @@ TEST(Preprocessing, Function_Exit_Path_Navigator_Return_Inside_Of_A_While_Does_N
     });
     ProgramRepresentation single_func_def_program(single_func_def_project);
     FunctionExitPathNavigator exit_path_navigator(single_func_def_program);
-    EXPECT_ANY_THROW(exit_path_navigator.visit_all_function_definitions());
+    EXPECT_COMPILATION_ERROR(ValidationError, "does not return a value on every path", exit_path_navigator.visit_all_function_definitions());
 }
 
 TEST(Preprocessing, Function_Exit_Path_Navigator_Not_Every_Path_Returns_Inside_Of_An_Until_Hence_Function_Does_Not_Return) {
@@ -135,7 +144,7 @@ TEST(Preprocessing, Function_Exit_Path_Navigator_Not_Every_Path_Returns_Inside_O
     });
     ProgramRepresentation single_func_def_program(single_func_def_project);
     FunctionExitPathNavigator exit_path_navigator(single_func_def_program);
-    EXPECT_ANY_THROW(exit_path_navigator.visit_all_function_definitions());
+    EXPECT_COMPILATION_ERROR(ValidationError, "does not return a value on every path", exit_path_navigator.visit_all_function_definitions());
 }
 
 TEST(Preprocessing, Function_Exit_Path_Navigator_Local_Control_Flow_Alteration_Doesnt_Count_As_Definitive_Exit) {
@@ -177,5 +186,5 @@ TEST(Preprocessing, Function_Exit_Path_Navigator_Local_Control_Flow_Alteration_D
     });
     ProgramRepresentation single_func_def_program(single_func_def_project);
     FunctionExitPathNavigator exit_path_navigator(single_func_def_program);
-    EXPECT_ANY_THROW(exit_path_navigator.visit_all_function_definitions());
+    EXPECT_COMPILATION_ERROR(ValidationError, "does not return a value on every path", exit_path_navigator.visit_all_function_definitions());
 }

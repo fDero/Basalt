@@ -1,9 +1,15 @@
+#include <vector>
 
 #include <gtest/gtest.h>
+
 #include "frontend/parser.hpp"
-#include "errors/internal_errors.hpp"
-#include "errors/parsing_errors.hpp"
+#include "frontend/token.hpp"
+#include "frontend/tokenized_file.hpp"
+#include "language/expressions.hpp"
+#include "language/functions.hpp"
+#include "language/statements.hpp"
 #include "syntax/keywords.hpp"
+
 
 TEST(Frontend, Parse_If_Statement_Inline_Then_No_Else) {
     std::vector<Token> tokens = {

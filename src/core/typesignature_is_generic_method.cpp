@@ -3,8 +3,8 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
-#include "core/generics_substitution_rules.hpp"
-#include "errors/internal_errors.hpp"
+#include "language/typesignatures.hpp"
+
 
 bool TypeSignature::is_generic() const {
     return ptr->is_generic();

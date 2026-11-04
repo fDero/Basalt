@@ -1,11 +1,23 @@
+#include <optional>
 
 #include <gtest/gtest.h>
 
-#include "syntax/keywords.hpp"
+#include "core/program_representation.hpp"
+#include "core/project_file_structure.hpp"
+#include "frontend/file_representation.hpp"
+#include "frontend/token.hpp"
+#include "language/definitions.hpp"
+#include "language/expressions.hpp"
+#include "language/functions.hpp"
+#include "language/statements.hpp"
+#include "language/typesignatures.hpp"
 #include "preprocessing/immutability_constraint_validator.hpp"
-#include "../../tests_utilities/typesignature_factory.hpp"
-#include "../../tests_utilities/struct_definition_factory.hpp"
+#include "syntax/keywords.hpp"
+#include "../../tests_utilities/compilation_error_assertions.hpp"
 #include "../../tests_utilities/function_definition_factory.hpp"
+#include "../../tests_utilities/struct_definition_factory.hpp"
+#include "../../tests_utilities/typesignature_factory.hpp"
+
 
 TEST(Preprocessing, Immutability_Constraint_Validator_Assignment_Of_Literal_To_Member_Of_A_Constant_Struct) {
     ProjectFileStructure single_func_def_project({
@@ -60,7 +72,7 @@ TEST(Preprocessing, Immutability_Constraint_Validator_Assignment_Of_Literal_To_M
     });
     ProgramRepresentation single_func_def_program(single_func_def_project);
     ImmutabilityConstraintValidator immutability_constraint_validator(single_func_def_program);
-    EXPECT_ANY_THROW(immutability_constraint_validator.visit_all_function_definitions());
+    EXPECT_COMPILATION_ERROR(ValidationError, "cannot assign to this expression: it is immutable", immutability_constraint_validator.visit_all_function_definitions());
 }
 
 TEST(Preprocessing, Immutability_Constraint_Validator_Assignment_Of_Literal_To_Member_Of_A_Struct_Returned_By_A_Function) {
@@ -108,7 +120,7 @@ TEST(Preprocessing, Immutability_Constraint_Validator_Assignment_Of_Literal_To_M
     });
     ProgramRepresentation single_func_def_program(single_func_def_project);
     ImmutabilityConstraintValidator immutability_constraint_validator(single_func_def_program);
-    EXPECT_ANY_THROW(immutability_constraint_validator.visit_all_function_definitions());
+    EXPECT_COMPILATION_ERROR(ValidationError, "cannot assign to this expression: it is immutable", immutability_constraint_validator.visit_all_function_definitions());
 }
 
 TEST(Preprocessing, Immutability_Constraint_Validator_Assignment_Of_Literal_To_Element_Of_Const_Array) {
@@ -148,5 +160,5 @@ TEST(Preprocessing, Immutability_Constraint_Validator_Assignment_Of_Literal_To_E
     });
     ProgramRepresentation single_func_def_program(single_func_def_project);
     ImmutabilityConstraintValidator immutability_constraint_validator(single_func_def_program);
-    EXPECT_ANY_THROW(immutability_constraint_validator.visit_all_function_definitions());
+    EXPECT_COMPILATION_ERROR(ValidationError, "cannot assign to this expression: it is immutable", immutability_constraint_validator.visit_all_function_definitions());
 }

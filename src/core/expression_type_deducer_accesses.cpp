@@ -3,17 +3,25 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include <optional>
+#include <string>
+
 #include "core/expression_type_deducer.hpp"
-#include "core/assignment_type_checker.hpp"
-#include "errors/preprocessing_errors.hpp"
+#include "core/type_definitions_register.hpp"
 #include "errors/internal_errors.hpp"
+#include "errors/preprocessing_errors.hpp"
+#include "language/definitions.hpp"
+#include "language/expressions.hpp"
+#include "language/typesignatures.hpp"
+#include "syntax/primitive_types.hpp"
+
 
 std::optional<TypeSignature> ExpressionTypeDeducer::deduce_type_from_square_brackets_access(const Expression& square_brackets_access_expr) {
     assert_expression_is<SquareBracketsAccess>(square_brackets_access_expr);
     const SquareBracketsAccess& square_brackets_access = square_brackets_access_expr.get<SquareBracketsAccess>();
     std::optional<TypeSignature> left_operand_type = deduce_expression_type(square_brackets_access.storage);
     std::optional<TypeSignature> right_operand_type = deduce_expression_type(square_brackets_access.index);
-    ensure_typesignature_is_int(right_operand_type);
+    ensure_typesignature_is_int(right_operand_type, square_brackets_access.index);
     if (!left_operand_type.has_value()) {
         return std::nullopt;
     }
@@ -50,7 +58,7 @@ std::optional<TypeSignature> ExpressionTypeDeducer::deduce_type_from_dot_member_
         case TypeSignatureBody::Kind::pointer_type:     return deduce_type_from_dot_member_access_on_pointer_type(dot_member_access, left_operand_type.get<PointerType>());
         case TypeSignatureBody::Kind::primitive_type:   return deduce_type_from_dot_member_access_on_primitive_type(dot_member_access, left_operand_type.get<PrimitiveType>());
         case TypeSignatureBody::Kind::slice_type:       return deduce_type_from_dot_member_access_on_slice_type(dot_member_access, left_operand_type.get<SliceType>());
-        default: throw_bad_dot_member_access_on_type(left_operand_type, dot_member_access); 
+        default: throw_bad_dot_member_access_on_type(left_operand_type, dot_member_access);
     }
 }
 
@@ -71,7 +79,7 @@ std::optional<TypeSignature> ExpressionTypeDeducer::deduce_type_from_dot_member_
     const CustomType& custom_type
 ) {
     TypeDefinition type_definition = type_definitions_register.retrieve_type_definition(custom_type);
-    ensure_type_definition_is<StructDefinition>(type_definition);
+    ensure_type_definition_is_struct_for_member_access(type_definition, dot_member_access);
     const StructDefinition& struct_type_definition = type_definition.get<StructDefinition>();
     const std::string& member_name = dot_member_access.member_name;
     for (const auto& member : struct_type_definition.fields) {

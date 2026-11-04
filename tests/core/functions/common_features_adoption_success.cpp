@@ -1,15 +1,19 @@
-
 #include <gtest/gtest.h>
-#include "core/function_definitions_register.hpp"
-#include "core/type_definitions_register.hpp"
-#include "core/common_feature_adoption_plan_generation_engine.hpp"
+
 #include "core/common_feature_adoption_plan_descriptor.hpp"
-#include "errors/internal_errors.hpp"
-#include "errors/parsing_errors.hpp"
-#include "../../tests_utilities/struct_definition_factory.hpp"
-#include "../../tests_utilities/typesignature_factory.hpp"
+#include "core/common_feature_adoption_plan_generation_engine.hpp"
+#include "core/function_definitions_register.hpp"
+#include "core/project_file_structure.hpp"
+#include "core/type_definitions_register.hpp"
+#include "frontend/file_representation.hpp"
+#include "frontend/token.hpp"
+#include "language/definitions.hpp"
+#include "language/expressions.hpp"
+#include "language/functions.hpp"
+#include "language/typesignatures.hpp"
 #include "../../tests_utilities/function_definition_factory.hpp"
-#include "../../tests_utilities/type_alias_factory.hpp"
+#include "../../tests_utilities/typesignature_factory.hpp"
+
 
 ProjectFileStructure project_with_single_file_containing_four_overloads_of_the_add_function ({
     FileRepresentation {

@@ -5,20 +5,16 @@
 
 #pragma once
 
-#include "core/program_representation.hpp"
-#include "backend/translated_expression.hpp"
-#include "backend/type_definitions_llvm_translator.hpp"
+#include <llvm/IR/BasicBlock.h>
 
-#include <llvm/IR/IRBuilder.h>
-#include <llvm/IR/LLVMContext.h>
-#include <llvm/IR/Module.h>
-#include <llvm/IR/Constants.h>
+#include "backend/translated_expression.hpp"
+#include "misc/forward_declarations.hpp"
+
 
 class TypeManipulationsLLVMTranslator {
-
     public:
         TypeManipulationsLLVMTranslator(
-            ProgramRepresentation& program_representation, 
+            ProgramRepresentation& program_representation,
             TypeDefinitionsLLVMTranslator& type_definitions_llvm_translator
         );
 

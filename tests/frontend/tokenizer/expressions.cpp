@@ -1,8 +1,13 @@
+#include <sstream>
+#include <string>
+#include <vector>
 
 #include <gtest/gtest.h>
+
+#include "frontend/token.hpp"
+#include "frontend/tokenized_file.hpp"
 #include "frontend/tokenizer.hpp"
-#include "errors/internal_errors.hpp"
-#include "errors/parsing_errors.hpp"
+
 
 TEST(Frontend, Tokenize_Complex_Math_Expression) {
     std::string inline_input = "(16+17*19)/2;";

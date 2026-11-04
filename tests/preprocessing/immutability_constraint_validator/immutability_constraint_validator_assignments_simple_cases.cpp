@@ -1,9 +1,20 @@
+#include <optional>
 
 #include <gtest/gtest.h>
-#include "syntax/keywords.hpp"
+
+#include "core/program_representation.hpp"
+#include "core/project_file_structure.hpp"
+#include "frontend/file_representation.hpp"
+#include "frontend/token.hpp"
+#include "language/expressions.hpp"
+#include "language/functions.hpp"
+#include "language/statements.hpp"
 #include "preprocessing/immutability_constraint_validator.hpp"
-#include "../../tests_utilities/typesignature_factory.hpp"
+#include "syntax/keywords.hpp"
+#include "../../tests_utilities/compilation_error_assertions.hpp"
 #include "../../tests_utilities/function_definition_factory.hpp"
+#include "../../tests_utilities/typesignature_factory.hpp"
+
 
 TEST(Preprocessing, Immutability_Constraint_Validator_Assignment_Of_Literal_To_Var) {
     ProjectFileStructure single_func_def_project({
@@ -66,7 +77,7 @@ TEST(Preprocessing, Immutability_Constraint_Validator_Assignment_Of_Literal_To_L
     });
     ProgramRepresentation single_func_def_program(single_func_def_project);
     ImmutabilityConstraintValidator immutability_constraint_validator(single_func_def_program);
-    EXPECT_ANY_THROW(immutability_constraint_validator.visit_all_function_definitions());
+    EXPECT_COMPILATION_ERROR(ValidationError, "cannot assign to this expression: it is immutable", immutability_constraint_validator.visit_all_function_definitions());
 }
 
 TEST(Preprocessing, Immutability_Constraint_Validator_Assignment_Of_Literal_To_Const) {
@@ -101,7 +112,7 @@ TEST(Preprocessing, Immutability_Constraint_Validator_Assignment_Of_Literal_To_C
     });
     ProgramRepresentation single_func_def_program(single_func_def_project);
     ImmutabilityConstraintValidator immutability_constraint_validator(single_func_def_program);
-    EXPECT_ANY_THROW(immutability_constraint_validator.visit_all_function_definitions());
+    EXPECT_COMPILATION_ERROR(ValidationError, "cannot assign to `x` because it is a constant", immutability_constraint_validator.visit_all_function_definitions());
 }
 
 TEST(Preprocessing, Immutability_Constraint_Validator_Assignment_Of_Literal_To_Function_Call) {
@@ -125,7 +136,7 @@ TEST(Preprocessing, Immutability_Constraint_Validator_Assignment_Of_Literal_To_F
                                 {},
                                 {}
                             },
-                            Identifier { Token { "null", "test.basalt", 1, 1, 1, Token::Type::text } },
+                            IntLiteral { Token { "1", "test.basalt", 1, 1, 1, Token::Type::integer_literal } },
                             Token { "=", "test.basalt", 1, 1, 1, Token::Type::symbol }
                         }
                     }
@@ -135,5 +146,5 @@ TEST(Preprocessing, Immutability_Constraint_Validator_Assignment_Of_Literal_To_F
     });
     ProgramRepresentation single_func_def_program(single_func_def_project);
     ImmutabilityConstraintValidator immutability_constraint_validator(single_func_def_program);
-    EXPECT_ANY_THROW(immutability_constraint_validator.visit_all_function_definitions());
+    EXPECT_COMPILATION_ERROR(ValidationError, "cannot assign to this expression", immutability_constraint_validator.visit_all_function_definitions());
 }

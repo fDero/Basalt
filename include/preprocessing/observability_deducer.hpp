@@ -5,16 +5,14 @@
 
 #pragma once
 
-#include "core/program_representation.hpp"
-#include "core/scope_context.hpp"
-#include "language/expressions.hpp"
-#include "errors/preprocessing_errors.hpp"
+#include "misc/forward_declarations.hpp"
+
 
 class ObservabilityDeducer {
 
     public:
         ObservabilityDeducer(
-            ScopeContext& scope_context, 
+            ScopeContext& scope_context,
             ProgramRepresentation& program_representation
         );
 

@@ -5,14 +5,17 @@
 
 #pragma once
 
-#include <memory>
+#include <cstddef>
+#include <optional>
 #include <string>
-#include <map>
 #include <variant>
+#include <vector>
 
+#include "language/definitions.hpp"
+#include "misc/debug_informations_aware_entity.hpp"
 #include "misc/forward_declarations.hpp"
 #include "misc/smart_variant.hpp"
-#include "language/definitions.hpp"
+
 
 struct RecursiveAdoptionPlan {
     size_t argument_index;
@@ -20,7 +23,7 @@ struct RecursiveAdoptionPlan {
     std::vector<CommonFeatureAdoptionPlan> nested_plans;
 };
 
-struct CommonFeatureAdoptionPlan 
+struct CommonFeatureAdoptionPlan
     : public SmartVariant<RecursiveAdoptionPlan, FunctionDefinition::Ref>
 {
     using SmartVariant<RecursiveAdoptionPlan, FunctionDefinition::Ref>::is;

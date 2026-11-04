@@ -3,14 +3,21 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include <algorithm>
 #include <assert.h>
+#include <cstddef>
+#include <iterator>
+#include <string>
+#include <vector>
 
-#include "syntax/specials.hpp"
-#include "syntax/primitive_types.hpp"
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 #include "frontend/parser.hpp"
-#include "language/expressions.hpp"
+#include "frontend/token.hpp"
+#include "language/typesignatures.hpp"
+#include "syntax/primitive_types.hpp"
+#include "syntax/specials.hpp"
+
 
 TypeSignature Parser::parse_simple_typesignature() {
     if (iterator->sourcetext == pointer_type_symbol) return parse_pointer_type();

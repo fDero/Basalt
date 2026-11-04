@@ -5,14 +5,11 @@
 
 #pragma once
 
-#include <unordered_map>
-#include <unordered_set>
 #include <string>
-#include <map>
+#include <vector>
 
-#include "frontend/tokenizer.hpp"
-#include "language/definitions.hpp"
-#include "errors/compilation_error.hpp"
+#include "misc/forward_declarations.hpp"
+
 
 [[noreturn]] void throw_expression_expected_got_unrecognized(
     const std::vector<Token>::iterator& iterator
@@ -20,6 +17,11 @@
 
 [[noreturn]] void throw_invalid_use_of_token_within_global_scope(
     const std::vector<Token>::iterator& iterator
+);
+
+void ensure_file_is_not_empty(
+    const std::vector<Token>& source_tokens,
+    const std::string& filename
 );
 
 void ensure_there_are_still_tokens(
@@ -82,14 +84,17 @@ void ensure_square_bracket_gets_closed_in_expression_wrapping(
 
 );
 
-void ensure_type_not_already_visited_hence_no_cyclic_dependency(
-    const std::string& target_tag_name, 
-    const std::unordered_set<std::string>& visited_definitions
+void ensure_union_has_multiple_alternatives(
+    const TypeSignature& parsed_alternatives,
+    const UnionDefinition& union_definition
 );
 
-[[noreturn]] void throw_unrecognized_escape_sequence(const Token& token, char current_char);
+[[noreturn]] void throw_unrecognized_escape_sequence(
+    const Token& token,
+    char current_char
+);
 
 void ensure_character_literal_has_exactly_one_character(
-    const Token& token, 
+    const Token& token,
     const std::string& char_literal_value
 );

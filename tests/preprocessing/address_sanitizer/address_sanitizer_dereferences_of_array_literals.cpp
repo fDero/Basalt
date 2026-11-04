@@ -1,10 +1,19 @@
+#include <optional>
 
 #include <gtest/gtest.h>
+
+#include "core/program_representation.hpp"
+#include "core/project_file_structure.hpp"
+#include "frontend/file_representation.hpp"
+#include "frontend/token.hpp"
+#include "language/expressions.hpp"
+#include "language/statements.hpp"
 #include "preprocessing/address_sanitizer.hpp"
-#include "../../tests_utilities/typesignature_factory.hpp"
-#include "../../tests_utilities/function_definition_factory.hpp"
-#include "../../tests_utilities/struct_definition_factory.hpp"
 #include "syntax/keywords.hpp"
+#include "../../tests_utilities/compilation_error_assertions.hpp"
+#include "../../tests_utilities/function_definition_factory.hpp"
+#include "../../tests_utilities/typesignature_factory.hpp"
+
 
 TEST(Preprocessing, Immutability_Constraint_Validator_Assignment_Of_Ref_To_Array_Literal_To_Const_Slice) {
     ProjectFileStructure single_func_def_project({
@@ -45,7 +54,7 @@ TEST(Preprocessing, Immutability_Constraint_Validator_Assignment_Of_Ref_To_Array
     });
     ProgramRepresentation single_func_def_program(single_func_def_project);
     AddressSanitizer address_sanitzier(single_func_def_program);
-    EXPECT_ANY_THROW(address_sanitzier.visit_all_function_definitions());
+    EXPECT_COMPILATION_ERROR(ValidationError, "cannot take the address", address_sanitzier.visit_all_function_definitions());
 }
 
 TEST(Preprocessing, Immutability_Constraint_Validator_Assignment_Of_Ref_To_Array_Literal_To_Var_Slice) {
@@ -87,5 +96,5 @@ TEST(Preprocessing, Immutability_Constraint_Validator_Assignment_Of_Ref_To_Array
     });
     ProgramRepresentation single_func_def_program(single_func_def_project);
     AddressSanitizer address_sanitzier(single_func_def_program);
-    EXPECT_ANY_THROW(address_sanitzier.visit_all_function_definitions());
+    EXPECT_COMPILATION_ERROR(ValidationError, "cannot take the address", address_sanitzier.visit_all_function_definitions());
 }

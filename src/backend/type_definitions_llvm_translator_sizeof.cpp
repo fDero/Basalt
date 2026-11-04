@@ -3,8 +3,16 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include <cstddef>
+
+#include <llvm/IR/Module.h>
+#include <llvm/IR/Type.h>
+
 #include "backend/type_definitions_llvm_translator.hpp"
-#include "errors/internal_errors.hpp"
+#include "core/program_representation.hpp"
+#include "language/definitions.hpp"
+#include "language/typesignatures.hpp"
+
 
 size_t TypeDefinitionsLLVMTranslator::compute_header_unaware_typesignature_memory_footprint(
     const TypeSignature& typesignature

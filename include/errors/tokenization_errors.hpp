@@ -5,11 +5,12 @@
 
 #pragma once
 
-#include <optional> 
+#include <stack>
+#include <string>
 
-#include "frontend/tokenizer.hpp"
-#include "errors/compilation_error.hpp"
 #include "misc/debug_informations_aware_entity.hpp"
+#include "misc/forward_declarations.hpp"
+
 
 [[noreturn]] void throw_unexpected_token(
     const Token& token

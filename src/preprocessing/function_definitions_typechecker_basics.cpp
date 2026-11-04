@@ -3,7 +3,20 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include <optional>
+#include <vector>
+
+#include "core/program_representation.hpp"
+#include "core/scope_context.hpp"
+#include "errors/preprocessing_errors.hpp"
+#include "language/definitions.hpp"
+#include "language/expressions.hpp"
+#include "language/functions.hpp"
+#include "language/statements.hpp"
+#include "language/typesignatures.hpp"
 #include "preprocessing/function_definitions_typechecker.hpp"
+
+
 using FDTC = FunctionDefinitionsTypeChecker;
 
 FunctionDefinitionsTypeChecker::FunctionDefinitionsTypeChecker(

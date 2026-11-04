@@ -1,7 +1,11 @@
-
 #include <gtest/gtest.h>
+
+#include "core/program_representation.hpp"
+#include "core/project_file_structure.hpp"
+#include "core/scope_context.hpp"
 #include "preprocessing/bond_inspector.hpp"
 #include "../../tests_utilities/typesignature_factory.hpp"
+
 
 TEST(Preprocessing, Bond_Inspector_On_Non_String_Primitive_Types) {
     ProjectFileStructure empty_project;

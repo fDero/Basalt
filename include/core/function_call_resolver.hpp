@@ -5,17 +5,15 @@
 
 #pragma once
 
-#include "core/project_file_structure.hpp"
-#include "core/type_definitions_register.hpp"
-#include "core/function_definitions_register.hpp"
-#include "core/function_definitions_register.hpp"
-#include "core/common_feature_adoption_plan_generation_engine.hpp"
-#include "core/scope_context.hpp"
-#include "core/callable_code_block.hpp"
-#include "core/caching_aware_register.hpp"
+#include <optional>
+#include <vector>
+
+#include "language/typesignatures.hpp"
+#include "misc/forward_declarations.hpp"
+#include "misc/smart_variant.hpp"
+
 
 class FunctionCallResolver {
-
     public:
         FunctionCallResolver(
             TypeDefinitionsRegister& type_definitions_register,
@@ -28,7 +26,7 @@ class FunctionCallResolver {
         using ReturnType = SmartVariant<TypeSignature, Void, Unresolved>;
 
         [[nodiscard]] ReturnType resolve_function_call_return_type(
-            const FunctionCall& function_call, 
+            const FunctionCall& function_call,
             const std::vector<TypeSignature>& argument_types
         );
 

@@ -3,7 +3,14 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include <string>
+#include <vector>
+
+#include "frontend/token.hpp"
 #include "language/definitions.hpp"
+#include "language/typesignatures.hpp"
+#include "misc/debug_informations_aware_entity.hpp"
+
 
 FunctionDefinition::FunctionDefinition(const Token& func_token)
     : DebugInformationsAwareEntity(func_token) 

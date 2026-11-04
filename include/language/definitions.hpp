@@ -5,26 +5,28 @@
 
 #pragma once
 
-#include <vector>
-#include <string>
+#include <cstddef>
+#include <memory>
 #include <optional>
+#include <string>
+#include <vector>
 
-#include "frontend/tokenizer.hpp"
-#include "language/typesignatures.hpp"
 #include "language/statements.hpp"
-#include "language/expressions.hpp"
+#include "language/typesignatures.hpp"
 #include "misc/debug_informations_aware_entity.hpp"
+#include "misc/forward_declarations.hpp"
 #include "misc/smart_variant.hpp"
 
+
 struct FunctionDefinition : public DebugInformationsAwareEntity {
-    
+
     using Ref = std::shared_ptr<FunctionDefinition>;
     using OverloadSet = std::vector<Ref>;
 
     FunctionDefinition(const Token& func_token);
-    
+
     FunctionDefinition(
-        const std::string& function_name, 
+        const std::string& function_name,
         const DebugInformationsAwareEntity& debug_info
     );
 
@@ -38,7 +40,7 @@ struct FunctionDefinition : public DebugInformationsAwareEntity {
     std::vector<std::string> template_generics_names;
     std::vector<Argument> arguments;
     std::vector<Statement> code;
-    
+
     std::optional<std::string> extern_implementation;
 };
 
@@ -47,7 +49,7 @@ struct StructDefinition : public DebugInformationsAwareEntity  {
     StructDefinition(const Token& struct_token);
 
     StructDefinition(
-        const std::string& struct_name, 
+        const std::string& struct_name,
         const DebugInformationsAwareEntity& debug_info
     );
 
@@ -68,7 +70,7 @@ struct UnionDefinition : public DebugInformationsAwareEntity  {
     UnionDefinition(const Token& union_token);
 
     UnionDefinition(
-        const std::string& union_name, 
+        const std::string& union_name,
         const DebugInformationsAwareEntity& debug_info
     );
 
@@ -82,13 +84,13 @@ struct UnionDefinition : public DebugInformationsAwareEntity  {
 struct TypeAlias : public DebugInformationsAwareEntity {
 
     TypeAlias(
-        const Token& alias_token, 
-        const std::vector<std::string>& template_generics_names, 
+        const Token& alias_token,
+        const std::vector<std::string>& template_generics_names,
         const TypeSignature& aliased_type
     );
 
     TypeAlias(
-        const std::string& alias_name, 
+        const std::string& alias_name,
         DebugInformationsAwareEntity debug_info,
         const TypeSignature& aliased_type
     );
@@ -100,13 +102,13 @@ struct TypeAlias : public DebugInformationsAwareEntity {
     [[nodiscard]] std::string generate_alias_id() const;
 };
 
-struct TypeDefinition 
-    : public SmartVariant<StructDefinition,UnionDefinition,TypeAlias> 
+struct TypeDefinition
+    : public SmartVariant<StructDefinition,UnionDefinition,TypeAlias>
 {
     using SmartVariant::SmartVariant;
     using SmartVariant::operator=;
     using SmartVariant::index;
-    
+
     using SmartVariant::get;
     using SmartVariant::is;
 

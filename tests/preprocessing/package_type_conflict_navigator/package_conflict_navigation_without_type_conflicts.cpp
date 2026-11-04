@@ -1,11 +1,11 @@
-
 #include <gtest/gtest.h>
-#include "core/generics_substitution_rules.hpp"
-#include "errors/internal_errors.hpp"
+
+#include "core/program_representation.hpp"
+#include "core/project_file_structure.hpp"
+#include "frontend/file_representation.hpp"
 #include "preprocessing/package_type_conflict_navigator.hpp"
-#include "../../tests_utilities/union_definition_factory.hpp"
 #include "../../tests_utilities/struct_definition_factory.hpp"
-#include "../../tests_utilities/typesignature_factory.hpp"
+
 
 ProjectFileStructure simple_multifile_project_with_harmless_typedefs({
     FileRepresentation {

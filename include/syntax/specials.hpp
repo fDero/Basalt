@@ -5,8 +5,9 @@
 
 #pragma once
 
-#include <string>
 #include <set>
+#include <string>
+
 
 inline const std::string constexpr pointer_type_symbol          = "#";
 inline const std::string constexpr slice_type_symbol            = "$";

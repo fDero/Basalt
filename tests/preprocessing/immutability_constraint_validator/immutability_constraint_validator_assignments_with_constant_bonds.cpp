@@ -1,10 +1,22 @@
+#include <optional>
 
 #include <gtest/gtest.h>
-#include "syntax/keywords.hpp"
+
+#include "core/program_representation.hpp"
+#include "core/project_file_structure.hpp"
+#include "frontend/file_representation.hpp"
+#include "frontend/token.hpp"
+#include "language/definitions.hpp"
+#include "language/expressions.hpp"
+#include "language/statements.hpp"
+#include "language/typesignatures.hpp"
 #include "preprocessing/immutability_constraint_validator.hpp"
-#include "../../tests_utilities/typesignature_factory.hpp"
+#include "syntax/keywords.hpp"
+#include "../../tests_utilities/compilation_error_assertions.hpp"
 #include "../../tests_utilities/function_definition_factory.hpp"
 #include "../../tests_utilities/struct_definition_factory.hpp"
+#include "../../tests_utilities/typesignature_factory.hpp"
+
 
 TEST(Preprocessing, Immutability_Constraint_Validator_Assignment_Of_Address_Of_Const_To_Var) {
     ProjectFileStructure single_func_def_project({
@@ -15,9 +27,9 @@ TEST(Preprocessing, Immutability_Constraint_Validator_Assignment_Of_Address_Of_C
                 .imports = { }
             },
             .type_defs = { },
-            .func_defs = { 
+            .func_defs = {
                 FunctionDefinitionFactory::make_function_definition(
-                    "f", "test.basalt", {}, {}, 
+                    "f", "test.basalt", {}, {},
                     std::nullopt,
                     {
                         VariableDeclaration {
@@ -47,7 +59,7 @@ TEST(Preprocessing, Immutability_Constraint_Validator_Assignment_Of_Address_Of_C
     });
     ProgramRepresentation single_func_def_program(single_func_def_project);
     ImmutabilityConstraintValidator immutability_constraint_validator(single_func_def_program);
-    EXPECT_ANY_THROW(immutability_constraint_validator.visit_all_function_definitions());
+    EXPECT_COMPILATION_ERROR(ValidationError, "would allow immutable data to be modified through it", immutability_constraint_validator.visit_all_function_definitions());
 }
 
 TEST(Preprocessing, Immutability_Constraint_Validator_Assignment_Of_Const_Struct_To_Var_Struct_Where_Structs_Have_Pointers) {
@@ -58,18 +70,18 @@ TEST(Preprocessing, Immutability_Constraint_Validator_Assignment_Of_Const_Struct
                 .packagename = "mainpackage",
                 .imports = { }
             },
-            .type_defs = { 
+            .type_defs = {
                 StructDefinitionFactory::make_struct_definition(
-                    "IntPtrWrapper", "test.basalt", {}, { 
-                        StructDefinition::Field { 
-                            "wrapped", TypeSignatureFactory::PointerToInt 
+                    "IntPtrWrapper", "test.basalt", {}, {
+                        StructDefinition::Field {
+                            "wrapped", TypeSignatureFactory::PointerToInt
                         }
                     }
                 )
             },
-            .func_defs = { 
+            .func_defs = {
                 FunctionDefinitionFactory::make_function_definition(
-                    "f", "test.basalt", {}, {}, 
+                    "f", "test.basalt", {}, {},
                     std::nullopt,
                     {
                         VariableDeclaration {
@@ -102,7 +114,7 @@ TEST(Preprocessing, Immutability_Constraint_Validator_Assignment_Of_Const_Struct
     });
     ProgramRepresentation single_func_def_program(single_func_def_project);
     ImmutabilityConstraintValidator immutability_constraint_validator(single_func_def_program);
-    EXPECT_ANY_THROW(immutability_constraint_validator.visit_all_function_definitions());
+    EXPECT_COMPILATION_ERROR(ValidationError, "would allow immutable data to be modified through it", immutability_constraint_validator.visit_all_function_definitions());
 }
 
 TEST(Preprocessing, Immutability_Constraint_Validator_Assignment_Of_Const_Ptr_To_Var_Ptr) {
@@ -114,9 +126,9 @@ TEST(Preprocessing, Immutability_Constraint_Validator_Assignment_Of_Const_Ptr_To
                 .imports = { }
             },
             .type_defs = { },
-            .func_defs = { 
+            .func_defs = {
                 FunctionDefinitionFactory::make_function_definition(
-                    "f", "test.basalt", {}, {}, 
+                    "f", "test.basalt", {}, {},
                     std::nullopt,
                     {
                         VariableDeclaration {
@@ -143,5 +155,5 @@ TEST(Preprocessing, Immutability_Constraint_Validator_Assignment_Of_Const_Ptr_To
     });
     ProgramRepresentation single_func_def_program(single_func_def_project);
     ImmutabilityConstraintValidator immutability_constraint_validator(single_func_def_program);
-    EXPECT_ANY_THROW(immutability_constraint_validator.visit_all_function_definitions());
+    EXPECT_COMPILATION_ERROR(ValidationError, "would allow immutable data to be modified through it", immutability_constraint_validator.visit_all_function_definitions());
 }

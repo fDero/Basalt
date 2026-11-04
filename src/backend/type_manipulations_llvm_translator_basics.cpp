@@ -3,10 +3,16 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include <llvm/IR/BasicBlock.h>
+#include <llvm/IR/Type.h>
+
+#include "backend/translated_expression.hpp"
+#include "backend/type_definitions_llvm_translator.hpp"
 #include "backend/type_manipulations_llvm_translator.hpp"
-#include "backend/llvm_wrappers.hpp"
-#include "errors/internal_errors.hpp"
+#include "core/program_representation.hpp"
+#include "language/typesignatures.hpp"
 #include "syntax/primitive_types.hpp"
+
 
 TypeManipulationsLLVMTranslator::TypeManipulationsLLVMTranslator(
     ProgramRepresentation& program_representation, 

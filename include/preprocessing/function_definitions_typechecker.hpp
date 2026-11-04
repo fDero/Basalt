@@ -5,11 +5,12 @@
 
 #pragma once
 
-#include "core/program_representation.hpp"
-#include "core/scope_context.hpp"
-#include "preprocessing/immutability_deducer.hpp"
-#include "preprocessing/bond_inspector.hpp"
-#include "errors/preprocessing_errors.hpp"
+#include <optional>
+#include <vector>
+
+#include "language/typesignatures.hpp"
+#include "misc/forward_declarations.hpp"
+
 
 class FunctionDefinitionsTypeChecker {
 
@@ -48,7 +49,7 @@ class FunctionDefinitionsTypeChecker {
             void visit_square_bracket_access(const SquareBracketsAccess& square_brackets_access);
 
             void visit_function_call(
-                const FunctionCall& fcall, 
+                const FunctionCall& fcall,
                 bool should_return_something
             );
 

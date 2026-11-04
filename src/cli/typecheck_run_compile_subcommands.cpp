@@ -3,14 +3,22 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
-#include <iostream>
+#include <string>
+#include <vector>
 
-#include "frontend/tokenizer.hpp"
-#include "cli/commandline.hpp"
-#include "frontend/parser.hpp"
-#include "preprocessing/preprocessor.hpp"
 #include "backend/finalizer.hpp"
+#include "cli/commandline.hpp"
+#include "cli/file_extensions.hpp"
+#include "core/program_representation.hpp"
+#include "core/project_file_structure.hpp"
 #include "errors/commandline_errors.hpp"
+#include "errors/compilation_error.hpp"
+#include "frontend/file_representation.hpp"
+#include "frontend/parser.hpp"
+#include "frontend/tokenized_file.hpp"
+#include "frontend/tokenizer.hpp"
+#include "preprocessing/preprocessor.hpp"
+
 
 void CommandLineController::typechecker_subcommand() {
     ensure_lack_of_output_files(outputs);
@@ -49,6 +57,7 @@ void CommandLineController::compiler_subcommand() {
     preprocessor.preprocess_packages_typename_conflicts();
     preprocessor.preprocess_type_definitions();
     preprocessor.preprocess_function_definitions();
+    preprocessor.ensure_program_has_a_main_function();
     Finalizer finalizer(program_representation, target_triple);
     finalizer.generate_llvm_ir();
     for (const std::string& output_file : outputs) {
@@ -62,8 +71,7 @@ void CommandLineController::compiler_subcommand() {
 }
 
 void CommandLineController::interpreter_subcommand() {
-    using CompilationError::Kind::CommandLineError;
-    CompilationError::raise<CommandLineError>(
+    throw CommandLineError(
         "`run` subcommand not yet implemented"
     );
 }

@@ -1,9 +1,20 @@
+#include <optional>
 
 #include <gtest/gtest.h>
+
+#include "core/program_representation.hpp"
+#include "core/project_file_structure.hpp"
+#include "frontend/file_representation.hpp"
+#include "frontend/token.hpp"
+#include "language/definitions.hpp"
+#include "language/expressions.hpp"
+#include "language/statements.hpp"
 #include "preprocessing/function_exit_path_navigator.hpp"
-#include "../../tests_utilities/typesignature_factory.hpp"
-#include "../../tests_utilities/function_definition_factory.hpp"
 #include "syntax/keywords.hpp"
+#include "../../tests_utilities/compilation_error_assertions.hpp"
+#include "../../tests_utilities/function_definition_factory.hpp"
+#include "../../tests_utilities/typesignature_factory.hpp"
+
 
 TEST(Preprocessing, Function_Exit_Path_Navigator_Stuff_After_Return_Is_Unreachable) {
     ProjectFileStructure single_func_def_project({
@@ -50,7 +61,7 @@ TEST(Preprocessing, Function_Exit_Path_Navigator_Stuff_After_Return_Is_Unreachab
     });
     ProgramRepresentation single_func_def_program(single_func_def_project);
     FunctionExitPathNavigator exit_path_navigator(single_func_def_program);
-    EXPECT_ANY_THROW(exit_path_navigator.visit_all_function_definitions());
+    EXPECT_COMPILATION_ERROR(ValidationError, "unreachable code", exit_path_navigator.visit_all_function_definitions());
 }
 
 TEST(Preprocessing, Function_Exit_Path_Navigator_Conditional_Where_Both_Branches_Exit_Makes_The_Remaining_Code_Unreachable) {
@@ -124,5 +135,5 @@ TEST(Preprocessing, Function_Exit_Path_Navigator_Conditional_Where_Both_Branches
     });
     ProgramRepresentation single_func_def_program(single_func_def_project);
     FunctionExitPathNavigator exit_path_navigator(single_func_def_program);
-    EXPECT_ANY_THROW(exit_path_navigator.visit_all_function_definitions());
+    EXPECT_COMPILATION_ERROR(ValidationError, "unreachable code", exit_path_navigator.visit_all_function_definitions());
 }

@@ -3,11 +3,16 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
-#include "errors/preprocessing_errors.hpp"
-#include "errors/internal_errors.hpp"
-#include "core/project_file_structure.hpp"
-
+#include <algorithm>
 #include <functional>
+#include <list>
+#include <string>
+#include <vector>
+
+#include "core/project_file_structure.hpp"
+#include "errors/internal_errors.hpp"
+#include "frontend/file_representation.hpp"
+
 
 ProjectFileStructure::ProjectFileStructure(const std::vector<FileRepresentation>& file_representations) {
     for (const FileRepresentation& file_representation : file_representations) {

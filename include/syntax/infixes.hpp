@@ -5,11 +5,12 @@
 
 #pragma once
 
-#include <string>
-#include <set>
 #include <map>
+#include <set>
+#include <string>
 
 #include "syntax/keywords.hpp"
+
 
 inline const std::string constexpr dot_member_access_operator   = ".";
 
@@ -48,23 +49,23 @@ inline const std::set<std::string> infixies {
     dot_member_access_operator
 };
 
-inline const std::set<std::string> type_operators { 
-    is_keyword, as_keyword 
+inline const std::set<std::string> type_operators {
+    is_keyword, as_keyword
 };
 
 inline const std::map<std::string, short> infix_operators_priority {
-    { boolean_xor_operator,     1 }, 
-    { boolean_and_operator,     1 }, 
-    { boolean_or_operator,      1 }, 
-    { cmp_lt_operator,          2 }, 
-    { cmp_gt_operator,          2 }, 
-    { cmp_leq_operator,         2 }, 
-    { cmp_geq_operator,         2 }, 
-    { cmp_eq_operator,          2 }, 
-    { cmp_neq_operator,         2 }, 
-    { math_infix_sum_operator,  3 }, 
-    { math_infix_sub_operator,  3 }, 
-    { math_infix_mul_operator,  4 }, 
-    { math_infix_div_operator,  4 }, 
+    { boolean_xor_operator,     1 },
+    { boolean_and_operator,     1 },
+    { boolean_or_operator,      1 },
+    { cmp_lt_operator,          2 },
+    { cmp_gt_operator,          2 },
+    { cmp_leq_operator,         2 },
+    { cmp_geq_operator,         2 },
+    { cmp_eq_operator,          2 },
+    { cmp_neq_operator,         2 },
+    { math_infix_sum_operator,  3 },
+    { math_infix_sub_operator,  3 },
+    { math_infix_mul_operator,  4 },
+    { math_infix_div_operator,  4 },
     { math_infix_mod_operator,  4 },
 };

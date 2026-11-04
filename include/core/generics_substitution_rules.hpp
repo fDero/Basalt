@@ -5,11 +5,12 @@
 
 #pragma once
 
-#include <map>
+#include <memory>
 #include <string>
 #include <vector>
 
 #include "language/typesignatures.hpp"
+
 
 struct GenericSubstitutionRule {
 
@@ -17,7 +18,7 @@ struct GenericSubstitutionRule {
     TypeSignature replacement;
 
     struct Set : public std::vector<GenericSubstitutionRule> {
-    
+
         using Ref = std::shared_ptr<GenericSubstitutionRule::Set>;
 
         using vector<GenericSubstitutionRule>::vector;

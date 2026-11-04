@@ -4,8 +4,16 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 #include <cassert>
+#include <cstddef>
+#include <string>
+#include <vector>
+
 #include "core/assignment_type_checker.hpp"
-#include "errors/preprocessing_errors.hpp"
+#include "core/generics_substitution_rules.hpp"
+#include "core/project_file_structure.hpp"
+#include "core/type_definitions_register.hpp"
+#include "language/typesignatures.hpp"
+
 
 bool AssignmentTypeChecker::validate_assignment_to_custom_type(
     const TypeSignature& source, 

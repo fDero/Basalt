@@ -4,11 +4,13 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 #pragma once
+
 #include <string>
 
+
 enum class FileExtension {
-    basalt, 
-    llvm, 
+    basalt,
+    llvm,
     assembly,
     object
 };

@@ -3,8 +3,17 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include <optional>
+#include <string>
+#include <vector>
+
 #include "core/callable_code_block.hpp"
+#include "core/common_feature_adoption_plan_descriptor.hpp"
 #include "core/program_representation.hpp"
+#include "core/type_definitions_register.hpp"
+#include "language/definitions.hpp"
+#include "language/typesignatures.hpp"
+
 
 static std::string generate_function_definition_contexnt_independent_id(
     const FunctionDefinition::Ref& fref

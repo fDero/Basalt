@@ -3,12 +3,12 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
-#include "errors/internal_errors.hpp"
-#include "errors/parsing_errors.hpp"
 #include "frontend/parser.hpp"
 #include "language/expressions.hpp"
+#include "misc/debug_informations_aware_entity.hpp"
 #include "syntax/infixes.hpp"
 #include "syntax/prefixes.hpp"
+
 
 Expression Parser::rotate_binary_operator_to_match_operators_priority(const BinaryOperator& binary_operator) {
     if (!binary_operator.left_operand.is_wrapped_in_in_parenthesis()) {

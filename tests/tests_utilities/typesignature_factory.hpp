@@ -1,8 +1,14 @@
 
 #pragma once
 
-#include "syntax/primitive_types.hpp"
+#include <cstddef>
+#include <string>
+#include <vector>
+
+#include "frontend/token.hpp"
 #include "language/typesignatures.hpp"
+#include "syntax/primitive_types.hpp"
+
 
 struct TypeSignatureFactory {
 
@@ -34,19 +40,19 @@ struct TypeSignatureFactory {
     inline static const TypeSignature PointerToFloat = PointerType{ Token { "#", "test.basalt", 1, 1, 4, Token::Type::type}, Float };
     inline static const TypeSignature PointerToString = PointerType{ Token { "#", "test.basalt", 1, 1, 4, Token::Type::type}, String };
     inline static const TypeSignature PointerToBool = PointerType{ Token { "#", "test.basalt", 1, 1, 4, Token::Type::type}, Bool };
-    inline static const TypeSignature PointerToChar = PointerType{ Token { "#", "test.basalt", 1, 1, 4, Token::Type::type}, Char };    
+    inline static const TypeSignature PointerToChar = PointerType{ Token { "#", "test.basalt", 1, 1, 4, Token::Type::type}, Char };
 
-    inline static const TypeSignature ArrayOfInts = ArrayType{ Token { "[", "test.basalt", 1, 1, 4, Token::Type::type}, 10, Int };
-    inline static const TypeSignature ArrayOfFloats = ArrayType{ Token { "[", "test.basalt", 1, 1, 4, Token::Type::type}, 10, Float };
+    inline static const TypeSignature ArrayOfInts    = ArrayType{ Token { "[", "test.basalt", 1, 1, 4, Token::Type::type}, 10, Int };
+    inline static const TypeSignature ArrayOfFloats  = ArrayType{ Token { "[", "test.basalt", 1, 1, 4, Token::Type::type}, 10, Float };
     inline static const TypeSignature ArrayOfStrings = ArrayType{ Token { "[", "test.basalt", 1, 1, 4, Token::Type::type}, 10, String };
-    inline static const TypeSignature ArrayOfBools = ArrayType{ Token { "[", "test.basalt", 1, 1, 4, Token::Type::type}, 10, Bool };
-    inline static const TypeSignature ArrayOfChars = ArrayType{ Token { "[", "test.basalt", 1, 1, 4, Token::Type::type}, 10, Char };
+    inline static const TypeSignature ArrayOfBools   = ArrayType{ Token { "[", "test.basalt", 1, 1, 4, Token::Type::type}, 10, Bool };
+    inline static const TypeSignature ArrayOfChars   = ArrayType{ Token { "[", "test.basalt", 1, 1, 4, Token::Type::type}, 10, Char };
 
-    inline static const TypeSignature SliceOfInts = SliceType{ Token { "[]", "test.basalt", 1, 1, 4, Token::Type::type}, Int };
-    inline static const TypeSignature SliceOfFloats = SliceType{ Token { "[]", "test.basalt", 1, 1, 4, Token::Type::type}, Float };
+    inline static const TypeSignature SliceOfInts    = SliceType{ Token { "[]", "test.basalt", 1, 1, 4, Token::Type::type}, Int };
+    inline static const TypeSignature SliceOfFloats  = SliceType{ Token { "[]", "test.basalt", 1, 1, 4, Token::Type::type}, Float };
     inline static const TypeSignature SliceOfStrings = SliceType{ Token { "[]", "test.basalt", 1, 1, 4, Token::Type::type}, String };
-    inline static const TypeSignature SliceOfBools = SliceType{ Token { "[]", "test.basalt", 1, 1, 4, Token::Type::type}, Bool };
-    inline static const TypeSignature SliceOfChars = SliceType{ Token { "[]", "test.basalt", 1, 1, 4, Token::Type::type}, Char };
+    inline static const TypeSignature SliceOfBools   = SliceType{ Token { "[]", "test.basalt", 1, 1, 4, Token::Type::type}, Bool };
+    inline static const TypeSignature SliceOfChars   = SliceType{ Token { "[]", "test.basalt", 1, 1, 4, Token::Type::type}, Char };
 
     inline static const TypeSignature IntOrFloat = InlineUnion {
         Token { int_type, "test.basalt", 1, 1, 1, Token::Type::type },
@@ -65,12 +71,12 @@ struct TypeSignatureFactory {
 
     inline static const TypeSignature PrimitiveTypesUnion = InlineUnion {
         Token { int_type, "test.basalt", 1, 1, 1, Token::Type::type },
-        { 
-            TypeSignatureFactory::Int, 
-            TypeSignatureFactory::Float, 
-            TypeSignatureFactory::String,  
+        {
+            TypeSignatureFactory::Int,
+            TypeSignatureFactory::Float,
+            TypeSignatureFactory::String,
             TypeSignatureFactory::RawString,
-            TypeSignatureFactory::Bool, 
+            TypeSignatureFactory::Bool,
             TypeSignatureFactory::Char
         }
     };
@@ -82,33 +88,33 @@ struct TypeSignatureFactory {
 
 
     static TypeSignature make_custom_type(const std::string& type_name, const std::vector<TypeSignature>& generics) {
-        return CustomType{ 
-            Token { 
-                type_name, "test.basalt", 1, 1, 
-                static_cast<unsigned int>(type_name.size()), 
+        return CustomType{
+            Token {
+                type_name, "test.basalt", 1, 1,
+                static_cast<unsigned int>(type_name.size()),
                 Token::Type::type
-            }, 
-            generics 
+            },
+            generics
         };
     }
 
     static TypeSignature make_ptr_type(const TypeSignature& pointed) {
-        return PointerType { 
-            Token { "#", "test.basalt", 1, 1, 1, Token::Type::type }, 
+        return PointerType {
+            Token { "#", "test.basalt", 1, 1, 1, Token::Type::type },
             pointed
         };
     }
 
     static TypeSignature make_slice_type(const TypeSignature& stored) {
-        return SliceType { 
-            Token { "$", "test.basalt", 1, 1, 1, Token::Type::type }, 
+        return SliceType {
+            Token { "$", "test.basalt", 1, 1, 1, Token::Type::type },
             stored
         };
     }
 
     static TypeSignature make_array_type(const TypeSignature& stored, size_t length) {
-        return ArrayType { 
-            Token { "[", "test.basalt", 1, 1, 1, Token::Type::type }, 
+        return ArrayType {
+            Token { "[", "test.basalt", 1, 1, 1, Token::Type::type },
             length,
             stored
         };

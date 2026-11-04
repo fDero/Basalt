@@ -1,14 +1,21 @@
+#include <string>
 
 #include <gtest/gtest.h>
-#include "errors/internal_errors.hpp"
-#include "core/program_representation.hpp"
+#include <llvm/IR/LLVMContext.h>
+#include <llvm/IR/Module.h>
+#include <llvm/IR/Type.h>
+#include <llvm/Support/raw_ostream.h>
+
 #include "backend/type_definitions_llvm_translator.hpp"
-#include "../../tests_utilities/union_definition_factory.hpp"
+#include "core/program_representation.hpp"
+#include "core/project_file_structure.hpp"
+#include "frontend/file_representation.hpp"
+#include "frontend/token.hpp"
+#include "language/definitions.hpp"
+#include "language/typesignatures.hpp"
 #include "../../tests_utilities/struct_definition_factory.hpp"
 #include "../../tests_utilities/typesignature_factory.hpp"
-#include "../../tests_utilities/type_alias_factory.hpp"
 
-#include <llvm/Support/raw_ostream.h>
 
 static StructDefinition pair_generic_struct = 
     StructDefinitionFactory::make_struct_definition(

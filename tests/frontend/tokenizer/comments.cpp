@@ -1,8 +1,13 @@
+#include <sstream>
+#include <string>
+#include <vector>
 
 #include <gtest/gtest.h>
+
+#include "frontend/token.hpp"
+#include "frontend/tokenized_file.hpp"
 #include "frontend/tokenizer.hpp"
-#include "errors/internal_errors.hpp"
-#include "errors/parsing_errors.hpp"
+
 
 TEST(Frontend, Tokenize_Nested_Multiline_Comments_compact) {
     std::string inline_input = "16/*/*comment*/*/17";

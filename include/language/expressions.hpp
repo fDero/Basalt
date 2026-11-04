@@ -5,11 +5,16 @@
 
 #pragma once
 
-#include <vector>
-#include <string>
+#include <cstddef>
 #include <optional>
+#include <string>
+#include <vector>
 
 #include "language/typesignatures.hpp"
+#include "misc/debug_informations_aware_entity.hpp"
+#include "misc/forward_declarations.hpp"
+#include "misc/polymorph.hpp"
+
 
 struct ExpressionBody : public DebugInformationsAwareEntity {
 
@@ -37,7 +42,7 @@ struct ExpressionBody : public DebugInformationsAwareEntity {
 };
 
 class Expression : public Polymorph<ExpressionBody> {
-    
+
     public:
         using Polymorph<ExpressionBody>::is;
         using Polymorph<ExpressionBody>::get;
@@ -57,7 +62,6 @@ class Expression : public Polymorph<ExpressionBody> {
 struct DotMemberAccess : public ExpressionBody {
 
     virtual ~DotMemberAccess() = default;
-
     DotMemberAccess(
         const DebugInformationsAwareEntity& debug_info,
         const Expression& struct_value,
@@ -65,7 +69,6 @@ struct DotMemberAccess : public ExpressionBody {
     );
 
     [[nodiscard]] ExpressionBody::Kind expression_kind() const override;
-
     Expression struct_value;
     std::string member_name;
 };
@@ -73,7 +76,6 @@ struct DotMemberAccess : public ExpressionBody {
 struct SquareBracketsAccess : public ExpressionBody {
 
     virtual ~SquareBracketsAccess() = default;
-
     SquareBracketsAccess(
         const DebugInformationsAwareEntity& debug_info,
         const Expression& storage,
@@ -81,7 +83,6 @@ struct SquareBracketsAccess : public ExpressionBody {
     );
 
     [[nodiscard]] ExpressionBody::Kind expression_kind() const override;
-
     Expression storage;
     Expression index;
 };
@@ -89,7 +90,6 @@ struct SquareBracketsAccess : public ExpressionBody {
 struct ArrayLiteral : public ExpressionBody {
 
     virtual ~ArrayLiteral() = default;
-
     ArrayLiteral(
         std::optional<size_t> length,
         const TypeSignature& type,
@@ -98,7 +98,6 @@ struct ArrayLiteral : public ExpressionBody {
     );
 
     [[nodiscard]] ExpressionBody::Kind expression_kind() const override;
-
     std::optional<size_t> array_length;
     TypeSignature stored_type;
     std::vector<Expression> elements;
@@ -111,28 +110,25 @@ struct TypeOperator : public ExpressionBody {
 
     TypeOperator(
         const Token& operator_token,
-        const Expression& expression, 
+        const Expression& expression,
         const TypeSignature& typesignature
     );
 
     TypeOperator(
         const DebugInformationsAwareEntity& debug_info,
         const std::string& operator_text,
-        const Expression& expression, 
+        const Expression& expression,
         const TypeSignature& typesignature
     );
 
     [[nodiscard]] Token as_token() const;
     [[nodiscard]] ExpressionBody::Kind expression_kind() const override;
-
     std::string operator_text;
     Expression expression;
     TypeSignature typesignature;
 };
 
 struct BinaryOperator : public ExpressionBody {
-
-    virtual ~BinaryOperator() = default;
 
     enum class Kind {
         boolean_and,
@@ -151,19 +147,19 @@ struct BinaryOperator : public ExpressionBody {
         math_mod,
     };
 
+    virtual ~BinaryOperator() = default;
     BinaryOperator(
-        const Token& operator_token, 
-        const Expression& lx, 
+        const Token& operator_token,
+        const Expression& lx,
         const Expression& rx
     );
 
+    [[nodiscard]] Token as_token() const;
+    [[nodiscard]] ExpressionBody::Kind expression_kind() const override;
     Kind binary_op_kind;
     std::string operator_text;
     Expression left_operand;
     Expression right_operand;
-
-    [[nodiscard]] Token as_token() const;
-    [[nodiscard]] ExpressionBody::Kind expression_kind() const override;
 };
 
 struct UnaryOperator : public ExpressionBody {
@@ -179,20 +175,19 @@ struct UnaryOperator : public ExpressionBody {
     virtual ~UnaryOperator() = default;
 
     UnaryOperator(
-        const DebugInformationsAwareEntity& debug_info, 
+        const DebugInformationsAwareEntity& debug_info,
         const std::string& operator_text,
         const Expression& expr
     );
 
     UnaryOperator(
-        const Token& operator_token, 
+        const Token& operator_token,
         const Expression& expr
     );
 
     [[nodiscard]] Token as_token() const;
     [[nodiscard]] ExpressionBody::Kind expression_kind() const override;
-
-    Kind unary_op_kind;    
+    Kind unary_op_kind;
     std::string operator_text;
     Expression operand;
 };
@@ -205,61 +200,50 @@ struct Identifier : public ExpressionBody {
     Identifier(const DebugInformationsAwareEntity& debug_info, const std::string& name);
 
     [[nodiscard]] ExpressionBody::Kind expression_kind() const override;
-
     std::string name;
 };
 
 struct StringLiteral : public ExpressionBody {
 
     virtual ~StringLiteral() = default;
-
     StringLiteral(const Token& string_literal_token, const std::string& value);
-    
-    [[nodiscard]] ExpressionBody::Kind expression_kind() const override;
 
+    [[nodiscard]] ExpressionBody::Kind expression_kind() const override;
     std::string value;
 };
 
 struct IntLiteral : public ExpressionBody {
 
     virtual ~IntLiteral() = default;
-
     IntLiteral(const Token& int_literal_token);
-    
+
     [[nodiscard]] ExpressionBody::Kind expression_kind() const override;
-    
     int value;
 };
 
 struct FloatLiteral : public ExpressionBody {
 
     virtual ~FloatLiteral() = default;
-
     FloatLiteral(const Token& float_literal_token);
-    
+
     [[nodiscard]] ExpressionBody::Kind expression_kind() const override;
-    
     double value;
 };
 
 struct BoolLiteral : public ExpressionBody {
 
     virtual ~BoolLiteral() = default;
-
     BoolLiteral(const Token& bool_literal_token);
-    
+
     [[nodiscard]] ExpressionBody::Kind expression_kind() const override;
-    
     bool value;
 };
 
 struct CharLiteral : public ExpressionBody {
 
     virtual ~CharLiteral() = default;
-
     CharLiteral(const Token& char_literal_token, char value);
-    
-    [[nodiscard]] ExpressionBody::Kind expression_kind() const override;
 
+    [[nodiscard]] ExpressionBody::Kind expression_kind() const override;
     char value;
 };

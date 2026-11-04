@@ -2,6 +2,7 @@
 # Ignore IDE-related configurations
 .vscode
 .idea
+.zed
 
 # Place files that you want to ignore here
 hidden

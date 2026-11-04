@@ -3,14 +3,17 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include <iterator>
+#include <optional>
+
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 #include "frontend/parser.hpp"
-#include "language/statements.hpp"
-#include "language/definitions.hpp"
+#include "frontend/token.hpp"
 #include "language/expressions.hpp"
-#include "language/functions.hpp"
+#include "language/statements.hpp"
 #include "syntax/keywords.hpp"
+
 
 Statement Parser::parse_break_keyword() {
     const Token& break_token = *iterator;

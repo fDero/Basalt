@@ -5,8 +5,9 @@
 
 #pragma once
 
-#include <string>
 #include <set>
+#include <string>
+
 
 inline const std::string constexpr int_type        = "Int";
 inline const std::string constexpr float_type      = "Float";

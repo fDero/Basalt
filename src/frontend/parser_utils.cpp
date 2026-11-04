@@ -3,11 +3,14 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
-#include "errors/internal_errors.hpp"
+#include <iterator>
+
 #include "errors/parsing_errors.hpp"
+#include "frontend/file_representation.hpp"
 #include "frontend/parser.hpp"
-#include "language/definitions.hpp"
-#include "language/expressions.hpp"
+#include "frontend/token.hpp"
+#include "frontend/tokenized_file.hpp"
+
 
 Parser::Parser(const TokenizedFile& tokenized_file) {
     source_tokens = tokenized_file.tokens; 
@@ -17,6 +20,7 @@ Parser::Parser(const TokenizedFile& tokenized_file) {
 
 FileRepresentation Parser::parse_everything() {
     FileRepresentation output;
+    ensure_file_is_not_empty(source_tokens, filename);
     output.file_metadata.filename = filename;
     output.file_metadata.packagename = parse_package_name();
     parse_import_section(output);

@@ -3,8 +3,12 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include <cstddef>
+#include <string>
+
 #include "cli/file_extensions.hpp"
 #include "errors/commandline_errors.hpp"
+
 
 bool check_for_specific_file_extension(const std::string& filename, const std::string& extension) {
     const size_t size = filename.size();

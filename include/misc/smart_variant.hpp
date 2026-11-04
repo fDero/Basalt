@@ -7,13 +7,14 @@
 
 #include <variant>
 
+
 template <typename...Types>
 struct SmartVariant : public std::variant<Types...> {
 
     using std::variant<Types...>::variant;
     using std::variant<Types...>::operator=;
     using std::variant<Types...>::index;
-    
+
     template <typename T> [[nodiscard]] bool is() const {
         return std::holds_alternative<T>(*this);
     }

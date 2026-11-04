@@ -3,9 +3,17 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include <cctype>
+#include <cstddef>
+#include <optional>
+#include <string>
+
 #include "errors/tokenization_errors.hpp"
+#include "frontend/token.hpp"
 #include "frontend/tokenizer.hpp"
+#include "syntax/specials.hpp"
 #include "syntax/symbols.hpp"
+
 
 std::optional<Token> Tokenizer::extract_number() {
     if (isdigit(current_line[char_pos])) {

@@ -6,9 +6,11 @@
 #pragma once
 
 #include <set>
+#include <string>
 
 #include "syntax/infixes.hpp"
 #include "syntax/specials.hpp"
+
 
 inline char constexpr plus_symbol        = '+';
 inline char constexpr minus_symbol       = '-';
@@ -61,11 +63,11 @@ inline const std::set<char> symbols{
     pipe_symbol,
 
     open_round_paren,
-    close_round_paren, 
-    open_square_paren, 
+    close_round_paren,
+    open_square_paren,
     close_square_paren,
     open_curly_paren,
-    close_curly_paren 
+    close_curly_paren
 };
 
 inline const std::set<std::string> combinations{

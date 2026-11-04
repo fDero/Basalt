@@ -3,13 +3,29 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
-#include "syntax/primitive_types.hpp"
-#include "core/program_representation.hpp"
-#include "core/expression_type_deducer.hpp"
+#include <cstddef>
+#include <functional>
+#include <list>
+#include <optional>
+#include <string>
+#include <vector>
+
 #include "core/assignment_type_checker.hpp"
-#include "core/function_call_resolver.hpp"
+#include "core/callable_code_block.hpp"
 #include "core/dot_member_access_normalizer.hpp"
+#include "core/expression_type_deducer.hpp"
+#include "core/function_call_resolver.hpp"
+#include "core/program_representation.hpp"
+#include "core/project_file_structure.hpp"
+#include "core/scope_context.hpp"
 #include "errors/internal_errors.hpp"
+#include "frontend/file_representation.hpp"
+#include "language/definitions.hpp"
+#include "language/expressions.hpp"
+#include "language/functions.hpp"
+#include "language/typesignatures.hpp"
+#include "syntax/primitive_types.hpp"
+
 
 ProgramRepresentation::ProgramRepresentation(
     const ProjectFileStructure& input_project_file_structure

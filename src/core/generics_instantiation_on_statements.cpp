@@ -3,10 +3,11 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
-#include "core/generics_substitution_rules.hpp"
 #include "core/generics_instantiation_engine.hpp"
-#include "language/statements.hpp"
 #include "errors/internal_errors.hpp"
+#include "language/functions.hpp"
+#include "language/statements.hpp"
+
 
 Statement GenericsInstantiationEngine::instantiate_generic_statement(const Statement& statement) {
     switch (statement.statement_kind()) {

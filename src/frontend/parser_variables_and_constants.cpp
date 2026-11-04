@@ -3,13 +3,19 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include <iterator>
+#include <optional>
+#include <string>
+
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 #include "frontend/parser.hpp"
-#include "language/statements.hpp"
-#include "language/definitions.hpp"
+#include "frontend/token.hpp"
 #include "language/expressions.hpp"
+#include "language/statements.hpp"
+#include "language/typesignatures.hpp"
 #include "syntax/keywords.hpp"
+
 
 TypeSignature Parser::parse_type_after_object_declaration() {
     ensure_token_matches(source_tokens, iterator++, ":");

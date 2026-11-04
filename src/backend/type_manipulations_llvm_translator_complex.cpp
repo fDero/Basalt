@@ -3,9 +3,22 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
-#include "backend/type_manipulations_llvm_translator.hpp"
+#include <cassert>
+#include <cstddef>
+
+#include <llvm/IR/BasicBlock.h>
+#include <llvm/IR/Constants.h>
+#include <llvm/IR/IRBuilder.h>
+#include <llvm/IR/Type.h>
+#include <llvm/IR/Value.h>
+
 #include "backend/llvm_wrappers.hpp"
+#include "backend/translated_expression.hpp"
+#include "backend/type_definitions_llvm_translator.hpp"
+#include "backend/type_manipulations_llvm_translator.hpp"
 #include "errors/internal_errors.hpp"
+#include "language/typesignatures.hpp"
+
 
 TranslatedExpression TypeManipulationsLLVMTranslator::cast_pointer_to_array_to_slice_in_llvm(
     llvm::BasicBlock* block,

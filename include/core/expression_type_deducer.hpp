@@ -5,14 +5,14 @@
 
 #pragma once
 
-#include "core/type_definitions_register.hpp"
-#include "core/function_definitions_register.hpp"
-#include "core/common_feature_adoption_plan_generation_engine.hpp"
-#include "core/project_file_structure.hpp"
-#include "core/scope_context.hpp"
+#include <optional>
+#include <string>
+#include <vector>
+
+#include "misc/forward_declarations.hpp"
+
 
 class ExpressionTypeDeducer {
-
     public:
         ExpressionTypeDeducer(
             TypeDefinitionsRegister& type_definitions_register,
@@ -41,39 +41,39 @@ class ExpressionTypeDeducer {
         [[nodiscard]] std::optional<TypeSignature> deduce_type_from_eq_binary_operator(const BinaryOperator& unary_op);
         [[nodiscard]] std::optional<TypeSignature> deduce_type_from_ord_binary_operator(const BinaryOperator& unary_op);
         [[nodiscard]] std::optional<TypeSignature> deduce_type_from_logical_binary_operator(const BinaryOperator& unary_op);
-        [[nodiscard]] std::optional<TypeSignature> deduce_type_from_math_binary_operator(const BinaryOperator& unary_op);        
-        
+        [[nodiscard]] std::optional<TypeSignature> deduce_type_from_math_binary_operator(const BinaryOperator& unary_op);
+
         [[nodiscard]] std::optional<TypeSignature> deduce_type_from_square_brackets_access(const Expression& square_brackets_access);
         [[nodiscard]] std::optional<TypeSignature> deduce_type_from_dot_member_access(const Expression& dot_member_access);
 
         [[nodiscard]] std::optional<TypeSignature> deduce_type_from_dot_member_access_on_type(
-            const DotMemberAccess& dot_member_access, 
+            const DotMemberAccess& dot_member_access,
             const TypeSignature& operand_type
         );
 
         [[nodiscard]] std::optional<TypeSignature> deduce_type_from_dot_member_access_on_custom_type(
-            const DotMemberAccess& dot_member_access, 
+            const DotMemberAccess& dot_member_access,
             const CustomType& operand_type
         );
 
         [[nodiscard]] std::optional<TypeSignature> deduce_type_from_dot_member_access_on_primitive_type(
-            const DotMemberAccess& dot_member_access, 
+            const DotMemberAccess& dot_member_access,
             const PrimitiveType& operand_type
         );
 
         [[nodiscard]] std::optional<TypeSignature> deduce_type_from_dot_member_access_on_pointer_type(
-            const DotMemberAccess& dot_member_access, 
+            const DotMemberAccess& dot_member_access,
             const PointerType& operand_type
         );
 
         [[nodiscard]] std::optional<TypeSignature> deduce_type_from_dot_member_access_on_slice_type(
-            const DotMemberAccess& dot_member_access, 
+            const DotMemberAccess& dot_member_access,
             const SliceType& operand_type
         );
 
     protected:
         [[nodiscard]] TypeSignature deduce_primtive_type(
-            const std::string& type_name, 
+            const std::string& type_name,
             const Expression& expression
         );
 

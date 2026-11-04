@@ -3,7 +3,12 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include "core/scope_context.hpp"
+#include "language/expressions.hpp"
+#include "language/functions.hpp"
 #include "preprocessing/immutability_constraint_validator.hpp"
+
+
 using CCV = ImmutabilityConstraintValidator;
 
 void CCV::SingleFunctionImmutabilityConstraintValidator::visit_expression(const Expression& statement, ScopeContext& scope_context) {

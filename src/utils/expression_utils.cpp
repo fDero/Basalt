@@ -4,6 +4,8 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 #include "language/expressions.hpp"
+#include "misc/debug_informations_aware_entity.hpp"
+
 
 void Expression::wrap_in_parenthesis() {
     wrapped_in_parenthesis = true;

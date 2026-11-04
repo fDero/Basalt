@@ -1,8 +1,16 @@
-
 #include <gtest/gtest.h>
+
+#include "core/program_representation.hpp"
+#include "core/project_file_structure.hpp"
+#include "core/scope_context.hpp"
+#include "frontend/file_representation.hpp"
+#include "frontend/token.hpp"
+#include "language/definitions.hpp"
+#include "language/typesignatures.hpp"
 #include "preprocessing/bond_inspector.hpp"
-#include "../../tests_utilities/typesignature_factory.hpp"
 #include "../../tests_utilities/struct_definition_factory.hpp"
+#include "../../tests_utilities/typesignature_factory.hpp"
+
 
 TEST(Preprocessing, Bond_Inspector_On_Struct_No_Bond) {
     ProjectFileStructure example_project({

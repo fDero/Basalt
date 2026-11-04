@@ -3,8 +3,15 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include <llvm/IR/BasicBlock.h>
+
 #include "backend/expressions_and_statements_llvm_translator.hpp"
-#include "backend/callable_codeblocks_llvm_translator.hpp"
+#include "backend/translated_expression.hpp"
+#include "errors/internal_errors.hpp"
+#include "language/expressions.hpp"
+#include "language/functions.hpp"
+#include "language/statements.hpp"
+
 
 llvm::BasicBlock* ExpressionsAndStatementsLLVMTranslator::translate_statement_to_llvm(
     llvm::BasicBlock* block,

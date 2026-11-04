@@ -3,7 +3,11 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include "language/functions.hpp"
+#include "language/statements.hpp"
 #include "preprocessing/address_sanitizer.hpp"
+
+
 using AS = AddressSanitizer;
 
 void AS::SingleFunctionAddressSanitizer::visit_statement(const Statement& statement) {

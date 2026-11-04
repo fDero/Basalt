@@ -5,12 +5,14 @@
 
 #pragma once
 
-#include <vector>
+#include <functional>
+#include <list>
 #include <string>
 #include <unordered_map>
-#include <list>
+#include <vector>
 
 #include "frontend/file_representation.hpp"
+
 
 class ProjectFileStructure {
 
@@ -25,7 +27,7 @@ class ProjectFileStructure {
         [[nodiscard]] std::string& get_package_name_by_file_name(const std::string& file_name);
         [[nodiscard]] std::list<FileRepresentation>& get_files_by_package(const std::string& package_name);
         [[nodiscard]] std::vector<std::string>& get_imports_by_file(const std::string& file_name);
-        
+
     private:
         std::list<std::string> package_names;
         std::list<std::list<FileRepresentation>::iterator> files;

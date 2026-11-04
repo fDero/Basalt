@@ -1,6 +1,13 @@
 
 #pragma once
+
+#include <string>
+#include <vector>
+
+#include "frontend/token.hpp"
 #include "language/definitions.hpp"
+#include "language/typesignatures.hpp"
+
 
 struct TypeAliasFactory {
 

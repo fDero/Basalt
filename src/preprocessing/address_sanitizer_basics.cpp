@@ -3,7 +3,17 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include <vector>
+
+#include "core/program_representation.hpp"
+#include "core/scope_context.hpp"
+#include "language/definitions.hpp"
+#include "language/expressions.hpp"
+#include "language/functions.hpp"
+#include "language/statements.hpp"
 #include "preprocessing/address_sanitizer.hpp"
+
+
 using AS = AddressSanitizer;
 
 AddressSanitizer::AddressSanitizer(

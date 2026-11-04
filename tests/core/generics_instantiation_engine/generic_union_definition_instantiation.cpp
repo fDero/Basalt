@@ -1,11 +1,13 @@
-
 #include <gtest/gtest.h>
-#include "core/generics_substitution_rules.hpp"
+
 #include "core/generics_instantiation_engine.hpp"
-#include "errors/internal_errors.hpp"
-#include "../../tests_utilities/union_definition_factory.hpp"
-#include "../../tests_utilities/typesignature_factory.hpp"
+#include "core/generics_substitution_rules.hpp"
+#include "language/definitions.hpp"
+#include "language/typesignatures.hpp"
 #include "../../tests_utilities/type_queries.hpp"
+#include "../../tests_utilities/typesignature_factory.hpp"
+#include "../../tests_utilities/union_definition_factory.hpp"
+
 
 TEST(Core, Generic_Union_Instantiation) {
     UnionDefinition generic_union_definition = UnionDefinitionFactory::make_union_definition(

@@ -1,11 +1,16 @@
-
 #include <gtest/gtest.h>
-#include "core/generics_substitution_rules.hpp"
-#include "errors/internal_errors.hpp"
+
+#include "core/program_representation.hpp"
+#include "core/project_file_structure.hpp"
+#include "frontend/file_representation.hpp"
+#include "frontend/token.hpp"
+#include "language/definitions.hpp"
+#include "language/typesignatures.hpp"
 #include "preprocessing/type_dependency_navigator.hpp"
-#include "../../tests_utilities/union_definition_factory.hpp"
+#include "syntax/primitive_types.hpp"
+#include "../../tests_utilities/compilation_error_assertions.hpp"
 #include "../../tests_utilities/struct_definition_factory.hpp"
-#include "../../tests_utilities/typesignature_factory.hpp"
+
 
 FileRepresentation generic_recursion_problem_file = {
     .file_metadata = {
@@ -94,7 +99,7 @@ TEST(Preprocessing, Recursive_Two_Struct_Dependency_Is_Cyclic_Dependency_Even_Wh
     ProgramRepresentation program_representation(project_file_structure);
     TypeDependencyNavigator navigator(program_representation);
     const StructDefinition& A = generic_recursion_problem_file.type_defs[0].get<StructDefinition>();
-    EXPECT_ANY_THROW({
+    EXPECT_COMPILATION_ERROR(ValidationError, "contains itself", {
         navigator.visit_struct_definition(A);
     });
 }
@@ -114,7 +119,7 @@ TEST(Preprocessing, Type_Dependency_Spots_Cyclic_Dependency_Even_On_Generic_Stru
     ProgramRepresentation program_representation(project_file_structure);
     TypeDependencyNavigator navigator(program_representation);
     const StructDefinition& B = illegal_wrapper_use.type_defs[1].get<StructDefinition>();
-    EXPECT_ANY_THROW({
+    EXPECT_COMPILATION_ERROR(ValidationError, "contains itself", {
         navigator.visit_struct_definition(B);
     });
 }

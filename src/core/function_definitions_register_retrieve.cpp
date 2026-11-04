@@ -3,14 +3,24 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
-#include "core/function_specificity_descriptor.hpp"
-#include "core/function_definitions_register.hpp"
-#include "errors/preprocessing_errors.hpp"
-#include "errors/internal_errors.hpp"
-#include "core/generics_substitution_rules.hpp"
-#include "core/generics_instantiation_engine.hpp"
-#include "preprocessing/preprocessor.hpp"
+#include <cstddef>
+#include <memory>
+#include <string>
+#include <utility>
+#include <vector>
+
 #include "core/assignment_type_checker.hpp"
+#include "core/function_definitions_register.hpp"
+#include "core/function_specificity_descriptor.hpp"
+#include "core/generics_instantiation_engine.hpp"
+#include "core/generics_substitution_rules.hpp"
+#include "core/type_definitions_register.hpp"
+#include "errors/internal_errors.hpp"
+#include "errors/preprocessing_errors.hpp"
+#include "language/definitions.hpp"
+#include "language/functions.hpp"
+#include "language/typesignatures.hpp"
+
 
 FunctionDefinition::Ref FunctionDefinitionsRegister::retrieve_function_definition(
     const FunctionCall& function_call,
@@ -75,7 +85,7 @@ FunctionDefinition::Ref FunctionDefinitionsRegister::cache_unaware_function_defi
     const std::vector<TypeSignature>& arg_types
 ) {
     std::vector<MatchedFunctionData> best_maches_so_far = search_for_best_matches(function_call, arg_types);
-    ensure_no_multiple_ambiguous_candidate_function_overloads_have_been_found(best_maches_so_far);
+    ensure_no_multiple_ambiguous_candidate_function_overloads_have_been_found(best_maches_so_far, function_call, arg_types);
     if (best_maches_so_far.empty()) {
         return nullptr;
     }

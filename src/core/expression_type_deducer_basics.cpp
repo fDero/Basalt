@@ -3,10 +3,24 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include <optional>
+#include <string>
+#include <vector>
+
+#include "core/common_feature_adoption_plan_generation_engine.hpp"
 #include "core/expression_type_deducer.hpp"
 #include "core/function_call_resolver.hpp"
-#include "errors/preprocessing_errors.hpp"
+#include "core/function_definitions_register.hpp"
+#include "core/project_file_structure.hpp"
+#include "core/scope_context.hpp"
+#include "core/type_definitions_register.hpp"
 #include "errors/internal_errors.hpp"
+#include "errors/preprocessing_errors.hpp"
+#include "language/expressions.hpp"
+#include "language/functions.hpp"
+#include "language/typesignatures.hpp"
+#include "syntax/primitive_types.hpp"
+
 
 ExpressionTypeDeducer::ExpressionTypeDeducer(
     TypeDefinitionsRegister& program_representation,
@@ -56,7 +70,9 @@ TypeSignature ExpressionTypeDeducer::deduce_primtive_type(
 
 std::optional<TypeSignature> 
 ExpressionTypeDeducer::deduce_type_from_identifier(const Expression& expression) {
-    const TypeSignature& type = scope_context.get_local_object_type(expression.get<Identifier>().name);
+    const Identifier& identifier = expression.get<Identifier>();
+    ensure_identifier_is_declared(scope_context.contains(identifier.name), identifier);
+    const TypeSignature& type = scope_context.get_local_object_type(identifier.name);
     return type_definitions_register.unalias_type(type);
 }
 
@@ -82,8 +98,16 @@ ExpressionTypeDeducer::deduce_type_from_function_call(const Expression& expressi
         common_feature_adoption_plan_generation_engine
     );
     auto argument_types = deduce_argument_types_from_function_call(function_call);
+    // if the type of some argument is unknown (e.g. it depends on a generic),
+    // the overload can't be chosen yet, so the type of the call is unknown too
+    if (argument_types.size() != function_call.arguments.size()) {
+        return std::nullopt;
+    }
     auto return_type = resolver.resolve_function_call_return_type(function_call, argument_types);
-    auto opt_return_type = return_type.is<TypeSignature>() 
+    if (return_type.is<FunctionCallResolver::Unresolved>()) {
+        return std::nullopt;
+    }
+    auto opt_return_type = return_type.is<TypeSignature>()
         ? (std::optional<TypeSignature>) return_type.get<TypeSignature>() 
         : (std::optional<TypeSignature>) std::nullopt;
     ensure_function_has_a_return_type(function_call, opt_return_type);

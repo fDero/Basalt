@@ -3,9 +3,23 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include <cassert>
+#include <cstddef>
+#include <vector>
+
+#include <llvm/IR/BasicBlock.h>
+#include <llvm/IR/Function.h>
+#include <llvm/IR/IRBuilder.h>
+#include <llvm/IR/Value.h>
+
 #include "backend/callable_codeblocks_llvm_translator.hpp"
+#include "backend/translated_expression.hpp"
 #include "backend/type_manipulations_llvm_translator.hpp"
-#include "errors/internal_errors.hpp"
+#include "core/callable_code_block.hpp"
+#include "core/common_feature_adoption_plan_descriptor.hpp"
+#include "language/definitions.hpp"
+#include "language/typesignatures.hpp"
+
 
 llvm::Function* CallableCodeBlocksLLVMTranslator::translate_cfa_descriptor_to_llvm(
     const CommonFeatureAdoptionPlanDescriptor& descriptor, 

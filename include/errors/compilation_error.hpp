@@ -5,13 +5,14 @@
 
 #pragma once
 
-#include "frontend/tokenizer.hpp"
+#include <optional>
+#include <stdexcept>
+#include <string>
+
 #include "misc/debug_informations_aware_entity.hpp"
 
-#include <string>
-#include <exception>
 
-struct CompilationError 
+class CompilationError
     : public std::runtime_error
     , public std::optional<DebugInformationsAwareEntity>
 {
@@ -25,49 +26,91 @@ struct CompilationError
             InternalError
         };
 
-        template<Kind kind>
-        [[noreturn]]
-        static void raise(
-            const std::string& message,
-            const DebugInformationsAwareEntity& debug_info
-        ) {
-            static_assert(
-                kind != Kind::CommandLineError,
-                "Not every type of error can be constructed "
-                "with a DebugInformationsAwareEntity "
-            );
-            throw CompilationError(kind, message, debug_info);
-        }
-
-        template<Kind kind>
-        [[noreturn]]
-        static void raise(
-            const std::string& message
-        ) {
-            static_assert(
-                kind == Kind::CommandLineError ||
-                kind == Kind::InternalError, 
-                "Not every type of error can be constructed " 
-                "without a DebugInformationsAwareEntity "
-            );
-            throw CompilationError(kind, message, std::nullopt);
-        }
-
         virtual ~CompilationError() = default;
-
-        const Kind kind;
-        using std::runtime_error::what;
-        
         void display_pretty() const;
 
-    private:
+        const Kind kind;
+        const std::string note;
+        using std::runtime_error::what;
+
+    protected:
         CompilationError(
             Kind kind,
             const std::string& message,
-            const std::optional<DebugInformationsAwareEntity>& debug_info
+            const std::optional<DebugInformationsAwareEntity>& debug_info,
+            const std::string& note
         )
             : std::runtime_error(message)
             , std::optional<DebugInformationsAwareEntity>(debug_info)
             , kind(kind)
+            , note(note)
         {}
+};
+
+struct CommandLineError : public CompilationError {
+
+    virtual ~CommandLineError() = default;
+    CommandLineError(const std::string& message)
+        : CompilationError(Kind::CommandLineError, message, std::nullopt, "")
+    {}
+};
+
+struct TokenizationError : public CompilationError {
+
+    virtual ~TokenizationError() = default;
+    TokenizationError(
+        const std::string& message,
+        const DebugInformationsAwareEntity& debug_info,
+        const std::string& note = ""
+    )
+        : CompilationError(Kind::TokenizationError, message, debug_info, note)
+    {}
+};
+
+struct ParsingError : public CompilationError {
+
+    virtual ~ParsingError() = default;
+    ParsingError(
+        const std::string& message,
+        const DebugInformationsAwareEntity& debug_info,
+        const std::string& note = ""
+    )
+        : CompilationError(Kind::ParsingError, message, debug_info, note)
+    {}
+};
+
+struct IndexingError : public CompilationError {
+
+    virtual ~IndexingError() = default;
+    IndexingError(
+        const std::string& message,
+        const DebugInformationsAwareEntity& debug_info,
+        const std::string& note = ""
+    )
+        : CompilationError(Kind::IndexingError, message, debug_info, note)
+    {}
+};
+
+struct ValidationError : public CompilationError {
+
+    virtual ~ValidationError() = default;
+    ValidationError(const std::string& message)
+        : CompilationError(Kind::ValidationError, message, std::nullopt, "")
+    {}
+
+    ValidationError(
+        const std::string& message,
+        const DebugInformationsAwareEntity& debug_info,
+        const std::string& note = ""
+    )
+        : CompilationError(Kind::ValidationError, message, debug_info, note)
+    {}
+};
+
+struct InternalError : public CompilationError {
+
+    virtual ~InternalError() = default;
+    InternalError(const std::string& message)
+        : CompilationError(Kind::InternalError, message, std::nullopt, "")
+    {}
 };

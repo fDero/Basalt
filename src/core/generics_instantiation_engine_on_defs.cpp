@@ -3,10 +3,15 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
-#include "language/typesignatures.hpp"
-#include "errors/internal_errors.hpp"
-#include "core/generics_substitution_rules.hpp"
+#include <memory>
+#include <string>
+
 #include "core/generics_instantiation_engine.hpp"
+#include "errors/internal_errors.hpp"
+#include "language/definitions.hpp"
+#include "language/typesignatures.hpp"
+#include "misc/debug_informations_aware_entity.hpp"
+
 
 StructDefinition GenericsInstantiationEngine::instantiate_generic_struct(
     const StructDefinition& struct_definition,

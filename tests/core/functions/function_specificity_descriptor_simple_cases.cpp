@@ -1,12 +1,12 @@
-
 #include <gtest/gtest.h>
+
 #include "core/function_specificity_descriptor.hpp"
-#include "errors/internal_errors.hpp"
-#include "errors/parsing_errors.hpp"
-#include "../../tests_utilities/struct_definition_factory.hpp"
-#include "../../tests_utilities/typesignature_factory.hpp"
+#include "core/project_file_structure.hpp"
+#include "core/type_definitions_register.hpp"
+#include "language/definitions.hpp"
 #include "../../tests_utilities/function_definition_factory.hpp"
-#include "../../tests_utilities/type_alias_factory.hpp"
+#include "../../tests_utilities/typesignature_factory.hpp"
+
 
 FunctionDefinition add_int_int = FunctionDefinitionFactory::make_function_definition(
     "add",

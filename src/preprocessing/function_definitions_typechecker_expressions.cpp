@@ -3,8 +3,15 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include "core/program_representation.hpp"
 #include "errors/preprocessing_errors.hpp"
+#include "language/definitions.hpp"
+#include "language/expressions.hpp"
+#include "language/functions.hpp"
+#include "language/typesignatures.hpp"
 #include "preprocessing/function_definitions_typechecker.hpp"
+
+
 using FDTC = FunctionDefinitionsTypeChecker;
 
 void FDTC::SingleFunctionTypeChecker::visit_expression(const Expression& expr) {
@@ -44,7 +51,7 @@ void FDTC::SingleFunctionTypeChecker::visit_dot_member_access(
     if (struct_type->typesiganture_kind() == TypeSignatureBody::Kind::custom_type) {
         auto custom_type = struct_type->get<CustomType>();
         auto type_def = program_representation.retrieve_type_definition(custom_type);
-        ensure_type_definition_is<StructDefinition>(type_def);
+        ensure_type_definition_is_struct_for_member_access(type_def, dot_member_access);
         auto struct_def = type_def.get<StructDefinition>();
         expect_struct_field(struct_def, dot_member_access);
     }
@@ -82,8 +89,8 @@ void FDTC::SingleFunctionTypeChecker::visit_square_bracket_access(
     if (!index_type.has_value() || !storage_type.has_value()) {
         return;
     }
-    ensure_typesignature_is_compatible_square_brackets_access(*storage_type);
-    ensure_typesignature_is_int(*index_type);
+    ensure_typesignature_is_compatible_square_brackets_access(*storage_type, square_brackets_access);
+    ensure_typesignature_is_int(*index_type, square_brackets_access.index);
 }
 
 void FDTC::SingleFunctionTypeChecker::visit_array_literal(
@@ -96,19 +103,17 @@ void FDTC::SingleFunctionTypeChecker::visit_array_literal(
             element, 
             scope_context
         );
-        bool element_can_be_analyzed = element_type.has_value();
-        element_can_be_analyzed &= !element_type->is_generic(); 
-        element_can_be_analyzed &= !array_literal.stored_type.is_generic();
-        bool element_is_compatible = element_can_be_analyzed;
-        element_is_compatible &= program_representation.validate_assignment(
-            *element_type,
-            array_literal.stored_type 
-        );
+        bool element_can_be_analyzed = element_type.has_value()
+            && !element_type->is_generic()
+            && !array_literal.stored_type.is_generic();
+        bool element_is_compatible = element_can_be_analyzed
+            && program_representation.validate_assignment(*element_type, array_literal.stored_type);
         ensure_element_is_compatible_with_array_literal(
             element_can_be_analyzed,
-            element_is_compatible, 
-            array_literal, 
-            element
+            element_is_compatible,
+            array_literal,
+            element,
+            element_type
         );
     }
 }
@@ -120,9 +125,9 @@ void FDTC::SingleFunctionTypeChecker::visit_type_operator(const TypeOperator& ty
         return;
     }
     bool type_operator_typesignature_is_union = program_representation.is_union(*expression_type);
-    ensure_type_is_union_for_type_operator(type_operator_typesignature_is_union);
+    ensure_type_is_union_for_type_operator(type_operator_typesignature_is_union, type_operator, *expression_type);
     bool can_assign = program_representation.validate_assignment(type_operator.typesignature, expression_type);
-    ensure_type_operator_union_operand_can_be_queried_for_the_given_type(can_assign);
+    ensure_type_operator_union_operand_can_be_queried_for_the_given_type(can_assign, type_operator, *expression_type);
 }
 
 void FDTC::SingleFunctionTypeChecker::visit_binary_operator(const BinaryOperator& binary_operator) {

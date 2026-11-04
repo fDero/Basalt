@@ -1,12 +1,14 @@
-
 #include <gtest/gtest.h>
-#include "core/generics_substitution_rules.hpp"
-#include "errors/internal_errors.hpp"
-#include "preprocessing/preprocessor.hpp"
+
 #include "core/assignment_type_checker.hpp"
-#include "../../tests_utilities/union_definition_factory.hpp"
-#include "../../tests_utilities/struct_definition_factory.hpp"
+#include "core/project_file_structure.hpp"
+#include "core/type_definitions_register.hpp"
+#include "frontend/file_representation.hpp"
+#include "frontend/token.hpp"
+#include "language/typesignatures.hpp"
 #include "../../tests_utilities/typesignature_factory.hpp"
+#include "../../tests_utilities/union_definition_factory.hpp"
+
 
 ProjectFileStructure single_file_project_with_number_defy({
         FileRepresentation {

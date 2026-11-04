@@ -3,10 +3,16 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include <string>
+#include <vector>
+
 #include "core/function_specificity_descriptor.hpp"
-#include "errors/preprocessing_errors.hpp"
+#include "core/type_definitions_register.hpp"
 #include "errors/internal_errors.hpp"
-#include "core/generics_substitution_rules.hpp"
+#include "language/definitions.hpp"
+#include "language/typesignatures.hpp"
+#include "syntax/primitive_types.hpp"
+
 
 void FunctionSpecificityDescriptor::update_metrics_based_on_argument_type(
     const TypeSignature& input_arg_type, 

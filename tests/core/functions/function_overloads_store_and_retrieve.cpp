@@ -1,13 +1,19 @@
+#include <string>
+#include <vector>
 
 #include <gtest/gtest.h>
+
 #include "core/function_definitions_register.hpp"
-#include "syntax/primitive_types.hpp"
-#include "errors/internal_errors.hpp"
-#include "errors/parsing_errors.hpp"
-#include "../../tests_utilities/struct_definition_factory.hpp"
-#include "../../tests_utilities/typesignature_factory.hpp"
+#include "core/project_file_structure.hpp"
+#include "core/type_definitions_register.hpp"
+#include "frontend/file_representation.hpp"
+#include "frontend/token.hpp"
+#include "language/definitions.hpp"
+#include "language/expressions.hpp"
+#include "language/functions.hpp"
 #include "../../tests_utilities/function_definition_factory.hpp"
-#include "../../tests_utilities/type_alias_factory.hpp"
+#include "../../tests_utilities/typesignature_factory.hpp"
+
 
 ProjectFileStructure multi_file_project_with_multiple_function_definitions ({
     FileRepresentation {

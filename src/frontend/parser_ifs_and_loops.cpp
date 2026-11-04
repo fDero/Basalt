@@ -3,13 +3,16 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include <vector>
+
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 #include "frontend/parser.hpp"
-#include "language/statements.hpp"
-#include "language/definitions.hpp"
+#include "frontend/token.hpp"
 #include "language/expressions.hpp"
+#include "language/statements.hpp"
 #include "syntax/keywords.hpp"
+
 
 Statement Parser::parse_if_statement() {
     const Token& if_token = *iterator;

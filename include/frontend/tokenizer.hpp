@@ -5,11 +5,16 @@
 
 #pragma once
 
+#include <istream>
+#include <memory>
+#include <optional>
+#include <stack>
 #include <string>
-#include <vector>
 
 #include "frontend/token.hpp"
-#include "frontend/tokenized_file.hpp"
+#include "misc/debug_informations_aware_entity.hpp"
+#include "misc/forward_declarations.hpp"
+
 
 class Tokenizer {
 
@@ -25,7 +30,7 @@ class Tokenizer {
         [[nodiscard]] std::optional<Token> extract_symbol();
         [[nodiscard]] std::optional<Token> extract();
 
-    private: 
+    private:
         std::unique_ptr<std::istream> token_input;
         std::string filename;
         std::string current_line;
@@ -37,7 +42,7 @@ class Tokenizer {
         void update_multiline_comments_tracker();
         void ignore_multiline_comments();
         void handle_multiline_comments();
-        void handle_simple_comments(); 
+        void handle_simple_comments();
 
         void ignore_discardable_characters();
         void inspect_for_unexpected_tokens();

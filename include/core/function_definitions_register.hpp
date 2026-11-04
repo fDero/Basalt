@@ -5,15 +5,18 @@
 
 #pragma once
 
+#include <functional>
+#include <list>
+#include <string>
 #include <unordered_map>
+#include <utility>
+#include <vector>
 
-#include "core/project_file_structure.hpp"
-#include "core/function_definitions_register.hpp"
-#include "core/type_definitions_register.hpp"
-#include "language/definitions.hpp"
-#include "language/functions.hpp"
-#include "core/generics_substitution_rules.hpp"
 #include "core/caching_aware_register.hpp"
+#include "core/generics_substitution_rules.hpp"
+#include "language/definitions.hpp"
+#include "misc/forward_declarations.hpp"
+
 
 class FunctionDefinitionsRegister : public CachingAwareRegister {
 
@@ -28,7 +31,7 @@ class FunctionDefinitionsRegister : public CachingAwareRegister {
         );
 
         [[nodiscard]] FunctionDefinition::Ref retrieve_function_definition(
-            const FunctionCall& function_call, 
+            const FunctionCall& function_call,
             const std::vector<TypeSignature>& arg_types
         );
 
@@ -74,7 +77,7 @@ class FunctionDefinitionsRegister : public CachingAwareRegister {
         );
 
         [[nodiscard]] FunctionDefinition::Ref cache_unaware_function_definition_retrieval(
-            const FunctionCall& function_call, 
+            const FunctionCall& function_call,
             const std::vector<TypeSignature>& arg_types
         );
 

@@ -5,30 +5,19 @@
 
 #pragma once
 
-#include <vector>
+#include <optional>
 #include <string>
-#include <system_error>
 
-#include "core/program_representation.hpp"
-#include "preprocessing/preprocessor.hpp"
-#include "backend/type_definitions_llvm_translator.hpp"
-#include "backend/callable_codeblocks_llvm_translator.hpp"
-
-#include <llvm/IR/IRBuilder.h>
 #include <llvm/IR/LLVMContext.h>
-#include <llvm/IR/Verifier.h>
 #include <llvm/IR/Module.h>
-#include <llvm/IR/LegacyPassManager.h>
-#include <llvm/Support/TargetSelect.h>
-#include <llvm/Support/TargetRegistry.h>
 #include <llvm/Target/TargetMachine.h>
-#include <llvm/Target/TargetOptions.h>
-#include <llvm/Support/raw_ostream.h>
-#include <llvm/Support/FileSystem.h>
-#include <llvm/Support/Host.h>
+
+#include "backend/callable_codeblocks_llvm_translator.hpp"
+#include "backend/type_definitions_llvm_translator.hpp"
+#include "misc/forward_declarations.hpp"
+
 
 class Finalizer {
-
     public:
         Finalizer(ProgramRepresentation& program_representation, std::optional<std::string> target_triple_opt);
         Finalizer(ProgramRepresentation& program_representation, const std::string& target_triple);

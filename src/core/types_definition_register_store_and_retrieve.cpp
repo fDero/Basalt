@@ -3,10 +3,17 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include <functional>
+#include <string>
+#include <tuple>
+
+#include "core/project_file_structure.hpp"
 #include "core/type_definitions_register.hpp"
 #include "errors/preprocessing_errors.hpp"
-#include "errors/internal_errors.hpp"
-#include "core/generics_substitution_rules.hpp"
+#include "frontend/file_representation.hpp"
+#include "language/definitions.hpp"
+#include "language/typesignatures.hpp"
+
 
 TypeDefinitionsRegister::TypeDefinitionsRegister(ProjectFileStructure& project_file_structure) 
     : project_file_structure(project_file_structure) 
@@ -46,7 +53,7 @@ void TypeDefinitionsRegister::verify_that_the_type_exists(const TypeSignature& t
 void TypeDefinitionsRegister::store_type_definition(const TypeDefinition& type_def) {
     const std::string match_pattern = get_fully_qualified_typedefinition_name(type_def);
     const auto& insertion_outcome = type_definitions.insert({match_pattern, type_def});
-    ensure_no_multiple_definition_of_the_same_type(insertion_outcome);
+    ensure_no_multiple_definition_of_the_same_type(insertion_outcome, type_def);
     type_definitions_ids.push_back(match_pattern);
 }
 

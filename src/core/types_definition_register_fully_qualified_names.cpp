@@ -3,19 +3,27 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include <cstddef>
+#include <optional>
 #include <regex>
+#include <string>
 
-#include "syntax/specials.hpp"
-#include "core/type_definitions_register.hpp"
-#include "errors/preprocessing_errors.hpp"
-#include "errors/internal_errors.hpp"
+#include "core/generics_instantiation_engine.hpp"
 #include "core/generics_substitution_rules.hpp"
+#include "core/project_file_structure.hpp"
+#include "core/type_definitions_register.hpp"
+#include "errors/internal_errors.hpp"
+#include "errors/preprocessing_errors.hpp"
+#include "language/definitions.hpp"
+#include "language/typesignatures.hpp"
+#include "syntax/specials.hpp"
+
 
 std::string TypeDefinitionsRegister::get_fully_qualified_customtype_name(const CustomType& type_signature) {
     if (!type_signature.package_prefix.empty()) {
         const std::string& package = type_signature.package_prefix;
         std::optional<std::string> retrieved = search_fully_qualified_typesignature_name(type_signature, package);
-        ensure_type_was_successfully_retrieved(retrieved);
+        ensure_type_was_successfully_retrieved(retrieved, type_signature);
         return retrieved.value();
     }
     const std::string& target_package_name = project_file_structure.get_package_name_by_file_name(type_signature.filename);

@@ -1,12 +1,15 @@
- 
+#include <optional>
+
 #include <gtest/gtest.h>
+
 #include "core/scope_context.hpp"
-#include "errors/internal_errors.hpp"
-#include "errors/parsing_errors.hpp"
-#include "../../tests_utilities/struct_definition_factory.hpp"
-#include "../../tests_utilities/typesignature_factory.hpp"
-#include "../../tests_utilities/type_alias_factory.hpp"
+#include "frontend/token.hpp"
+#include "language/expressions.hpp"
+#include "language/statements.hpp"
+#include "syntax/primitive_types.hpp"
 #include "../../tests_utilities/type_queries.hpp"
+#include "../../tests_utilities/typesignature_factory.hpp"
+
 
 VariableDeclaration x_variable_of_type_int = VariableDeclaration(
     "x", TypeSignatureFactory::Int, std::nullopt,

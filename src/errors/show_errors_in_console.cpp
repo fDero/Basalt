@@ -3,106 +3,138 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include <cctype>
+#include <cstdio>
+#include <cstdlib>
 #include <exception>
-#include <string>
-#include <iostream>
 #include <fstream>
+#include <iostream>
+#include <optional>
+#include <stdexcept>
+#include <string>
+
+#ifdef _WIN32
+    #include <io.h>
+    #define BASALT_ISATTY _isatty
+    #define BASALT_FILENO _fileno
+#else
+    #include <unistd.h>
+    #define BASALT_ISATTY isatty
+    #define BASALT_FILENO fileno
+#endif
 
 #include "errors/compilation_error.hpp"
 #include "misc/console_colors.hpp"
+#include "misc/debug_informations_aware_entity.hpp"
 
-using CompilationError::Kind::CommandLineError;
-using CompilationError::Kind::TokenizationError;
-using CompilationError::Kind::ParsingError;
-using CompilationError::Kind::IndexingError;
-using CompilationError::Kind::ValidationError;
-using CompilationError::Kind::InternalError;
 
-static void display_target_line(size_t char_pos, const std::string& line) {
-    std::cout << "\t";
-    for (size_t i = 0; i < line.size(); i++) {
-        if(i != char_pos) std::cout << yellow(line.substr(i,1)); 
-        else std::cout << red(line.substr(i,1));
-        char_pos += (isalnum(line[i]) && i == char_pos); 
-    }
-    std::cout << "\n";
+using Kind = CompilationError::Kind;
+
+static bool colors_enabled() {
+    static const bool enabled = std::getenv("NO_COLOR") == nullptr
+        && BASALT_ISATTY(BASALT_FILENO(stderr));
+    return enabled;
 }
 
-static void display_error_context(const std::string& filename, size_t target_line_number, size_t char_pos) {
-    std::ifstream infile(filename);
-    std::string line;
-    int spread = 4;
-    for (size_t line_counter = 1; std::getline(infile, line); ++line_counter) {
-        bool is_after_start = (line_counter > target_line_number - spread);
-        bool is_before_finish = (line_counter < target_line_number + spread);
-        bool is_at_target_spot = (line_counter == target_line_number);
-        if (is_at_target_spot) display_target_line(char_pos, line);
-        else if (is_after_start && is_before_finish) std::cout << "\t" << line << "\n";
-        else if (line_counter > target_line_number + spread) break;
-    }
+using Colorizer = std::string(*)(const std::string&);
+
+static std::string style(Colorizer colorizer, const std::string& text) {
+    return colors_enabled() ? colorizer(text) : text;
 }
 
-static void display_coordinates(const DebugInformationsAwareEntity& debug_info) {
-    std::cout 
-        << purple("at line: ") 
-        << debug_info.line_number 
-        << purple(" at char: ") 
-        << debug_info.char_pos 
-        << std::endl
-        << std::endl;
-}
-
-static void display_error_kind(CompilationError::Kind kind) {
-    std::cout << std::endl << std::endl; 
+static std::string error_label(Kind kind) {
     switch (kind) {
-        break; case CommandLineError:  std::cout << bold_red("COMMAND LINE ERROR: ");
-        break; case TokenizationError: std::cout << bold_red("TOKENIZATION ERROR: ");
-        break; case ParsingError:      std::cout << bold_red("SYNTAX ERROR: ");
-        break; case IndexingError:     std::cout << bold_red("INDEXING ERROR: ");
-        break; case ValidationError:   std::cout << bold_red("VALIDATION ERROR: ");
-        break; case InternalError:     std::cout << bold_red("INTERNAL ERROR: ");
+        case Kind::TokenizationError: return "syntax error";
+        case Kind::ParsingError:      return "syntax error";
+        case Kind::IndexingError:     return "error";
+        case Kind::ValidationError:   return "error";
+        case Kind::CommandLineError:  return "command line error";
+        case Kind::InternalError:     return "internal compiler error";
+    }
+    return "error";
+}
+
+static bool is_part_of_a_word(char c) {
+    return std::isalnum(static_cast<unsigned char>(c)) || c == '_';
+}
+
+static void display_source_snippet(const DebugInformationsAwareEntity& location) {
+    std::ifstream source_file(location.filename);
+    std::string line;
+    for (size_t line_counter = 1; std::getline(source_file, line); ++line_counter) {
+        if (line_counter != location.line_number) {
+            continue;
+        }
+        if (!line.empty() && line.back() == '\r') {
+            line.pop_back();
+        }
+        const std::string line_number = std::to_string(location.line_number);
+        const std::string gutter(line_number.size(), ' ');
+        // underline the whole word (or number, decimal point included) starting at the error position
+        size_t underline_length = 1;
+        if (location.char_pos < line.size() && is_part_of_a_word(line[location.char_pos])) {
+            bool is_number = std::isdigit(static_cast<unsigned char>(line[location.char_pos]));
+            auto continues_the_word = [&](char c) { return is_part_of_a_word(c) || (is_number && c == '.'); };
+            while (location.char_pos + underline_length < line.size() && continues_the_word(line[location.char_pos + underline_length])) {
+                underline_length++;
+            }
+        }
+        // keep tabs as tabs, so the caret lines up with the source line
+        std::string caret_offset;
+        for (size_t i = 0; i < location.char_pos && i < line.size(); i++) {
+            caret_offset += (line[i] == '\t') ? '\t' : ' ';
+        }
+        if (location.char_pos > line.size()) {
+            caret_offset += std::string(location.char_pos - line.size(), ' ');
+        }
+        std::cerr << " " << style(bold_blue, line_number + " |") << " " << line << "\n";
+        std::cerr << " " << style(bold_blue, gutter + " |") << " " << caret_offset
+                  << style(bold_red, std::string(underline_length, '^')) << "\n";
+        return;
     }
 }
 
-static void display_error_message(const std::string& error_message) {
-    std::cout 
-        << red(error_message) 
-        << std::endl 
-        << std::endl;
-}
-
-static void display_runtime_error(const std::runtime_error& err) {
-    std::cout << std::endl
-    << bold_red("RUNTIME ERROR: ") 
-    << red(err.what())
-    << std::endl
-    << std::endl
-    << blue("better error messages are work in progress right now")
-    << std::endl
-    << std::endl;
-}
-
-static void display_unrecognized_error() {
-    display_error_kind(InternalError);
-    display_error_message(
-        "an unrecognized error has occurred, the point of failure is unknown"
-    );
+static void display_error(
+    CompilationError::Kind kind,
+    const std::string& message,
+    const std::optional<DebugInformationsAwareEntity>& location,
+    const std::string& note
+) {
+    if (location.has_value()) {
+        std::cerr << style(bold_gray,
+            location->filename + ":" + std::to_string(location->line_number) +
+            ":" + std::to_string(location->char_pos + 1) + ": "
+        );
+    }
+    std::cerr << style(bold_red, error_label(kind) + ":") << " " << message << "\n";
+    if (location.has_value()) {
+        display_source_snippet(location.value());
+    }
+    if (!note.empty()) {
+        std::cerr << style(bold_aqua, "note:") << " " << note << "\n";
+    }
+    if (kind == Kind::InternalError) {
+        std::cerr << style(bold_aqua, "note:") << " this is a bug in the basalt compiler, not in your program; "
+            "please report it at https://github.com/fDero/Basalt/issues\n";
+    }
 }
 
 void display_pretty_error_message(std::exception_ptr& error) {
     try {
         std::rethrow_exception(error);
     }
-    catch (const CompilationError& err)    { err.display_pretty();         }
-    catch (const std::runtime_error& err)  { display_runtime_error(err);   }
-    catch (...)                            { display_unrecognized_error(); }
+    catch (const CompilationError& err) {
+        err.display_pretty();
+    }
+    catch (const std::exception& err) {
+        display_error(Kind::InternalError, err.what(), std::nullopt, "");
+    }
+    catch (...) {
+        display_error(Kind::InternalError, "an unknown error has occurred", std::nullopt, "");
+    }
+    std::cerr.flush();
 }
 
 void CompilationError::display_pretty() const {
-    display_error_kind(kind);
-    display_error_message(std::runtime_error::what());
-    if (optional<DebugInformationsAwareEntity>::has_value()) {
-        display_error_context(value().filename, value().line_number, value().char_pos);
-        display_coordinates(value());
-    }
+    display_error(kind, std::runtime_error::what(), *this, note);
 }

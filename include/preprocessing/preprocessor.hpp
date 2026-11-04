@@ -5,7 +5,8 @@
 
 #pragma once
 
-#include "core/program_representation.hpp"
+#include "misc/forward_declarations.hpp"
+
 
 class PreProcessor {
 
@@ -17,7 +18,8 @@ class PreProcessor {
         void preprocess_packages_typename_conflicts();
         void preprocess_type_definitions();
         void preprocess_function_definitions();
-    
+        void ensure_program_has_a_main_function();
+
     private:
         ProgramRepresentation& program_representation;
 };

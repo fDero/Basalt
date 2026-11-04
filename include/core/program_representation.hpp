@@ -5,22 +5,27 @@
 
 #pragma once
 
+#include <cstddef>
+#include <functional>
+#include <list>
+#include <optional>
+#include <string>
+#include <vector>
+
+#include "core/common_feature_adoption_plan_generation_engine.hpp"
+#include "core/function_definitions_register.hpp"
 #include "core/project_file_structure.hpp"
 #include "core/type_definitions_register.hpp"
-#include "core/function_definitions_register.hpp"
-#include "core/function_definitions_register.hpp"
-#include "core/common_feature_adoption_plan_generation_engine.hpp"
-#include "core/scope_context.hpp"
-#include "core/caching_aware_register.hpp"
-#include "core/callable_code_block.hpp"
+#include "misc/forward_declarations.hpp"
+
 
 class ProgramRepresentation {
-    
+
     public:
         ProgramRepresentation(const ProjectFileStructure& project_file_structure);
 
         [[nodiscard]] std::optional<TypeSignature> resolve_expression_type(
-            const Expression& function_call, 
+            const Expression& function_call,
             ScopeContext& arg_types
         );
 
@@ -35,15 +40,15 @@ class ProgramRepresentation {
         [[nodiscard]] TypeSignature unalias_type(
             const TypeSignature& type_signature
         );
-        
+
         [[nodiscard]] std::string get_fully_qualified_typesignature_name(
             const TypeSignature& typesignature
         );
-        
+
         [[nodiscard]] std::string get_fully_qualified_typedefinition_name(
             const TypeDefinition& type_definition
         );
-    
+
         void foreach_type_definition(
             std::function<void(const TypeDefinition&)> functor
         );
@@ -96,22 +101,22 @@ class ProgramRepresentation {
         );
 
         [[nodiscard]] DotMemberAccess normalize_dot_member_access(
-            const DotMemberAccess& dot_member_access, 
+            const DotMemberAccess& dot_member_access,
             ScopeContext& scope_context
         );
 
         [[nodiscard]] size_t resolve_field_index(
-            const DotMemberAccess& dot_member_access, 
+            const DotMemberAccess& dot_member_access,
             ScopeContext& scope_context
         );
 
         [[nodiscard]] bool is_binary_operator_over_float_operands(
-            const BinaryOperator& binary_op, 
+            const BinaryOperator& binary_op,
             ScopeContext& scope_context
         );
 
         [[nodiscard]] bool is_unary_operator_over_float_operand(
-            const UnaryOperator& binary_op, 
+            const UnaryOperator& binary_op,
             ScopeContext& scope_context
         );
 

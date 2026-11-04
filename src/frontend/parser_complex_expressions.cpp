@@ -3,12 +3,22 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
-#include "syntax/specials.hpp"
-#include "syntax/infixes.hpp"
+#include <cstddef>
+#include <iterator>
+#include <optional>
+#include <string>
+#include <vector>
+
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 #include "frontend/parser.hpp"
+#include "frontend/token.hpp"
 #include "language/expressions.hpp"
+#include "language/functions.hpp"
+#include "language/typesignatures.hpp"
+#include "syntax/infixes.hpp"
+#include "syntax/specials.hpp"
+
 
 Expression Parser::parse_array_literal() {
     const Token& array_token = *iterator;
@@ -86,7 +96,7 @@ Expression Parser::parse_text_first_expression() {
 }
 
 Expression Parser::parse_symbol_first_expression() {
-    if (iterator->sourcetext == "(") return parse_expression_wrapped_in_parenthesis(); 
+    if (iterator->sourcetext == "(") return parse_expression_wrapped_in_parenthesis();
     else if (iterator->sourcetext == "[") return parse_array_literal();
     else return parse_prefix_operator();
 }
@@ -113,8 +123,8 @@ Expression Parser::parse_expression() {
 
 bool Parser::is_type_operator() {
     return (
-        iterator->type == Token::Type::as_keyword || 
-        iterator->type == Token::Type::is_keyword 
+        iterator->type == Token::Type::as_keyword ||
+        iterator->type == Token::Type::is_keyword
     );
 }
 

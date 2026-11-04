@@ -1,10 +1,16 @@
+#include <vector>
 
 #include <gtest/gtest.h>
+
 #include "frontend/parser.hpp"
-#include "errors/internal_errors.hpp"
-#include "errors/parsing_errors.hpp"
-#include "syntax/primitive_types.hpp"
+#include "frontend/token.hpp"
+#include "frontend/tokenized_file.hpp"
+#include "language/definitions.hpp"
+#include "language/statements.hpp"
+#include "language/typesignatures.hpp"
 #include "syntax/keywords.hpp"
+#include "syntax/primitive_types.hpp"
+
 
 TEST(Frontend, Parse_Function_Definition_WithOut_generics_And_No_Arguments_And_NON_Empty_Body) {
     std::vector<Token> tokens = {

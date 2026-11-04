@@ -1,12 +1,10 @@
-
 #include <gtest/gtest.h>
-#include "core/generics_substitution_rules.hpp"
-#include "errors/internal_errors.hpp"
-#include "preprocessing/preprocessor.hpp"
+
 #include "core/assignment_type_checker.hpp"
-#include "../../tests_utilities/union_definition_factory.hpp"
-#include "../../tests_utilities/struct_definition_factory.hpp"
+#include "core/project_file_structure.hpp"
+#include "core/type_definitions_register.hpp"
 #include "../../tests_utilities/typesignature_factory.hpp"
+
 
 TEST(Core, Assignment_Type_Checking_For_Int_Assigned_To_Int) {
     ProjectFileStructure empty_project;

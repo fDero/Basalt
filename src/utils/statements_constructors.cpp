@@ -3,8 +3,15 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include <optional>
+#include <string>
+#include <vector>
+
+#include "frontend/token.hpp"
+#include "language/expressions.hpp"
 #include "language/statements.hpp"
-#include "frontend/tokenizer.hpp"
+#include "language/typesignatures.hpp"
+
 
 VariableDeclaration::VariableDeclaration(
     const std::string& name, 

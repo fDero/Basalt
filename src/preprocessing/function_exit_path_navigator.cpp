@@ -3,8 +3,16 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
-#include "preprocessing/function_exit_path_navigator.hpp"
+#include <tuple>
+#include <vector>
+
+#include "core/program_representation.hpp"
 #include "errors/internal_errors.hpp"
+#include "errors/preprocessing_errors.hpp"
+#include "language/definitions.hpp"
+#include "language/statements.hpp"
+#include "preprocessing/function_exit_path_navigator.hpp"
+
 
 #define EPK FunctionExitPathNavigator::ExitPathKind
 
@@ -28,7 +36,7 @@ void FunctionExitPathNavigator::visit_function_definition(
     bool should_be_enforced = function_definition.return_type.has_value();
     should_be_enforced &= !function_definition.extern_implementation.has_value();
     if (should_be_enforced) {
-        ensure_every_path_returns_in_function_exit_navigation(every_path_returns);
+        ensure_every_path_returns_in_function_exit_navigation(every_path_returns, function_definition);
     }
 }
 
@@ -39,7 +47,7 @@ EPK FunctionExitPathNavigator::visit_code_block(
     EPK exit_path_found = EPK::no_exit;
     bool code_from_now_on_is_unreachable = false;
     for (const Statement& statement : code_block) {
-        ensure_no_unreachable_code_in_function_exit_navigation(code_from_now_on_is_unreachable);
+        ensure_no_unreachable_code_in_function_exit_navigation(code_from_now_on_is_unreachable, statement);
         exit_path_found = visit_statement(statement, scope_kind);
         code_from_now_on_is_unreachable = (exit_path_found != EPK::no_exit);
     }
@@ -59,17 +67,18 @@ EPK FunctionExitPathNavigator::visit_statement(
         case StatementBody::Kind::variable_declaration: return EPK::no_exit;
         case StatementBody::Kind::const_declaration: return EPK::no_exit;
         case StatementBody::Kind::assignment: return EPK::no_exit;
-        case StatementBody::Kind::break_statement: return visit_loop_blocking_statement(scope_kind);
-        case StatementBody::Kind::continue_statement: return visit_loop_blocking_statement(scope_kind);
+        case StatementBody::Kind::break_statement: return visit_loop_blocking_statement(statement, scope_kind);
+        case StatementBody::Kind::continue_statement: return visit_loop_blocking_statement(statement, scope_kind);
     }
     assert_unreachable();
 }
 
 EPK FunctionExitPathNavigator::visit_loop_blocking_statement(
+    const Statement& statement,
     ScopeKind scope_kind
 ) {
     bool inside_loop = scope_kind == ScopeKind::loop;
-    ensure_no_loop_specific_statements_outside_loop_body_in_function_exit_navigation(inside_loop);
+    ensure_no_loop_specific_statements_outside_loop_body_in_function_exit_navigation(inside_loop, statement);
     return EPK::local_control_flow_alteration;
 }
 

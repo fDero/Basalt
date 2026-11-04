@@ -3,8 +3,16 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
-#include "preprocessing/package_type_conflict_navigator.hpp"
+#include <cstddef>
+#include <list>
+#include <string>
+
+#include "core/program_representation.hpp"
 #include "errors/preprocessing_errors.hpp"
+#include "frontend/file_representation.hpp"
+#include "language/definitions.hpp"
+#include "preprocessing/package_type_conflict_navigator.hpp"
+
 
 using PTCN = PackageTypeConflictNavigator;
 
@@ -45,7 +53,7 @@ void PTCN::SinglePackageTypeConflictNavigator::visit_file(const FileRepresentati
     for (const TypeDefinition& type_def : file_representation.type_defs) {
         std::string conflict_detection_pattern = get_type_definition_conflict_detection_pattern(type_def);
         auto insertion_outcome = type_definition_conflict_detection_patterns.insert(conflict_detection_pattern);
-        ensure_no_type_definition_conflict_detected(insertion_outcome);
+        ensure_no_type_definition_conflict_detected(insertion_outcome, type_def);
     }
     visited_files.insert(file_representation.file_metadata.filename);
     for (const std::string& import : file_representation.file_metadata.imports) {

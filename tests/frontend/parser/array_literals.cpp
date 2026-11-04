@@ -1,9 +1,14 @@
+#include <vector>
 
 #include <gtest/gtest.h>
+
 #include "frontend/parser.hpp"
-#include "errors/internal_errors.hpp"
-#include "errors/parsing_errors.hpp"
+#include "frontend/token.hpp"
+#include "frontend/tokenized_file.hpp"
+#include "language/expressions.hpp"
+#include "language/typesignatures.hpp"
 #include "syntax/primitive_types.hpp"
+
 
 TEST(Frontend, Parse_Array_Literal_Without_Explicit_Size) {
     std::vector<Token> tokens = {

@@ -3,8 +3,16 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include <functional>
+#include <optional>
+#include <string>
+
 #include "core/scope_context.hpp"
 #include "errors/preprocessing_errors.hpp"
+#include "language/definitions.hpp"
+#include "language/statements.hpp"
+#include "language/typesignatures.hpp"
+
 
 ScopeContext::ScopeContext(const FunctionDefinition& function_definition) {
     for (const FunctionDefinition::Argument& argument : function_definition.arguments) {
@@ -21,7 +29,7 @@ ScopeContext::ScopeContext(const FunctionDefinition& function_definition) {
 
 void ScopeContext::store_local_variable(const VariableDeclaration& var_declaration) {
     bool search_outcome = contains(var_declaration.identifier_name);
-    ensure_identifier_not_ambiguous_in_given_scope(var_declaration.identifier_name, search_outcome);
+    ensure_identifier_not_ambiguous_in_given_scope(var_declaration.identifier_name, search_outcome, var_declaration.as_debug_informations_aware_entity());
     local_objects.push_back({
         .unique_scope_insensitive_id = var_declaration.as_debug_informations_aware_entity().unique_string_id(),
         .identifier = var_declaration.identifier_name,
@@ -33,7 +41,7 @@ void ScopeContext::store_local_variable(const VariableDeclaration& var_declarati
 
 void ScopeContext::store_local_constant(const ConstDeclaration& const_declaration) {
     bool search_outcome = contains(const_declaration.identifier_name);
-    ensure_identifier_not_ambiguous_in_given_scope(const_declaration.identifier_name, search_outcome);
+    ensure_identifier_not_ambiguous_in_given_scope(const_declaration.identifier_name, search_outcome, const_declaration.as_debug_informations_aware_entity());
     local_objects.push_back({
         .unique_scope_insensitive_id = const_declaration.as_debug_informations_aware_entity().unique_string_id(),
         .identifier = const_declaration.identifier_name,

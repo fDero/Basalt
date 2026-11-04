@@ -1,10 +1,20 @@
+#include <optional>
 
 #include <gtest/gtest.h>
-#include "syntax/keywords.hpp"
+
+#include "core/program_representation.hpp"
+#include "core/project_file_structure.hpp"
+#include "core/scope_context.hpp"
+#include "frontend/file_representation.hpp"
+#include "frontend/token.hpp"
+#include "language/expressions.hpp"
+#include "language/functions.hpp"
+#include "language/statements.hpp"
 #include "preprocessing/immutability_deducer.hpp"
-#include "../../tests_utilities/typesignature_factory.hpp"
+#include "syntax/keywords.hpp"
 #include "../../tests_utilities/function_definition_factory.hpp"
-#include "../../tests_utilities/struct_definition_factory.hpp"
+#include "../../tests_utilities/typesignature_factory.hpp"
+
 
 TEST(Preprocessing, Immutability_Deducer_Says_Square_Brackets_Access_On_Fcall_Is_NOT_Immutable_Hence_Mutable) {
     ProjectFileStructure single_func_def_project({

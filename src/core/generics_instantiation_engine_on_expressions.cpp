@@ -3,9 +3,12 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
-#include "core/generics_substitution_rules.hpp"
 #include "core/generics_instantiation_engine.hpp"
 #include "errors/internal_errors.hpp"
+#include "language/expressions.hpp"
+#include "language/functions.hpp"
+#include "language/typesignatures.hpp"
+
 
 Expression GenericsInstantiationEngine::instantiate_generic_expression(const Expression& expression) {
     switch (expression.expression_kind()) {

@@ -4,9 +4,15 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 #include "language/statements.hpp"
+#include "misc/debug_informations_aware_entity.hpp"
+
 
 StatementBody::Kind Statement::statement_kind() const {
     return ptr->statement_kind();
+}
+
+const DebugInformationsAwareEntity& Statement::as_debug_informations_aware_entity() const {
+    return ptr->as_debug_informations_aware_entity();
 }
 
 StatementBody::Kind VariableDeclaration::statement_kind() const {

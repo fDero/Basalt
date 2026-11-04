@@ -5,26 +5,24 @@
 
 #pragma once
 
-#include <functional>
-#include <memory>
+#include <optional>
+#include <string>
+#include <vector>
 
-#include "misc/forward_declarations.hpp"
-#include "language/definitions.hpp"
-#include "core/program_representation.hpp"
-#include "backend/type_definitions_llvm_translator.hpp"
-#include "backend/translation_aware_scope_context.hpp"
-#include "backend/translated_expression.hpp"
-
-
-#include <llvm/IR/IRBuilder.h>
+#include <llvm/IR/BasicBlock.h>
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/Module.h>
 
+#include "backend/translated_expression.hpp"
+#include "backend/translation_aware_scope_context.hpp"
+#include "language/typesignatures.hpp"
+#include "misc/forward_declarations.hpp"
+
+
 class ExpressionsAndStatementsLLVMTranslator {
-    
     public:
         ExpressionsAndStatementsLLVMTranslator(
-            ProgramRepresentation& program_representation, 
+            ProgramRepresentation& program_representation,
             TypeDefinitionsLLVMTranslator& type_definitions_llvm_translator,
             CallableCodeBlocksLLVMTranslator& callable_codeblocks_llvm_translator,
             TranslationAwareScopeContext scope_context,
@@ -65,20 +63,20 @@ class ExpressionsAndStatementsLLVMTranslator {
         [[nodiscard]] TranslatedExpression translate_is_operator_to_llvm(llvm::BasicBlock* block, const TypeOperator& expr);
         [[nodiscard]] TranslatedExpression translate_as_operator_to_llvm(llvm::BasicBlock* block, const TypeOperator& expr);
 
-        [[nodiscard]] TranslatedExpression translate_plus_binary_operator_to_llvm(llvm::BasicBlock* block, const BinaryOperator& binary_op); 
+        [[nodiscard]] TranslatedExpression translate_plus_binary_operator_to_llvm(llvm::BasicBlock* block, const BinaryOperator& binary_op);
         [[nodiscard]] TranslatedExpression translate_minus_binary_operator_to_llvm(llvm::BasicBlock* block, const BinaryOperator& binary_op);
-        [[nodiscard]] TranslatedExpression translate_mul_binary_operator_to_llvm(llvm::BasicBlock* block, const BinaryOperator& binary_op);  
-        [[nodiscard]] TranslatedExpression translate_div_binary_operator_to_llvm(llvm::BasicBlock* block, const BinaryOperator& binary_op);  
-        [[nodiscard]] TranslatedExpression translate_mod_binary_operator_to_llvm(llvm::BasicBlock* block, const BinaryOperator& binary_op);  
-        [[nodiscard]] TranslatedExpression translate_LT_then_comparison_to_llvm(llvm::BasicBlock* block, const BinaryOperator& binary_op);   
-        [[nodiscard]] TranslatedExpression translate_GT_comparison_to_llvm(llvm::BasicBlock* block, const BinaryOperator& binary_op);        
-        [[nodiscard]] TranslatedExpression translate_LE_comparison_to_llvm(llvm::BasicBlock* block, const BinaryOperator& binary_op);        
-        [[nodiscard]] TranslatedExpression translate_GE_comparison_to_llvm(llvm::BasicBlock* block, const BinaryOperator& binary_op);        
-        [[nodiscard]] TranslatedExpression translate_EQ_comparison_to_llvm(llvm::BasicBlock* block, const BinaryOperator& binary_op);        
-        [[nodiscard]] TranslatedExpression translate_NE_comparison_to_llvm(llvm::BasicBlock* block, const BinaryOperator& binary_op);        
-        [[nodiscard]] TranslatedExpression translate_boolean_and_to_llvm(llvm::BasicBlock* block, const BinaryOperator& binary_op);          
-        [[nodiscard]] TranslatedExpression translate_boolean_or_to_llvm(llvm::BasicBlock* block, const BinaryOperator& binary_op);           
-        [[nodiscard]] TranslatedExpression translate_boolean_xor_to_llvm(llvm::BasicBlock* block, const BinaryOperator& binary_op);  
+        [[nodiscard]] TranslatedExpression translate_mul_binary_operator_to_llvm(llvm::BasicBlock* block, const BinaryOperator& binary_op);
+        [[nodiscard]] TranslatedExpression translate_div_binary_operator_to_llvm(llvm::BasicBlock* block, const BinaryOperator& binary_op);
+        [[nodiscard]] TranslatedExpression translate_mod_binary_operator_to_llvm(llvm::BasicBlock* block, const BinaryOperator& binary_op);
+        [[nodiscard]] TranslatedExpression translate_LT_then_comparison_to_llvm(llvm::BasicBlock* block, const BinaryOperator& binary_op);
+        [[nodiscard]] TranslatedExpression translate_GT_comparison_to_llvm(llvm::BasicBlock* block, const BinaryOperator& binary_op);
+        [[nodiscard]] TranslatedExpression translate_LE_comparison_to_llvm(llvm::BasicBlock* block, const BinaryOperator& binary_op);
+        [[nodiscard]] TranslatedExpression translate_GE_comparison_to_llvm(llvm::BasicBlock* block, const BinaryOperator& binary_op);
+        [[nodiscard]] TranslatedExpression translate_EQ_comparison_to_llvm(llvm::BasicBlock* block, const BinaryOperator& binary_op);
+        [[nodiscard]] TranslatedExpression translate_NE_comparison_to_llvm(llvm::BasicBlock* block, const BinaryOperator& binary_op);
+        [[nodiscard]] TranslatedExpression translate_boolean_and_to_llvm(llvm::BasicBlock* block, const BinaryOperator& binary_op);
+        [[nodiscard]] TranslatedExpression translate_boolean_or_to_llvm(llvm::BasicBlock* block, const BinaryOperator& binary_op);
+        [[nodiscard]] TranslatedExpression translate_boolean_xor_to_llvm(llvm::BasicBlock* block, const BinaryOperator& binary_op);
 
         [[nodiscard]] TranslatedExpression translate_boolean_not_to_llvm(llvm::BasicBlock* block, const UnaryOperator& expr);
         [[nodiscard]] TranslatedExpression translate_minus_sign_to_llvm(llvm::BasicBlock* block, const UnaryOperator& expr);
@@ -91,16 +89,16 @@ class ExpressionsAndStatementsLLVMTranslator {
         [[nodiscard]] TranslatedExpression translate_square_bracket_access_from_slice_to_llvm(llvm::BasicBlock* block, const SquareBracketsAccess& expr);
         [[nodiscard]] TranslatedExpression translate_square_bracket_access_from_string_to_llvm(llvm::BasicBlock* block, const SquareBracketsAccess& expr);
         [[nodiscard]] TranslatedExpression translate_square_bracket_access_from_raw_string_to_llvm(llvm::BasicBlock* block, const SquareBracketsAccess& expr);
-        
+
         [[nodiscard]] TranslatedExpression translate_string_or_slice_length_to_llvm(llvm::BasicBlock* block, const Expression& expr);
 
         [[nodiscard]] TranslatedExpression translate_dot_member_access_to_llvm(
-            llvm::BasicBlock* block, 
+            llvm::BasicBlock* block,
             const DotMemberAccess& expr
         );
-        
+
         [[nodiscard]] TranslatedExpression translate_dot_member_access_on_custom_type_to_llvm(
-            llvm::BasicBlock* block, 
+            llvm::BasicBlock* block,
             const DotMemberAccess& expr
         );
 
@@ -118,7 +116,7 @@ class ExpressionsAndStatementsLLVMTranslator {
             const std::string& member_name
         );
 
-    protected:        
+    protected:
         [[nodiscard]] ExpressionsAndStatementsLLVMTranslator create_translator_for_nested_conditional();
 
         [[nodiscard]] ExpressionsAndStatementsLLVMTranslator create_translator_for_nested_loop(

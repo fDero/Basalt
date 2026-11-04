@@ -3,7 +3,35 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include <cstddef>
+#include <map>
+#include <memory>
+#include <optional>
+#include <string>
+#include <vector>
+
+#include <llvm/IR/BasicBlock.h>
+#include <llvm/IR/DerivedTypes.h>
+#include <llvm/IR/Function.h>
+#include <llvm/IR/Instruction.h>
+#include <llvm/IR/Instructions.h>
+#include <llvm/IR/IRBuilder.h>
+#include <llvm/IR/LLVMContext.h>
+#include <llvm/IR/Module.h>
+#include <llvm/IR/Type.h>
+
 #include "backend/callable_codeblocks_llvm_translator.hpp"
+#include "backend/expressions_and_statements_llvm_translator.hpp"
+#include "backend/translation_aware_scope_context.hpp"
+#include "backend/type_definitions_llvm_translator.hpp"
+#include "core/callable_code_block.hpp"
+#include "core/common_feature_adoption_plan_descriptor.hpp"
+#include "core/program_representation.hpp"
+#include "core/scope_context.hpp"
+#include "errors/internal_errors.hpp"
+#include "language/definitions.hpp"
+#include "language/typesignatures.hpp"
+
 
 CallableCodeBlocksLLVMTranslator::CallableCodeBlocksLLVMTranslator(
     ProgramRepresentation& program_representation, 

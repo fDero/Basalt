@@ -3,9 +3,13 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
-#include "syntax/prefixes.hpp"
 #include "errors/preprocessing_errors.hpp"
+#include "language/expressions.hpp"
+#include "language/functions.hpp"
 #include "preprocessing/address_sanitizer.hpp"
+#include "syntax/prefixes.hpp"
+
+
 using AS = AddressSanitizer;
 
 void AS::SingleFunctionAddressSanitizer::visit_expression(const Expression& expr) {

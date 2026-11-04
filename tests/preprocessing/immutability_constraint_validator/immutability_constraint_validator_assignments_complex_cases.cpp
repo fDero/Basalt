@@ -1,10 +1,22 @@
+#include <optional>
 
 #include <gtest/gtest.h>
-#include "syntax/keywords.hpp"
+
+#include "core/program_representation.hpp"
+#include "core/project_file_structure.hpp"
+#include "frontend/file_representation.hpp"
+#include "frontend/token.hpp"
+#include "language/definitions.hpp"
+#include "language/expressions.hpp"
+#include "language/functions.hpp"
+#include "language/statements.hpp"
+#include "language/typesignatures.hpp"
 #include "preprocessing/immutability_constraint_validator.hpp"
-#include "../../tests_utilities/typesignature_factory.hpp"
+#include "syntax/keywords.hpp"
 #include "../../tests_utilities/function_definition_factory.hpp"
 #include "../../tests_utilities/struct_definition_factory.hpp"
+#include "../../tests_utilities/typesignature_factory.hpp"
+
 
 TEST(Preprocessing, Immutability_Constraint_Validator_Assignment_Of_Literal_To_Member_Of_A_Struct_Variable) {
     ProjectFileStructure single_func_def_project({

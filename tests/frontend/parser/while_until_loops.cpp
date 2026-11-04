@@ -1,9 +1,14 @@
+#include <vector>
 
 #include <gtest/gtest.h>
+
 #include "frontend/parser.hpp"
-#include "errors/internal_errors.hpp"
-#include "errors/parsing_errors.hpp"
+#include "frontend/token.hpp"
+#include "frontend/tokenized_file.hpp"
+#include "language/functions.hpp"
+#include "language/statements.hpp"
 #include "syntax/keywords.hpp"
+
 
 TEST(Frontend, Parse_Inline_While_Loop) {
     std::vector<Token> tokens = {

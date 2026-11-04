@@ -5,18 +5,24 @@
 
 #pragma once
 
-#include "core/program_representation.hpp"
-#include "language/definitions.hpp"
+#include <cstddef>
+#include <optional>
+#include <string>
+#include <unordered_map>
+#include <vector>
 
+#include <llvm/IR/GlobalVariable.h>
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/Module.h>
-#include <llvm/IR/Constants.h>
+#include <llvm/IR/Type.h>
+
+#include "misc/forward_declarations.hpp"
+
 
 class TypeDefinitionsLLVMTranslator {
-
     public:
         TypeDefinitionsLLVMTranslator(
-            ProgramRepresentation& program_representation, 
+            ProgramRepresentation& program_representation,
             llvm::LLVMContext& context,
             llvm::Module& llvm_module
         );

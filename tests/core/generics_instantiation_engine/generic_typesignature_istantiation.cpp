@@ -1,10 +1,11 @@
-
 #include <gtest/gtest.h>
-#include "core/generics_substitution_rules.hpp"
+
 #include "core/generics_instantiation_engine.hpp"
-#include "errors/internal_errors.hpp"
-#include "../../tests_utilities/typesignature_factory.hpp"
+#include "core/generics_substitution_rules.hpp"
+#include "language/typesignatures.hpp"
 #include "../../tests_utilities/type_queries.hpp"
+#include "../../tests_utilities/typesignature_factory.hpp"
+
 
 inline GenericSubstitutionRule ts_are_ints = { "T", TypeSignatureFactory::Int };
 inline GenericSubstitutionRule us_are_list_of_strings = { "U", TypeSignatureFactory::ListOfStrings };

@@ -1,11 +1,16 @@
-
 #include <gtest/gtest.h>
-#include "core/generics_substitution_rules.hpp"
-#include "errors/internal_errors.hpp"
+
+#include "core/program_representation.hpp"
+#include "core/project_file_structure.hpp"
+#include "frontend/file_representation.hpp"
+#include "frontend/token.hpp"
+#include "language/definitions.hpp"
+#include "language/typesignatures.hpp"
 #include "preprocessing/type_dependency_navigator.hpp"
-#include "../../tests_utilities/union_definition_factory.hpp"
+#include "syntax/primitive_types.hpp"
+#include "../../tests_utilities/compilation_error_assertions.hpp"
 #include "../../tests_utilities/struct_definition_factory.hpp"
-#include "../../tests_utilities/typesignature_factory.hpp"
+
 
 ProjectFileStructure directly_self_recursive_struct_definition_via_inline_union({
     FileRepresentation {
@@ -59,7 +64,7 @@ TEST(Preprocessing, Recursive_Struct_Dependency_Via_Inline_Union_Is_Cyclic_Depen
     const StructDefinition& A = main_dot_basalt.type_defs.front().get<StructDefinition>();
     TypeDependencyNavigator navigator(program_representation);
     ASSERT_EQ(A.def_name, "A");
-    EXPECT_ANY_THROW({
+    EXPECT_COMPILATION_ERROR(ValidationError, "contains itself", {
         navigator.visit_struct_definition(A);
     });
 }

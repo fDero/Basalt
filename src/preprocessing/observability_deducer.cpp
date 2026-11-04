@@ -3,16 +3,22 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
-#include "preprocessing/observability_deducer.hpp"
+#include "core/program_representation.hpp"
+#include "core/scope_context.hpp"
 #include "errors/internal_errors.hpp"
-#include "syntax/infixes.hpp"
+#include "language/expressions.hpp"
+#include "language/functions.hpp"
+#include "language/typesignatures.hpp"
+#include "preprocessing/observability_deducer.hpp"
+#include "syntax/keywords.hpp"
+
 
 ObservabilityDeducer::ObservabilityDeducer(
-    ScopeContext& scope_context, 
+    ScopeContext& scope_context,
     ProgramRepresentation& program_representation
-) 
+)
     : scope_context(scope_context)
-    , program_representation(program_representation) 
+    , program_representation(program_representation)
 {}
 
 bool ObservabilityDeducer::is_expression_update_observable(const Expression& expression) {
@@ -23,14 +29,14 @@ bool ObservabilityDeducer::is_expression_update_observable(const Expression& exp
         case ExpressionBody::Kind::function_call:         return is_function_call_update_observable(expression.get<FunctionCall>());
         case ExpressionBody::Kind::type_operator:         return is_type_operator_update_observable(expression.get<TypeOperator>());
         case ExpressionBody::Kind::identifier:            return true;
- 
-        case ExpressionBody::Kind::binary_operator: 
-        case ExpressionBody::Kind::array_literal:   
-        case ExpressionBody::Kind::string_literal:  
-        case ExpressionBody::Kind::float_literal:   
-        case ExpressionBody::Kind::char_literal:    
-        case ExpressionBody::Kind::int_literal:     
-        case ExpressionBody::Kind::bool_literal:    
+
+        case ExpressionBody::Kind::binary_operator:
+        case ExpressionBody::Kind::array_literal:
+        case ExpressionBody::Kind::string_literal:
+        case ExpressionBody::Kind::float_literal:
+        case ExpressionBody::Kind::char_literal:
+        case ExpressionBody::Kind::int_literal:
+        case ExpressionBody::Kind::bool_literal:
             return false;
     }
     assert_unreachable();
@@ -52,7 +58,7 @@ bool ObservabilityDeducer::is_dot_member_access_update_observable(const DotMembe
     if (is_expression_update_observable(dot_member_access.struct_value)) {
         return is_expression_update_observable(dot_member_access.struct_value);
     }
-    const auto& type_opt = program_representation.resolve_expression_type(dot_member_access.struct_value, scope_context);    
+    const auto& type_opt = program_representation.resolve_expression_type(dot_member_access.struct_value, scope_context);
     return !type_opt.has_value() || type_opt->is<SliceType>() || type_opt->is<PointerType>();
 }
 

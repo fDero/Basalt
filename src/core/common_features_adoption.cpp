@@ -3,22 +3,36 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include <algorithm>
+#include <cstddef>
+#include <iterator>
+#include <optional>
+#include <string>
+#include <utility>
+#include <vector>
+
 #include "core/common_feature_adoption_plan_descriptor.hpp"
 #include "core/common_feature_adoption_plan_generation_engine.hpp"
+#include "core/function_definitions_register.hpp"
+#include "core/type_definitions_register.hpp"
 #include "errors/internal_errors.hpp"
 #include "errors/preprocessing_errors.hpp"
+#include "language/definitions.hpp"
+#include "language/functions.hpp"
+#include "language/typesignatures.hpp"
 
-CommonFeatureAdoptionPlanGenerationEngine::CommonFeatureAdoptionPlanGenerationEngine( 
+
+CommonFeatureAdoptionPlanGenerationEngine::CommonFeatureAdoptionPlanGenerationEngine(
     FunctionDefinitionsRegister& function_definitions_register,
     TypeDefinitionsRegister& type_definitions_register
-) 
+)
     : function_definitions_register(function_definitions_register)
     , type_definitions_register(type_definitions_register)
 { }
 
 CommonFeatureAdoptionPlanDescriptor
 CommonFeatureAdoptionPlanGenerationEngine::generate_common_feature_adoption_plan_descriptor(
-    const FunctionCall& function_call, 
+    const FunctionCall& function_call,
     const std::vector<TypeSignature>& arg_types
 ) {
     CommonFeatureAdoptionPlan plan = generate_common_feature_adoption_plan(function_call, arg_types);
@@ -34,11 +48,11 @@ CommonFeatureAdoptionPlanGenerationEngine::generate_common_feature_adoption_plan
     };
 }
 
-CommonFeatureAdoptionPlan 
+CommonFeatureAdoptionPlan
 CommonFeatureAdoptionPlanGenerationEngine::generate_common_feature_adoption_plan(
-    const FunctionCall& function_call, 
+    const FunctionCall& function_call,
     const std::vector<TypeSignature>& arg_types
-) { 
+) {
     std::string cache_key = get_cache_search_key_for_func_def_retrieval_from_func_call(
         type_definitions_register, function_call, arg_types
     );
@@ -47,8 +61,8 @@ CommonFeatureAdoptionPlanGenerationEngine::generate_common_feature_adoption_plan
         return cache_search_outcome->second;
     }
     auto cfa_plan = generate_common_feature_adoption_iterating_over_arg_types(
-        function_call, 
-        arg_types, 
+        function_call,
+        arg_types,
         arg_types.begin()
     );
     fast_retrieve_cache.insert({cache_key, cfa_plan});
@@ -57,22 +71,22 @@ CommonFeatureAdoptionPlanGenerationEngine::generate_common_feature_adoption_plan
 
 CommonFeatureAdoptionPlan
 CommonFeatureAdoptionPlanGenerationEngine::generate_common_feature_adoption_iterating_over_arg_types(
-    const FunctionCall& function_call, 
+    const FunctionCall& function_call,
     const std::vector<TypeSignature>& arg_types,
     std::vector<TypeSignature>::const_iterator current_arg_type_iterator
-) { 
+) {
     FunctionDefinition::Ref retrieved = function_definitions_register.retrieve_function_definition(function_call, arg_types);
     CommonFeatureAdoptionPlan direct_adoption_plan = retrieved;
     if (retrieved != nullptr) {
         return direct_adoption_plan;
     }
-    ensure_common_feature_adoption_is_possible(current_arg_type_iterator, arg_types.end());
+    ensure_common_feature_adoption_is_possible(current_arg_type_iterator, arg_types.end(), function_call, arg_types);
     TypeSignature current_arg_type = type_definitions_register.unalias_type(*current_arg_type_iterator);
     assert_current_arg_type_is_not_generic(current_arg_type);
     switch (current_arg_type.typesiganture_kind()) {
         case TypeSignatureBody::Kind::inline_union:return generate_common_feature_adoption_for_inline_union(
             function_call, arg_types, current_arg_type_iterator
-        ); 
+        );
         case TypeSignatureBody::Kind::custom_type: return generate_common_feature_adoption_for_custom_type(
             function_call, arg_types, current_arg_type_iterator
         );
@@ -84,7 +98,7 @@ CommonFeatureAdoptionPlanGenerationEngine::generate_common_feature_adoption_iter
 
 CommonFeatureAdoptionPlan
 CommonFeatureAdoptionPlanGenerationEngine::generate_common_feature_adoption_for_inline_union(
-    const FunctionCall& function_call, 
+    const FunctionCall& function_call,
     const std::vector<TypeSignature>& arg_types,
     std::vector<TypeSignature>::const_iterator current_arg_type_iterator
 ) {
@@ -99,7 +113,7 @@ CommonFeatureAdoptionPlanGenerationEngine::generate_common_feature_adoption_for_
 
 CommonFeatureAdoptionPlan
 CommonFeatureAdoptionPlanGenerationEngine::generate_common_feature_adoption_for_custom_type(
-    const FunctionCall& function_call, 
+    const FunctionCall& function_call,
     const std::vector<TypeSignature>& arg_types,
     std::vector<TypeSignature>::const_iterator current_arg_type_iterator
 ) {
@@ -127,7 +141,7 @@ CommonFeatureAdoptionPlanGenerationEngine::generate_common_feature_adoption_for_
 
 CommonFeatureAdoptionPlan
 CommonFeatureAdoptionPlanGenerationEngine::generate_common_feature_adoption_for_current_multicase_arg(
-    const FunctionCall& function_call, 
+    const FunctionCall& function_call,
     const std::vector<TypeSignature>& arg_types,
     std::vector<TypeSignature>::const_iterator current_arg_type_iterator,
     const std::vector<TypeSignature>& alternatives
@@ -135,7 +149,7 @@ CommonFeatureAdoptionPlanGenerationEngine::generate_common_feature_adoption_for_
     assert_current_arg_type_is_not_generic(*current_arg_type_iterator);
     RecursiveAdoptionPlan plan;
     plan.argument_index = static_cast<size_t>(std::distance(arg_types.begin(), current_arg_type_iterator));
-    for (const TypeSignature& alternative : alternatives) { 
+    for (const TypeSignature& alternative : alternatives) {
         std::vector<TypeSignature> new_arg_types;
         std::copy(arg_types.begin(), current_arg_type_iterator, std::back_inserter(new_arg_types));
         new_arg_types.push_back(alternative);
@@ -146,14 +160,14 @@ CommonFeatureAdoptionPlanGenerationEngine::generate_common_feature_adoption_for_
         CommonFeatureAdoptionPlan nested_plan = generate_common_feature_adoption_iterating_over_arg_types(
             function_call, new_arg_types, new_arg_type_iterator
         );
-        
+
         plan.alternatives.push_back(alternative);
         plan.nested_plans.emplace_back(std::move(nested_plan));
     }
     return plan;
 }
 
-std::vector<std::optional<TypeSignature>> 
+std::vector<std::optional<TypeSignature>>
 CommonFeatureAdoptionPlanGenerationEngine::isolate_return_types(
     const CommonFeatureAdoptionPlan& plan
 ){
@@ -171,7 +185,7 @@ CommonFeatureAdoptionPlanGenerationEngine::isolate_return_types(
     return return_types;
 }
 
-std::optional<TypeSignature> 
+std::optional<TypeSignature>
 CommonFeatureAdoptionPlanGenerationEngine::compute_recursive_adoption_plan_return_type(
     const FunctionCall& function_call,
     std::vector<std::optional<TypeSignature>>& return_types
@@ -188,9 +202,9 @@ CommonFeatureAdoptionPlanGenerationEngine::compute_recursive_adoption_plan_retur
     }
     ensure_common_feature_adoption_is_possible(function_call, contains_void_return_type, contains_non_void_return_type);
     return (contains_void_return_type)
-        ? std::optional<TypeSignature>(std::nullopt) 
-        : InlineUnion ( 
-            function_call.as_debug_informations_aware_entity(), 
-            unwrapped_return_types 
+        ? std::optional<TypeSignature>(std::nullopt)
+        : InlineUnion (
+            function_call.as_debug_informations_aware_entity(),
+            unwrapped_return_types
         );
 }

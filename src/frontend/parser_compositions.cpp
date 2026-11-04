@@ -3,10 +3,15 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include <iterator>
+#include <string>
+
 #include "errors/internal_errors.hpp"
-#include "errors/parsing_errors.hpp"
 #include "frontend/parser.hpp"
+#include "frontend/token.hpp"
 #include "language/expressions.hpp"
+#include "language/typesignatures.hpp"
+
 
 Expression Parser::compose_dot_member_access(const Expression& left_operand) {
     assert_token_matches(source_tokens, iterator, ".");

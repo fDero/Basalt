@@ -8,13 +8,14 @@
 #include <string>
 #include <unordered_set>
 
-#include "core/program_representation.hpp"
+#include "misc/forward_declarations.hpp"
+
 
 class PackageTypeConflictNavigator {
-    
+
     public:
         PackageTypeConflictNavigator(ProgramRepresentation& program_representation);
-        
+
         void visit_package(const std::string& package_name);
         void visit_all_packages();
 

@@ -5,18 +5,14 @@
 
 #pragma once
 
-#include "core/program_representation.hpp"
-#include "core/scope_context.hpp"
-#include "language/definitions.hpp"
-#include "language/statements.hpp"
-#include "language/functions.hpp"
-#include "errors/preprocessing_errors.hpp"
+#include "misc/forward_declarations.hpp"
+
 
 class BondInspector {
 
     public:
         BondInspector(
-            ScopeContext& scope_context, 
+            ScopeContext& scope_context,
             ProgramRepresentation& program_representation
         );
 

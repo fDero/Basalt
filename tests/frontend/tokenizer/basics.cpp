@@ -1,9 +1,14 @@
+#include <cstddef>
+#include <sstream>
+#include <vector>
 
 #include <gtest/gtest.h>
+
+#include "frontend/token.hpp"
+#include "frontend/tokenized_file.hpp"
 #include "frontend/tokenizer.hpp"
-#include "errors/internal_errors.hpp"
-#include "errors/parsing_errors.hpp"
 #include "../../tests_utilities/tokenizer_inline_procs.hpp"
+
 
 TEST(Frontend, Tokenize_Integer_Literals) {
     auto [tokens_text, inline_input] = make_testable_input({"16", "811", "9", "01", "10"});

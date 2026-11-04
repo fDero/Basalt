@@ -3,9 +3,23 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include <cassert>
+
+#include <llvm/IR/BasicBlock.h>
+#include <llvm/IR/Instructions.h>
+#include <llvm/IR/IRBuilder.h>
+#include <llvm/IR/Type.h>
+
 #include "backend/expressions_and_statements_llvm_translator.hpp"
-#include "backend/callable_codeblocks_llvm_translator.hpp"
+#include "backend/translated_expression.hpp"
+#include "backend/type_definitions_llvm_translator.hpp"
 #include "backend/type_manipulations_llvm_translator.hpp"
+#include "core/program_representation.hpp"
+#include "errors/internal_errors.hpp"
+#include "language/expressions.hpp"
+#include "language/statements.hpp"
+#include "language/typesignatures.hpp"
+
 
 llvm::BasicBlock* ExpressionsAndStatementsLLVMTranslator::translate_variable_declaration_to_llvm(
     llvm::BasicBlock* block,

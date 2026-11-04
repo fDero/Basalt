@@ -3,10 +3,20 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
-#include "backend/type_manipulations_llvm_translator.hpp"
-#include "backend/llvm_wrappers.hpp"
+#include <vector>
 
-#include <iostream>
+#include <llvm/IR/BasicBlock.h>
+#include <llvm/IR/GlobalVariable.h>
+#include <llvm/IR/IRBuilder.h>
+#include <llvm/IR/Type.h>
+#include <llvm/IR/Value.h>
+
+#include "backend/llvm_wrappers.hpp"
+#include "backend/translated_expression.hpp"
+#include "backend/type_definitions_llvm_translator.hpp"
+#include "backend/type_manipulations_llvm_translator.hpp"
+#include "language/typesignatures.hpp"
+
 
 TranslatedExpression TypeManipulationsLLVMTranslator::test_concrete_type_of_union_in_llvm(
     llvm::BasicBlock* block,

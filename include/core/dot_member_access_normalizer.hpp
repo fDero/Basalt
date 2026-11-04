@@ -5,13 +5,15 @@
 
 #pragma once
 
-#include "syntax/prefixes.hpp"
-#include "language/typesignatures.hpp"
-#include "language/expressions.hpp"
+#include <optional>
+
 #include "core/expression_type_deducer.hpp"
+#include "language/expressions.hpp"
+#include "language/typesignatures.hpp"
+#include "syntax/prefixes.hpp"
+
 
 class DotMemberAccessNormalizer {
-
     public:
         DotMemberAccessNormalizer(
             ExpressionTypeDeducer& expression_type_deducer,
@@ -35,14 +37,14 @@ class DotMemberAccessNormalizer {
             std::optional<TypeSignature> target_type_opt = expression_type_deducer.deduce_expression_type(target);
             if (target_type_opt.has_value() && target_type_opt.value().is<PointerType>()) {
                 UnaryOperator maybe_normalized_target(
-                    dot_member_access.as_debug_informations_aware_entity(), 
+                    dot_member_access.as_debug_informations_aware_entity(),
                     pointer_dereference_operator,
                     target
                 );
                 return normalize_dot_member_access_target(maybe_normalized_target);
             }
             return target;
-        }        
+        }
 
     private:
         ExpressionTypeDeducer& expression_type_deducer;

@@ -5,13 +5,17 @@
 
 #pragma once
 
+#include <functional>
+#include <list>
+#include <optional>
 #include <string>
 #include <unordered_map>
-#include <functional>
+#include <vector>
 
-#include "core/project_file_structure.hpp"
 #include "language/definitions.hpp"
 #include "language/typesignatures.hpp"
+#include "misc/forward_declarations.hpp"
+
 
 class TypeDefinitionsRegister {
 
@@ -26,7 +30,7 @@ class TypeDefinitionsRegister {
 
         [[nodiscard]] std::string get_fully_qualified_typedefinition_name(const TypeDefinition& type_definition);
         [[nodiscard]] std::string get_fully_qualified_typesignature_name(const TypeSignature& type_signature);
-        
+
         [[nodiscard]] bool is_union(const TypeSignature& maybe_union_type);
 
 

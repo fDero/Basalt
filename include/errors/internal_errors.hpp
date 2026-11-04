@@ -5,35 +5,44 @@
 
 #pragma once
 
-#include <vector>
-#include <string>
-#include <map>
-#include <unordered_map>
 #include <list>
+#include <string>
+#include <unordered_map>
+#include <vector>
 
-#include "frontend/tokenizer.hpp"
-#include "language/typesignatures.hpp"
-#include "language/definitions.hpp"
-#include "frontend/file_representation.hpp"
-#include "errors/compilation_error.hpp"
 #include "core/common_feature_adoption_plan_descriptor.hpp"
+#include "language/definitions.hpp"
+#include "language/typesignatures.hpp"
+#include "misc/forward_declarations.hpp"
+
+
+[[noreturn]] void throw_internal_error(const std::string& message);
 
 [[noreturn]] void assert_unreachable();
 
+void assert_number_of_arguments_match(
+    const FunctionDefinition::Ref& function_definition,
+    const std::vector<TypeSignature>& arg_types
+);
+
+void assert_function_name_is_main(
+    const FunctionDefinition::Ref& main_function_definition
+);
+
 [[noreturn]] inline void throw_unrecognized_binary_operator(const BinaryOperator& bop) {
-    throw std::runtime_error("unrecognized binary operator: " + bop.operator_text);
+    throw_internal_error("unrecognized binary operator: " + bop.operator_text);
 }
 
 [[noreturn]] inline void throw_generics_not_allowed_in_backend_layer(const TemplateType& template_type) {
-    throw std::runtime_error("generics_not_allowed_in_backend_layer: " + template_type.type_name + " is a template type in " + std::to_string(template_type.as_debug_informations_aware_entity().line_number));
+    throw_internal_error("generics_not_allowed_in_backend_layer: " + template_type.type_name + " is a template type in " + std::to_string(template_type.as_debug_informations_aware_entity().line_number));
 }
 
 [[noreturn]] inline void throw_unrecognized_unary_operator(const UnaryOperator& uop) {
-    throw std::runtime_error("unrecognized unary operator: " + uop.operator_text);
+    throw_internal_error("unrecognized unary operator: " + uop.operator_text);
 }
 
 [[noreturn]] inline void throw_unrecognized_type_operator(const TypeOperator& top) {
-    throw std::runtime_error("unrecognized type operator: " + top.operator_text);
+    throw_internal_error("unrecognized type operator: " + top.operator_text);
 }
 
 void assert_integer_literal_properly_formatted(const std::vector<Token>::iterator& iterator);
@@ -102,10 +111,8 @@ inline void assert_typesignature_is(const TypeSignature& typesignature) {
     #ifdef DEBUG_BUILD
     if (!typesignature.is<T>()) {
         std::string T_type_converted_to_string = typeid(T).name();
-        throw std::runtime_error {
-            "somehow a typesignature was expected to be a " + 
-            T_type_converted_to_string + " instead it wasn't"    
-        };
+        throw_internal_error("somehow a typesignature was expected to be a " + 
+            T_type_converted_to_string + " instead it wasn't");
     }
     #endif
 }
@@ -115,10 +122,8 @@ inline void assert_typedefinition_is(const TypeDefinition& type_definition) {
     #ifdef DEBUG_BUILD
     if (!type_definition.is<T>()) {
         std::string T_type_converted_to_string = typeid(T).name();
-        throw std::runtime_error {
-            "somehow a type definition was expected to be a " + 
-            T_type_converted_to_string + " instead it wasn't"    
-        };
+        throw_internal_error("somehow a type definition was expected to be a " + 
+            T_type_converted_to_string + " instead it wasn't");
     }
     #endif
 }
@@ -126,9 +131,7 @@ inline void assert_typedefinition_is(const TypeDefinition& type_definition) {
 inline void assert_type_deduction_success_in_backend_layer(bool success) {
     #ifdef DEBUG_BUILD
     if (!success) {
-        throw std::runtime_error {
-            "type deduction failed in backend"    
-        };
+        throw_internal_error("type deduction failed in backend");
     }
     #endif
 }
@@ -138,10 +141,8 @@ inline void assert_expression_is(const Expression& expression) {
     #ifdef DEBUG_BUILD
     if (!expression.is<T>()) {
         std::string T_type_converted_to_string = typeid(T).name();
-        throw std::runtime_error {
-            "somehow an expression was expected to be a " + 
-            T_type_converted_to_string + " instead it wasn't"    
-        };
+        throw_internal_error("somehow an expression was expected to be a " + 
+            T_type_converted_to_string + " instead it wasn't");
     }
     #endif
 }
@@ -151,10 +152,8 @@ inline void assert_statement_is(const Statement& statement) {
     #ifdef DEBUG_BUILD
     if (!statement.is<T>()) {
         std::string T_type_converted_to_string = typeid(T).name();
-        throw std::runtime_error {
-            "somehow a statement was expected to be a " + 
-            T_type_converted_to_string + " instead it wasn't"    
-        };
+        throw_internal_error("somehow a statement was expected to be a " + 
+            T_type_converted_to_string + " instead it wasn't");
     }
     #endif
 }
@@ -162,7 +161,7 @@ inline void assert_statement_is(const Statement& statement) {
 inline void assert_unary_operator_is(const UnaryOperator& expression, const std::string& operator_text) {
     #ifdef DEBUG_BUILD
     if (expression.operator_text != operator_text) {
-        throw std::runtime_error("expected unary operator to be " + operator_text);
+        throw_internal_error("expected unary operator to be " + operator_text);
     }
     #endif
 }
@@ -170,7 +169,7 @@ inline void assert_unary_operator_is(const UnaryOperator& expression, const std:
 inline void assert_binary_operator_is(const BinaryOperator& expression, const std::string& operator_text) {
     #ifdef DEBUG_BUILD
     if (expression.operator_text != operator_text) {
-        throw std::runtime_error("expected binary operator to be " + operator_text);
+        throw_internal_error("expected binary operator to be " + operator_text);
     }
     #endif
 }
@@ -201,9 +200,9 @@ void assert_overload_set_exists(
 );
 
 inline void assert_current_arg_type_is_not_generic(const TypeSignature& current_arg_type) {
-    #ifndef DEBUG_BUILD
+    #ifdef DEBUG_BUILD
     if (current_arg_type.is_generic()) {
-        throw std::runtime_error("the compiler expected this type to be non-generic, the assumption was false");
+        throw_internal_error("the compiler expected this type to be non-generic, the assumption was false");
     }
     #endif
 }
@@ -211,25 +210,25 @@ inline void assert_current_arg_type_is_not_generic(const TypeSignature& current_
 inline void assert_is_recursive_cfa_plan(
     const CommonFeatureAdoptionPlan& plan
 ) {
-    #ifndef DEBUG_BUILD
+    #ifdef DEBUG_BUILD
     if (!plan.is_recursive_adoption()) {
-        throw std::runtime_error("the compiler expected this cfa plan to be recursive, and it wasn't");
+        throw_internal_error("the compiler expected this cfa plan to be recursive, and it wasn't");
     }
     #endif
 }
 
 inline void assert_local_variable_was_found_in_translation_aware_scope_context(bool search_success) {
-    #ifndef DEBUG_BUILD
+    #ifdef DEBUG_BUILD
     if (!search_success) {
-        throw std::runtime_error("the compiler expected this local variable to be found, and it wasn't");
+        throw_internal_error("the compiler expected this local variable to be found, and it wasn't");
     }
     #endif
 }
 
 inline void assert_is_assignment_of_non_union_to_union(bool is_union_source, bool is_union_target) {
-    #ifndef DEBUG_BUILD
+    #ifdef DEBUG_BUILD
     if (is_union_source || !is_union_target) {
-        throw std::runtime_error("the compiler expected this assignment to be of a non-union type to a union type, and it wasn't");
+        throw_internal_error("the compiler expected this assignment to be of a non-union type to a union type, and it wasn't");
     }
     #endif
 }

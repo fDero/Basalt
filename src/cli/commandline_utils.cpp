@@ -3,10 +3,13 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
-#include "errors/commandline_errors.hpp"
-#include "cli/commandline.hpp"
+#include <string>
+#include <vector>
 
-#include <iostream>
+#include "cli/commandline.hpp"
+#include "cli/file_extensions.hpp"
+#include "errors/commandline_errors.hpp"
+
 
 CommandLineController::CommandLineController(int argc, char** argv)
     : arg_counter(argc), arg_values(argv), arg_index(1)

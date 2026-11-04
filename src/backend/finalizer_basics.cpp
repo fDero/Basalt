@@ -3,10 +3,21 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
-#include <iostream>
+#include <optional>
+#include <string>
+
+#include <llvm/ADT/Optional.h>
+#include <llvm/Support/CodeGen.h>
+#include <llvm/Support/Host.h>
+#include <llvm/Support/TargetRegistry.h>
+#include <llvm/Support/TargetSelect.h>
+#include <llvm/Target/TargetMachine.h>
+#include <llvm/Target/TargetOptions.h>
 
 #include "backend/finalizer.hpp"
+#include "core/program_representation.hpp"
 #include "errors/commandline_errors.hpp"
+
 
 Finalizer::Finalizer(
     ProgramRepresentation& input_program_representation,

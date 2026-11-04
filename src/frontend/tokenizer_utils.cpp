@@ -3,11 +3,24 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include <cctype>
+#include <cstddef>
+#include <fstream>
+#include <ios>
+#include <memory>
+#include <optional>
+#include <sstream>
+#include <string>
+#include <vector>
+
+#include "errors/tokenization_errors.hpp"
+#include "frontend/token.hpp"
+#include "frontend/tokenized_file.hpp"
+#include "frontend/tokenizer.hpp"
+#include "misc/debug_informations_aware_entity.hpp"
 #include "syntax/keywords.hpp"
 #include "syntax/specials.hpp"
-#include "errors/tokenization_errors.hpp"
-#include "frontend/tokenizer.hpp"
-#include "errors/internal_errors.hpp"
+
 
 Token::Token (
     const std::string& sourcetext,
@@ -35,11 +48,12 @@ Tokenizer::Tokenizer(const std::string& file_input)
 
 void Tokenizer::inspect_for_unexpected_tokens() {
     std::string buffer;
+    const size_t token_start = char_pos;
     while (char_pos < current_line.size() && discardable.find(current_line[char_pos]) == discardable.end()) {
         buffer.push_back(current_line[char_pos++]);
     }
     if (!buffer.empty()) {
-        char_pos = char_pos - 1;
+        char_pos = token_start;
         throw_unexpected_token(make_token(buffer, Token::Type::text));
     }
 }
@@ -50,10 +64,11 @@ void Tokenizer::ignore_discardable_characters() {
     }
 }
 
+// `char_pos` always holds the (0-based) column of the first character of the token
 Token Tokenizer::make_token(const std::string& sourcetext, const Token::Type token_type) {
     return Token {
         sourcetext, filename, line_number, tok_number,
-        static_cast<unsigned int>(char_pos - sourcetext.size() + 1),
+        char_pos,
         token_type
     };
 }

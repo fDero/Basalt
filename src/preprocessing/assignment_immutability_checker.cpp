@@ -3,7 +3,13 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include "core/program_representation.hpp"
+#include "core/scope_context.hpp"
+#include "errors/internal_errors.hpp"
+#include "language/expressions.hpp"
+#include "language/statements.hpp"
 #include "preprocessing/assignment_immutability_checker.hpp"
+
 
 AssignmentImmutabilityChecker::AssignmentImmutabilityChecker(
     ScopeContext& scope_context, 

@@ -5,8 +5,9 @@
 
 #pragma once
 
+#include <cstddef>
 #include <string>
-#include <cstdint>
+
 
 struct DebugInformationsAwareEntity {
 
@@ -30,9 +31,9 @@ struct DebugInformationsAwareEntity {
     {}
 
     std::string unique_string_id() const {
-        return filename 
-            + ":" + std::to_string(line_number) 
-            + ":" + std::to_string(tok_number) 
+        return filename
+            + ":" + std::to_string(line_number)
+            + ":" + std::to_string(tok_number)
             + ":" + std::to_string(char_pos);
     }
 

@@ -1,10 +1,14 @@
+#include <vector>
 
 #include <gtest/gtest.h>
+
 #include "frontend/parser.hpp"
-#include "errors/internal_errors.hpp"
-#include "errors/parsing_errors.hpp"
-#include "syntax/primitive_types.hpp"
+#include "frontend/token.hpp"
+#include "frontend/tokenized_file.hpp"
+#include "language/expressions.hpp"
+#include "language/statements.hpp"
 #include "syntax/keywords.hpp"
+
 
 TEST(Frontend, Parse_Return_Nothing) {
     std::vector<Token> tokens = {

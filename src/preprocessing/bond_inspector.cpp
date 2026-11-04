@@ -3,8 +3,13 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
-#include "preprocessing/bond_inspector.hpp"
+#include "core/program_representation.hpp"
+#include "core/scope_context.hpp"
 #include "errors/internal_errors.hpp"
+#include "language/definitions.hpp"
+#include "language/typesignatures.hpp"
+#include "preprocessing/bond_inspector.hpp"
+
 
 BondInspector::BondInspector(
     ScopeContext& scope_context, 

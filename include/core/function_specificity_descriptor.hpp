@@ -5,10 +5,11 @@
 
 #pragma once
 
+#include <cstddef>
 #include <vector>
 
-#include "language/definitions.hpp"
-#include "core/type_definitions_register.hpp"
+#include "misc/forward_declarations.hpp"
+
 
 class FunctionSpecificityDescriptor {
 
@@ -19,7 +20,7 @@ class FunctionSpecificityDescriptor {
         );
 
         FunctionSpecificityDescriptor(
-            bool is_generic, 
+            bool is_generic,
             size_t number_of_uses_of_its_generic_parameters,
             size_t arguments_types_complexity_score,
             size_t number_of_unions_in_arguments_types,
@@ -39,37 +40,37 @@ class FunctionSpecificityDescriptor {
 
     protected:
         void update_metrics_based_on_argument_type(
-            const TypeSignature& arg_type, 
+            const TypeSignature& arg_type,
             TypeDefinitionsRegister& type_definitions_register,
             bool current_type_is_fixed_and_cannot_be_an_upcasting_target
         );
 
         void update_metrics_based_on_primitive_type(
-            const TypeSignature& arg_type, 
+            const TypeSignature& arg_type,
             TypeDefinitionsRegister& type_definitions_register,
             bool current_type_is_fixed_and_cannot_be_an_upcasting_target
         );
 
         void update_metrics_based_on_pointer_type(
-            const TypeSignature& arg_type, 
+            const TypeSignature& arg_type,
             TypeDefinitionsRegister& type_definitions_register,
             bool current_type_is_fixed_and_cannot_be_an_upcasting_target
         );
 
         void update_metrics_based_on_inline_union_type(
-            const TypeSignature& arg_type, 
+            const TypeSignature& arg_type,
             TypeDefinitionsRegister& type_definitions_register,
             bool current_type_is_fixed_and_cannot_be_an_upcasting_target
         );
 
         void update_metrics_based_on_custom_type(
-            const TypeSignature& arg_type, 
+            const TypeSignature& arg_type,
             TypeDefinitionsRegister& type_definitions_register,
             bool current_type_is_fixed_and_cannot_be_an_upcasting_target
         );
 
         void update_union_covered_cases(
-            const std::vector<TypeSignature>& alternatives, 
+            const std::vector<TypeSignature>& alternatives,
             TypeDefinitionsRegister& type_definitions_register
         );
 

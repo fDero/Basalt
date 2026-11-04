@@ -3,11 +3,15 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
-#include "errors/preprocessing_errors.hpp"
-#include "errors/internal_errors.hpp"
-#include "core/generics_substitution_rules.hpp"
+#include <functional>
+#include <string>
+
 #include "core/function_definitions_register.hpp"
-#include "core/function_definitions_register.hpp"
+#include "core/project_file_structure.hpp"
+#include "core/type_definitions_register.hpp"
+#include "frontend/file_representation.hpp"
+#include "language/definitions.hpp"
+
 
 FunctionDefinitionsRegister::FunctionDefinitionsRegister(
     TypeDefinitionsRegister& type_definitions_register,

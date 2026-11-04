@@ -1,9 +1,12 @@
+#include <vector>
 
 #include <gtest/gtest.h>
+
 #include "frontend/parser.hpp"
-#include "errors/internal_errors.hpp"
-#include "errors/parsing_errors.hpp"
-#include "language/functions.hpp"
+#include "frontend/token.hpp"
+#include "frontend/tokenized_file.hpp"
+#include "language/expressions.hpp"
+
 
 TEST(Frontend, Parse_Simple_Identifiers) {
     std::vector<Token> tokens = {

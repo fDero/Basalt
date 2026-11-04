@@ -1,10 +1,15 @@
+#include <vector>
 
 #include <gtest/gtest.h>
+
 #include "frontend/parser.hpp"
-#include "errors/internal_errors.hpp"
-#include "errors/parsing_errors.hpp"
-#include "syntax/primitive_types.hpp"
+#include "frontend/token.hpp"
+#include "frontend/tokenized_file.hpp"
+#include "language/expressions.hpp"
+#include "language/typesignatures.hpp"
 #include "syntax/keywords.hpp"
+#include "syntax/primitive_types.hpp"
+
 
 TEST(Frontend, Parse_Is_Operator_Expression_On_Variable) {
     std::vector<Token> tokens = {

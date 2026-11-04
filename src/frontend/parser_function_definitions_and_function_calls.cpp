@@ -3,12 +3,22 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include <iterator>
+#include <optional>
+#include <string>
+#include <vector>
+
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 #include "frontend/parser.hpp"
+#include "frontend/token.hpp"
+#include "language/definitions.hpp"
 #include "language/expressions.hpp"
 #include "language/functions.hpp"
+#include "language/statements.hpp"
+#include "language/typesignatures.hpp"
 #include "syntax/keywords.hpp"
+
 
 FunctionDefinition Parser::parse_function_definition() {
     assert_token_matches(source_tokens, iterator++, func_keyword);

@@ -3,9 +3,31 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
-#include "backend/expressions_and_statements_llvm_translator.hpp"
+#include <cstddef>
+#include <optional>
+#include <tuple>
+#include <vector>
+
+#include <llvm/IR/BasicBlock.h>
+#include <llvm/IR/Function.h>
+#include <llvm/IR/IRBuilder.h>
+#include <llvm/IR/LLVMContext.h>
+#include <llvm/IR/Module.h>
+#include <llvm/IR/Value.h>
+
 #include "backend/callable_codeblocks_llvm_translator.hpp"
+#include "backend/expressions_and_statements_llvm_translator.hpp"
+#include "backend/translated_expression.hpp"
+#include "backend/translation_aware_scope_context.hpp"
+#include "backend/type_definitions_llvm_translator.hpp"
 #include "backend/type_manipulations_llvm_translator.hpp"
+#include "core/callable_code_block.hpp"
+#include "core/program_representation.hpp"
+#include "errors/internal_errors.hpp"
+#include "language/expressions.hpp"
+#include "language/functions.hpp"
+#include "language/typesignatures.hpp"
+
 
 ExpressionsAndStatementsLLVMTranslator::ExpressionsAndStatementsLLVMTranslator(
     ProgramRepresentation& program_representation, 

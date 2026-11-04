@@ -3,9 +3,15 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include <string>
+#include <vector>
+
+#include "core/program_representation.hpp"
+#include "errors/preprocessing_errors.hpp"
+#include "language/definitions.hpp"
+#include "language/typesignatures.hpp"
 #include "preprocessing/type_dependency_navigator.hpp"
-#include "errors/internal_errors.hpp"
-#include "errors/parsing_errors.hpp"
+
 
 TypeDependencyNavigator::TypeDependencyNavigator(
     ProgramRepresentation& program_representation
@@ -75,16 +81,23 @@ void TypeDependencyNavigator::visit_type_definition(
 
 void TypeDependencyNavigator::visit_union_definition(const UnionDefinition& union_definition) {
     std::string union_id = union_definition.generate_union_id();
-    ensure_type_not_already_visited_hence_no_cyclic_dependency(union_id, visited_definitions);
+    ensure_type_not_already_visited_hence_no_cyclic_dependency(
+        union_id, visited_definitions, union_definition.def_name, union_definition
+    );
     visited_definitions.insert(union_id);
     for (const TypeSignature& alternative : union_definition.types) {
         visit_typesignature( alternative, union_definition.template_generics_names );
     }
+    // `visited_definitions` holds only the types on the current dependency path:
+    // a union reached twice through different fields is not a cycle
+    visited_definitions.erase(union_id);
 }
 
 void TypeDependencyNavigator::visit_struct_definition(const StructDefinition& struct_definition) {
     std::string struct_id = struct_definition.generate_struct_id();
-    ensure_type_not_already_visited_hence_no_cyclic_dependency(struct_id, visited_definitions);
+    ensure_type_not_already_visited_hence_no_cyclic_dependency(
+        struct_id, visited_definitions, struct_definition.def_name, struct_definition
+    );
     visited_definitions.insert(struct_id);
     for (const StructDefinition::Field& field : struct_definition.fields) {
         visit_typesignature( field.field_type, struct_definition.template_generics_names );

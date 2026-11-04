@@ -5,20 +5,16 @@
 
 #pragma once
 
+#include <optional>
 #include <string>
 #include <vector>
-#include <fstream>
-#include <optional>
-#include <stack>
-#include <regex>
 
-#include "frontend/tokenizer.hpp"
-#include "frontend/file_representation.hpp"
-#include "errors/parsing_errors.hpp"
-#include "language/statements.hpp"
+#include "frontend/token.hpp"
 #include "language/definitions.hpp"
-#include "language/functions.hpp"
 #include "language/expressions.hpp"
+#include "language/statements.hpp"
+#include "misc/forward_declarations.hpp"
+
 
 class Parser {
 
@@ -61,10 +57,10 @@ class Parser {
         [[nodiscard]] TypeSignature parse_custom_type();
         [[nodiscard]] TypeSignature parse_primitive_type();
         [[nodiscard]] TypeSignature parse_template_type();
-      
+
         [[nodiscard]] std::vector<std::string> parse_template_generics();
         [[nodiscard]] std::vector<TypeSignature> parse_concrete_generics();
-        
+
         [[nodiscard]] FunctionDefinition parse_extern_function_declaration();
         [[nodiscard]] FunctionDefinition parse_function_definition();
         [[nodiscard]] FunctionCall parse_function_call();
@@ -106,7 +102,7 @@ class Parser {
         [[nodiscard]] Expression compose_binary_operator(const Expression&);
         [[nodiscard]] Expression compose_square_bracket_access(const Expression&);
         [[nodiscard]] Expression compose_type_operator(const Expression&);
-        
+
         [[nodiscard]] Expression rotate_binary_operator_to_match_operators_priority(const BinaryOperator&);
         [[nodiscard]] Expression rotate_binary_operator_on_binary_operator_if_needed(const BinaryOperator&, const BinaryOperator&);
         [[nodiscard]] Expression rotate_binary_operator_on_unary_operator_if_needed(const BinaryOperator&, const UnaryOperator&);

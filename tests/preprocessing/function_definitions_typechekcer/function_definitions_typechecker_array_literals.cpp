@@ -1,8 +1,19 @@
+#include <optional>
 
 #include <gtest/gtest.h>
+
+#include "core/program_representation.hpp"
+#include "core/project_file_structure.hpp"
+#include "frontend/file_representation.hpp"
+#include "frontend/token.hpp"
+#include "language/expressions.hpp"
+#include "language/statements.hpp"
+#include "language/typesignatures.hpp"
 #include "preprocessing/function_definitions_typechecker.hpp"
-#include "../../tests_utilities/typesignature_factory.hpp"
+#include "../../tests_utilities/compilation_error_assertions.hpp"
 #include "../../tests_utilities/function_definition_factory.hpp"
+#include "../../tests_utilities/typesignature_factory.hpp"
+
 
 TEST(Preprocessing, FunctionDefinitionsTypeChecker_With_Assignment_Of_Array_Literal_Of_Explicit_Size) {
     ProjectFileStructure single_func_def_project({
@@ -120,7 +131,7 @@ TEST(Preprocessing, FunctionDefinitionsTypeChecker_With_Assignment_Of_Array_Lite
     });
     ProgramRepresentation single_func_def_program(single_func_def_project);
     FunctionDefinitionsTypeChecker type_checker(single_func_def_program);
-    EXPECT_ANY_THROW(type_checker.visit_all_function_definitions());
+    EXPECT_COMPILATION_ERROR(ValidationError, "array literal declares 10 elements, but contains 3", type_checker.visit_all_function_definitions());
 }
 
 TEST(Preprocessing, FunctionDefinitionsTypeChecker_With_Assignment_Of_Array_Literal_Of_Incompatible_Size) {
@@ -160,5 +171,5 @@ TEST(Preprocessing, FunctionDefinitionsTypeChecker_With_Assignment_Of_Array_Lite
     });
     ProgramRepresentation single_func_def_program(single_func_def_project);
     FunctionDefinitionsTypeChecker type_checker(single_func_def_program);
-    EXPECT_ANY_THROW(type_checker.visit_all_function_definitions());
+    EXPECT_COMPILATION_ERROR(ValidationError, "cannot initialize variable `arr` of type `[10]Int` with a value of type `[3]Int`", type_checker.visit_all_function_definitions());
 }

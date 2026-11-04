@@ -3,8 +3,15 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include "core/scope_context.hpp"
+#include "errors/preprocessing_errors.hpp"
+#include "language/expressions.hpp"
+#include "language/functions.hpp"
+#include "language/statements.hpp"
 #include "preprocessing/assignment_immutability_checker.hpp"
 #include "preprocessing/immutability_constraint_validator.hpp"
+
+
 using CCV = ImmutabilityConstraintValidator;
 
 void CCV::SingleFunctionImmutabilityConstraintValidator::visit_statement(
@@ -112,5 +119,15 @@ void CCV::SingleFunctionImmutabilityConstraintValidator::visit_assignment(
     visit_expression(assignment.assigned_value, scope_context);
     AssignmentImmutabilityChecker assignment_immutability_checker(scope_context, program_representation);
     bool assignment_discards_qualifiers = assignment_immutability_checker.does_assignment_discard_qualifiers(assignment);
-    ensure_assignment_complies_with_const_qualifiers(assignment, assignment_discards_qualifiers);
+    // these only serve to explain *why* the assignment discards qualifiers, if it does
+    bool target_is_a_constant = assignment.assignment_target.is<Identifier>()
+        && scope_context.is_identifier_immutable(assignment.assignment_target.get<Identifier>().name);
+    bool value_gives_access_to_immutable_data =
+        !assignment_immutability_checker.is_expression_assignable_to_var(assignment.assigned_value);
+    ensure_assignment_complies_with_const_qualifiers(
+        assignment,
+        assignment_discards_qualifiers,
+        target_is_a_constant,
+        value_gives_access_to_immutable_data
+    );
 }

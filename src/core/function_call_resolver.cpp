@@ -3,7 +3,18 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include <optional>
+#include <vector>
+
+#include "core/callable_code_block.hpp"
+#include "core/common_feature_adoption_plan_generation_engine.hpp"
 #include "core/function_call_resolver.hpp"
+#include "core/function_definitions_register.hpp"
+#include "core/type_definitions_register.hpp"
+#include "language/definitions.hpp"
+#include "language/functions.hpp"
+#include "language/typesignatures.hpp"
+
 
 FunctionCallResolver::FunctionCallResolver(
     TypeDefinitionsRegister& type_definitions_register,

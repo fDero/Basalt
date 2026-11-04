@@ -5,14 +5,11 @@
 
 #pragma once
 
-#include "core/program_representation.hpp"
-#include "core/scope_context.hpp"
-#include "preprocessing/immutability_deducer.hpp"
-#include "preprocessing/bond_inspector.hpp"
-#include "errors/preprocessing_errors.hpp"
+#include "misc/forward_declarations.hpp"
+
 
 class ImmutabilityConstraintValidator {
-    
+
     public:
         ImmutabilityConstraintValidator(ProgramRepresentation& program_representation);
 

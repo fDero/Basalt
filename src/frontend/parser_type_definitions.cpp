@@ -3,12 +3,19 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include <iterator>
+#include <string>
+#include <utility>
+#include <vector>
+
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 #include "frontend/parser.hpp"
-#include "language/expressions.hpp"
-#include "errors/preprocessing_errors.hpp"
+#include "frontend/token.hpp"
+#include "language/definitions.hpp"
+#include "language/typesignatures.hpp"
 #include "syntax/keywords.hpp"
+
 
 StructDefinition::Field Parser::parse_struct_field() {
     assert_token_is_text(source_tokens, iterator);
@@ -44,7 +51,7 @@ UnionDefinition Parser::parse_union_definition() {
     union_def.template_generics_names = parse_template_generics();
     ensure_token_matches(source_tokens, iterator++, "=");
     TypeSignature inline_union_ts = parse_typesignature();
-    ensure_typesignature_is<InlineUnion>(inline_union_ts);
+    ensure_union_has_multiple_alternatives(inline_union_ts, union_def);
     union_def.types = std::move(inline_union_ts.get<InlineUnion>().alternatives);
     ensure_token_matches(source_tokens, iterator++, ";");
     return union_def;

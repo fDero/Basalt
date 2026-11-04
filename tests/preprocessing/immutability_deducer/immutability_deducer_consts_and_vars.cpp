@@ -1,8 +1,15 @@
-
 #include <gtest/gtest.h>
-#include "syntax/keywords.hpp"
+
+#include "core/program_representation.hpp"
+#include "core/project_file_structure.hpp"
+#include "core/scope_context.hpp"
+#include "frontend/token.hpp"
+#include "language/expressions.hpp"
+#include "language/statements.hpp"
 #include "preprocessing/immutability_deducer.hpp"
+#include "syntax/keywords.hpp"
 #include "../../tests_utilities/typesignature_factory.hpp"
+
 
 TEST(Preprocessing, Immutability_Deducer_Says_Const_Identifier_Is_Immutable) {
     Identifier identifier { 

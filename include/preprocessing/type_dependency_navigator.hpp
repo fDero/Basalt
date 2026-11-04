@@ -6,11 +6,11 @@
 #pragma once
 
 #include <string>
-#include <vector>
 #include <unordered_set>
+#include <vector>
 
-#include "core/program_representation.hpp"
-#include "language/definitions.hpp"
+#include "misc/forward_declarations.hpp"
+
 
 class TypeDependencyNavigator {
 
@@ -29,7 +29,7 @@ class TypeDependencyNavigator {
         );
 
         void visit_typesignature(
-            const TypeSignature& typesignature, 
+            const TypeSignature& typesignature,
             const std::vector<std::string>& union_def_generics
         );
 

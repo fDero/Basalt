@@ -3,8 +3,20 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include <string>
+#include <vector>
+
+#include <llvm/IR/Constant.h>
+#include <llvm/IR/Constants.h>
+#include <llvm/IR/DerivedTypes.h>
+#include <llvm/IR/GlobalValue.h>
+#include <llvm/IR/GlobalVariable.h>
+#include <llvm/IR/Type.h>
+
 #include "backend/type_definitions_llvm_translator.hpp"
-#include "errors/internal_errors.hpp"
+#include "core/program_representation.hpp"
+#include "language/typesignatures.hpp"
+
 
 llvm::GlobalVariable* TypeDefinitionsLLVMTranslator::fetch_type_info(
     const TypeSignature& type_signature

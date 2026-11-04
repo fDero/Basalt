@@ -5,24 +5,23 @@
 
 #pragma once
 
-#include <functional>
+#include <map>
+#include <optional>
+#include <string>
 
-#include "core/program_representation.hpp"
-#include "core/scope_context.hpp"
-#include "backend/type_definitions_llvm_translator.hpp"
-#include "language/definitions.hpp"
-#include "backend/translation_aware_scope_context.hpp"
-#include "backend/expressions_and_statements_llvm_translator.hpp"
-
-#include <llvm/IR/IRBuilder.h>
+#include <llvm/IR/BasicBlock.h>
+#include <llvm/IR/Function.h>
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/Module.h>
 
+#include "language/definitions.hpp"
+#include "misc/forward_declarations.hpp"
+
+
 class CallableCodeBlocksLLVMTranslator {
-    
     public:
         CallableCodeBlocksLLVMTranslator(
-            ProgramRepresentation& program_representation, 
+            ProgramRepresentation& program_representation,
             TypeDefinitionsLLVMTranslator& type_definitions_llvm_translator,
             llvm::LLVMContext& llvm_context,
             llvm::Module& llvm_module
@@ -33,23 +32,23 @@ class CallableCodeBlocksLLVMTranslator {
         );
 
         llvm::Function* translate_cfa_descriptor_to_llvm(
-            const CommonFeatureAdoptionPlanDescriptor& cfa_plan_descriptor, 
+            const CommonFeatureAdoptionPlanDescriptor& cfa_plan_descriptor,
             llvm::Function* llvm_function
         );
 
         llvm::Function* translate_function_definition_to_llvm(
-            const FunctionDefinition::Ref& function_definition, 
+            const FunctionDefinition::Ref& function_definition,
             llvm::Function* llvm_function
         );
 
     protected:
         [[nodiscard]] llvm::Function* translate_local_function_definition_to_llvm(
-            const FunctionDefinition::Ref& function_definition, 
+            const FunctionDefinition::Ref& function_definition,
             llvm::Function* llvm_function
         );
 
         [[nodiscard]] llvm::Function* translate_extern_function_definition_to_llvm(
-            const FunctionDefinition::Ref& function_definition, 
+            const FunctionDefinition::Ref& function_definition,
             llvm::Function* llvm_function
         );
 
@@ -67,14 +66,14 @@ class CallableCodeBlocksLLVMTranslator {
         );
 
         void translate_cfa_plan_to_llvm(
-            const CommonFeatureAdoptionPlanDescriptor& cfa_plan_descriptor, 
+            const CommonFeatureAdoptionPlanDescriptor& cfa_plan_descriptor,
             const CommonFeatureAdoptionPlan& cfa_plan,
             llvm::Function* llvm_function,
             llvm::BasicBlock* block
         );
 
         void translate_cfa_recursive_adoption_to_llvm(
-            const CommonFeatureAdoptionPlanDescriptor& cfa_plan_descriptor, 
+            const CommonFeatureAdoptionPlanDescriptor& cfa_plan_descriptor,
             const RecursiveAdoptionPlan& recursive_plan,
             llvm::Function* llvm_function,
             llvm::BasicBlock* block

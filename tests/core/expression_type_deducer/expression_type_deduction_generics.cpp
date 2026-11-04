@@ -1,11 +1,24 @@
+#include <optional>
 
 #include <gtest/gtest.h>
-#include "errors/internal_errors.hpp"
-#include "preprocessing/preprocessor.hpp"
+
+#include "core/common_feature_adoption_plan_generation_engine.hpp"
 #include "core/expression_type_deducer.hpp"
+#include "core/function_definitions_register.hpp"
+#include "core/project_file_structure.hpp"
+#include "core/scope_context.hpp"
+#include "core/type_definitions_register.hpp"
+#include "frontend/token.hpp"
+#include "language/definitions.hpp"
+#include "language/expressions.hpp"
+#include "language/functions.hpp"
+#include "language/statements.hpp"
+#include "language/typesignatures.hpp"
 #include "syntax/keywords.hpp"
+#include "../../tests_utilities/compilation_error_assertions.hpp"
 #include "../../tests_utilities/function_definition_factory.hpp"
 #include "../../tests_utilities/typesignature_factory.hpp"
+
 
 static ProjectFileStructure simple_project ({
     {
@@ -58,7 +71,10 @@ static ExpressionTypeDeducer type_deducer(
     simple_scope_context    
 );
 
-TEST(Core, Type_Deduction_Fails_Because_Args_Are_Generic) {
+// While the arguments are generic, the overload of `add` can't be chosen yet, so the type
+// of the call is unknown. That is not an error: it gets resolved once the generic function
+// is instantiated with concrete types.
+TEST(Core, Type_Deduction_Is_Undecidable_When_Args_Are_Generic) {
     simple_scope_context.store_local_variable(VariableDeclaration {
         "t", TypeSignatureFactory::T, std::nullopt, 
         Token { var_keyword, "main.basalt", 1, 1, 1, Token::Type::var_keyword }
@@ -71,9 +87,8 @@ TEST(Core, Type_Deduction_Fails_Because_Args_Are_Generic) {
         },
         {}
     };
-    EXPECT_ANY_THROW({
-        std::optional<TypeSignature> function_call_type_opt = type_deducer.deduce_expression_type(function_call);
-    });
+    std::optional<TypeSignature> function_call_type_opt = type_deducer.deduce_expression_type(function_call);
+    EXPECT_FALSE(function_call_type_opt.has_value());
 }
 
 TEST(Core, Type_Deduction_Can_Still_Spot_Errors_With_Function_Calls_Even_When_Type_Is_Already_Known_To_Be_Undecidible) {
@@ -89,7 +104,7 @@ TEST(Core, Type_Deduction_Can_Still_Spot_Errors_With_Function_Calls_Even_When_Ty
         },
         {}
     };
-    EXPECT_ANY_THROW({
+    EXPECT_COMPILATION_ERROR(ValidationError, "use of undeclared identifier `undefined_symbol_that_will_cause_an_error`", {
         std::optional<TypeSignature> function_call_type_opt = 
             type_deducer.deduce_expression_type(function_call);
     });

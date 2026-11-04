@@ -5,25 +5,32 @@
 
 #pragma once
 
-#include "language/statements.hpp"
-#include "language/expressions.hpp"
+#include <string>
+#include <vector>
 
-struct FunctionCall 
-	: public ExpressionBody 
+#include "language/expressions.hpp"
+#include "language/statements.hpp"
+#include "language/typesignatures.hpp"
+#include "misc/debug_informations_aware_entity.hpp"
+#include "misc/forward_declarations.hpp"
+
+
+struct FunctionCall
+	: public ExpressionBody
 	, public StatementBody
 {
 	virtual ~FunctionCall() = default;
 
 	FunctionCall(
-	    const Token& function_call_token, 
+	    const Token& function_call_token,
 		const std::string& package_prefix,
-	    const std::vector<Expression>& args, 
+	    const std::vector<Expression>& args,
 	    const std::vector<TypeSignature>& instantiated_generics
 	);
 
 	FunctionCall(
-	    const Token& function_call_token, 
-	    const std::vector<Expression>& args, 
+	    const Token& function_call_token,
+	    const std::vector<Expression>& args,
 	    const std::vector<TypeSignature>& instantiated_generics
 	);
 
@@ -41,7 +48,6 @@ struct FunctionCall
 	std::vector<Expression> arguments;
 
 	const DebugInformationsAwareEntity& as_debug_informations_aware_entity() const {
-		return (const ExpressionBody&) *this;		
+		return (const ExpressionBody&) *this;
 	};
 };
-                  

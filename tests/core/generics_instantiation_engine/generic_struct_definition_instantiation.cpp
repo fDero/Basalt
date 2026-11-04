@@ -1,11 +1,14 @@
-
 #include <gtest/gtest.h>
-#include "core/generics_substitution_rules.hpp"
+
 #include "core/generics_instantiation_engine.hpp"
-#include "errors/internal_errors.hpp"
+#include "core/generics_substitution_rules.hpp"
+#include "language/definitions.hpp"
+#include "language/typesignatures.hpp"
+#include "syntax/primitive_types.hpp"
 #include "../../tests_utilities/struct_definition_factory.hpp"
-#include "../../tests_utilities/typesignature_factory.hpp"
 #include "../../tests_utilities/type_queries.hpp"
+#include "../../tests_utilities/typesignature_factory.hpp"
+
 
 TEST(Core, Generic_Struct_With_CustomType_Fields_Instantiation) {
     StructDefinition generic_struct_definition = StructDefinitionFactory::make_struct_definition(

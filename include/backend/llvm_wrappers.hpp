@@ -5,12 +5,18 @@
 
 #pragma once
 
-#include "backend/translated_expression.hpp"
+#include <string>
+#include <vector>
 
+#include <llvm/IR/BasicBlock.h>
+#include <llvm/IR/Constants.h>
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/Module.h>
-#include <llvm/IR/Constants.h>
+#include <llvm/IR/Value.h>
+
+#include "backend/translated_expression.hpp"
+
 
 inline llvm::Value* get_llvm_address(
     llvm::IRBuilder<>& builder,
@@ -46,8 +52,8 @@ inline llvm::Value* create_vector_gep(
 }
 
 inline llvm::BasicBlock* createBlockAfter(
-    llvm::LLVMContext& context, 
-    const std::string& block_name, 
+    llvm::LLVMContext& context,
+    const std::string& block_name,
     llvm::BasicBlock* prevBlock
 ) {
     auto new_block = llvm::BasicBlock::Create(context, block_name, prevBlock->getParent());

@@ -3,9 +3,14 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
-#include "preprocessing/immutability_deducer.hpp"
+#include "core/program_representation.hpp"
+#include "core/scope_context.hpp"
 #include "errors/internal_errors.hpp"
-#include "syntax/infixes.hpp"
+#include "language/expressions.hpp"
+#include "language/functions.hpp"
+#include "preprocessing/immutability_deducer.hpp"
+#include "syntax/keywords.hpp"
+
 
 ImmutabilityDeducer::ImmutabilityDeducer(
     ScopeContext& scope_context, 

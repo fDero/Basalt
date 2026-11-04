@@ -3,10 +3,14 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
-#include "core/generics_substitution_rules.hpp"
-#include "errors/internal_errors.hpp"
-#include <regex>
-#include <optional>
+#include <cstddef>
+#include <string>
+#include <vector>
+
+#include "frontend/token.hpp"
+#include "language/typesignatures.hpp"
+#include "misc/debug_informations_aware_entity.hpp"
+
 
 CustomType::CustomType(
     const Token& typename_token, 

@@ -5,9 +5,11 @@
 
 #include <vector>
 
-#include "frontend/tokenizer.hpp"
+#include "errors/compilation_error.hpp"
 #include "errors/parsing_errors.hpp"
-using CompilationError::Kind::ParsingError;
+#include "frontend/token.hpp"
+
+
 
 void ensure_parenthesis_gets_closed_in_expression_wrapping(
     const std::vector<Token>& source_tokens,
@@ -15,8 +17,8 @@ void ensure_parenthesis_gets_closed_in_expression_wrapping(
     const Token& parenthesis_opening_token
 ) {
     if (iterator == source_tokens.end() || iterator->sourcetext != ")") {
-        CompilationError::raise<ParsingError>(
-            "parenthesis got opened but never closed",
+        throw ParsingError(
+            "this `(` is never closed",
             parenthesis_opening_token
         );
     }
@@ -28,8 +30,8 @@ void ensure_square_bracket_gets_closed_in_expression_wrapping(
     const Token& brackets_opening_token
 ) {
     if (iterator == source_tokens.end() || iterator->sourcetext != "]") {
-        CompilationError::raise<ParsingError>(
-            "square brackets got opened but never closed",
+        throw ParsingError(
+            "this `[` is never closed",
             brackets_opening_token
         );
     }

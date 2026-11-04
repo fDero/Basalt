@@ -3,10 +3,11 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
-#include "core/generics_substitution_rules.hpp"
 #include "core/generics_instantiation_engine.hpp"
-#include "language/typesignatures.hpp"
+#include "core/generics_substitution_rules.hpp"
 #include "errors/internal_errors.hpp"
+#include "language/typesignatures.hpp"
+
 
 TypeSignature GenericsInstantiationEngine::instantiate_generic_typesignature(const TypeSignature& type_signature) {
     switch (type_signature.typesiganture_kind()) {

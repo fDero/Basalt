@@ -4,10 +4,21 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 #include <iostream>
+#include <string>
+#include <system_error>
 
-#include "backend/finalizer.hpp"
-#include "backend/type_definitions_llvm_translator.hpp"
+#include <llvm/IR/LegacyPassManager.h>
+#include <llvm/Support/CodeGen.h>
+#include <llvm/Support/FileSystem.h>
+#include <llvm/Support/raw_ostream.h>
+#include <llvm/Target/TargetMachine.h>
+
 #include "backend/callable_codeblocks_llvm_translator.hpp"
+#include "backend/finalizer.hpp"
+#include "core/callable_code_block.hpp"
+#include "core/program_representation.hpp"
+#include "language/definitions.hpp"
+
 
 void Finalizer::generate_llvm_ir() {
     std::cout << "Generating LLVM IR..." << std::endl;

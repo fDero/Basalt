@@ -5,17 +5,16 @@
 
 #pragma once
 
-#include <llvm/IR/LLVMContext.h>
-#include <llvm/IR/Module.h>
-#include <llvm/IR/Constants.h>
+#include <llvm/IR/Value.h>
+
 
 struct TranslatedExpression {
-    TranslatedExpression(llvm::Value* value, llvm::Value* address) 
+    TranslatedExpression(llvm::Value* value, llvm::Value* address)
         : value(value)
-        , address(address) 
+        , address(address)
     {}
 
-    TranslatedExpression(llvm::Value* value) 
+    TranslatedExpression(llvm::Value* value)
         : TranslatedExpression(value, nullptr)
     {}
 

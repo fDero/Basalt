@@ -5,23 +5,21 @@
 
 #pragma once
 
-#include <vector>
-#include <string>
 #include <optional>
+#include <string>
+#include <vector>
 
-#include "cli/file_extensions.hpp"
 
 class CommandLineController {
-
-    public: 
+    public:
         CommandLineController(int argc, char** argv);
 
         enum class SubCommand {
-            unspecified, 
-            version, 
-            help, 
-            compiler, 
-            interpreter, 
+            unspecified,
+            version,
+            help,
+            compiler,
+            interpreter,
             typechecker
         };
 
@@ -44,7 +42,7 @@ class CommandLineController {
         void interpreter_subcommand();
         void typechecker_subcommand();
 
-    private:        
+    private:
         const int arg_counter;
         char** arg_values;
         int arg_index;

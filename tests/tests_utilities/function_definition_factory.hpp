@@ -1,6 +1,15 @@
 
 #pragma once
+
+#include <optional>
+#include <string>
+#include <vector>
+
+#include "frontend/token.hpp"
 #include "language/definitions.hpp"
+#include "language/statements.hpp"
+#include "language/typesignatures.hpp"
+
 
 struct FunctionDefinitionFactory {
 

@@ -1,6 +1,12 @@
 
 #pragma once
+
+#include <string>
+#include <vector>
+
+#include "frontend/token.hpp"
 #include "language/definitions.hpp"
+
 
 struct StructDefinitionFactory {
 

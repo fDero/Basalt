@@ -4,8 +4,9 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 #include "core/assignment_type_checker.hpp"
-#include "errors/preprocessing_errors.hpp"
-#include "errors/internal_errors.hpp"
+#include "language/typesignatures.hpp"
+#include "syntax/primitive_types.hpp"
+
 
 bool AssignmentTypeChecker::validate_assignment_to_primitive_type(
     const TypeSignature& source, 

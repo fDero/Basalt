@@ -3,7 +3,14 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include "core/program_representation.hpp"
+#include "core/scope_context.hpp"
+#include "errors/preprocessing_errors.hpp"
+#include "language/functions.hpp"
+#include "language/statements.hpp"
 #include "preprocessing/function_definitions_typechecker.hpp"
+
+
 using FDTC = FunctionDefinitionsTypeChecker;
 
 void FDTC::SingleFunctionTypeChecker::visit_statement(const Statement& statement) {
@@ -47,7 +54,7 @@ void FDTC::SingleFunctionTypeChecker::visit_assignment(const Assignment& assignm
     auto target_type = program_representation.resolve_expression_type(assignment.assignment_target, scope_context);
     auto assigned_value_type = program_representation.resolve_expression_type(assignment.assigned_value, scope_context);
     bool assignment_is_valid = program_representation.validate_assignment(assigned_value_type, target_type);
-    ensure_assignment_is_valid(assignment_is_valid, assignment);
+    ensure_assignment_is_valid(assignment_is_valid, assignment, target_type, assigned_value_type);
 }
 
 void FDTC::SingleFunctionTypeChecker::visit_conditional(const Conditional& conditional) {
@@ -75,12 +82,14 @@ void FDTC::SingleFunctionTypeChecker::visit_until_loop(const UntilLoop& loop) {
 void FDTC::SingleFunctionTypeChecker::visit_return_statement(const Return& ret) {
     bool return_value_is_provided = ret.return_value.has_value();
     bool return_value_is_expected = expected_return_type.has_value();
-    ensure_return_statement_is_congruent_to_function_definition(return_value_is_expected, return_value_is_provided);
+    ensure_return_statement_is_congruent_to_function_definition(
+        return_value_is_expected, return_value_is_provided, ret, expected_return_type
+    );
     if (return_value_is_provided) {
         visit_expression(ret.return_value.value());
         auto return_value_type = program_representation
             .resolve_expression_type(ret.return_value.value(), scope_context);
         bool valid_assignment = program_representation.validate_assignment(return_value_type, expected_return_type);
-        ensure_return_statement_is_valid(valid_assignment, ret);
+        ensure_return_statement_is_valid(valid_assignment, ret, return_value_type, expected_return_type);
     }
 }

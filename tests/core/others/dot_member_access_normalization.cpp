@@ -1,14 +1,21 @@
- 
+#include <optional>
+
 #include <gtest/gtest.h>
-#include "core/dot_member_access_normalizer.hpp"
-#include "core/project_file_structure.hpp"
+
 #include "core/program_representation.hpp"
-#include "errors/internal_errors.hpp"
-#include "errors/parsing_errors.hpp"
+#include "core/project_file_structure.hpp"
+#include "core/scope_context.hpp"
+#include "frontend/file_representation.hpp"
+#include "frontend/token.hpp"
+#include "language/definitions.hpp"
+#include "language/expressions.hpp"
+#include "language/statements.hpp"
+#include "language/typesignatures.hpp"
+#include "syntax/keywords.hpp"
 #include "../../tests_utilities/struct_definition_factory.hpp"
-#include "../../tests_utilities/typesignature_factory.hpp"
-#include "../../tests_utilities/type_alias_factory.hpp"
 #include "../../tests_utilities/type_queries.hpp"
+#include "../../tests_utilities/typesignature_factory.hpp"
+
 
 ProjectFileStructure simple_program_with_definition_of_person_struct({
     FileRepresentation {

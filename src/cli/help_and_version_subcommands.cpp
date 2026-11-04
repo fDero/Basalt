@@ -5,8 +5,9 @@
 
 #include <iostream>
 
-#include "errors/commandline_errors.hpp"
 #include "cli/commandline.hpp"
+#include "errors/commandline_errors.hpp"
+
 
 void CommandLineController::version_subcommand() {
     ensure_lack_of_output_files(outputs);

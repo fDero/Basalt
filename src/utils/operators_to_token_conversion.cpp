@@ -3,12 +3,14 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include "frontend/token.hpp"
 #include "language/expressions.hpp"
-#include "frontend/tokenizer.hpp"
+#include "misc/debug_informations_aware_entity.hpp"
+
 
 Token UnaryOperator::as_token() const {
-    return Token { 
-        operator_text, 
+    return Token {
+        operator_text,
         DebugInformationsAwareEntity::filename,
         DebugInformationsAwareEntity::line_number,
         DebugInformationsAwareEntity::tok_number,
@@ -18,8 +20,8 @@ Token UnaryOperator::as_token() const {
 }
 
 Token BinaryOperator::as_token() const {
-    return Token { 
-        operator_text, 
+    return Token {
+        operator_text,
         DebugInformationsAwareEntity::filename,
         DebugInformationsAwareEntity::line_number,
         DebugInformationsAwareEntity::tok_number,
@@ -29,8 +31,8 @@ Token BinaryOperator::as_token() const {
 }
 
 Token TypeOperator::as_token() const {
-    return Token { 
-        operator_text, 
+    return Token {
+        operator_text,
         DebugInformationsAwareEntity::filename,
         DebugInformationsAwareEntity::line_number,
         DebugInformationsAwareEntity::tok_number,

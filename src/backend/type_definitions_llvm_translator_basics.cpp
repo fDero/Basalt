@@ -3,9 +3,20 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include <optional>
+#include <vector>
+
+#include <llvm/IR/DerivedTypes.h>
+#include <llvm/IR/LLVMContext.h>
+#include <llvm/IR/Module.h>
+#include <llvm/IR/Type.h>
+
 #include "backend/type_definitions_llvm_translator.hpp"
+#include "core/program_representation.hpp"
 #include "errors/internal_errors.hpp"
+#include "language/typesignatures.hpp"
 #include "syntax/primitive_types.hpp"
+
 
 TypeDefinitionsLLVMTranslator::TypeDefinitionsLLVMTranslator(
     ProgramRepresentation& program_representation, 

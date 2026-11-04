@@ -3,12 +3,21 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
-#include "frontend/tokenizer.hpp"
+#include <cstddef>
+#include <map>
+#include <optional>
+#include <string>
+#include <vector>
+
+#include "frontend/token.hpp"
 #include "language/expressions.hpp"
 #include "language/functions.hpp"
+#include "language/statements.hpp"
+#include "language/typesignatures.hpp"
+#include "misc/debug_informations_aware_entity.hpp"
 #include "syntax/infixes.hpp"
 #include "syntax/prefixes.hpp"
-#include <map>
+
 
 SquareBracketsAccess::SquareBracketsAccess(
     const DebugInformationsAwareEntity& square_brackets_token, 

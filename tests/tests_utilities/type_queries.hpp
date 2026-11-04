@@ -1,5 +1,9 @@
+#include <cstddef>
+#include <string>
 
 #include "language/typesignatures.hpp"
+#include "syntax/primitive_types.hpp"
+
 
 inline bool is_primitive_type(const TypeSignature& ts, const std::string& type_name) {
     return 

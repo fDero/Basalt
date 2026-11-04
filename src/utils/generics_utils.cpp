@@ -3,8 +3,14 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include <cstddef>
+#include <string>
+#include <vector>
+
 #include "core/generics_substitution_rules.hpp"
 #include "errors/internal_errors.hpp"
+#include "language/typesignatures.hpp"
+
 
 GenericSubstitutionRule::Set GenericSubstitutionRule::Set::zip_components_vectors (
     const std::vector<std::string>& template_generics,

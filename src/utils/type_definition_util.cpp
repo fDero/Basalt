@@ -3,7 +3,13 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include <cstddef>
+#include <string>
+#include <variant>
+#include <vector>
+
 #include "language/definitions.hpp"
+
 
 size_t TypeDefinition::get_number_of_generics() const {
     auto visiting_lambda = [](const auto& type_def) -> size_t {

@@ -3,16 +3,16 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
-#include "preprocessing/preprocessor.hpp"
-#include "preprocessing/package_type_conflict_navigator.hpp"
-#include "preprocessing/type_dependency_navigator.hpp"
-#include "preprocessing/immutability_constraint_validator.hpp"
+#include "core/program_representation.hpp"
+#include "preprocessing/address_sanitizer.hpp"
 #include "preprocessing/function_definitions_typechecker.hpp"
 #include "preprocessing/function_exit_path_navigator.hpp"
-#include "preprocessing/address_sanitizer.hpp"
+#include "preprocessing/immutability_constraint_validator.hpp"
 #include "preprocessing/main_functions_preprocessor.hpp"
-#include "errors/internal_errors.hpp"
-#include "errors/parsing_errors.hpp"
+#include "preprocessing/package_type_conflict_navigator.hpp"
+#include "preprocessing/preprocessor.hpp"
+#include "preprocessing/type_dependency_navigator.hpp"
+
 
 PreProcessor::PreProcessor(
     ProgramRepresentation& program_representation
@@ -41,4 +41,8 @@ void PreProcessor::preprocess_function_definitions() {
     immutability_constraint_validator.visit_all_function_definitions();
     function_exit_path_navigator.visit_all_function_definitions();
     main_functions_preprocessor.preprocess_all_main_functions();
+}
+void PreProcessor::ensure_program_has_a_main_function() {
+    MainFunctionsPreprocessor main_functions_preprocessor(program_representation);
+    main_functions_preprocessor.ensure_program_has_a_main_function();
 }

@@ -3,8 +3,20 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include <algorithm>
+#include <cstddef>
+#include <string>
+#include <vector>
+
+#include <llvm/IR/DerivedTypes.h>
+#include <llvm/IR/Type.h>
+
 #include "backend/type_definitions_llvm_translator.hpp"
+#include "core/program_representation.hpp"
 #include "errors/internal_errors.hpp"
+#include "language/definitions.hpp"
+#include "language/typesignatures.hpp"
+
 
 llvm::Type* TypeDefinitionsLLVMTranslator::translate_custom_type_to_llvm_type(
     const CustomType& custom_type

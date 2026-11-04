@@ -1,12 +1,16 @@
-
 #include <gtest/gtest.h>
+
 #include "core/function_specificity_descriptor.hpp"
-#include "errors/internal_errors.hpp"
-#include "errors/parsing_errors.hpp"
+#include "core/project_file_structure.hpp"
+#include "core/type_definitions_register.hpp"
+#include "frontend/file_representation.hpp"
+#include "frontend/token.hpp"
+#include "language/definitions.hpp"
+#include "language/typesignatures.hpp"
+#include "../../tests_utilities/function_definition_factory.hpp"
 #include "../../tests_utilities/struct_definition_factory.hpp"
 #include "../../tests_utilities/typesignature_factory.hpp"
-#include "../../tests_utilities/function_definition_factory.hpp"
-#include "../../tests_utilities/type_alias_factory.hpp"
+
 
 FunctionDefinition print_IntOrFloat = FunctionDefinitionFactory::make_void_function_definition(
     "print",

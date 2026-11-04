@@ -5,19 +5,23 @@
 
 #pragma once
 
+#include <map>
+#include <memory>
+#include <string>
+
+#include <llvm/IR/Instructions.h>
+
 #include "core/scope_context.hpp"
 #include "errors/internal_errors.hpp"
+#include "language/statements.hpp"
 
-#include <llvm/IR/IRBuilder.h>
-#include <llvm/IR/LLVMContext.h>
-#include <llvm/IR/Module.h>
 
 struct TranslationAwareScopeContext {
     TranslationAwareScopeContext(
         ScopeContext raw_scope_context,
         std::shared_ptr<std::map<std::string, llvm::AllocaInst*>> local_variables
-    ) 
-        : raw_scope_context(raw_scope_context) 
+    )
+        : raw_scope_context(raw_scope_context)
         , local_variables(local_variables)
     { }
 
@@ -49,6 +53,6 @@ struct TranslationAwareScopeContext {
     }
 
     ScopeContext raw_scope_context;
-    std::shared_ptr<std::map<std::string, llvm::AllocaInst*>> local_variables = 
+    std::shared_ptr<std::map<std::string, llvm::AllocaInst*>> local_variables =
         std::make_shared<std::map<std::string, llvm::AllocaInst*>>();
 };

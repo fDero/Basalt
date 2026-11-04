@@ -4,12 +4,16 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 #include <cassert>
+#include <cstddef>
+#include <iterator>
+#include <string>
 
 #include "errors/internal_errors.hpp"
 #include "errors/parsing_errors.hpp"
 #include "frontend/parser.hpp"
+#include "frontend/token.hpp"
 #include "language/expressions.hpp"
-#include "language/functions.hpp"
+
 
 static std::string resolve_escaped_characters(const Token& token) {
     const std::string& source_string = token.sourcetext;
@@ -23,7 +27,7 @@ static std::string resolve_escaped_characters(const Token& token) {
             resolved_string.push_back(current_char);
             continue;
         } 
-        assert(i + 1 >= end);
+        assert(i + 1 < end);
         char next_char = source_string[++i];
         switch (next_char) {
             break; case 'n':  resolved_string.push_back('\n');

@@ -1,11 +1,19 @@
+#include <optional>
 
 #include <gtest/gtest.h>
-#include "errors/internal_errors.hpp"
-#include "preprocessing/preprocessor.hpp"
-#include "core/expression_type_deducer.hpp"
 
-#include "../../tests_utilities/function_definition_factory.hpp"
-#include "../../tests_utilities/typesignature_factory.hpp"
+#include "core/common_feature_adoption_plan_generation_engine.hpp"
+#include "core/expression_type_deducer.hpp"
+#include "core/function_definitions_register.hpp"
+#include "core/project_file_structure.hpp"
+#include "core/scope_context.hpp"
+#include "core/type_definitions_register.hpp"
+#include "frontend/token.hpp"
+#include "language/expressions.hpp"
+#include "language/typesignatures.hpp"
+#include "syntax/primitive_types.hpp"
+#include "../../tests_utilities/compilation_error_assertions.hpp"
+
 
 static ProjectFileStructure empty_project;
 static TypeDefinitionsRegister empty_type_register(empty_project);
@@ -66,7 +74,7 @@ TEST(Core, Type_Deduction_Of_Square_Brackets_Access_On_Array_Literal_Of_Integers
 }
 
 TEST(Core, Type_Deduction_Of_Illegal_Square_Brackets_Access_On_Int_Literal_Throws_Exception) {
-    EXPECT_ANY_THROW({
+    EXPECT_COMPILATION_ERROR(ValidationError, "cannot index into", {
         std::optional<TypeSignature> illegal_square_brackets_access_on_int_literal_type_opt = 
             type_deducer.deduce_expression_type(illegal_square_brackets_access_on_int_literal);
     });
