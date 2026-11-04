@@ -92,7 +92,8 @@ Expression Parser::parse_text_first_expression() {
         return identifier;
     }
     std::advance(iterator, -1);
-    return parse_function_call();
+    FunctionCall function_call = parse_function_call();
+    return function_call;
 }
 
 Expression Parser::parse_symbol_first_expression() {

@@ -14,31 +14,31 @@
 
 
 VariableDeclaration::VariableDeclaration(
-    const std::string& name, 
+    const std::string& name,
     const TypeSignature& type,
     const std::optional<Expression>& value,
     const Token& var_token
-) 
+)
     : StatementBody(var_token)
     , identifier_name(name)
     , typesignature(type)
-    , initial_value(value) 
+    , initial_value(value)
 {}
 
 ConstDeclaration::ConstDeclaration(
-    const std::string& name, 
+    const std::string& name,
     const TypeSignature& type,
     const Expression& value,
     const Token& const_token
-) 
+)
     : StatementBody(const_token)
     , identifier_name(name)
     , typesignature(type)
-    , value(value) 
+    , value(value)
 {}
 
 Assignment::Assignment(
-    const Expression& target, 
+    const Expression& target,
     const Expression& value,
     const Token& assignment_token
 )
@@ -48,35 +48,35 @@ Assignment::Assignment(
 {}
 
 Conditional::Conditional(
-    const Expression& cond, 
+    const Expression& cond,
     const std::vector<Statement>& then_branch,
     const std::vector<Statement>& else_branch,
     const Token& if_token
 )
     : StatementBody(if_token)
-    , condition(cond)
     , then_branch(then_branch)
     , else_branch(else_branch)
+    , condition(cond)
 {}
 
 WhileLoop::WhileLoop(
-    const Expression& cond, 
+    const Expression& cond,
     const std::vector<Statement>& body,
     const Token& while_token
 )
     : StatementBody(while_token)
     , condition(cond)
-    , loop_body(body) 
+    , loop_body(body)
 {}
 
 UntilLoop::UntilLoop(
-    const Expression& condition, 
+    const Expression& condition,
     const std::vector<Statement>& loop_body,
     const Token& until_token
 )
     : StatementBody(until_token)
     , condition(condition)
-    , loop_body(loop_body) 
+    , loop_body(loop_body)
 {}
 
 Return::Return(
@@ -84,7 +84,7 @@ Return::Return(
     const Token& return_token
 )
     : StatementBody(return_token)
-    , return_value(value) 
+    , return_value(value)
 {}
 
 Continue::Continue(

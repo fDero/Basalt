@@ -10,7 +10,6 @@
 #include "errors/diagnostic_formatting.hpp"
 #include "errors/preprocessing_errors.hpp"
 #include "language/expressions.hpp"
-#include "language/functions.hpp"
 #include "language/statements.hpp"
 
 
