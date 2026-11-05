@@ -9,11 +9,11 @@
 #include <string>
 #include <vector>
 
+#include "misc/forward_declarations.hpp"
+
 
 class CommandLineController {
     public:
-        CommandLineController(int argc, char** argv);
-
         enum class SubCommand {
             unspecified,
             version,
@@ -23,6 +23,7 @@ class CommandLineController {
             typechecker
         };
 
+        CommandLineController(int argc, char** argv);
         void dispatch_based_on_user_input();
 
     protected:
@@ -41,6 +42,9 @@ class CommandLineController {
         void compiler_subcommand();
         void interpreter_subcommand();
         void typechecker_subcommand();
+
+        [[nodiscard]] ProjectFileStructure load_project_file_structure();
+        void preprocess_program(ProgramRepresentation& program_representation);
 
     private:
         const int arg_counter;

@@ -3,6 +3,7 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include <cstdlib>
 #include <string>
 #include <vector>
 
@@ -61,7 +62,7 @@ void CommandLineController::dispatch_based_on_user_input() {
 void CommandLineController::parse_target_triple() {
     if (++arg_index < arg_counter) {
         target_triple = arg_values[arg_index++];
-    } 
+    }
     avoid_lack_of_target_triple(target_triple);
 }
 
@@ -82,7 +83,7 @@ void CommandLineController::validate_input_files() {
     ensure_input_files_exist(inputs);
     avoid_duplicate_input_files(inputs);
     for(const std::string& in : inputs) {
-        if (extract_file_extension(in) != FileExtension::basalt) { 
+        if (extract_file_extension(in) != FileExtension::basalt) {
             throw_invalid_input_file_format(in);
         }
     }

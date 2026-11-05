@@ -5,6 +5,7 @@
 
 #pragma once
 
+#include <memory>
 #include <optional>
 #include <string>
 
@@ -19,20 +20,31 @@
 
 class Finalizer {
     public:
-        Finalizer(ProgramRepresentation& program_representation, std::optional<std::string> target_triple_opt);
-        Finalizer(ProgramRepresentation& program_representation, const std::string& target_triple);
-        Finalizer(ProgramRepresentation& program_representation);
+        Finalizer(
+            ProgramRepresentation& program_representation
+        );
+
+        Finalizer(
+            ProgramRepresentation& program_representation,
+            std::optional<std::string> target_triple_opt
+        );
+
+        Finalizer(
+            ProgramRepresentation& program_representation,
+            const std::string& target_triple
+        );
 
         void emit_object_file(const std::string& output_file);
         void emit_assembly_file(const std::string& output_file_name);
         void emit_llvm_ir(const std::string& output_file);
         void generate_llvm_ir();
+        [[nodiscard]] int run_jit();
 
     private:
         ProgramRepresentation& program_representation;
         std::string target_triple;
-        llvm::LLVMContext llvm_context;
-        llvm::Module llvm_module;
+        std::unique_ptr<llvm::LLVMContext> llvm_context;
+        std::unique_ptr<llvm::Module> llvm_module;
         llvm::TargetMachine* llvm_target_machine;
         TypeDefinitionsLLVMTranslator type_definitions_llvm_translator;
         CallableCodeBlocksLLVMTranslator callable_codeblocks_llvm_translator;

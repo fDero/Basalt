@@ -3,6 +3,7 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include <iostream>
 #include <string>
 #include <vector>
 
@@ -12,7 +13,6 @@
 #include "core/program_representation.hpp"
 #include "core/project_file_structure.hpp"
 #include "errors/commandline_errors.hpp"
-#include "errors/compilation_error.hpp"
 #include "frontend/file_representation.hpp"
 #include "frontend/parser.hpp"
 #include "frontend/tokenized_file.hpp"
@@ -20,10 +20,7 @@
 #include "preprocessing/preprocessor.hpp"
 
 
-void CommandLineController::typechecker_subcommand() {
-    ensure_lack_of_output_files(outputs);
-    ensure_lack_of_target_triple(target_triple);
-    validate_input_files();
+ProjectFileStructure CommandLineController::load_project_file_structure() {
     std::vector<FileRepresentation> file_representations;
     for (const std::string& input_file : inputs) {
         Tokenizer tokenizer(input_file);
@@ -32,33 +29,32 @@ void CommandLineController::typechecker_subcommand() {
         FileRepresentation file_representation = parser.parse_everything();
         file_representations.push_back(file_representation);
     }
-    ProjectFileStructure project_file_structure(file_representations);
-    ProgramRepresentation program_representation(project_file_structure);
+    return ProjectFileStructure(file_representations);
+}
+
+void CommandLineController::preprocess_program(ProgramRepresentation& program_representation) {
     PreProcessor preprocessor(program_representation);
     preprocessor.preprocess_packages_typename_conflicts();
     preprocessor.preprocess_type_definitions();
     preprocessor.preprocess_function_definitions();
 }
 
+void CommandLineController::typechecker_subcommand() {
+    ensure_lack_of_output_files(outputs);
+    ensure_lack_of_target_triple(target_triple);
+    validate_input_files();
+    ProgramRepresentation program_representation(load_project_file_structure());
+    preprocess_program(program_representation);
+}
+
 void CommandLineController::compiler_subcommand() {
     validate_output_files();
     validate_input_files();
-    std::vector<FileRepresentation> file_representations;
-    for (const std::string& input_file : inputs) {
-        Tokenizer tokenizer(input_file);
-        TokenizedFile tokenized_file = tokenizer.tokenize();
-        Parser parser(tokenized_file);
-        FileRepresentation file_representation = parser.parse_everything();
-        file_representations.push_back(file_representation);
-    }
-    ProjectFileStructure project_file_structure(file_representations);
-    ProgramRepresentation program_representation(project_file_structure);
-    PreProcessor preprocessor(program_representation);
-    preprocessor.preprocess_packages_typename_conflicts();
-    preprocessor.preprocess_type_definitions();
-    preprocessor.preprocess_function_definitions();
-    preprocessor.ensure_program_has_a_main_function();
+    ProgramRepresentation program_representation(load_project_file_structure());
+    preprocess_program(program_representation);
+    PreProcessor(program_representation).ensure_program_has_a_main_function();
     Finalizer finalizer(program_representation, target_triple);
+    std::cout << "Generating LLVM IR..." << std::endl;
     finalizer.generate_llvm_ir();
     for (const std::string& output_file : outputs) {
         switch (extract_file_extension(output_file)) {
@@ -71,7 +67,14 @@ void CommandLineController::compiler_subcommand() {
 }
 
 void CommandLineController::interpreter_subcommand() {
-    throw CommandLineError(
-        "`run` subcommand not yet implemented"
-    );
+    ensure_lack_of_output_files(outputs);
+    ensure_lack_of_target_triple(target_triple);
+    validate_input_files();
+    ProgramRepresentation program_representation(load_project_file_structure());
+    preprocess_program(program_representation);
+    PreProcessor(program_representation).ensure_program_has_a_main_function();
+    Finalizer finalizer(program_representation);
+    finalizer.generate_llvm_ir();
+    int out = finalizer.run_jit();
+    std::cout << "Execution output: " << out << std::endl;
 }

@@ -25,6 +25,8 @@
 
 [[noreturn]] void throw_unrecognized_file_extension(const std::string& filename);
 
+[[noreturn]] void throw_program_execution_failure(const std::string& reason);
+
 void avoid_lack_of_input_files(const std::vector<std::string>& input_files);
 
 void avoid_lack_of_output_files(const std::vector<std::string>& output_files);
