@@ -8,6 +8,7 @@
 #include <system_error>
 
 #include <llvm/IR/LegacyPassManager.h>
+#include <llvm/IR/Verifier.h>
 #include <llvm/Support/CodeGen.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/raw_ostream.h>
@@ -17,11 +18,11 @@
 #include "backend/finalizer.hpp"
 #include "core/callable_code_block.hpp"
 #include "core/program_representation.hpp"
+#include "errors/internal_errors.hpp"
 #include "language/definitions.hpp"
 
 
 void Finalizer::generate_llvm_ir() {
-    std::cout << "Generating LLVM IR..." << std::endl;
     program_representation.foreach_function_definition(
         [&](const FunctionDefinition::Ref& function_definition) {
             if (function_definition->template_generics_names.empty()) {
@@ -30,14 +31,19 @@ void Finalizer::generate_llvm_ir() {
             }
         }
     );
+    std::string verifier_report;
+    llvm::raw_string_ostream verifier_stream(verifier_report);
+    if (llvm::verifyModule(*llvm_module, &verifier_stream)) {
+        throw_internal_error("the generated LLVM IR is invalid: " + verifier_stream.str());
+    }
 }
 
 void Finalizer::emit_llvm_ir(const std::string& output_file_name) {
     std::cout << "Emitting LLVM..." << std::endl;
 	std::error_code error_code;
 	llvm::raw_fd_ostream output_file (output_file_name, error_code);
-	llvm_module.print(output_file, nullptr);
-	llvm_module.print(llvm::outs(), nullptr);
+	llvm_module->print(output_file, nullptr);
+	llvm_module->print(llvm::outs(), nullptr);
 }
 
 void Finalizer::emit_object_file(const std::string& output_file_name) {
@@ -52,7 +58,7 @@ void Finalizer::emit_object_file(const std::string& output_file_name) {
     llvm::legacy::PassManager pass_manager;
     auto file_type = llvm::CodeGenFileType::CGFT_ObjectFile;
     llvm_target_machine->addPassesToEmitFile(pass_manager, output_file, nullptr, file_type);    
-    pass_manager.run(llvm_module);
+    pass_manager.run(*llvm_module);
 
     std::cout << "Result: " << output_file_name << std::endl;
     std::cout << "(target: " << target_triple << ")" << std::endl;
@@ -70,7 +76,7 @@ void Finalizer::emit_assembly_file(const std::string& output_file_name) {
     llvm::legacy::PassManager pass_manager;
     auto file_type = llvm::CodeGenFileType::CGFT_AssemblyFile;
     llvm_target_machine->addPassesToEmitFile(pass_manager, output_file, nullptr, file_type);
-    pass_manager.run(llvm_module);
+    pass_manager.run(*llvm_module);
 
     std::cout << "Result: " << output_file_name << std::endl;
     std::cout << "(target: " << target_triple << ")" << std::endl;

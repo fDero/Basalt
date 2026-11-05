@@ -59,7 +59,6 @@ target_compile_options(
   -Wall
   -Wpedantic
   -Wfloat-equal
-  -Wno-deprecated-declarations
   -DDEBUG_BUILD
 )
 

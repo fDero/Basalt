@@ -32,23 +32,25 @@ inline llvm::Value* get_llvm_address(
 
 inline llvm::Value* create_array_gep(
     llvm::IRBuilder<>& builder,
+    llvm::Type* array_type,
     llvm::Value* proper_array_address_not_ptr,
     llvm::Value* index
 ) {
     std::vector<llvm::Value*> indices;
     indices.push_back(llvm::ConstantInt::get(builder.getInt32Ty(), 0));
     indices.push_back(index);
-    return builder.CreateGEP(proper_array_address_not_ptr, indices);
+    return builder.CreateGEP(array_type, proper_array_address_not_ptr, indices);
 }
 
 inline llvm::Value* create_vector_gep(
     llvm::IRBuilder<>& builder,
+    llvm::Type* element_type,
     llvm::Value* ptr_to_first_elem,
     llvm::Value* index
 ) {
     std::vector<llvm::Value*> indices;
     indices.push_back(index);
-    return builder.CreateGEP(ptr_to_first_elem, indices);
+    return builder.CreateGEP(element_type, ptr_to_first_elem, indices);
 }
 
 inline llvm::BasicBlock* createBlockAfter(

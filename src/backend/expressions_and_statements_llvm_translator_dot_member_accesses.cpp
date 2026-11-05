@@ -8,8 +8,10 @@
 #include <string>
 
 #include <llvm/IR/BasicBlock.h>
+#include <llvm/IR/DerivedTypes.h>
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/IR/Value.h>
+#include <llvm/Support/Casting.h>
 
 #include "backend/expressions_and_statements_llvm_translator.hpp"
 #include "backend/llvm_wrappers.hpp"
@@ -59,9 +61,10 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_dot_membe
         .resolve_field_index(dot_member_access_on_struct, scope_context.raw_scope_context);
     TranslatedExpression target = translate_expression_to_llvm(block, dot_member_access_on_struct.struct_value);
     llvm::IRBuilder<> builder(block);
+    llvm::StructType* struct_type = llvm::cast<llvm::StructType>(target.value->getType());
     llvm::Value* target_address = get_llvm_address(builder, target);
-    llvm::Value* field_address = builder.CreateStructGEP(target_address, field_index);
-    llvm::Value* field_value = builder.CreateLoad(field_address);
+    llvm::Value* field_address = builder.CreateStructGEP(struct_type, target_address, field_index);
+    llvm::Value* field_value = builder.CreateLoad(struct_type->getElementType(field_index), field_address);
     return (target.address == nullptr)
         ? TranslatedExpression(field_value)
         : TranslatedExpression(field_value, field_address);
@@ -94,9 +97,10 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_string_or
 ) {
     TranslatedExpression target = translate_expression_to_llvm(block, expr);
     llvm::IRBuilder<> builder(block);
+    llvm::StructType* slice_type = llvm::cast<llvm::StructType>(target.value->getType());
     llvm::Value* target_address = get_llvm_address(builder, target);
-    llvm::Value* length_address = builder.CreateStructGEP(target_address, 0);
-    llvm::Value* length_value = builder.CreateLoad(length_address);
+    llvm::Value* length_address = builder.CreateStructGEP(slice_type, target_address, 0);
+    llvm::Value* length_value = builder.CreateLoad(slice_type->getElementType(0), length_address);
     return (target.address == nullptr)
         ? TranslatedExpression(length_value)
         : TranslatedExpression(length_value, length_address);

@@ -3,6 +3,7 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include <memory>
 #include <optional>
 #include <string>
 
@@ -43,18 +44,18 @@ Finalizer::Finalizer(
 ) 
     : program_representation(input_program_representation)
     , target_triple(target_triple)
-    , llvm_context()
-    , llvm_module("basalt_program", llvm_context)
+    , llvm_context(std::make_unique<llvm::LLVMContext>())
+    , llvm_module(std::make_unique<llvm::Module>("basalt_program", *llvm_context))
     , type_definitions_llvm_translator(
         program_representation, 
-        llvm_context, 
-        llvm_module
+        *llvm_context, 
+        *llvm_module
     )
     , callable_codeblocks_llvm_translator(
         program_representation, 
         type_definitions_llvm_translator, 
-        llvm_context, 
-        llvm_module
+        *llvm_context, 
+        *llvm_module
     )
 {
     llvm::InitializeAllTargetInfos();
@@ -73,5 +74,5 @@ Finalizer::Finalizer(
         llvm::TargetOptions(), 
         llvm::Optional<llvm::Reloc::Model>()
     );
-    llvm_module.setDataLayout(llvm_target_machine->createDataLayout());
+    llvm_module->setDataLayout(llvm_target_machine->createDataLayout());
 }

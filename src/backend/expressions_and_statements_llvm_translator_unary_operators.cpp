@@ -3,6 +3,8 @@
 // LICENSE: MIT (https://github.com/fDero/Basalt/blob/master/LICENSE)      //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+#include <optional>
+
 #include <llvm/IR/BasicBlock.h>
 #include <llvm/IR/Constant.h>
 #include <llvm/IR/Constants.h>
@@ -12,9 +14,12 @@
 
 #include "backend/expressions_and_statements_llvm_translator.hpp"
 #include "backend/translated_expression.hpp"
+#include "backend/type_definitions_llvm_translator.hpp"
 #include "core/program_representation.hpp"
 #include "core/scope_context.hpp"
+#include "errors/internal_errors.hpp"
 #include "language/expressions.hpp"
+#include "language/typesignatures.hpp"
 
 
 TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_boolean_not_to_llvm(
@@ -55,10 +60,16 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_ptr_deref
     llvm::BasicBlock* block,
     const UnaryOperator& minus_sign
 ) {
+    std::optional<TypeSignature> pointer_type_opt = program_representation
+        .resolve_expression_type(minus_sign.operand, scope_context.raw_scope_context);
+    assert_type_deduction_success_in_backend_layer(pointer_type_opt.has_value());
+    assert_typesignature_is<PointerType>(pointer_type_opt.value());
+    llvm::Type* pointed_type = type_definitions_llvm_translator
+        .translate_typesignature_to_llvm_type(pointer_type_opt->get<PointerType>().pointed_type);
     TranslatedExpression operand = translate_expression_to_llvm(block, minus_sign.operand);
     llvm::IRBuilder<> builder(block);
     return TranslatedExpression(
-        builder.CreateLoad(operand.value), 
+        builder.CreateLoad(pointed_type, operand.value), 
         operand.value
     );  
 }

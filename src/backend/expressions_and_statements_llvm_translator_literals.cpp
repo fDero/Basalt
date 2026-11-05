@@ -77,7 +77,7 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_string_li
     llvm::Value* string_len = llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), expr.value.size());
     builder.CreateStore(string_len, string_len_address);
     builder.CreateStore(ptr_to_first_char, string_data_address);
-    llvm::Value* string_value = builder.CreateLoad(string_address);
+    llvm::Value* string_value = builder.CreateLoad(string_type, string_address);
     return {string_value, string_address};
 }
 
@@ -87,7 +87,7 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_identifie
 ) {
     llvm::AllocaInst* address = scope_context.resolve_object_allocation(identifier.name);
     llvm::IRBuilder<> builder(block);
-    llvm::Value* value = builder.CreateLoad(address);
+    llvm::Value* value = builder.CreateLoad(address->getAllocatedType(), address);
     return {value, address};
 }
 
@@ -110,9 +110,9 @@ TranslatedExpression ExpressionsAndStatementsLLVMTranslator::translate_array_lit
         TranslatedExpression array_element = translate_expression_to_llvm(block, element);
         TranslatedExpression casted_array_element = type_manipulations_llvm_translator
             .cast_translated_expression_to_another_type_in_llvm(block, array_element, element_type, stored_type);
-        llvm::Value* ptr_to_array_cell = create_array_gep(builder, llvm_array_address, element_index_as_expr);
+        llvm::Value* ptr_to_array_cell = create_array_gep(builder, llvm_array_type, llvm_array_address, element_index_as_expr);
         builder.CreateStore(casted_array_element.value, ptr_to_array_cell);
     }
-    llvm::Value* llvm_array_value = builder.CreateLoad(llvm_array_address);
+    llvm::Value* llvm_array_value = builder.CreateLoad(llvm_array_type, llvm_array_address);
     return {llvm_array_value, llvm_array_address};
 }
