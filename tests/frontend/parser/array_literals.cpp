@@ -4,7 +4,6 @@
 
 #include "frontend/parser.hpp"
 #include "frontend/token.hpp"
-#include "frontend/tokenized_file.hpp"
 #include "language/expressions.hpp"
 #include "language/typesignatures.hpp"
 #include "syntax/primitive_types.hpp"
@@ -18,7 +17,7 @@ TEST(Frontend, Parse_Array_Literal_Without_Explicit_Size) {
         { "{",   "test.basalt",  1, 4, 5, Token::Type::symbol  },
         { "}",   "test.basalt",  1, 5, 6, Token::Type::symbol  },
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     Expression expr = parser.parse_expression();
     ASSERT_TRUE(expr.is<ArrayLiteral>());
     EXPECT_FALSE(expr.get<ArrayLiteral>().array_length.has_value());
@@ -41,7 +40,7 @@ TEST(Frontend, Parse_Array_Literal_Of_Generic_StoredType_Without_Explicit_Size) 
         { "{",    "test.basalt",  1, 4, 5, Token::Type::symbol  },
         { "}",    "test.basalt",  1, 5, 6, Token::Type::symbol  },
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     Expression expr = parser.parse_expression();
     ASSERT_TRUE(expr.is<ArrayLiteral>());
     EXPECT_FALSE(expr.get<ArrayLiteral>().array_length.has_value());
@@ -73,7 +72,7 @@ TEST(Frontend, Parse_Nested_Array_Literals_Without_Explicit_Size_And_Incorrect_T
         
         { "}",   "test.basalt",  1, 15, 20, Token::Type::symbol  },
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     Expression expr = parser.parse_expression();
     ASSERT_TRUE(expr.is<ArrayLiteral>());
     EXPECT_FALSE(expr.get<ArrayLiteral>().array_length.has_value());
@@ -113,7 +112,7 @@ TEST(Frontend, Parse_Nested_Array_Literals_With_Explicit_Size_And_Correct_Type) 
         { "}",   "test.basalt",  1, 14, 19, Token::Type::symbol  },
         { "}",   "test.basalt",  1, 15, 20, Token::Type::symbol  },
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     Expression expr = parser.parse_expression();
     ASSERT_TRUE(expr.is<ArrayLiteral>());
     EXPECT_EQ(expr.get<ArrayLiteral>().array_length, 2);
@@ -140,7 +139,7 @@ TEST(Frontend, Parse_Square_Bracket_Access_On_Array_Literal) {
         { "2",   "test.basalt",  1,  6,  9, Token::Type::integer_literal  },
         { "]",   "test.basalt",  1,  7, 10, Token::Type::symbol  },
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     Expression expr = parser.parse_expression();
 
     ASSERT_TRUE(expr.is<SquareBracketsAccess>());

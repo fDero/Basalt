@@ -4,7 +4,6 @@
 
 #include "frontend/parser.hpp"
 #include "frontend/token.hpp"
-#include "frontend/tokenized_file.hpp"
 #include "language/expressions.hpp"
 
 
@@ -13,7 +12,7 @@ TEST(Frontend, Parse_Simple_Unary_Operator) {
         { "-", "test.basalt", 1, 1, 1, Token::Type::symbol },
         { "9", "test.basalt", 1, 2, 2, Token::Type::integer_literal },
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     Expression expr = parser.parse_expression();
     ASSERT_TRUE(expr.is<UnaryOperator>());
     EXPECT_TRUE(expr.get<UnaryOperator>().operand.is<IntLiteral>());
@@ -27,7 +26,7 @@ TEST(Frontend, Parse_Nested_Unary_Operators) {
         { "-", "test.basalt", 1, 2, 2, Token::Type::symbol },
         { "9", "test.basalt", 1, 3, 3, Token::Type::integer_literal },
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     Expression expr = parser.parse_expression();
     ASSERT_TRUE(expr.is<UnaryOperator>());
     ASSERT_TRUE(expr.get<UnaryOperator>().operand.is<UnaryOperator>());
@@ -42,7 +41,7 @@ TEST(Frontend, Parse_Nested_Unary_Operators_With_Parenthesis) {
         { "2", "test.basalt", 1, 3, 3, Token::Type::integer_literal },
         { ")", "test.basalt", 1, 4, 4, Token::Type::symbol }
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     Expression expr = parser.parse_expression();
     ASSERT_TRUE(expr.is<UnaryOperator>());
     ASSERT_TRUE(expr.get<UnaryOperator>().operand.is<UnaryOperator>());

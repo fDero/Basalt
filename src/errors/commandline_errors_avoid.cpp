@@ -4,21 +4,19 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 #include <algorithm>
-#include <optional>
 #include <string>
 #include <vector>
 
-#include "cli/file_extensions.hpp"
+#include "frontend/file_descriptor.hpp"
 #include "errors/commandline_errors.hpp"
 #include "errors/compilation_error.hpp"
-
 
 
 void avoid_lack_of_input_files(const std::vector<std::string>& input_files) {
     if (input_files.empty()) {
         throw CommandLineError(
             "no input files specified, don't know what to do \n"
-            "(input files are supposed to be specified right after the -i flag \n"
+            "(input files are supposed to be specified right after the -s flag \n"
             "and should have one of these extensions: .basalt .bt)"
         );
     }
@@ -34,7 +32,7 @@ void avoid_lack_of_output_files(const std::vector<std::string>& output_files) {
     }
 }
 
-void avoid_duplicate_input_files(std::vector<std::string>& input_files) {
+void avoid_duplicate_input_files(std::vector<std::string> input_files) {
     std::sort(input_files.begin(), input_files.end());
     if (std::unique(input_files.begin(), input_files.end()) != input_files.end()) {
         throw CommandLineError(
@@ -44,11 +42,13 @@ void avoid_duplicate_input_files(std::vector<std::string>& input_files) {
     }
 }
 
-void avoid_duplicate_output_file_extensions(
-    std::vector<FileExtension> file_extensions
-) {
-    std::sort(file_extensions.begin(), file_extensions.end());
-    if (std::unique(file_extensions.begin(), file_extensions.end()) != file_extensions.end()) {
+void avoid_duplicate_output_file_extensions(const std::vector<FileDescriptor>& output_files) {
+    std::vector<FileDescriptor::FileExtension> extensions;
+    for (const FileDescriptor& file : output_files) {
+        extensions.push_back(file.extension);
+    }
+    std::sort(extensions.begin(), extensions.end());
+    if (std::unique(extensions.begin(), extensions.end()) != extensions.end()) {
         throw CommandLineError(
             "duplicate output file extension detected! \n"
             "(no pair output files should have the same file extension)"
@@ -56,11 +56,11 @@ void avoid_duplicate_output_file_extensions(
     }
 }
 
-void avoid_lack_of_target_triple(const std::optional<std::string>& target_triple) {
-    if (!target_triple.has_value()) {
+void avoid_multiple_target_triples(const std::vector<std::string>& target_triples) {
+    if (target_triples.size() > 1) {
         throw CommandLineError(
-            "no target triple specified, don't know what to do \n"
-            "(target triple is supposed to be specified right after the -t flag)"
+            "multiple target triples specified, don't know which one to use \n"
+            "(at most one target triple can follow the -t flag)"
         );
     }
 }

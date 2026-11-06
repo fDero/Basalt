@@ -4,7 +4,6 @@
 
 #include "frontend/parser.hpp"
 #include "frontend/token.hpp"
-#include "frontend/tokenized_file.hpp"
 #include "language/functions.hpp"
 #include "language/statements.hpp"
 #include "syntax/keywords.hpp"
@@ -21,7 +20,7 @@ TEST(Frontend, Parse_Inline_While_Loop) {
         { ")",           "test.basalt", 1, 4, 4, Token::Type::symbol        },
         { ";",           "test.basalt", 1, 3, 3, Token::Type::symbol        },
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     Statement statement = parser.parse_statement();
     ASSERT_TRUE(statement.is<WhileLoop>());
     ASSERT_EQ(statement.get<WhileLoop>().loop_body.size(), 1);
@@ -41,7 +40,7 @@ TEST(Frontend, Parse_Block_While_Loop_Single_Instruction) {
         { ";",                "test.basalt", 1, 3, 3, Token::Type::symbol },
         { "}",                "test.basalt", 1, 2, 2, Token::Type::symbol },
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     Statement statement = parser.parse_statement();
     ASSERT_TRUE(statement.is<WhileLoop>());
     ASSERT_EQ(statement.get<WhileLoop>().loop_body.size(), 1);
@@ -69,7 +68,7 @@ TEST(Frontend, Parse_Block_While_Loop_Multiple_Instructions) {
         { ";",           "test.basalt", 1, 3, 3, Token::Type::symbol        },
         { "}",           "test.basalt", 1, 2, 2, Token::Type::symbol        },
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     Statement statement = parser.parse_statement();
     ASSERT_TRUE(statement.is<WhileLoop>());
     ASSERT_EQ(statement.get<WhileLoop>().loop_body.size(), 3);
@@ -89,7 +88,7 @@ TEST(Frontend, Parse_Inline_Until_Loop) {
         { ")", "test.basalt", 1, 4, 4, Token::Type::symbol                  },
         { ";", "test.basalt", 1, 3, 3, Token::Type::symbol                  },
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     Statement statement = parser.parse_statement();
     ASSERT_TRUE(statement.is<UntilLoop>());
     ASSERT_EQ(statement.get<UntilLoop>().loop_body.size(), 1);
@@ -109,7 +108,7 @@ TEST(Frontend, Parse_Block_Until_Loop_Single_Instruction) {
         { ";", "test.basalt", 1, 3, 3, Token::Type::symbol                  },
         { "}", "test.basalt", 1, 2, 2, Token::Type::symbol                  },
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     Statement statement = parser.parse_statement();
     ASSERT_TRUE(statement.is<UntilLoop>());
     ASSERT_EQ(statement.get<UntilLoop>().loop_body.size(), 1);
@@ -137,7 +136,7 @@ TEST(Frontend, Parse_Block_Until_Loop_Multiple_Instructions) {
         { ";", "test.basalt", 1, 3, 3, Token::Type::symbol                  },
         { "}", "test.basalt", 1, 2, 2, Token::Type::symbol                  },
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     Statement statement = parser.parse_statement();
     ASSERT_TRUE(statement.is<UntilLoop>());
     ASSERT_EQ(statement.get<UntilLoop>().loop_body.size(), 3);

@@ -4,7 +4,6 @@
 
 #include "frontend/parser.hpp"
 #include "frontend/token.hpp"
-#include "frontend/tokenized_file.hpp"
 #include "language/expressions.hpp"
 #include "language/functions.hpp"
 #include "language/statements.hpp"
@@ -18,7 +17,7 @@ TEST(Frontend, Parse_Function_Call_WithOut_generics_And_Only_One_Argument_As_Sta
         { ")", "test.basalt", 1, 4, 4, Token::Type::symbol },
         { ";", "test.basalt", 1, 5, 5, Token::Type::symbol }
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     Statement proc = parser.parse_statement();
     ASSERT_TRUE(proc.is<FunctionCall>());
     EXPECT_EQ(proc.get<FunctionCall>().function_name, "f");
@@ -37,7 +36,7 @@ TEST(Frontend, Parse_Function_Call_WithOut_generics_And_Two_Arguments_As_Stateme
         { ")", "test.basalt", 1, 6, 6, Token::Type::symbol },
         { ";", "test.basalt", 1, 7, 7, Token::Type::symbol }
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     Statement proc = parser.parse_statement();
     ASSERT_TRUE(proc.is<FunctionCall>());
     EXPECT_EQ(proc.get<FunctionCall>().function_name, "f");
@@ -55,7 +54,7 @@ TEST(Frontend, Parse_Function_Call_WithOut_generics_And_Only_One_Argument_As_Exp
         { "x", "test.basalt", 1, 3, 3, Token::Type::text   },
         { ")", "test.basalt", 1, 4, 4, Token::Type::symbol },
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     Expression expr = parser.parse_expression();
     ASSERT_TRUE(expr.is<FunctionCall>());
     EXPECT_EQ(expr.get<FunctionCall>().function_name, "f");
@@ -73,7 +72,7 @@ TEST(Frontend, Parse_Function_Call_WithOut_generics_And_Two_Arguments_As_Express
         { "y", "test.basalt", 1, 5, 5, Token::Type::text   },
         { ")", "test.basalt", 1, 6, 6, Token::Type::symbol },
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     Expression expr = parser.parse_expression();    
     ASSERT_TRUE(expr.is<FunctionCall>());
     EXPECT_EQ(expr.get<FunctionCall>().function_name, "f");

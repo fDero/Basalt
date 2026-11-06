@@ -80,14 +80,13 @@ Expression Parser::parse_terminal_expression() {
 
 Expression Parser::parse_text_first_expression() {
     Expression identifier = parse_identifier();
-    bool should_stop_here = std::next(iterator) == source_tokens.end();
-    should_stop_here = should_stop_here || std::next(iterator) == source_tokens.end();
-    should_stop_here |= !function_call_opening_characters.contains(iterator->sourcetext);
+    bool should_stop_here = iterator == source_tokens.end();
+    should_stop_here = should_stop_here || !function_call_opening_characters.contains(iterator->sourcetext);
     if (should_stop_here) {
         return identifier;
     }
-    ensure_there_are_still_tokens(source_tokens, iterator);
-    bool false_positive = iterator->sourcetext == "<" && std::next(iterator)->type != Token::Type::type;
+    bool is_last_token = std::next(iterator) == source_tokens.end();
+    bool false_positive = iterator->sourcetext == "<" && (is_last_token || std::next(iterator)->type != Token::Type::type);
     if (false_positive) {
         return identifier;
     }

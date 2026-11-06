@@ -15,7 +15,6 @@
 
 #include "errors/tokenization_errors.hpp"
 #include "frontend/token.hpp"
-#include "frontend/tokenized_file.hpp"
 #include "frontend/tokenizer.hpp"
 #include "misc/debug_informations_aware_entity.hpp"
 #include "syntax/keywords.hpp"
@@ -35,16 +34,16 @@ Token::Token (
         in_tok_number, in_char_pos
     )
     , sourcetext(sourcetext)
-    , type(type) 
+    , type(type)
 {}
 
 Tokenizer::Tokenizer(const std::istringstream& inline_input)
     : token_input(std::make_unique<std::istringstream>(inline_input.str()))
     , filename("inline input token stream") {}
 
-Tokenizer::Tokenizer(const std::string& file_input) 
-    : token_input(std::make_unique<std::fstream>(file_input, std::ios::in))
-    , filename(file_input) {}
+Tokenizer::Tokenizer(const FileDescriptor& file_input)
+    : token_input(std::make_unique<std::fstream>(file_input.fullpath, std::ios::in))
+    , filename(file_input.fullpath) {}
 
 void Tokenizer::inspect_for_unexpected_tokens() {
     std::string buffer;
@@ -64,7 +63,6 @@ void Tokenizer::ignore_discardable_characters() {
     }
 }
 
-// `char_pos` always holds the (0-based) column of the first character of the token
 Token Tokenizer::make_token(const std::string& sourcetext, const Token::Type token_type) {
     return Token {
         sourcetext, filename, line_number, tok_number,
@@ -74,9 +72,9 @@ Token Tokenizer::make_token(const std::string& sourcetext, const Token::Type tok
 }
 
 DebugInformationsAwareEntity Tokenizer::make_coordinates() {
-    return DebugInformationsAwareEntity { 
+    return DebugInformationsAwareEntity {
         filename,
-        line_number, 
+        line_number,
         tok_number,
         static_cast<unsigned int>(char_pos),
     };
@@ -87,14 +85,12 @@ Token::Type Tokenizer::get_textual_token_type(const std::string& sourcetext) {
     if (isupper(sourcetext[0])) return Token::Type::type;
     auto keyword_search_outcome = keywords.find(sourcetext);
     auto not_found = keywords.end();
-    return (keyword_search_outcome != not_found)?  
+    return (keyword_search_outcome != not_found)?
         keyword_search_outcome->second : Token::Type::text;
 }
 
-TokenizedFile Tokenizer::tokenize() {
-    TokenizedFile tokenized_file;
-    tokenized_file.filename = filename;
-    std::vector<Token>& tokens = tokenized_file.tokens;
+std::vector<Token> Tokenizer::tokenize() {
+    std::vector<Token> tokens;
     while (std::getline(*token_input, current_line)) {
         line_number = line_number + 1;
         tok_number = char_pos = 0;
@@ -109,5 +105,5 @@ TokenizedFile Tokenizer::tokenize() {
         }
     }
     ensure_multiline_comments_get_closed(multiline_comments_tracker, make_coordinates());
-    return tokenized_file;
+    return tokens;
 }

@@ -4,7 +4,6 @@
 
 #include "frontend/parser.hpp"
 #include "frontend/token.hpp"
-#include "frontend/tokenized_file.hpp"
 #include "language/expressions.hpp"
 
 
@@ -14,7 +13,7 @@ TEST(Frontend, Parse_Simple_Identifiers) {
         { "counter", "test.basalt", 1, 2, 2, Token::Type::text },
         { "variablename", "test.basalt", 1, 3, 8, Token::Type::text }
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     for (const auto& identifier : tokens) {
         Expression expr = parser.parse_identifier();
         ASSERT_TRUE(expr.is<Identifier>());

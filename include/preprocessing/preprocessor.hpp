@@ -9,12 +9,8 @@
 
 
 class PreProcessor {
-
     public:
-        PreProcessor(
-            ProgramRepresentation& program_representation
-        );
-
+        PreProcessor(ProgramRepresentation& program_representation);
         void preprocess_packages_typename_conflicts();
         void preprocess_type_definitions();
         void preprocess_function_definitions();

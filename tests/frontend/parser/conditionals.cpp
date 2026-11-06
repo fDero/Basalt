@@ -4,7 +4,6 @@
 
 #include "frontend/parser.hpp"
 #include "frontend/token.hpp"
-#include "frontend/tokenized_file.hpp"
 #include "language/expressions.hpp"
 #include "language/functions.hpp"
 #include "language/statements.hpp"
@@ -20,7 +19,7 @@ TEST(Frontend, Parse_If_Statement_Inline_Then_No_Else) {
         { break_keyword, "test.basalt", 1, 2, 2, Token::Type::break_keyword },
         { ";",           "test.basalt", 1, 3, 3, Token::Type::symbol        },
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     Statement statement = parser.parse_statement();
     ASSERT_TRUE(statement.is<Conditional>());
     ASSERT_TRUE(statement.get<Conditional>().else_branch.empty());
@@ -41,7 +40,7 @@ TEST(Frontend, Parse_If_Statement_Inline_Then_Inline_Else) {
         { continue_keyword, "test.basalt", 1, 2, 2, Token::Type::continue_keyword },
         { ";",              "test.basalt", 1, 3, 3, Token::Type::symbol           },
     };
-    Parser parser = Parser(TokenizedFile{ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     Statement statement = parser.parse_statement();
     ASSERT_TRUE(statement.is<Conditional>());
     ASSERT_EQ(statement.get<Conditional>().then_branch.size(), 1);
@@ -67,7 +66,7 @@ TEST(Frontend, Parse_If_Statement_Block_Then_Block_Else) {
         { ";",              "test.basalt", 1, 3, 3, Token::Type::symbol           },
         { "}",              "test.basalt", 1, 2, 2, Token::Type::symbol           },
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     Statement statement = parser.parse_statement();
     ASSERT_TRUE(statement.is<Conditional>());
     ASSERT_EQ(statement.get<Conditional>().then_branch.size(), 1);
@@ -97,7 +96,7 @@ TEST(Frontend, Parse_If_Statement_Block_Then_Block_Else_More_Then_One_Statement_
         { ";",              "test.basalt", 1, 3, 3, Token::Type::symbol           },
         { "}",              "test.basalt", 1, 2, 2, Token::Type::symbol           },
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     Statement statement = parser.parse_statement();
     ASSERT_TRUE(statement.is<Conditional>());
     ASSERT_EQ(statement.get<Conditional>().then_branch.size(), 2);
@@ -120,7 +119,7 @@ TEST(Frontend, Parse_If_Statement_Inline_Then_No_Else_Condition_Is_Function_Call
         { break_keyword, "test.basalt", 1, 2, 2, Token::Type::break_keyword },
         { ";",           "test.basalt", 1, 3, 3, Token::Type::symbol        },
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     Statement statement = parser.parse_statement();
     ASSERT_TRUE(statement.is<Conditional>());
     ASSERT_TRUE(statement.get<Conditional>().else_branch.empty());
@@ -140,7 +139,7 @@ TEST(Frontend, Parse_If_Statement_Inline_Then_No_Else_Condition_Is_Binary_Operat
         { break_keyword, "test.basalt", 1, 2, 2, Token::Type::break_keyword },
         { ";",           "test.basalt", 1, 3, 3, Token::Type::symbol        },
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     Statement statement = parser.parse_statement();
     ASSERT_TRUE(statement.is<Conditional>());
     ASSERT_TRUE(statement.get<Conditional>().else_branch.empty());

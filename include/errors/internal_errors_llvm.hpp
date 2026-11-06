@@ -5,16 +5,7 @@
 
 #pragma once
 
-#include <string>
+#include <llvm/IR/Module.h>
 
 
-enum class FileExtension {
-    basalt,
-    llvm,
-    assembly,
-    object
-};
-
-[[nodiscard]] FileExtension extract_file_extension(
-    const std::string& filename
-);
+void assert_llvm_module_is_valid(const llvm::Module& llvm_module);

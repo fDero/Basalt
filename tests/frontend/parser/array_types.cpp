@@ -4,7 +4,6 @@
 
 #include "frontend/parser.hpp"
 #include "frontend/token.hpp"
-#include "frontend/tokenized_file.hpp"
 #include "language/typesignatures.hpp"
 #include "syntax/primitive_types.hpp"
 
@@ -16,7 +15,7 @@ TEST(Frontend, Parse_Simple_Array) {
         { "]",   "test.basalt",  1, 3, 4, Token::Type::symbol             },
         { int_type, "test.basalt",  1, 4, 5, Token::Type::type               },
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     TypeSignature type = parser.parse_typesignature();
     ASSERT_TRUE(type.is<ArrayType>());
     EXPECT_EQ(type.get<ArrayType>().array_length, 10);
@@ -34,7 +33,7 @@ TEST(Frontend, Parse_Nested_Array_Types) {
         { "]",   "test.basalt",     1, 6, 8, Token::Type::symbol          },
         { "Ent", "test.basalt",     1, 7, 9, Token::Type::type            },
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     TypeSignature type = parser.parse_typesignature();
     ASSERT_TRUE(type.is<ArrayType>());
     ASSERT_TRUE(type.get<ArrayType>().stored_type.is<ArrayType>());

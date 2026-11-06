@@ -4,7 +4,6 @@
 
 #include "frontend/parser.hpp"
 #include "frontend/token.hpp"
-#include "frontend/tokenized_file.hpp"
 #include "language/expressions.hpp"
 
 
@@ -14,7 +13,7 @@ TEST(Frontend, Parse_Simple_Binary_Operator) {
         { "*", "test.basalt", 1, 2, 2, Token::Type::symbol },
         { "9", "test.basalt", 1, 3, 3, Token::Type::integer_literal },
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     Expression expr = parser.parse_expression();
     ASSERT_TRUE(expr.is<BinaryOperator>());
     ASSERT_TRUE(expr.get<BinaryOperator>().left_operand.is<IntLiteral>());
@@ -32,7 +31,7 @@ TEST(Frontend, Parse_Two_Binary_Operators_same_operator) {
         { "*", "test.basalt", 1, 4, 4, Token::Type::symbol },
         { "3", "test.basalt", 1, 5, 5, Token::Type::integer_literal },
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     Expression expr = parser.parse_expression();
     ASSERT_TRUE(expr.is<BinaryOperator>());
     ASSERT_TRUE(expr.get<BinaryOperator>().left_operand.is<BinaryOperator>());
@@ -56,7 +55,7 @@ TEST(Frontend, Parse_Two_Binary_Operators_rotation_not_needed) {
         { "+", "test.basalt", 1, 4, 4, Token::Type::symbol },
         { "3", "test.basalt", 1, 5, 5, Token::Type::integer_literal },
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     Expression expr = parser.parse_expression();
     ASSERT_TRUE(expr.is<BinaryOperator>());
     ASSERT_TRUE(expr.get<BinaryOperator>().left_operand.is<BinaryOperator>());
@@ -80,7 +79,7 @@ TEST(Frontend, Parse_Two_Binary_Operators_rotation_is_needed) {
         { "*", "test.basalt", 1, 4, 4, Token::Type::symbol },
         { "3", "test.basalt", 1, 5, 5, Token::Type::integer_literal },
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     Expression expr = parser.parse_expression();
     ASSERT_TRUE(expr.is<BinaryOperator>());
     ASSERT_TRUE(expr.get<BinaryOperator>().right_operand.is<BinaryOperator>());
@@ -106,7 +105,7 @@ TEST(Frontend, Parse_Two_Binary_Operators_rotation_blocked_with_parenthesis) {
         { "*", "test.basalt", 1, 4, 4, Token::Type::symbol },
         { "3", "test.basalt", 1, 5, 5, Token::Type::integer_literal },
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     Expression expr = parser.parse_expression();
     ASSERT_TRUE(expr.is<BinaryOperator>());
     ASSERT_TRUE(expr.get<BinaryOperator>().left_operand.is<BinaryOperator>());

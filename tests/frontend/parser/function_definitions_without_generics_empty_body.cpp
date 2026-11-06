@@ -4,7 +4,6 @@
 
 #include "frontend/parser.hpp"
 #include "frontend/token.hpp"
-#include "frontend/tokenized_file.hpp"
 #include "language/definitions.hpp"
 #include "language/typesignatures.hpp"
 #include "syntax/keywords.hpp"
@@ -20,7 +19,7 @@ TEST(Frontend, Parse_Function_Definition_WithOut_generics_And_No_Arguments_And_E
         { "{",          "test.basalt", 1, 5, 8, Token::Type::symbol       },
         { "}",          "test.basalt", 1, 6, 9, Token::Type::symbol       }
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     FunctionDefinition funcdef = parser.parse_function_definition();
     EXPECT_EQ(funcdef.function_name, "f");    
     EXPECT_TRUE(funcdef.arguments.empty());
@@ -40,7 +39,7 @@ TEST(Frontend, Parse_Function_Definition_WithOut_generics_And_Only_One_Argument_
         { "{",          "test.basalt", 1, 8, 14, Token::Type::symbol       },
         { "}",          "test.basalt", 1, 9, 15, Token::Type::symbol       }
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     FunctionDefinition funcdef = parser.parse_function_definition();
     EXPECT_EQ(funcdef.function_name, "f");
     EXPECT_TRUE(funcdef.code.empty());
@@ -67,7 +66,7 @@ TEST(Frontend, Parse_Function_Definition_WithOut_generics_And_Two_Arguments_And_
         { "{",            "test.basalt", 1, 12, 17,  Token::Type::symbol       },
         { "}",            "test.basalt", 1, 13, 18,  Token::Type::symbol       }
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     FunctionDefinition funcdef = parser.parse_function_definition();
     EXPECT_EQ(funcdef.function_name, "f");    
     EXPECT_TRUE(funcdef.code.empty());

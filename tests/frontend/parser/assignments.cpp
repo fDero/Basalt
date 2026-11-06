@@ -4,7 +4,6 @@
 
 #include "frontend/parser.hpp"
 #include "frontend/token.hpp"
-#include "frontend/tokenized_file.hpp"
 #include "language/expressions.hpp"
 #include "language/statements.hpp"
 
@@ -16,7 +15,7 @@ TEST(Frontend, Parse_Trivial_Assignment) {
         { "6", "test.basalt", 1, 3, 3, Token::Type::integer_literal },
         { ";", "test.basalt", 1, 4, 4, Token::Type::symbol }
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     Statement statement = parser.parse_statement();
     ASSERT_TRUE(statement.is<Assignment>());
     EXPECT_TRUE(statement.get<Assignment>().assigned_value.is<IntLiteral>());
@@ -33,7 +32,7 @@ TEST(Frontend, Parse_Assignment_Of_Expression_To_Pointer_Dereference) {
         { "2", "test.basalt", 1, 6, 6, Token::Type::integer_literal },
         { ";", "test.basalt", 1, 7, 7, Token::Type::symbol }
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     Statement statement = parser.parse_statement();
     ASSERT_TRUE(statement.is<Assignment>());
     EXPECT_TRUE(statement.get<Assignment>().assigned_value.is<BinaryOperator>());

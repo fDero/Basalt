@@ -6,12 +6,23 @@
 #pragma once
 
 #include <string>
-#include <vector>
-
-#include "frontend/token.hpp"
 
 
-struct TokenizedFile {
-    std::string filename;
-    std::vector<Token> tokens;
+struct FileDescriptor {
+    enum class FileExtension {
+        basalt,
+        llvm,
+        assembly,
+        object,
+        static_library,
+        dynamic_library
+    };
+
+    explicit FileDescriptor(
+        std::string fullpath
+    );
+
+    std::string fullpath;
+    std::string basename;
+    FileExtension extension;
 };

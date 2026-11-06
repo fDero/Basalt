@@ -12,7 +12,7 @@ project(
 )
 
 if(WIN32)
-  set(BUILD_SHARED_LIBS OFF) 
+  set(BUILD_SHARED_LIBS OFF)
   set(CMAKE_EXE_LINKER_FLAGS "-static")
 endif()
 
@@ -28,7 +28,7 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/out/lib)
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
-file(GLOB_RECURSE MAIN_FILE ${CMAKE_SOURCE_DIR}/src/main.cpp)
+file(GLOB MAIN_FILE ${CMAKE_SOURCE_DIR}/src/*.cpp)
 file(GLOB_RECURSE SOURCE_FILES ${CMAKE_SOURCE_DIR}/src/*/*.cpp)
 file(GLOB_RECURSE TEST_FILES ${CMAKE_SOURCE_DIR}/tests/*/*.cpp)
 
@@ -59,6 +59,7 @@ target_compile_options(
   -Wall
   -Wpedantic
   -Wfloat-equal
+  -Wno-switch-bool
   -DDEBUG_BUILD
 )
 
@@ -86,6 +87,7 @@ target_compile_options(
   -Wpedantic
   -Wswitch
   -Wfloat-equal
+  -Wno-switch-bool
   -DDEBUG_BUILD
 )
 

@@ -4,7 +4,6 @@
 
 #include "frontend/parser.hpp"
 #include "frontend/token.hpp"
-#include "frontend/tokenized_file.hpp"
 #include "language/expressions.hpp"
 
 
@@ -16,7 +15,7 @@ TEST(Frontend, Parse_Dot_Member_Access_nested_with_multiplication) {
         { ".", "test.basalt", 1, 4, 4, Token::Type::symbol },
         { "c", "test.basalt", 1, 5, 5, Token::Type::text },
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     Expression expr = parser.parse_expression();
     ASSERT_TRUE(expr.is<BinaryOperator>());
     const BinaryOperator& binary_operator = expr.get<BinaryOperator>();
@@ -39,7 +38,7 @@ TEST(Frontend, Parse_Dot_Member_Access_Array_Square_Brackets_Access_And_Pointer_
         { "k", "test.basalt", 1, 8, 8, Token::Type::text },
         { "]", "test.basalt", 1, 9, 9, Token::Type::symbol },
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     Expression expr = parser.parse_expression();
     ASSERT_TRUE(expr.is<BinaryOperator>());
     const BinaryOperator& binary_operator = expr.get<BinaryOperator>();
@@ -65,7 +64,7 @@ TEST(Frontend, Parse_Dot_Member_Access_Array_Square_Brackets_Access_And_Pointer_
         { "k", "test.basalt", 1, 8, 8, Token::Type::text },
         { "]", "test.basalt", 1, 9, 9, Token::Type::symbol },
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     Expression expr = parser.parse_expression();
     ASSERT_TRUE(expr.is<UnaryOperator>());
     const UnaryOperator& unary_operator = expr.get<UnaryOperator>();

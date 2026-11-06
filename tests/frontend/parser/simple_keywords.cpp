@@ -4,7 +4,6 @@
 
 #include "frontend/parser.hpp"
 #include "frontend/token.hpp"
-#include "frontend/tokenized_file.hpp"
 #include "language/expressions.hpp"
 #include "language/statements.hpp"
 #include "syntax/keywords.hpp"
@@ -15,7 +14,7 @@ TEST(Frontend, Parse_Return_Nothing) {
         { return_keyword, "test.basalt", 1, 1, 1, Token::Type::return_keyword },
         { ";",            "test.basalt", 1, 4, 4, Token::Type::symbol         },
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     Statement statement = parser.parse_statement();
     ASSERT_TRUE(statement.is<Return>());
     EXPECT_FALSE(statement.get<Return>().return_value.has_value());
@@ -27,7 +26,7 @@ TEST(Frontend, Parse_Return_Integer) {
         { "6",            "test.basalt", 1, 4, 4, Token::Type::integer_literal },
         { ";",            "test.basalt", 1, 4, 4, Token::Type::symbol          },
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     Statement statement = parser.parse_statement();
     ASSERT_TRUE(statement.is<Return>());
     ASSERT_TRUE(statement.get<Return>().return_value.has_value());
@@ -43,7 +42,7 @@ TEST(Frontend, Parse_Return_Expression) {
         { "7",            "test.basalt", 1, 4, 4, Token::Type::integer_literal },
         { ";",            "test.basalt", 1, 4, 4, Token::Type::symbol          },
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     Statement statement = parser.parse_statement();
     ASSERT_TRUE(statement.is<Return>());
     ASSERT_TRUE(statement.get<Return>().return_value.has_value());

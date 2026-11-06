@@ -5,7 +5,6 @@
 
 #include "frontend/parser.hpp"
 #include "frontend/token.hpp"
-#include "frontend/tokenized_file.hpp"
 #include "language/expressions.hpp"
 
 
@@ -15,7 +14,7 @@ TEST(Frontend, Parse_Integer_Literals) {
         { "0",    "test.basalt",  1, 2, 4,  Token::Type::integer_literal },
         { "500",  "test.basalt",  1, 3, 5,  Token::Type::integer_literal }
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     for (const auto& literal : tokens) {
         Expression expr = parser.parse_integer_literal();
         ASSERT_TRUE(expr.is<IntLiteral>());
@@ -28,7 +27,7 @@ TEST(Frontend, Parse_String_Literals) {
         { "\"Hello\"",  "test.basalt",  1, 1, 1,  Token::Type::string_literal },
         { "\"World\"",  "test.basalt",  1, 2, 8,  Token::Type::string_literal },
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     for (const auto& literal : tokens) {
         Expression expr = parser.parse_string_literal();
         ASSERT_TRUE(expr.is<StringLiteral>());
@@ -45,7 +44,7 @@ TEST(Frontend, Parse_Floating_Literals) {
         { "0.0",    "test.basalt",  1, 2, 4,  Token::Type::floating_literal },
         { "5.002",  "test.basalt",  1, 3, 5,  Token::Type::floating_literal }
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     for (const auto& literal : tokens) {
         Expression expr = parser.parse_floating_literal();
         ASSERT_TRUE(expr.is<FloatLiteral>());
@@ -59,7 +58,7 @@ TEST(Frontend, Parse_Char_Literals) {
         { "'y'",   "test.basalt",  1, 2, 2,  Token::Type::character_literal },
         { "'z'",   "test.basalt",  1, 3, 3,  Token::Type::character_literal },
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     for (const auto& literal : tokens) {
         Expression expr = parser.parse_character_literal();
         ASSERT_TRUE(expr.is<CharLiteral>());
@@ -72,7 +71,7 @@ TEST(Frontend, Parse_Boolean_Literals) {
         { "true",   "test.basalt",  1, 1, 1,  Token::Type::boolean_literal },
         { "false",  "test.basalt",  1, 2, 5,  Token::Type::boolean_literal },
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     for (const auto& literal : tokens) {
         Expression expr = parser.parse_boolean_literal();
         ASSERT_TRUE(expr.is<BoolLiteral>());

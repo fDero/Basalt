@@ -15,7 +15,6 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ FRONTEND ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 struct Token;
-struct TokenizedFile;
 struct FileRepresentation;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TYPE SIGNATURES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//

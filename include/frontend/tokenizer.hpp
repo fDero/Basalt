@@ -10,20 +10,21 @@
 #include <optional>
 #include <stack>
 #include <string>
+#include <vector>
 
 #include "frontend/token.hpp"
 #include "misc/debug_informations_aware_entity.hpp"
 #include "misc/forward_declarations.hpp"
+#include "frontend/file_descriptor.hpp"
 
 
 class Tokenizer {
 
     public:
+        Tokenizer(const FileDescriptor& file_input);
         Tokenizer(const std::istringstream& inline_input);
-        Tokenizer(const std::string& file_input);
 
-        [[nodiscard]] TokenizedFile tokenize();
-
+        [[nodiscard]] std::vector<Token>   tokenize();
         [[nodiscard]] std::optional<Token> extract_number();
         [[nodiscard]] std::optional<Token> extract_text();
         [[nodiscard]] std::optional<Token> extract_string();

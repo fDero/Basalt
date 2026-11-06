@@ -4,7 +4,6 @@
 
 #include "frontend/parser.hpp"
 #include "frontend/token.hpp"
-#include "frontend/tokenized_file.hpp"
 #include "language/definitions.hpp"
 #include "syntax/keywords.hpp"
 
@@ -24,7 +23,7 @@ TEST(Frontend, Parse_Union_Generic_Either_Definition) {
         { "U",           "test.basalt",  1,  4,  14,  Token::Type::type           },
         { ";",           "test.basalt",  1,  3,  13,  Token::Type::symbol         }
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     UnionDefinition union_def = parser.parse_union_definition();
     EXPECT_EQ(union_def.types.size(), 2);
     EXPECT_EQ(union_def.template_generics_names.size(), 2);

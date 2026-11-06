@@ -9,13 +9,12 @@
 #include "frontend/file_representation.hpp"
 #include "frontend/parser.hpp"
 #include "frontend/token.hpp"
-#include "frontend/tokenized_file.hpp"
 
 
-Parser::Parser(const TokenizedFile& tokenized_file) {
-    source_tokens = tokenized_file.tokens; 
+Parser::Parser(const FileDescriptor& file, const std::vector<Token>& tokens) {
+    source_tokens = tokens;
     iterator = source_tokens.begin();
-    filename = tokenized_file.filename; 
+    filename = file.fullpath;
 }
 
 FileRepresentation Parser::parse_everything() {

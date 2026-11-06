@@ -4,7 +4,6 @@
 
 #include "frontend/parser.hpp"
 #include "frontend/token.hpp"
-#include "frontend/tokenized_file.hpp"
 #include "language/typesignatures.hpp"
 #include "syntax/primitive_types.hpp"
 
@@ -14,7 +13,7 @@ TEST(Frontend, Parse_Simple_Slice) {
         { "$",   "test.basalt",   1, 1, 1, Token::Type::type     },
         { "Ent", "test.basalt",   1, 2, 2, Token::Type::type     },
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     TypeSignature type = parser.parse_typesignature();
     ASSERT_TRUE(type.is<SliceType>());
     SliceType inner_slice = type.get<SliceType>();
@@ -28,7 +27,7 @@ TEST(Frontend, Parse_Nested_Slice_Types) {
         { "$",   "test.basalt",     1, 2, 2,  Token::Type::symbol    },
         { int_type, "test.basalt",     1, 3, 3,  Token::Type::type      },
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     TypeSignature type = parser.parse_typesignature();
     ASSERT_TRUE(type.is<SliceType>());
     ASSERT_TRUE(type.get<SliceType>().stored_type.is<SliceType>());

@@ -4,7 +4,6 @@
 
 #include "frontend/parser.hpp"
 #include "frontend/token.hpp"
-#include "frontend/tokenized_file.hpp"
 #include "language/typesignatures.hpp"
 #include "syntax/primitive_types.hpp"
 
@@ -15,7 +14,7 @@ TEST(Frontend, Parse_CustomType_WithOut_Generics) {
         { "Employee", "test.basalt", 1, 2, 9,  Token::Type::type },
         { "Manager",  "test.basalt", 1, 3, 17, Token::Type::type }
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     for (const auto& typesignature : tokens) {
         TypeSignature type = parser.parse_typesignature();
         ASSERT_TRUE(type.is<CustomType>());
@@ -31,7 +30,7 @@ TEST(Frontend, Parse_Custom_Type_With_One_Generic) {
         { string_type, "test.basalt", 1, 3, 13, Token::Type::type },
         { ">", "test.basalt", 1, 4, 14, Token::Type::symbol    }
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     TypeSignature type = parser.parse_typesignature();
     ASSERT_TRUE(type.is<CustomType>());
     ASSERT_EQ(type.get<CustomType>().type_name, "Wrapper");
@@ -51,7 +50,7 @@ TEST(Frontend, Parse_CustomType_With_Multiple_Generic) {
         { bool_type, "test.basalt", 1, 7, 25, Token::Type::type },
         { ">", "test.basalt", 1, 8, 29, Token::Type::symbol }
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     TypeSignature type = parser.parse_typesignature();
     ASSERT_TRUE(type.is<CustomType>());
     ASSERT_EQ(type.get<CustomType>().type_parameters.size(), 3);

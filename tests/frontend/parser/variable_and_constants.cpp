@@ -4,7 +4,6 @@
 
 #include "frontend/parser.hpp"
 #include "frontend/token.hpp"
-#include "frontend/tokenized_file.hpp"
 #include "language/statements.hpp"
 #include "language/typesignatures.hpp"
 #include "syntax/keywords.hpp"
@@ -21,7 +20,7 @@ TEST(Frontend, Parse_Variable_With_Type_And_Value) {
         { "6",   "test.basalt", 1, 6, 10, Token::Type::integer_literal   },
         { ";",   "test.basalt", 1, 7, 11, Token::Type::symbol            },
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     Statement statement = parser.parse_variable_definition();
     ASSERT_TRUE(statement.is<VariableDeclaration>());
     VariableDeclaration var = statement.get<VariableDeclaration>();
@@ -38,7 +37,7 @@ TEST(Frontend, Parse_Variable_With_No_Value) {
         { int_type,    "test.basalt", 1, 4, 8,  Token::Type::type        },
         { ";",         "test.basalt", 1, 7, 11, Token::Type::symbol      },
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     Statement statement = parser.parse_variable_definition();
     ASSERT_TRUE(statement.is<VariableDeclaration>());
     VariableDeclaration var = statement.get<VariableDeclaration>();
@@ -57,7 +56,7 @@ TEST(Frontend, Parse_Constant_With_Type_And_Value) {
         { "6",   "test.basalt",   1, 6, 12, Token::Type::integer_literal     },
         { ";",   "test.basalt",   1, 7, 13, Token::Type::symbol              },
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     Statement statement = parser.parse_constant_definition();
     ASSERT_TRUE(statement.is<ConstDeclaration>());
     ConstDeclaration con = statement.get<ConstDeclaration>();

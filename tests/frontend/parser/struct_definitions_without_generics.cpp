@@ -4,7 +4,6 @@
 
 #include "frontend/parser.hpp"
 #include "frontend/token.hpp"
-#include "frontend/tokenized_file.hpp"
 #include "language/definitions.hpp"
 #include "syntax/keywords.hpp"
 
@@ -16,7 +15,7 @@ TEST(Frontend, Parse_Struct_Definition_With_No_Fields_And_No_Nested_Structs) {
         { "{",            "test.basalt", 1, 3, 8, Token::Type::symbol         },
         { "}",            "test.basalt", 1, 4, 9, Token::Type::symbol         }
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     StructDefinition struct_def = parser.parse_struct_definition();
     EXPECT_EQ(struct_def.filename, "test.basalt");
     EXPECT_EQ(struct_def.def_name, "S");
@@ -35,7 +34,7 @@ TEST(Frontend, Parse_Struct_Definition_With_One_Field_And_No_Nested_Structs) {
         { ";",            "test.basalt",  1,  7,  12,  Token::Type::symbol         },
         { "}",            "test.basalt",  1,  8,  13,  Token::Type::symbol         }
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     StructDefinition struct_def = parser.parse_struct_definition();
     EXPECT_EQ(struct_def.filename, "test.basalt");
     EXPECT_EQ(struct_def.def_name, "S");
@@ -59,7 +58,7 @@ TEST(Frontend, Parse_Struct_Definition_With_Two_Fields_And_No_Nested_Structs) {
         { ";",      "test.basalt",  1,  11,  16,  Token::Type::symbol         },
         { "}",      "test.basalt",  1,  12,  17,  Token::Type::symbol         }
     };
-    Parser parser = Parser({ "inline-tests.basalt", tokens });
+    Parser parser = Parser(FileDescriptor("inline-tests.basalt"), tokens);
     StructDefinition struct_def = parser.parse_struct_definition();
     EXPECT_EQ(struct_def.filename, "test.basalt");
     EXPECT_EQ(struct_def.def_name, "S");

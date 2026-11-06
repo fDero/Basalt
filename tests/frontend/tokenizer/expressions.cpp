@@ -5,14 +5,13 @@
 #include <gtest/gtest.h>
 
 #include "frontend/token.hpp"
-#include "frontend/tokenized_file.hpp"
 #include "frontend/tokenizer.hpp"
 
 
 TEST(Frontend, Tokenize_Complex_Math_Expression) {
     std::string inline_input = "(16+17*19)/2;";
     Tokenizer tokenizer = Tokenizer(std::istringstream(inline_input));
-    std::vector<Token> tokens = tokenizer.tokenize().tokens;
+    std::vector<Token> tokens = tokenizer.tokenize();
     ASSERT_EQ(tokens.size(), 10);
     EXPECT_EQ(tokens[0].sourcetext, "(");
     EXPECT_EQ(tokens[1].sourcetext, "16");
@@ -29,7 +28,7 @@ TEST(Frontend, Tokenize_Complex_Math_Expression) {
 TEST(Frontend, Tokenize_Complex_Logical_Expression) {
     std::string inline_input = "!(a && b || !c);";
     Tokenizer tokenizer = Tokenizer(std::istringstream(inline_input));
-    std::vector<Token> tokens = tokenizer.tokenize().tokens;
+    std::vector<Token> tokens = tokenizer.tokenize();
     ASSERT_EQ(tokens.size(), 10);
     EXPECT_EQ(tokens[0].sourcetext, "!");
     EXPECT_EQ(tokens[1].sourcetext, "(");
@@ -46,7 +45,7 @@ TEST(Frontend, Tokenize_Complex_Logical_Expression) {
 TEST(Frontend, Tokenize_Expression_With_Comments) {
     std::string inline_input = "/*/**/*/(16+17* /*AA*/ 19)/2; // hello world";
     Tokenizer tokenizer = Tokenizer(std::istringstream(inline_input));
-    std::vector<Token> tokens = tokenizer.tokenize().tokens;
+    std::vector<Token> tokens = tokenizer.tokenize();
     ASSERT_EQ(tokens.size(), 10);
     EXPECT_EQ(tokens[0].sourcetext, "(");
     EXPECT_EQ(tokens[1].sourcetext, "16");

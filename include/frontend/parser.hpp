@@ -10,16 +10,20 @@
 #include <vector>
 
 #include "frontend/token.hpp"
+#include "frontend/file_descriptor.hpp"
+#include "misc/forward_declarations.hpp"
 #include "language/definitions.hpp"
 #include "language/expressions.hpp"
 #include "language/statements.hpp"
-#include "misc/forward_declarations.hpp"
 
 
 class Parser {
-
     public:
-        Parser(const TokenizedFile& tokens);
+        Parser(
+            const FileDescriptor& file,
+            const std::vector<Token>& tokens
+        );
+
         [[nodiscard]] FileRepresentation parse_everything();
 
         [[nodiscard]] Expression parse_array_literal();
